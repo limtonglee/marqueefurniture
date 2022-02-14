@@ -13,7 +13,7 @@ const App = () => {
   return (
     <>
       <Container maxWidth="lg">
-        <PreLogin> </PreLogin>
+        <PreLogin/>
       </Container>
     </>
   );

@@ -5,15 +5,17 @@ import PropTypes from "prop-types";
 import { Button, Container } from "@mui/material";
 import MarketPlace from "./pages/MarketPlace";
 import NavBar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
 
 
 const PreLogin = () => {
   return (
-    <> 
-    <NavBar/>
+    <>
+      <NavBar />
+      <Sidebar></Sidebar>
       <Routes>
-        <Route path="/" element={<MarketPlace />} />
-        <Route path="/login" element={<Login/>}/>
+        <Route path="/marketplace" element={<MarketPlace />} />
+        <Route path="/login" element={<Login />} /> 
       </Routes>
     </>
   );

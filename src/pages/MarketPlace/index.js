@@ -6,7 +6,7 @@ import { ImageListItemBar } from '@mui/material'
 
 const MarketPlace = () => {
   return (
-    <ImageList sx={{ width: 1000, height: 450 }}>
+    <ImageList sx={{ width: 'auto', height: 'auto' }}>
       {itemData.map((item) => (
           <Button>
         <ImageListItem key={item.img}>

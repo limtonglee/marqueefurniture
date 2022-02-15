@@ -7,7 +7,7 @@ const NavBar = () => {
     <>
       <Container>
         <Link to="/"> MarketPlace </Link>
-        <div>Testing</div>
+        <div>Testing on vscode</div>
         <Link to="/Login"> Login </Link>
       </Container>
     </>

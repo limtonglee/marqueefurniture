@@ -7,6 +7,7 @@ const NavBar = () => {
     <>
       <Container>
         <Link to="/"> MarketPlace </Link>
+        <div></div>
         <Link to="/Login"> Login </Link>
       </Container>
     </>

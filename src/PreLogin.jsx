@@ -13,7 +13,6 @@ const PreLogin = () => {
   return (
     <>
       <NavBar />
-      <Sidebar></Sidebar>
       <Routes>
         <Route path="/" element={<Navigate to="/marketplace" />} />
         <Route path="/marketplace" element={<MarketPlace />}>

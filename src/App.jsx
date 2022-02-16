@@ -7,15 +7,21 @@ import { PropTypes } from "prop-types";
 import Button from "@mui/material/Button";
 import { Container } from "@mui/material";
 
+// theme
+import ThemeConfig from './theme';
+import GlobalStyles from './theme/globalStyles';
+
 const App = () => {
   //const previousLocation = useRef(location);
 
   return (
+    <ThemeConfig>
     <>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <PreLogin/>
       </Container>
     </>
+    </ThemeConfig>
   );
 };
 

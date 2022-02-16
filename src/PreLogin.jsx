@@ -6,7 +6,7 @@ import { Button, Container } from "@mui/material";
 import MarketPlace from "./pages/MarketPlace";
 import NavBar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
-import { itemDetails } from "./pages/MarketPlace/itemDetails";
+import { ItemDetails } from "./pages/MarketPlace/ItemDetails";
 import { Listings } from "./pages/MarketPlace/Listings";
 
 const PreLogin = () => {
@@ -18,7 +18,7 @@ const PreLogin = () => {
         <Route path="/" element={<Navigate to="/marketplace" />} />
         <Route path="/marketplace" element={<MarketPlace />}>
           <Route path="" element={<Listings />} />
-          <Route path=":itemId" element={<itemDetails />} />
+          <Route path=":itemId" element={<ItemDetails />} />
         </Route>
         <Route path="/login" element={<Login />} />
       </Routes>

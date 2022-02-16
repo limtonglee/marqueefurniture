@@ -6,13 +6,13 @@ const NavBar = () => {
   return (
     <>
       <Container>
-        <Link to="/"> MarketPlace </Link>
-        <div>Testing on vscode</div>
-        <Link to="/Login"> Login </Link>
+        <Link to="/sellercenter"> Seller Center </Link>
+        <Link to="/marketplace"> MarketPlace </Link>
+        <Link to="/socialmedia"> Social Media </Link>
+        <Link to="/login"> Login </Link>
       </Container>
     </>
   );
-  
 };
 
 export default NavBar;

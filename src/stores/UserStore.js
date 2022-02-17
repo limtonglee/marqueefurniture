@@ -6,6 +6,7 @@ import { makeAutoObservable } from "mobx";
 
 class userStore {
   name = "John doe";
+  isLoggedIn = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -13,6 +14,12 @@ class userStore {
 
   setUserName = (name) => {
     this.name = name;
+  };
+  setIsLoggedIn = () => {
+    this.isLoggedIn = true;
+  };
+  setIsLoggedOut = () => {
+    this.isLoggedIn = false;
   };
 }
 

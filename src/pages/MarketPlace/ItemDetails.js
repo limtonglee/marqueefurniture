@@ -8,6 +8,9 @@ import ShareIcon from "@mui/icons-material/Share";
 import { useParams } from "react-router-dom";
 
 //This is the listing page 
+/* 
+Expansion of item details for this
+*/
 export const ItemDetails = () => {
   const param = useParams();
   const item = itemData[param.itemId];

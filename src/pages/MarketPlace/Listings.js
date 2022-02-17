@@ -10,12 +10,11 @@ import { Link } from "react-router-dom";
 import { Tab } from "@mui/material";
 import { Tabs } from "@mui/material";
 import { Box } from "@mui/material";
-import { useEffect } from "react";
 
 //This is the main marketplace page
 /*Things to do:
 Inclusion of the bar to separate the different listings: "Furniture / Design / Services" Done
-Linking bar up with the difference in the listings
+Linking bar up with the difference in the listings Done
 */
 export const Listings = () => {
   const [value, setValue] = React.useState(0);
@@ -31,13 +30,13 @@ export const Listings = () => {
   const updateData = (value) => {
     console.log(value);
     if (value === 0) {
-      tabData = itemData.filter((item) => item.listingType == "Furniture");
+      tabData = itemData.filter((item) => item.listingType === "Furniture");
     }
     if (value === 1) {
-      tabData = itemData.filter((item) => item.listingType == "Service");
+      tabData = itemData.filter((item) => item.listingType === "Service");
     }
     if (value === 2) {
-      tabData = itemData.filter((item) => item.listingType == "Design");
+      tabData = itemData.filter((item) => item.listingType === "Design");
     }
     setData(tabData);
   };

@@ -20,12 +20,13 @@ import MenuItem from "@mui/material/MenuItem";
 const pageLinks = [
   { text: "Seller Center", link: "/sellercenter" },
   { text: "Market Place", link: "/marketplace" },
-  //{ text: "Social Media", link: "/socialmedia" },
-  { text: "Login", link: "/login" },
+  { text: "Social Media", link: "/socialmedia" },
+  { text: "Logout", link: "/logout" },
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-const NavBar = () => {
+
+const PostLoginNavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -153,4 +154,4 @@ const NavBar = () => {
     </>
   );
 };
-export default NavBar;
+export default PostLoginNavBar;

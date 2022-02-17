@@ -8,6 +8,7 @@ import NavBar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import { ItemDetails } from "./pages/MarketPlace/ItemDetails";
 import { Listings } from "./pages/MarketPlace/Listings";
+import SellerCenter from "./pages/SellerCenter";
 
 const PreLogin = () => {
   return (
@@ -15,6 +16,7 @@ const PreLogin = () => {
       <NavBar />
       <Routes>
         <Route path="/" element={<Navigate to="/marketplace" />} />
+        <Route path="/sellercenter" element={<SellerCenter />} />
         <Route path="/marketplace" element={<MarketPlace />}>
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />

@@ -1,0 +1,7 @@
+.appContainer{
+    display: flex;
+    flex-direction: row;
+}
+.sidebar{
+    width: 30%;
+}

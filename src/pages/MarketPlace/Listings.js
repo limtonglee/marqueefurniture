@@ -13,7 +13,8 @@ import { Box } from "@mui/material";
 
 //This is the main marketplace page
 /*Things to do:
-Inclusion of the bar to separate the different listings: "Furniture / Design / Services"
+Inclusion of the bar to separate the different listings: "Furniture / Design / Services" Done
+Linking bar up with the difference in the listings
 */
 export const Listings = () => {
 
@@ -36,31 +37,32 @@ export const Listings = () => {
           <Tab label="Design" />
        </Tabs>
       </Box>
+
     <ImageList sx={{ width: "auto", height: "auto" }}>
       {itemData.map((item) => (
-        <ImageListItem key={item.img}>
-          <Link to={`/marketplace/${item.id}`}>
-            <Button variant="outlined">
-              <img
-                src={`${item.img}?w=248&fit=crop&auto=format`}
-                srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                alt={item.title}
-                loading="lazy"
-              />
-            </Button>
-          </Link>
-          <ImageListItemBar
-            sx={{ backgroundColor: "primary", fontWeight: "bold" }}
-            title={item.title}
-            subtitle={item.author}
-            actionIcon={
-              <IconButton sx={{ color: "secondary" }}>
-                <ShareIcon />
-              </IconButton>
-            }
-            position="below"
-          />
-        </ImageListItem>
+          <ImageListItem key={item.img}>
+            <Link to={`/marketplace/${item.id}`}>
+              <Button variant="outlined">
+                <img
+                  src={`${item.img}?w=248&fit=crop&auto=format`}
+                  srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                  alt={item.title}
+                  loading="lazy"
+                />
+              </Button>
+            </Link>
+            <ImageListItemBar
+              sx={{ backgroundColor: "primary", fontWeight: "bold" }}
+              title={item.title}
+              subtitle={item.author}
+              actionIcon={
+                <IconButton sx={{ color: "secondary" }}>
+                  <ShareIcon />
+                </IconButton>
+              }
+              position="below"
+            />
+          </ImageListItem>
       ))}
     </ImageList>
     </Container>

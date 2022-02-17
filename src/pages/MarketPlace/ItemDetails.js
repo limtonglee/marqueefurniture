@@ -7,6 +7,7 @@ import { IconButton } from "@mui/material";
 import ShareIcon from "@mui/icons-material/Share";
 import { useParams } from "react-router-dom";
 
+//This is the listing page 
 export const ItemDetails = () => {
   const param = useParams();
   const item = itemData[param.itemId];

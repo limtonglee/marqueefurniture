@@ -42,10 +42,14 @@ export const Listings = () => {
     findListing(target);
   }
 
+  /*const checkStatus = () => {
+    console.log(value + "here");
+    updateData();
+  }*/
+
   const findListing = (criteria) => {
+    //checkStatus();
     const lowercasedCriteria = criteria.toLowerCase().trim();
-    //To see the value of Tab for TabData
-    console.log(value)
     if (lowercasedCriteria === '') setData(searchResults);
     else {
       const filteredListing = searchResults.filter((filterList) => {
@@ -58,7 +62,7 @@ export const Listings = () => {
   }
 
   const updateData = (value) => {
-    console.log(value);
+    console.log(value)
     if (value === 0) {
       tabData = itemData.filter((item) => item.listingType === "Furniture");
     }

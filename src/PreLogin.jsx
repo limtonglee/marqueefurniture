@@ -9,6 +9,7 @@ import Sidebar from "./components/Sidebar";
 import { ItemDetails } from "./pages/MarketPlace/ItemDetails";
 import { Listings } from "./pages/MarketPlace/Listings";
 import SellerCenter from "./pages/SellerCenter";
+import SignUp from "./pages/Signup";
 
 const PreLogin = () => {
   return (
@@ -22,6 +23,8 @@ const PreLogin = () => {
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+
       </Routes>
     </>
   );

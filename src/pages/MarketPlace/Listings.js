@@ -15,6 +15,8 @@ import { Box } from "@mui/material";
 /*Things to do:
 Inclusion of the bar to separate the different listings: "Furniture / Design / Services" Done
 Linking bar up with the difference in the listings Done
+Updating of the page to show only furniture, initial loading shows all the listing 
+Add search bar and filtering 
 */
 export const Listings = () => {
   const [value, setValue] = React.useState(0);

@@ -20,7 +20,8 @@ import Searchbar from "../../components/Searchbar";
 Inclusion of the bar to separate the different listings: "Furniture / Design / Services" Done
 Linking bar up with the difference in the listings Done
 Updating of the page to show only furniture, initial loading shows all the listing 
-Add search bar and filtering 
+Add search bar Done
+Add filtering 
 */
 export const Listings = () => {
 

@@ -6,7 +6,19 @@ import Masonry from "@mui/lab/Masonry";
 import PostCard from "./PostCard";
 
 const FeedGrid = () => {
-	const heights = [150, 30, 90, 70, 90, 100, 150, 30, 50, 80];
+	const images = [
+		"https://picsum.photos/200/300",
+		"https://picsum.photos/200/200",
+		"https://picsum.photos/300/400",
+		"https://picsum.photos/300/200",
+		"https://picsum.photos/300/300",
+		"https://picsum.photos/300/400",
+		"https://picsum.photos/400/600",
+		"https://picsum.photos/700/600",
+		"https://picsum.photos/700/500",
+		"https://picsum.photos/500/700",
+		"https://picsum.photos/600/700",
+	];
 
 	const Item = styled(Paper)(({ theme }) => ({
 		backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -17,17 +29,10 @@ const FeedGrid = () => {
 	}));
 
 	return (
-		<Box sx={{ minWidth: 500, minHeight: 253 }}>
+		<Box sx={{ maxWidth: 1200 }}>
 			<Masonry columns={4} spacing={2}>
-				{heights.map((height, index) => (
-					<PostCard />
-				))}
-			</Masonry>
-			<Masonry columns={4} spacing={2}>
-				{heights.map((height, index) => (
-					<Item key={index} sx={{ height }}>
-						{index + 1}
-					</Item>
+				{images.map((img, index) => (
+					<PostCard img={img} />
 				))}
 			</Masonry>
 		</Box>

@@ -37,6 +37,7 @@ staging individual file
 
 4. push file to upstream(w/ branch) 
 **git push**
+
 push file to upstream(w/o remote branch) 
 **git push --set-upstream origin branch-name**
 

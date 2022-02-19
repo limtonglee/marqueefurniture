@@ -4,6 +4,7 @@ import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Button, Container } from "@mui/material";
 import MarketPlace from "./pages/MarketPlace";
+import Ideas from "./pages/SocialMedia/Ideas";
 import NavBar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import { ItemDetails } from "./pages/MarketPlace/ItemDetails";
@@ -22,6 +23,7 @@ const PostLogin = () => {
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
+        <Route path="/ideas" element={<Ideas />}></Route>
         <Route path="/login" element={<Login />} />
       </Routes>
     </>

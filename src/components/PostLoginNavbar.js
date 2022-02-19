@@ -22,9 +22,12 @@ const pageLinks = [
   { text: "Seller Center", link: "/sellercenter" },
   { text: "Market Place", link: "/marketplace" },
   { text: "Social Media", link: "/socialmedia" },
-  { text: "Profile", link: "/profile" },
 ];
-const settings = ["Profile", "Account", "Dashboard"];
+const settings = [
+  { text: "Profile", link: "/profile" },
+  { text: "Account", link: "/account" },
+  { text: "Dashboard", link: "/dashboard" },
+];
 
 const PostLoginNavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -149,12 +152,14 @@ const PostLoginNavBar = () => {
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
+                    <Link to={setting.link} style={{ textDecoration: "none" }}>
+                      <Typography textAlign="center">{setting.text}</Typography>
+                    </Link>
                   </MenuItem>
                 ))}
-                  <MenuItem onClick={setLogout}>
-                    <Typography textAlign="center">Logout</Typography>
-                  </MenuItem>
+                <MenuItem onClick={setLogout}>
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
               </Menu>
             </Box>
           </Toolbar>

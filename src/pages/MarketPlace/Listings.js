@@ -1,19 +1,13 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import { Alert, Container, Fab, ImageList, Snackbar } from "@mui/material";
-import { ImageListItem } from "@mui/material";
-import { ImageListItemBar } from "@mui/material";
-import { itemData } from "../../data/itemData";
-import { IconButton } from "@mui/material";
-import ShareIcon from "@mui/icons-material/Share";
-import { Link } from "react-router-dom";
-import { Tab } from "@mui/material";
-import { Tabs } from "@mui/material";
-import { Box } from "@mui/material";
-import WeekendIcon from '@mui/icons-material/Weekend';
-import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import ArchitectureIcon from '@mui/icons-material/Architecture';
+import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
+import ShareIcon from "@mui/icons-material/Share";
+import WeekendIcon from '@mui/icons-material/Weekend';
+import { Alert, Box, Container, Fab, ImageList, ImageListItem, ImageListItemBar, Snackbar, Tab, Tabs } from "@mui/material";
+import Button from "@mui/material/Button";
+import * as React from "react";
+import { Link } from "react-router-dom";
 import Searchbar from "../../components/Searchbar";
+import { itemData } from "../../data/itemData";
 
 //This is the main marketplace page
 /*Things to do:
@@ -128,7 +122,7 @@ export const Listings = () => {
               actionIcon={
                 <Fab size="small" sx={{ color: "secondary" }}>
                   <ShareIcon onClick = {() => {
-                    {handleSnack()};
+                    handleSnack();
                     navigator.clipboard.writeText(window.location.toString() + '/' + item.id)
                     }
                   } />

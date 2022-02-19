@@ -25,20 +25,20 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 1. staging changes (all) 
 **git add .** 
 
-staging individual file 
+2. staging individual file 
 **git add file-name **
 
-2. committing changes 
+3. committing changes 
 **git commit -m "commit message"**
 
-3. download changes from origin master & merging 
+4. download changes from origin master & merging 
 (run this command while on your current branch(rmb to commit changes if theres potential conflict))
 **git pull origin master**
 
 
-4. push file to upstream(w/ branch) 
+5. push file to upstream(w/ branch) 
 **git push**
 
-5. push file to upstream(w/o remote branch) 
+6. push file to upstream(w/o remote branch) 
 **git push --set-upstream origin branch-name**
 

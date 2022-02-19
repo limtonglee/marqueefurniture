@@ -1,6 +1,6 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
-import { Container, ImageList } from "@mui/material";
+import { Alert, Container, Fab, ImageList, Snackbar } from "@mui/material";
 import { ImageListItem } from "@mui/material";
 import { ImageListItemBar } from "@mui/material";
 import { itemData } from "../../data/itemData";
@@ -19,9 +19,10 @@ import Searchbar from "../../components/Searchbar";
 /*Things to do:
 Inclusion of the bar to separate the different listings: "Furniture / Design / Services" Done
 Linking bar up with the difference in the listings Done
-Updating of the page to show only furniture, initial loading shows all the listing 
+Sharing of URL to the exact listing Done
 Add search bar Done
 Add filtering 
+Updating of the page to show only furniture, initial loading shows all the listing 
 */
 export const Listings = () => {
 
@@ -30,6 +31,19 @@ export const Listings = () => {
   const [value, setValue] = React.useState(0);
   const [data, setData] = React.useState(itemData);
   const [searchResults, setSearchResults] = React.useState(tabData);
+  const [open, setOpen] = React.useState(false);
+
+  const handleSnack = () => {
+    setOpen(true)
+  }
+
+  const handleSnackClose = (event, reason) => {
+    if(reason === 'clickaway') {
+      return
+    }
+
+    setOpen(false)
+  }
 
   
 
@@ -42,10 +56,14 @@ export const Listings = () => {
     findListing(target);
   }
 
+  /*const checkStatus = () => {
+    console.log(value + "here");
+    updateData();
+  }*/
+
   const findListing = (criteria) => {
+    //checkStatus();
     const lowercasedCriteria = criteria.toLowerCase().trim();
-    //To see the value of Tab for TabData
-    console.log(value)
     if (lowercasedCriteria === '') setData(searchResults);
     else {
       const filteredListing = searchResults.filter((filterList) => {
@@ -58,7 +76,7 @@ export const Listings = () => {
   }
 
   const updateData = (value) => {
-    console.log(value);
+    console.log(value)
     if (value === 0) {
       tabData = itemData.filter((item) => item.listingType === "Furniture");
     }
@@ -108,9 +126,18 @@ export const Listings = () => {
               title={item.title}
               subtitle={item.author}
               actionIcon={
-                <IconButton sx={{ color: "secondary" }}>
-                  <ShareIcon />
-                </IconButton>
+                <Fab size="small" sx={{ color: "secondary" }}>
+                  <ShareIcon onClick = {() => {
+                    {handleSnack()};
+                    navigator.clipboard.writeText(window.location.toString() + '/' + item.id)
+                    }
+                  } />
+                  <Snackbar open ={open} autoHideDuration={2000} onClose={handleSnackClose}>
+                    <Alert onClose={handleSnackClose} severity="success" sx= {{ width:'auto'}}>
+                      Copied to Clipboard!
+                    </Alert>
+                   </Snackbar>
+                </Fab>
               }
               position="below"
             />

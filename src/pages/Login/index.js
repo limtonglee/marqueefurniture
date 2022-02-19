@@ -12,6 +12,9 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useStores } from "../../stores/RootStore";
+import { useObserver } from "mobx-react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const handleSubmit = (event) => {
@@ -22,6 +25,20 @@ const Login = () => {
       email: data.get("email"),
       password: data.get("password"),
     });
+
+    //on success set login
+    setLogin();
+
+    //on failure to do
+  };
+
+  const { userStore } = useStores();
+
+  let navigate = useNavigate();
+
+  const setLogin = () => {
+    userStore.setIsLoggedIn();
+    navigate("/marketplace");
   };
 
   return (
@@ -82,14 +99,10 @@ const Login = () => {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link to="/error" >
-                  Forgot password? (to do)
-                </Link>
+                <Link to="/error">Forgot password? (to do)</Link>
               </Grid>
               <Grid item>
-                <Link to="/signup" >
-                  {"Don't have an account? Sign Up"}
-                </Link>
+                <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
               </Grid>
             </Grid>
           </Box>

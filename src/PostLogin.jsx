@@ -9,6 +9,7 @@ import Sidebar from "./components/Sidebar";
 import { ItemDetails } from "./pages/MarketPlace/ItemDetails";
 import { Listings } from "./pages/MarketPlace/Listings";
 import PostLoginNavBar from "./components/PostLoginNavbar";
+import SellerCenter from "./pages/SellerCenter";
 
 
 
@@ -23,6 +24,8 @@ const PostLogin = () => {
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/sellercenter" element={<SellerCenter />} />
+
       </Routes>
     </>
   );

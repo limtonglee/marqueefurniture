@@ -13,6 +13,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import { useStores } from "../stores/RootStore";
 
 //const pages = ["Seller Center", "MarketPlace", "Social Media", "Login"];
 //const links = ["sellercenter", "marketplace", "socialmedia", "login"];
@@ -22,10 +23,8 @@ const pageLinks = [
   { text: "Market Place", link: "/marketplace" },
   { text: "Social Media", link: "/socialmedia" },
   { text: "Profile", link: "/profile" },
-  { text: "Logout", link: "/logout" },
 ];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
-
+const settings = ["Profile", "Account", "Dashboard"];
 
 const PostLoginNavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -44,6 +43,12 @@ const PostLoginNavBar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const { userStore } = useStores();
+
+  const setLogout = (e) => {
+    userStore.setIsLoggedOut();
   };
 
   return (
@@ -91,7 +96,7 @@ const PostLoginNavBar = () => {
               >
                 {pageLinks.map((page) => (
                   <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Link to={page.link} style={{ textDecoration: 'none' }}>
+                    <Link to={page.link} style={{ textDecoration: "none" }}>
                       <Typography textAlign="center">{page.text}</Typography>
                     </Link>
                   </MenuItem>
@@ -108,7 +113,7 @@ const PostLoginNavBar = () => {
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pageLinks.map((page) => (
-                <Link to={page.link} style={{ textDecoration: 'none' }}>
+                <Link to={page.link} style={{ textDecoration: "none" }}>
                   <Button
                     key={page}
                     onClick={handleCloseNavMenu}
@@ -147,6 +152,9 @@ const PostLoginNavBar = () => {
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}
+                  <MenuItem onClick={setLogout}>
+                    <Typography textAlign="center">Logout</Typography>
+                  </MenuItem>
               </Menu>
             </Box>
           </Toolbar>

@@ -32,20 +32,6 @@ const App = () => {
     <ThemeConfig>
       <>
         <Container maxWidth="xl">
-          <Button
-            onClick={() => {
-              setLogin();
-            }}
-          >
-            Login
-          </Button>
-          <Button
-            onClick={() => {
-              setLogout();
-            }}
-          >
-            Logout
-          </Button>
           {userStore.isLoggedIn ? <PostLogin /> : <PreLogin />}
         </Container>
       </>

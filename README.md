@@ -31,8 +31,9 @@ staging individual file
 **git commit -m "commit message"**
 
 3. download changes from origin master & merging 
-**git pull origin master**
 run this command while on your current branch(rmb to commit changes if theres potential conflict)
+**git pull origin master**
+
 
 4. push file to upstream(w/ branch) 
 **git push**

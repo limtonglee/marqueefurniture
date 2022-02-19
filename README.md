@@ -22,18 +22,20 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ### `git version control workflow`
 
-1. 
-staging changes (all) - **git add .** 
-staging individual file = **git add file-name **
+1. staging changes (all) 
+**git add .** 
+staging individual file 
+**git add file-name **
 
-2. 
-committing changes - **git commit -m "commit message"**
+2. committing changes 
+**git commit -m "commit message"**
 
-3. 
-download changes from origin master & merging - **git pull origin master**
-- run this command while on your current branch(rmb to commit changes if theres potential conflict)
+3. download changes from origin master & merging 
+**git pull origin master**
+run this command while on your current branch(rmb to commit changes if theres potential conflict)
 
-4. 
-push file to upstream(w/ branch) ** git push**
-push file to upstream(w/o remote branch) **git push --set-upstream origin branch-name**
+4. push file to upstream(w/ branch) 
+**git push**
+push file to upstream(w/o remote branch) 
+**git push --set-upstream origin branch-name**
 

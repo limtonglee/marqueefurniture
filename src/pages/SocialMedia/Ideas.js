@@ -4,6 +4,7 @@ import OtherTag from "../../components/Tags/OtherTag";
 import Stack from "@mui/material/Stack";
 import SortButton from "../../components/SortButton";
 import FilterButton from "../../components/Buttons/FilterButton";
+import FeedGrid from "./FeedGrid/FeedGrid";
 
 const Ideas = () => {
 	return (
@@ -17,6 +18,7 @@ const Ideas = () => {
 			</Stack>
 			<SortButton />
 			<FilterButton />
+			<FeedGrid />
 		</div>
 	);
 };

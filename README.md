@@ -24,6 +24,7 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 1. staging changes (all) 
 **git add .** 
+
 staging individual file 
 **git add file-name **
 

@@ -26,11 +26,11 @@ Updating of the page to show only furniture, initial loading shows all the listi
 */
 export const Listings = () => {
 
-  let tabData = itemData;
+  let tabData = itemData.filter((item) => item.listingType === "Furniture");
 
   const [value, setValue] = React.useState(0);
-  const [data, setData] = React.useState(itemData);
-  const [searchResults, setSearchResults] = React.useState(tabData);
+  const [data, setData] = React.useState(tabData);
+  // const [searchResults, setSearchResults] = React.useState(tabData);
   const [open, setOpen] = React.useState(false);
 
   const handleSnack = () => {
@@ -52,8 +52,8 @@ export const Listings = () => {
     updateData(newValue);
   };
 
-  const handleSearch = (target) => {
-    findListing(target);
+  const handleSearch = (value) => {
+    findListing(value);
   }
 
   /*const checkStatus = () => {
@@ -64,9 +64,9 @@ export const Listings = () => {
   const findListing = (criteria) => {
     //checkStatus();
     const lowercasedCriteria = criteria.toLowerCase().trim();
-    if (lowercasedCriteria === '') setData(searchResults);
+    if (lowercasedCriteria === '') updateData(value);
     else {
-      const filteredListing = searchResults.filter((filterList) => {
+      const filteredListing = data.filter((filterList) => {
         return Object.keys(filterList).some((key) => 
         filterList[key].toString().toLowerCase().includes(lowercasedCriteria)
         )

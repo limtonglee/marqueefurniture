@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import SellerCenter from "./pages/SellerCenter";
 import { MoodboardDetails } from "./pages/Profile/Moodboard/MoodboardDetails";
 import Moodboard from "./pages/Profile/Moodboard/Moodboard";
+import Profiles from "./pages/Profiles";
 
 const PostLogin = () => {
   return (
@@ -22,16 +23,13 @@ const PostLogin = () => {
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/sellercenter" element={<SellerCenter />} />
-        <Route path="/profile" element={<Profile />} />
-        {/* <Route path="/profile" element={<Profile />}>
-          <Route path="/moodboard" element={<Moodboard />} />
-          <Route path="/moodboard/:moodboardId" element={<MoodboardDetails />} />
-        </Route> */}
+        <Route path="/profile" element={<Profiles />}>
+          <Route path="" element={<Profile />} />
+          <Route path=":moodboardId" element={<MoodboardDetails />} />
+        </Route>
       </Routes>
     </>
   );
 };
 
-
 export default PostLogin;
-

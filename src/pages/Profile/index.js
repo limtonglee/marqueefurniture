@@ -60,99 +60,98 @@ function Profile() {
   };
 
   return (
-    <Container maxWidth="xl">
-      <Header />
-      <Grid item xs={12} md={12} lg={12} sx={{ ml: "auto" }}>
-        <AppBar position="static">
-          <Tabs
-            orientation={tabsOrientation}
-            value={tabValue}
-            onChange={handleSetTabValue}
-            sx={{ background: "white" }}
-          >
-            <Tab label="Moodboard" icon={<AccountBoxIcon />} />
-            <Tab label="Posts" icon={<MessageIcon />} />
-            <Tab label="About" icon={<SettingsIcon />} />
-          </Tabs>
-        </AppBar>
-      </Grid>
-      {tabValue === 2 ? (
-        <Grid>
-          <Grid item xs={12} md={12} xl={12}>
-            <ProfileInfoCard
-              title="profile information"
-              description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
-              info={{
-                fullName: "Alec M. Thompson",
-                mobile: "(44) 123 1234 123",
-                email: "alecthompson@mail.com",
-                location: "USA",
-              }}
-              social={[
-                {
-                  link: "https://www.facebook.com/",
-                  icon: <FacebookIcon />,
-                  color: "facebook",
-                },
-                {
-                  link: "https://twitter.com/",
-                  icon: <TwitterIcon />,
-                  color: "twitter",
-                },
-                {
-                  link: "https://www.instagram.com/",
-                  icon: <InstagramIcon />,
-                  color: "instagram",
-                },
-              ]}
-              action={{ route: "", tooltip: "Edit Profile" }}
-            />
+    <>
+      <Container maxWidth="xl">
+        <Header />
+        <Grid item xs={12} md={12} lg={12} sx={{ ml: "auto" }}>
+          <AppBar position="static">
+            <Tabs
+              orientation={tabsOrientation}
+              value={tabValue}
+              onChange={handleSetTabValue}
+              sx={{ background: "white" }}
+            >
+              <Tab label="Moodboard" icon={<AccountBoxIcon />} />
+              <Tab label="Posts" icon={<MessageIcon />} />
+              <Tab label="About" icon={<SettingsIcon />} />
+            </Tabs>
+          </AppBar>
+        </Grid>
+        {tabValue === 2 ? (
+          <Grid>
+            <Grid item xs={12} md={12} xl={12}>
+              <ProfileInfoCard
+                title="profile information"
+                description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
+                info={{
+                  fullName: "Alec M. Thompson",
+                  mobile: "(44) 123 1234 123",
+                  email: "alecthompson@mail.com",
+                  location: "USA",
+                }}
+                social={[
+                  {
+                    link: "https://www.facebook.com/",
+                    icon: <FacebookIcon />,
+                    color: "facebook",
+                  },
+                  {
+                    link: "https://twitter.com/",
+                    icon: <TwitterIcon />,
+                    color: "twitter",
+                  },
+                  {
+                    link: "https://www.instagram.com/",
+                    icon: <InstagramIcon />,
+                    color: "instagram",
+                  },
+                ]}
+                action={{ route: "", tooltip: "Edit Profile" }}
+              />
+            </Grid>
           </Grid>
-        </Grid>
-      ) : (
-        <></>
-      )}
-      {tabValue === 0 ? (
-        <Grid>
-          <Card>
-            <Button pt={2} px={2}>
-              <Button mb={0.5}>
-                <Typography variant="h6" fontWeight="medium">
-                  Mood Board
-                </Typography>
+        ) : (
+          <></>
+        )}
+        {tabValue === 0 ? (
+          <Grid>
+            <Card>
+              <Button pt={2} px={2}>
+                <Button mb={0.5}>
+                  <Typography variant="h6" fontWeight="medium">
+                    Mood Board
+                  </Typography>
+                </Button>
               </Button>
-            </Button>
-            <Button p={2}>
-              <Grid container spacing={3}>
-                {moodboardData.map((moodboard) => 
-              <Grid item xs={12} md={6} xl={3}>
-                  <Moodboard
-                    image={moodboard.img}
-                    label={moodboard.label}
-                    title={moodboard.title}
-                    description={moodboard.description}
-                    action={{
-                      type: "internal",
-                      // route: "/profile/profile-overview",
-                      route: `/profile/moodboard/${moodboard.id}`,
-                      
-                      color: "info",
-                      label: "view board",
-                    }}
-                  />
+              <Button p={2}>
+                <Grid container spacing={3}>
+                  {moodboardData.map((moodboard) => (
+                    <Grid item xs={12} md={6} xl={3}>
+                      <Moodboard
+                        image={moodboard.img}
+                        label={moodboard.label}
+                        title={moodboard.title}
+                        description={moodboard.description}
+                        action={{
+                          type: "internal",
+                          // route: "/profile/profile-overview",
+                          route: `/profile/${moodboard.id}`,
+
+                          color: "info",
+                          label: "view board",
+                        }}
+                      />
+                    </Grid>
+                  ))}
                 </Grid>
-                )}
-
-
-              </Grid>
-            </Button>
-          </Card>
-        </Grid>
-      ) : (
-        <></>
-      )}
-      <Outlet/>
-    </Container>
+              </Button>
+            </Card>
+          </Grid>
+        ) : (
+          <></>
+        )}
+      </Container>
+    </>
   );
 }
 

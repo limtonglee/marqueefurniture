@@ -43,4 +43,4 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 **git push --set-upstream origin branch-name**
 
 7. changing branch
-**git checkout branch-name"
+**git checkout branch-name**

@@ -42,3 +42,5 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 6. push file to upstream(w/o remote branch) 
 **git push --set-upstream origin branch-name**
 
+7. changing branch
+**git checkout branch-name"

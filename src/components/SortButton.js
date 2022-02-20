@@ -136,12 +136,12 @@ const CustomSelect = React.forwardRef(function CustomSelect(props, ref) {
 	return <SelectUnstyled {...props} ref={ref} components={components} />;
 });
 
-export default function UnstyledSelectSimple() {
+export default function UnstyledSelectSimple(props) {
 	return (
-		<CustomSelect defaultValue={10}>
-			<StyledOption value={10}>Popular</StyledOption>
-			<StyledOption value={20}>Recent</StyledOption>
-			<StyledOption value={30}>For You</StyledOption>
+		<CustomSelect defaultValue={"popular"} onChange={props.handleSort}>
+			<StyledOption value={"popular"}>Popular</StyledOption>
+			<StyledOption value={"recent"}>Recent</StyledOption>
+			<StyledOption value={"for you"}>For You</StyledOption>
 		</CustomSelect>
 	);
 }

@@ -1,33 +1,19 @@
-import React, { useState } from "react";
-import CurrentTag from "../../components/Tags/CurrentTag";
-import OtherTag from "../../components/Tags/OtherTag";
+import React, { useState, useEffect } from "react";
 import Stack from "@mui/material/Stack";
 import SortButton from "../../components/SortButton";
 import FilterButton from "../../components/Buttons/FilterButton";
 import FeedGrid from "./FeedGrid/FeedGrid";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import Container from "@mui/material/Container";
 import { postData } from "../../data/postData";
+import NewTag from "../../components/Tags/NewTag";
+
+let selectedTags = [];
+const tagBin = new Map();
+let currentSort = "popular";
 
 const Ideas = () => {
-	const tags = [
-		{
-			id: 0,
-			label: "Living Room",
-		},
-		{
-			id: 1,
-			label: "Cosy",
-		},
-		{
-			id: 2,
-			label: "Wood",
-		},
-		{
-			id: 3,
-			label: "Kitchen",
-		},
-	];
+	const tags = ["Living Room", "Cosy", "Wood", "Kitchen"];
 
 	const pageStyles = {
 		tags: {
@@ -43,42 +29,91 @@ const Ideas = () => {
 		},
 	};
 
-	const [posts, setPosts] = useState(postData);
+	const handleTag = (tag) => {
+		console.log(tag);
+		if (selectedTags.includes(tag)) {
+			// remove tag from selectedTags
+			selectedTags = selectedTags.filter((item) => item !== tag);
 
-	const orderByPopularity = () => {
-		console.log("old", posts);
-		let newPostsList = posts.sort((a, b) => b.likes - a.likes);
-		setPosts(newPostsList);
-		console.log("new", posts);
+			// update posts lists
+			let newPosts = [...posts];
+			newPosts.push(...tagBin.get(tag));
+			setPosts(newPosts);
+			console.log("after adding back", posts);
+
+			// delete bin for tag
+			tagBin.delete(tag);
+		} else {
+			// add tag to selectedTags
+			selectedTags.push(tag);
+
+			// create bin for tag
+			tagBin.set(tag, []);
+
+			// update posts lists
+			setPosts((oldPosts) => {
+				let newPosts = oldPosts.filter((post) => {
+					if (post.roomTags.includes(tag)) {
+						return true;
+					} else {
+						tagBin.get(tag).push(post); // add to bin for restoration later
+						return false;
+					}
+				});
+				console.log("after removing", newPosts);
+				return newPosts;
+			});
+		}
 	};
 
-	const orderByInversePopularity = () => {
-		console.log("old", posts);
-		let newPostsList = posts.sort((a, b) => a.likes - b.likes);
-		setPosts(newPostsList);
-		console.log("new", posts);
+	const [posts, setPosts] = useState(postData);
+
+	useEffect(() => {
+		sortFeed();
+	}, []);
+
+	const handleSort = (sortType) => {
+		console.log(sortType);
+		currentSort = sortType;
+		sortFeed();
+	};
+
+	const sortFeed = () => {
+		if (currentSort === "popular") {
+			// sorting by descending amount of likes
+			let newPosts = [...posts];
+			setPosts(newPosts.sort((a, b) => b.likes - a.likes));
+		}
+		if (currentSort === "recent") {
+			// fake sort (bec dk how datetime looks like in json): ascending amount of likes
+			let newPosts = [...posts];
+			setPosts(newPosts.sort((a, b) => a.likes - b.likes));
+		}
+		if (currentSort === "for you") {
+			// fake sort (bec dk the "for you" logic yet): ascending amount of likes
+			let newPosts = [...posts];
+			setPosts(newPosts.sort((a, b) => a.likes - b.likes));
+		}
 	};
 
 	return (
 		<>
 			<Container sx={{ pt: 2 }}>
 				<Box sx={pageStyles.tags}>
-					<Stack direction="row" spacing={1}>
-						<CurrentTag label={tags[0].label}></CurrentTag>
+					<Stack direction="row">
 						{tags.map((tag) => {
-							return <OtherTag label={tag.label}></OtherTag>;
+							return (
+								<NewTag
+									tag={tag}
+									handleTag={handleTag}
+								></NewTag>
+							);
 						})}
 					</Stack>
 				</Box>
 				<Box sx={pageStyles.sortFilter}>
-					<SortButton />
+					<SortButton handleSort={handleSort} />
 					<FilterButton />
-					<Button onClick={() => orderByPopularity()}>
-						Order by Popularity
-					</Button>
-					<Button onClick={() => orderByInversePopularity()}>
-						Order by Inverse Popularity
-					</Button>
 				</Box>
 				<Box sx={pageStyles.masonry}>
 					<FeedGrid posts={posts} />

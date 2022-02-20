@@ -4,11 +4,8 @@ import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import Box from "@mui/material/Box";
-import FormLabel from "@mui/material/FormLabel";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
+import Stack from "@mui/material/Stack";
+import NewTag from "../Tags/NewTag";
 
 const FilterButton = () => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
@@ -24,6 +21,8 @@ const FilterButton = () => {
 
 	const open = Boolean(anchorEl);
 	const id = open ? "simple-popover" : undefined;
+
+	const tags = ["Living Room", "Cosy", "Wood", "Kitchen"];
 
 	const filterButtonStyles = {
 		"&.MuiButton-root": {
@@ -61,33 +60,34 @@ const FilterButton = () => {
 					horizontal: "right",
 				}}
 			>
-				<Box sx={{ display: "flex", pt: 2, px: 2 }}>
-					<FormControl>
-						<FormLabel id="demo-radio-buttons-group-label">
-							Categories
-						</FormLabel>
-						<RadioGroup
-							aria-labelledby="demo-radio-buttons-group-label"
-							defaultValue="all"
-							name="radio-buttons-group"
+				<Box sx={{ py: 2, px: 2 }}>
+					<Box
+						sx={{
+							width: 350,
+							display: "flex",
+							justifyContent: "space-between",
+							alignItems: "center",
+						}}
+					>
+						<Typography variant="h6" gutterBottom component="div">
+							Filter by more categories
+						</Typography>
+						<Button size="small">Clear All</Button>
+					</Box>
+					<Typography variant="subtitle1">Room Tags</Typography>
+					<Box sx={{ maxWidth: 300 }}>
+						<Stack
+							direction="row"
+							sx={{
+								flexWrap: "wrap",
+								justifyContent: "flex-start",
+							}}
 						>
-							<FormControlLabel
-								value="all"
-								control={<Radio />}
-								label="All"
-							/>
-							<FormControlLabel
-								value="option1"
-								control={<Radio />}
-								label="Option 1"
-							/>
-							<FormControlLabel
-								value="option2"
-								control={<Radio />}
-								label="Option 2"
-							/>
-						</RadioGroup>
-					</FormControl>
+							{tags.map((tag) => {
+								return <NewTag tag={tag}></NewTag>;
+							})}
+						</Stack>
+					</Box>
 				</Box>
 			</Popover>
 		</>

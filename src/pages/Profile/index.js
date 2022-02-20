@@ -112,11 +112,9 @@ function Profile() {
         <Grid>
           <Card>
             <Button pt={2} px={2}>
-              <Button mb={0.5}>
                 <Typography variant="h6" fontWeight="medium">
                   Mood Board
                 </Typography>
-              </Button>
             </Button>
             <Button p={2}>
               <Grid container spacing={3}>

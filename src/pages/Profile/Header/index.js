@@ -48,7 +48,7 @@ function Header() {
 
       <Card>
         <Grid container spacing={3} alignItems="center">
-          <Grid item>
+          <Grid item mt={1} ml={1}>
             <Avatar
               src={tabitha}
               alt="profile-image"
@@ -75,9 +75,9 @@ function Header() {
                 onChange={handleSetTabValue}
                 sx={{ background: "white" }}
               >
-                <Tab label="App" icon={<AccountBoxIcon />} />
-                <Tab label="Message" icon={<MessageIcon />} />
-                <Tab label="Settings" icon={<SettingsIcon />} />
+                <Tab label="Moodboard" icon={<AccountBoxIcon />} />
+                <Tab label="Posts" icon={<MessageIcon />} />
+                <Tab label="About" icon={<SettingsIcon />} />
               </Tabs>
             </AppBar>
           </Grid>

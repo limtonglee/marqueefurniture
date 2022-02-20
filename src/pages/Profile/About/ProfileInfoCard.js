@@ -5,8 +5,7 @@ import Box from "@mui/material/Box";
 // @mui material components
 import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
-import Icon from "@mui/material/Icon";
-import Tooltip from "@mui/material/Tooltip";
+import EditIcon from '@mui/icons-material/Edit';import Tooltip from "@mui/material/Tooltip";
 // prop-types is library for typechecking of props
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
@@ -68,7 +67,7 @@ function ProfileInfoCard({ title, description, info, social, action }) {
         </Typography>
         <Typography component={Link} to={action.route} variant="body2" color="secondary">
           <Tooltip title={action.tooltip} placement="top">
-            <Icon>edit</Icon>
+            <EditIcon/>
           </Tooltip>
         </Typography>
       </Box>

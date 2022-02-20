@@ -10,7 +10,8 @@ import PushPinIcon from "@mui/icons-material/PushPin";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
-const PostCard = ({ img }) => {
+const PostCard = (props) => {
+	const post = props.post;
 	const postCardStyles = {
 		cardActions: {
 			position: "absolute",
@@ -32,8 +33,8 @@ const PostCard = ({ img }) => {
 				component="img"
 				width="100%"
 				objectFit="scale-down"
-				image={img}
-				alt="green iguana"
+				image={post.image}
+				alt="post picture"
 			/>
 			<CardActions sx={postCardStyles.cardActions}>
 				<Checkbox

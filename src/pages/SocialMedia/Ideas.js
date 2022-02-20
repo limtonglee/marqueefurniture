@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import CurrentTag from "../../components/Tags/CurrentTag";
 import OtherTag from "../../components/Tags/OtherTag";
 import Stack from "@mui/material/Stack";
 import SortButton from "../../components/SortButton";
 import FilterButton from "../../components/Buttons/FilterButton";
 import FeedGrid from "./FeedGrid/FeedGrid";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Container from "@mui/material/Container";
+import { postData } from "../../data/postData";
 
 const Ideas = () => {
 	const tags = [
@@ -42,6 +43,22 @@ const Ideas = () => {
 		},
 	};
 
+	const [posts, setPosts] = useState(postData);
+
+	const orderByPopularity = () => {
+		console.log("old", posts);
+		let newPostsList = posts.sort((a, b) => b.likes - a.likes);
+		setPosts(newPostsList);
+		console.log("new", posts);
+	};
+
+	const orderByInversePopularity = () => {
+		console.log("old", posts);
+		let newPostsList = posts.sort((a, b) => a.likes - b.likes);
+		setPosts(newPostsList);
+		console.log("new", posts);
+	};
+
 	return (
 		<>
 			<Container sx={{ pt: 2 }}>
@@ -56,9 +73,15 @@ const Ideas = () => {
 				<Box sx={pageStyles.sortFilter}>
 					<SortButton />
 					<FilterButton />
+					<Button onClick={() => orderByPopularity()}>
+						Order by Popularity
+					</Button>
+					<Button onClick={() => orderByInversePopularity()}>
+						Order by Inverse Popularity
+					</Button>
 				</Box>
 				<Box sx={pageStyles.masonry}>
-					<FeedGrid />
+					<FeedGrid posts={posts} />
 				</Box>
 			</Container>
 		</>

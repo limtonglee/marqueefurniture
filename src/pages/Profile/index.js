@@ -26,6 +26,10 @@ import Moodboard from "./Moodboard/Moodboard";
 
 import { useEffect, useState } from "react";
 
+import { moodboardData } from "../../data/moodboardData";
+
+import { Outlet } from "react-router-dom";
+
 function Profile() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
@@ -120,49 +124,26 @@ function Profile() {
             </Button>
             <Button p={2}>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={6} xl={3}>
+                {moodboardData.map((moodboard) => 
+              <Grid item xs={12} md={6} xl={3}>
                   <Moodboard
-                    image={spacejoy}
-                    label="board #1"
-                    title="modern"
-                    description="As Uber works through a huge amount of internal management turmoil."
+                    image={moodboard.img}
+                    label={moodboard.label}
+                    title={moodboard.title}
+                    description={moodboard.description}
                     action={{
                       type: "internal",
-                      route: "/profile/profile-overview",
+                      // route: "/profile/profile-overview",
+                      route: `/profile/moodboard/${moodboard.id}`,
+                      
                       color: "info",
                       label: "view board",
                     }}
                   />
                 </Grid>
-                <Grid item xs={12} md={6} xl={3}>
-                  <Moodboard
-                    image={spacejoy}
-                    label="board #2"
-                    title="scandinavian"
-                    description="Music is something that every person has his or her own specific opinion about."
-                    action={{
-                      type: "internal",
-                      route: "/profile/profile-overview",
-                      color: "info",
-                      label: "view board",
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} md={6} xl={3}>
-                  <Moodboard
-                    image={spacejoy}
-                    label="board #3"
-                    title="minimalist"
-                    description="Different people have different taste, and various types of music."
-                    action={{
-                      type: "internal",
-                      route: "/profile/profile-overview",
-                      color: "info",
-                      label: "view board",
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} md={6} xl={3}></Grid>
+                )}
+
+
               </Grid>
             </Button>
           </Card>
@@ -170,6 +151,7 @@ function Profile() {
       ) : (
         <></>
       )}
+      <Outlet/>
     </Container>
   );
 }

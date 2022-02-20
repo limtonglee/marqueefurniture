@@ -17,6 +17,20 @@ function pxToRem(value) {
       }
     };
   }
+
+  const baseProperties = {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
+    fontWeightBold: 700,
+    fontSizeXXS: pxToRem(10.4),
+    fontSizeXS: pxToRem(12),
+    fontSizeSM: pxToRem(14),
+    fontSizeRegular: pxToRem(16),
+    fontSizeLG: pxToRem(18),
+    fontSizeXL: pxToRem(20),
+  };
   
   const FONT_PRIMARY = 'Public Sans, sans-serif';
   
@@ -95,7 +109,17 @@ function pxToRem(value) {
       lineHeight: 24 / 14,
       fontSize: pxToRem(14),
       textTransform: 'capitalize'
-    }
+    },
+    size: {
+      xxs: baseProperties.fontSizeXXS,
+      xs: baseProperties.fontSizeXS,
+      sm: baseProperties.fontSizeSM,
+      regular: baseProperties.fontSizeRegular,
+      lg: baseProperties.fontSizeLG,
+      xl: baseProperties.fontSizeXL,
+    },
   };
+
+  
   
   export default typography;

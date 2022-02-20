@@ -22,11 +22,11 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ### `git version control workflow`
 
-1. staging changes (all) 
+1. staging changes (all)
 **git add .** 
 
 2. staging individual file 
-**git add file-name **
+**git add file-name**
 
 3. committing changes 
 **git commit -m "commit message"**

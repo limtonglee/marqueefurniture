@@ -7,6 +7,7 @@ import { ItemDetails } from "./pages/MarketPlace/ItemDetails";
 import { Listings } from "./pages/MarketPlace/Listings";
 import Profile from "./pages/Profile";
 import SellerCenter from "./pages/SellerCenter";
+import Ideas from "./pages/SocialMedia/Ideas";
 
 
 const PostLogin = () => {
@@ -19,6 +20,7 @@ const PostLogin = () => {
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
+        <Route path="/ideas" element={<Ideas />}></Route>
         <Route path="/login" element={<Login />} />
         <Route path="/sellercenter" element={<SellerCenter />} />
         <Route path="/profile" element={<Profile />} />

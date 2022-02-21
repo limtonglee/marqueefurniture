@@ -13,6 +13,7 @@ import { CardActions } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Snackbar } from "@mui/material";
 import { Alert } from "@mui/material";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 //This is the listing page 
 /* 
@@ -68,8 +69,40 @@ export const ItemDetails = () => {
             {item.title}
           </Typography>
           
-          <Typography variant= "h2" color="text.secondary" fontWeight="bold" >
+          <Typography variant= "h3" color="text.secondary" fontWeight="bold" >
               {isDesign(item.listingType) ? <>Price: {item.price}</> : 'Chat with designer for more information.'}
+          </Typography>
+          
+          <Typography variant= "button" color="text.secondary" fontWeight="bold" >
+            "put in place the rating and stars"
+          </Typography>
+          
+          <Typography variant= "h3" color="text.secondary" fontWeight="bold" >
+            Shipping Provider: {item.shippingProvider}
+          </Typography>
+
+          <Typography variant= "h3" color="text.secondary" fontWeight="bold" >
+            Product Details:
+          </Typography>
+          
+          <Typography variant="h4" color="text.secondary" fontWeight="bold">
+            <div>
+              Category: {item.category}
+              <br/>
+              Brand: {item.brand}
+              <br/>
+              Warranty Type: {item.warrantyType}
+              <br/>
+              Parcel Size: {item.parcelSize}
+              <br/>
+              Weight: {item.weight}
+              <br/>
+              Stock Available: {item.stockAvailable}
+              <br/>
+              Variation: {item.variation}
+              <br/>
+              Dimension: {item.dimension}
+            </div>
           </Typography>
 
           <Typography variant= "body1" color="text.secondary">
@@ -94,8 +127,11 @@ export const ItemDetails = () => {
                 Copied to Clipboard!
               </Alert>
               </Snackbar>
-            </Fab>
+          </Fab>
           </CardActions>
+          <Fab align = 'left'>
+            <ShoppingCartIcon />
+          </Fab>
         </CardContent>
       </Card>
     </>

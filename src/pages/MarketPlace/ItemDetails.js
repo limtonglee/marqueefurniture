@@ -82,7 +82,7 @@ export const ItemDetails = () => {
           <Fab size="small" sx={{ color: "secondary"}}>
             <FavoriteIcon />
           </Fab>
-          <Fab size="small" sx={{ color: "secondary"}}>
+          <Fab size="small" sx={{ color: "secondary" ,margin: 2}}>
             <ShareIcon onClick = {() => {
               handleSnack();
               navigator.clipboard.writeText(window.location.toString())

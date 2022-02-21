@@ -22,8 +22,6 @@ const pageLinks = [
 	{ text: "Seller Center", link: "/sellercenter" },
 	{ text: "Marketplace", link: "/marketplace" },
 	{ text: "Ideas", link: "/ideas" },
-	{ text: "Profile", link: "/profile" },
-	{ text: "Logout", link: "/logout" },
 ];
 
 const settings = [

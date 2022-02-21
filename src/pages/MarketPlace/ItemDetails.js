@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import * as React from "react";
-import { Avatar, CardContent, CardHeader, CardMedia, Container, Fab, ImageList } from "@mui/material";
+import { Avatar, CardContent, CardHeader, CardMedia, Container, Fab, ImageList, Stack } from "@mui/material";
 import { ImageListItem } from "@mui/material";
 import { ImageListItemBar } from "@mui/material";
 import { itemData } from "../../data/itemData";
@@ -14,6 +14,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Snackbar } from "@mui/material";
 import { Alert } from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { Box } from "@mui/material";
 
 //This is the listing page 
 /* 
@@ -81,11 +82,11 @@ export const ItemDetails = () => {
             Shipping Provider: {item.shippingProvider}
           </Typography>
 
-          <Typography variant= "h3" color="text.secondary" fontWeight="bold" >
+          <Typography variant="h3" color="text.secondary" >
             Product Details:
           </Typography>
           
-          <Typography variant="h4" color="text.secondary" fontWeight="bold">
+          <Typography variant="overline" color="blue" fontWeight="bold">
             <div>
               Category: {item.category}
               <br/>
@@ -105,35 +106,33 @@ export const ItemDetails = () => {
             </div>
           </Typography>
 
-          <Typography variant= "body1" color="text.secondary">
+          <Typography variant= "overline" color="text.secondary">
             {item.description}
           </Typography>
 
 
         </CardContent>
+            <Fab size="small" sx={{ color: "secondary"}}>
+              <FavoriteIcon />
+            </Fab>
 
-        <CardActions disableSpacing>
-          <Fab size="small" sx={{ color: "secondary"}}>
-            <FavoriteIcon />
-          </Fab>
-          <Fab size="small" sx={{ color: "secondary" ,margin: 1}}>
-            <ShareIcon onClick = {() => {
-              handleSnack();
-              navigator.clipboard.writeText(window.location.toString())
-              }
-            } />
-            <Snackbar open ={open} autoHideDuration={2000} onClose={handleSnackClose}>
-              <Alert onClose={handleSnackClose} severity="success" sx= {{ width:'auto'}}>
-                Copied to Clipboard!
-              </Alert>
-              </Snackbar>
-          </Fab>
-          </CardActions>
-          <Fab align = 'left'>
-            <ShoppingCartIcon />
-          </Fab>
+            <Fab size="small" sx={{ color: "secondary" , margin: 1}}>
+              <ShareIcon onClick = {() => {
+                handleSnack();
+                navigator.clipboard.writeText(window.location.toString())
+                }
+              } />
+              <Snackbar open ={open} autoHideDuration={2000} onClose={handleSnackClose}>
+                <Alert onClose={handleSnackClose} severity="success" sx= {{ width:'auto'}}>
+                  Copied to Clipboard!
+                </Alert>
+                </Snackbar>
+            </Fab>
+            <Fab marginRight>
+              <ShoppingCartIcon />
+            </Fab>         
         </CardContent>
       </Card>
-    </>
+      </>
   );
 };

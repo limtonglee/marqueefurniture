@@ -40,7 +40,6 @@ function Moodboard({ image, label, title, description, action }) {
             variant="button"
             fontWeight="regular"
             textTransform="capitalize"
-            textGradient
           >
             {label}
           </Typography>

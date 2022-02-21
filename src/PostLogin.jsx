@@ -1,16 +1,13 @@
 import React from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import PostLoginNavBar from "./components/PostLoginNavbar";
 import Login from "./pages/Login";
-import { Routes, Route, Navigate, Outlet } from "react-router-dom";
-import PropTypes from "prop-types";
-import { Button, Container } from "@mui/material";
 import MarketPlace from "./pages/MarketPlace";
-import Ideas from "./pages/SocialMedia/Ideas";
-import NavBar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
 import { ItemDetails } from "./pages/MarketPlace/ItemDetails";
 import { Listings } from "./pages/MarketPlace/Listings";
-import PostLoginNavBar from "./components/PostLoginNavbar";
-
+import Profile from "./pages/Profile";
+import SellerCenter from "./pages/SellerCenter";
+import Ideas from "./pages/SocialMedia/Ideas";
 
 
 const PostLogin = () => {
@@ -25,6 +22,8 @@ const PostLogin = () => {
         </Route>
         <Route path="/ideas" element={<Ideas />}></Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/sellercenter" element={<SellerCenter />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </>
   );

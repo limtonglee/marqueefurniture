@@ -1,17 +1,17 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { Link } from "react-router-dom";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useStores } from "../../stores/RootStore";
 
 const Login = () => {
   const handleSubmit = (event) => {
@@ -22,6 +22,20 @@ const Login = () => {
       email: data.get("email"),
       password: data.get("password"),
     });
+
+    //on success set login
+    setLogin();
+
+    //on failure to do
+  };
+
+  const { userStore } = useStores();
+
+  let navigate = useNavigate();
+
+  const setLogin = () => {
+    userStore.setIsLoggedIn();
+    navigate("/marketplace");
   };
 
   return (
@@ -82,14 +96,10 @@ const Login = () => {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link to="/error" >
-                  Forgot password? (to do)
-                </Link>
+                <Link to="/error">Forgot password? (to do)</Link>
               </Grid>
               <Grid item>
-                <Link to="/signup" >
-                  {"Don't have an account? Sign Up"}
-                </Link>
+                <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
               </Grid>
             </Grid>
           </Box>

@@ -10,6 +10,7 @@ import { MoodboardDetails } from "./pages/Profile/Moodboard/MoodboardDetails";
 import Profiles from "./pages/Profiles";
 import SellerCenter from "./pages/SellerCenter";
 import Ideas from "./pages/SocialMedia/Ideas";
+import Moodboard from "./pages/Profile/Moodboard/Moodboard";
 
 
 const PostLogin = () => {

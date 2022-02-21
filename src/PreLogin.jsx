@@ -16,6 +16,7 @@ import { ShopCategories } from "./pages/SellerCenter/Shop/Categories";
 import { Income } from "./pages/SellerCenter/Finance/Income";
 import { Balance } from "./pages/SellerCenter/Finance/Balance";
 import SignUp from "./pages/Signup";
+import ForgetPassword from "./pages/ForgetPassword";
 
 const PreLogin = () => {
   return (
@@ -44,6 +45,7 @@ const PreLogin = () => {
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/forgetpassword" element={<ForgetPassword />} />
         <Route path="/signup" element={<SignUp />} />
 
       </Routes>

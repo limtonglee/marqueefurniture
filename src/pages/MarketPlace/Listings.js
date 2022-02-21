@@ -60,7 +60,9 @@ export const Listings = () => {
     const lowercasedCriteria = criteria.toLowerCase().trim();
     if (lowercasedCriteria === '') updateData(value);
     else {
-      const filteredListing = data.filter((filterList) => {
+      console.log(value)
+      updateData(value)
+      const filteredListing = tabData.filter((filterList) => {
         return Object.keys(filterList).some((key) => 
         filterList[key].toString().toLowerCase().includes(lowercasedCriteria)
         )

@@ -101,9 +101,10 @@ const Ideas = () => {
 			<Container sx={{ pt: 2 }}>
 				<Box sx={pageStyles.tags}>
 					<Stack direction="row">
-						{tags.map((tag) => {
+						{tags.map((tag, index) => {
 							return (
 								<NewTag
+									key={index}
 									tag={tag}
 									handleTag={handleTag}
 								></NewTag>

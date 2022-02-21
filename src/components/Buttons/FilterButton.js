@@ -83,8 +83,8 @@ const FilterButton = () => {
 								justifyContent: "flex-start",
 							}}
 						>
-							{tags.map((tag) => {
-								return <NewTag tag={tag}></NewTag>;
+							{tags.map((tag, index) => {
+								return <NewTag key={index} tag={tag}></NewTag>;
 							})}
 						</Stack>
 					</Box>

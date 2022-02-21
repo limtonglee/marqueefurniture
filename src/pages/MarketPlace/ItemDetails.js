@@ -36,6 +36,13 @@ export const ItemDetails = () => {
     setOpen(false)
   }
 
+  const isDesign = (item) => {
+    if(item === "Design") {
+      return
+    }
+      return true
+  }
+
   return (
     <>
     <Card>
@@ -61,7 +68,7 @@ export const ItemDetails = () => {
           </Typography>
           
           <Typography variant= "h2" color="text.secondary" fontWeight="bold" >
-              Price: {item.price}
+              {isDesign(item.listingType) ? <>Price: {item.price}</> : 'Chat with designer for more information.'}
           </Typography>
 
           <Typography variant= "body1" color="text.secondary">

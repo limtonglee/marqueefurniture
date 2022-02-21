@@ -7,6 +7,8 @@ export const itemData = [
       img: 'https://images.unsplash.com/photo-1540574163026-643ea20ade25',
       title: 'Brown Sofa',
       author: '@FurnitureFirstStop',
+      description: 'This is a description of the brown sofa',
+      price: '$3',
     },
     {
       id: '1',
@@ -14,6 +16,8 @@ export const itemData = [
       img: 'https://images.unsplash.com/photo-1550581190-9c1c48d21d6c',
       title: 'Black Sofa',
       author: '@FurnitureLife',
+      description: 'This is a description of the brown sofa',
+      price: '$3',
     },
     {
       id: '2',
@@ -21,6 +25,8 @@ export const itemData = [
       img: 'https://images.unsplash.com/photo-1634712282287-14ed57b9cc89',
       title: 'Blue Chair',
       author: '@HelloThisIsFurniture',
+      description: 'This is a description of the brown sofa',
+      price: '$3',
     },
     {
       id: '3',
@@ -28,6 +34,8 @@ export const itemData = [
       img: 'https://images.unsplash.com/photo-1525909002-1b05e0c869d8',
       title: 'Wall Painting',
       author: '@PaintingLife',
+      description: 'This is a description of the brown sofa',
+      price: '$3',
     },
     {
       id: '4',
@@ -35,6 +43,8 @@ export const itemData = [
       img: 'https://images.unsplash.com/photo-1505798577917-a65157d3320a',
       title: 'Carpentry',
       author: 'MrCapentry',
+      description: 'This is a description of the brown sofa',
+      price: '$3',
     },
     {
       id: '5',
@@ -42,6 +52,8 @@ export const itemData = [
       img: 'https://images.unsplash.com/photo-1523413363574-c30aa1c2a516',
       title: 'Tiling',
       author: '@CoolTiles',
+      description: 'This is a description of the brown sofa',
+      price: '$3',
     },
     {
       id: '6',
@@ -49,6 +61,8 @@ export const itemData = [
       img: 'https://images.unsplash.com/photo-1623161551727-54c918bdcec1',
       title: 'Drilling',
       author: '@DrillBits',
+      description: 'This is a description of the brown sofa',
+      price: '$3',
     },
     {
       id: '7',
@@ -56,6 +70,7 @@ export const itemData = [
       img: 'https://images.unsplash.com/photo-1618220179428-22790b461013',
       title: 'Tropical Vibe',
       author: '@TropicIsle',
+      description: 'This is a description of the brown sofa',
     },
     {
       id: '8',
@@ -63,6 +78,7 @@ export const itemData = [
       img: 'https://images.unsplash.com/photo-1537726235470-8504e3beef77',
       title: 'Sea Life Vibe',
       author: '@ISeaYou',
+      description: 'This is a description of the brown sofa',
     },
     {
       id: '9',
@@ -70,6 +86,7 @@ export const itemData = [
       img: 'https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb',
       title: 'Minimalist Vibe',
       author: '@MinimalLife',
+      description: 'This is a description of the brown sofa',
     },
     {
       id: '10',
@@ -77,6 +94,7 @@ export const itemData = [
       img: 'https://images.unsplash.com/photo-1608626597747-0d9b8884972c',
       title: 'Dark Theme',
       author: '@DarkVader',
+      description: 'This is a description of the brown sofa',
     },
     {
       id: '11',
@@ -84,6 +102,7 @@ export const itemData = [
       img: 'https://images.unsplash.com/photo-1604578762246-41134e37f9cc',
       title: 'Modern Lifestyle',
       author: '@RichLife',
+      description: 'This is a description of the brown sofa',
     },
   ];
   

@@ -7,6 +7,7 @@ import { ItemDetails } from "./pages/MarketPlace/ItemDetails";
 import { Listings } from "./pages/MarketPlace/Listings";
 import Profile from "./pages/Profile";
 import SellerCenter from "./pages/SellerCenter";
+import Cart from "./pages/Cart/CartList";
 
 
 const PostLogin = () => {
@@ -22,6 +23,8 @@ const PostLogin = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/sellercenter" element={<SellerCenter />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/cart" element={<Cart />} />
+
       </Routes>
     </>
   );

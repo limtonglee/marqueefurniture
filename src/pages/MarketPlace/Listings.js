@@ -102,7 +102,7 @@ export const Listings = () => {
         </Tabs>
       </Box>
 
-      <ImageList sx={{ width: "auto", height: "auto" }}>
+      <ImageList sx={{ width: "auto", height: "auto" }} align= "center" >
         {data.map((item) => (
           <ImageListItem key={item.img}>
             <Link to={`/marketplace/${item.id}`}>

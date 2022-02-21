@@ -25,6 +25,7 @@ const pageLinks = [
 ];
 const settings = [
   { text: "Profile", link: "/profile" },
+  { text: "Cart", link: "/cart" },
   { text: "Account", link: "/account" },
   { text: "Dashboard", link: "/dashboard" },
 ];

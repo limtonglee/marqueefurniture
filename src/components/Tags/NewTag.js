@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Tag from "./Tag";
 
-let selected = false;
+// let selected = false;
 
 const NewTag = ({ tag, handleTag }) => {
 	const defaultVars = {
@@ -28,10 +28,12 @@ const NewTag = ({ tag, handleTag }) => {
 	};
 
 	const [vars, setVars] = useState(defaultVars);
+	const [selected, setSelected] = useState(false);
 
 	const handleClick = (e) => {
 		setVars(selected ? defaultVars : selectedVars);
-		selected = !selected;
+		// selected = !selected;
+		setSelected(!selected);
 		handleTag(tag);
 	};
 

@@ -114,7 +114,7 @@ const Ideas = () => {
 				</Box>
 				<Box sx={pageStyles.sortFilter}>
 					<SortButton handleSort={handleSort} />
-					<FilterButton />
+					<FilterButton handleTag={handleTag} />
 				</Box>
 				<Box sx={pageStyles.masonry}>
 					<FeedGrid posts={posts} />

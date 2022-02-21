@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import NewTag from "../Tags/NewTag";
 
-const FilterButton = () => {
+const FilterButton = ({ handleTag }) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
 	const handleClick = (event) => {
@@ -84,7 +84,13 @@ const FilterButton = () => {
 							}}
 						>
 							{tags.map((tag, index) => {
-								return <NewTag key={index} tag={tag}></NewTag>;
+								return (
+									<NewTag
+										key={index}
+										tag={tag}
+										handleTag={handleTag}
+									></NewTag>
+								);
 							})}
 						</Stack>
 					</Box>

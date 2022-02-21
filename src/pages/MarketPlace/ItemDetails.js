@@ -55,7 +55,8 @@ export const ItemDetails = () => {
           />
         <CardMedia width = 'auto' align = 'center'>
           <img
-            height= '600'
+            height= 'auto'
+            width= '100%'
             src= {item.img}
             srcSet={item.img}
             alt={item.title}

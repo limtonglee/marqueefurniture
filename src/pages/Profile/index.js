@@ -29,32 +29,10 @@ import { useEffect, useState } from "react";
 import { moodboardData } from "../../data/moodboardData";
 
 function Profile() {
-  const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
-
-  useEffect(() => {
-    // A function that sets the orientation state of the tabs.
-    function handleTabsOrientation() {
-      return window.innerWidth < breakpoints.values.xs
-        ? setTabsOrientation("vertical")
-        : setTabsOrientation("horizontal");
-    }
-
-    /** 
-     The event listener that's calling the handleTabsOrientation function when resizing the window.
-    */
-    window.addEventListener("resize", handleTabsOrientation);
-
-    // Call the handleTabsOrientation function to set the state with the initial value.
-    handleTabsOrientation();
-
-    // Remove event listener on cleanup
-    return () => window.removeEventListener("resize", handleTabsOrientation);
-  }, [tabsOrientation]);
 
   const handleSetTabValue = (event, newValue) => {
     setTabValue(newValue);
-    console.log(newValue);
   };
 
   return (
@@ -63,9 +41,10 @@ function Profile() {
       <Grid item xs={12} md={12} lg={12} sx={{ ml: "auto" }}>
         <AppBar position="static">
           <Tabs
-            orientation={tabsOrientation}
             value={tabValue}
             onChange={handleSetTabValue}
+            centered
+            variant="fullWidth"
             sx={{ background: "white" }}
           >
             <Tab label="Moodboard" icon={<AccountBoxIcon />} />

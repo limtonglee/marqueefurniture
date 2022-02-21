@@ -1,26 +1,32 @@
 // @mui icons
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import MessageIcon from "@mui/icons-material/Message";
-import SettingsIcon from "@mui/icons-material/Settings";
 import TwitterIcon from "@mui/icons-material/Twitter";
-//mui components
+// Soft UI Dashboard React components
 import { Typography } from "@mui/material";
-import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
-import { useState } from "react";
 import spacejoy from "../../assets/images/spacejoy.jpg";
 import ProfileInfoCard from "./About/ProfileInfoCard";
+
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import MessageIcon from "@mui/icons-material/Message";
+import SettingsIcon from "@mui/icons-material/Settings";
+import AppBar from "@mui/material/AppBar";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+
+import breakpoints from "../../theme/breakpoints";
+
 // Overview page components
 import Header from "./Header";
 import Moodboard from "./Moodboard/Moodboard";
 
+import { useEffect, useState } from "react";
+
+import { moodboardData } from "../../data/moodboardData";
 
 function Profile() {
   const [tabValue, setTabValue] = useState(0);
@@ -35,7 +41,6 @@ function Profile() {
       <Grid item xs={12} md={12} lg={12} sx={{ ml: "auto" }}>
         <AppBar position="static">
           <Tabs
-
             value={tabValue}
             onChange={handleSetTabValue}
             centered
@@ -88,55 +93,32 @@ function Profile() {
         <Grid>
           <Card>
             <Button pt={2} px={2}>
+              <Button mb={0.5}>
                 <Typography variant="h6" fontWeight="medium">
                   Mood Board
                 </Typography>
+              </Button>
             </Button>
             <Button p={2}>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={6} xl={3}>
+                {moodboardData.map((moodboard) => 
+              <Grid item xs={12} md={6} xl={3}>
                   <Moodboard
-                    image={spacejoy}
-                    label="board #1"
-                    title="modern"
-                    description="As Uber works through a huge amount of internal management turmoil."
+                    image={moodboard.img}
+                    label={moodboard.label}
+                    title={moodboard.title}
+                    description={moodboard.description}
                     action={{
                       type: "internal",
-                      route: "/profile/profile-overview",
+                      route: `/profile/${moodboard.id}`,
                       color: "info",
                       label: "view board",
                     }}
                   />
                 </Grid>
-                <Grid item xs={12} md={6} xl={3}>
-                  <Moodboard
-                    image={spacejoy}
-                    label="board #2"
-                    title="scandinavian"
-                    description="Music is something that every person has his or her own specific opinion about."
-                    action={{
-                      type: "internal",
-                      route: "/profile/profile-overview",
-                      color: "info",
-                      label: "view board",
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} md={6} xl={3}>
-                  <Moodboard
-                    image={spacejoy}
-                    label="board #3"
-                    title="minimalist"
-                    description="Different people have different taste, and various types of music."
-                    action={{
-                      type: "internal",
-                      route: "/profile/profile-overview",
-                      color: "info",
-                      label: "view board",
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} md={6} xl={3}></Grid>
+                )}
+
+
               </Grid>
             </Button>
           </Card>
@@ -149,3 +131,5 @@ function Profile() {
 }
 
 export default Profile;
+
+

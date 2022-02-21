@@ -6,6 +6,8 @@ import MarketPlace from "./pages/MarketPlace";
 import { ItemDetails } from "./pages/MarketPlace/ItemDetails";
 import { Listings } from "./pages/MarketPlace/Listings";
 import Profile from "./pages/Profile";
+import { MoodboardDetails } from "./pages/Profile/Moodboard/MoodboardDetails";
+import Profiles from "./pages/Profiles";
 import SellerCenter from "./pages/SellerCenter";
 import Cart from "./pages/Cart/CartList";
 
@@ -20,6 +22,7 @@ const PostLogin = () => {
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
+        <Route path="/ideas" element={<Ideas />}></Route>
         <Route path="/login" element={<Login />} />
         <Route path="/sellercenter" element={<SellerCenter />} />
         <Route path="/profile" element={<Profile />} />
@@ -30,6 +33,4 @@ const PostLogin = () => {
   );
 };
 
-
 export default PostLogin;
-

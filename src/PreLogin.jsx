@@ -1,11 +1,8 @@
 import React from "react";
-import Login from "./pages/Login";
-import { Routes, Route, Navigate, Outlet } from "react-router-dom";
-import PropTypes from "prop-types";
-import { Button, Container } from "@mui/material";
-import MarketPlace from "./pages/MarketPlace";
+import { Navigate, Route, Routes } from "react-router-dom";
 import NavBar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
+import Login from "./pages/Login";
+import MarketPlace from "./pages/MarketPlace";
 import { ItemDetails } from "./pages/MarketPlace/ItemDetails";
 import { Listings } from "./pages/MarketPlace/Listings";
 import SellerCenter from "./pages/SellerCenter";
@@ -18,6 +15,7 @@ import { ShopRating } from "./pages/SellerCenter/Shop/Rating";
 import { ShopCategories } from "./pages/SellerCenter/Shop/Categories";
 import { Income } from "./pages/SellerCenter/Finance/Income";
 import { Balance } from "./pages/SellerCenter/Finance/Balance";
+import SignUp from "./pages/Signup";
 
 const PreLogin = () => {
   return (
@@ -40,11 +38,14 @@ const PreLogin = () => {
           <Route path="finance/income" element={<Income />} />
           <Route path="finance/balance" element={<Balance />} />
         </Route>
+        <Route path="/socialmedia" element={<Login />} />
         <Route path="/marketplace" element={<MarketPlace />}>
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+
       </Routes>
     </>
   );

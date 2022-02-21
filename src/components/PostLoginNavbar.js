@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -13,6 +13,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import { useStores } from "../stores/RootStore";
 
 //const pages = ["Seller Center", "MarketPlace", "Social Media", "Login"];
 //const links = ["sellercenter", "marketplace", "socialmedia", "login"];
@@ -21,10 +22,12 @@ const pageLinks = [
   { text: "Seller Center", link: "/sellercenter" },
   { text: "Market Place", link: "/marketplace" },
   { text: "Social Media", link: "/socialmedia" },
-  { text: "Logout", link: "/logout" },
 ];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
-
+const settings = [
+  { text: "Profile", link: "/profile" },
+  { text: "Account", link: "/account" },
+  { text: "Dashboard", link: "/dashboard" },
+];
 
 const PostLoginNavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -43,6 +46,15 @@ const PostLoginNavBar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const { userStore } = useStores();
+
+  let navigate = useNavigate();
+
+  const setLogout = (e) => {
+    userStore.setIsLoggedOut();
+    navigate("/marketplace");
   };
 
   return (
@@ -89,8 +101,12 @@ const PostLoginNavBar = () => {
                 }}
               >
                 {pageLinks.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Link to={page.link} style={{ textDecoration: 'none' }}>
+                  <MenuItem key={page.link} onClick={handleCloseNavMenu}>
+                    <Link
+                      key={page.link}
+                      to={page.link}
+                      style={{ textDecoration: "none" }}
+                    >
                       <Typography textAlign="center">{page.text}</Typography>
                     </Link>
                   </MenuItem>
@@ -107,9 +123,13 @@ const PostLoginNavBar = () => {
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pageLinks.map((page) => (
-                <Link to={page.link} style={{ textDecoration: 'none' }}>
+                <Link
+                  key={page.link}
+                  to={page.link}
+                  style={{ textDecoration: "none" }}
+                >
                   <Button
-                    key={page}
+                    key={page.link}
                     onClick={handleCloseNavMenu}
                     sx={{ my: 2, color: "white", display: "block" }}
                   >
@@ -142,10 +162,19 @@ const PostLoginNavBar = () => {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
+                  <Link
+                    key={setting.link}
+                    to={setting.link}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <MenuItem key={setting.link} onClick={handleCloseUserMenu}>
+                      <Typography textAlign="center">{setting.text}</Typography>
+                    </MenuItem>
+                  </Link>
                 ))}
+                <MenuItem onClick={setLogout}>
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
               </Menu>
             </Box>
           </Toolbar>

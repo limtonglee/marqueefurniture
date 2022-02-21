@@ -1,18 +1,11 @@
-import logo from "./logo.svg";
-import PreLogin from "./PreLogin";
-import PostLogin from "./PostLogin";
-import rootStore from "./stores/RootStore";
-import React, { useEffect } from "react";
-import { useRef } from "react";
-import { PropTypes } from "prop-types";
-import Button from "@mui/material/Button";
 import { Container } from "@mui/material";
+import { Observer } from "mobx-react";
+import React from "react";
+import PostLogin from "./PostLogin";
+import PreLogin from "./PreLogin";
 import { useStores } from "./stores/RootStore";
-import { useObserver } from "mobx-react";
-
 // theme
 import ThemeConfig from "./theme";
-import GlobalStyles from "./theme/globalStyles";
 
 const App = () => {
   //const previousLocation = useRef(location);
@@ -28,29 +21,19 @@ const App = () => {
     userStore.setIsLoggedIn();
   };
 
-  return useObserver(() => (
-    <ThemeConfig>
-      <>
-        <Container maxWidth="xl">
-          <Button
-            onClick={() => {
-              setLogin();
-            }}
-          >
-            Login
-          </Button>
-          <Button
-            onClick={() => {
-              setLogout();
-            }}
-          >
-            Logout
-          </Button>
-          {userStore.isLoggedIn ? <PostLogin /> : <PreLogin />}
-        </Container>
-      </>
-    </ThemeConfig>
-  ));
+  return (
+    <Observer>
+      {() => (
+        <ThemeConfig>
+          <>
+            <Container maxWidth="xl">
+              {userStore.isLoggedIn ? <PostLogin /> : <PreLogin />}
+            </Container>
+          </>
+        </ThemeConfig>
+      )}
+    </Observer>
+  );
 };
 
 export default App;

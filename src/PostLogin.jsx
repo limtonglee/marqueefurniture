@@ -6,6 +6,8 @@ import MarketPlace from "./pages/MarketPlace";
 import { ItemDetails } from "./pages/MarketPlace/ItemDetails";
 import { Listings } from "./pages/MarketPlace/Listings";
 import Profile from "./pages/Profile";
+import { MoodboardDetails } from "./pages/Profile/Moodboard/MoodboardDetails";
+import Profiles from "./pages/Profiles";
 import SellerCenter from "./pages/SellerCenter";
 import Ideas from "./pages/SocialMedia/Ideas";
 
@@ -23,12 +25,13 @@ const PostLogin = () => {
         <Route path="/ideas" element={<Ideas />}></Route>
         <Route path="/login" element={<Login />} />
         <Route path="/sellercenter" element={<SellerCenter />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<Profiles />}>
+          <Route path="" element={<Profile />} />
+          <Route path=":moodboardId" element={<MoodboardDetails />} />
+        </Route>
       </Routes>
     </>
   );
 };
 
-
 export default PostLogin;
-

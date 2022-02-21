@@ -21,7 +21,6 @@ import ProfileInfoCard from "./About/ProfileInfoCard";
 import Header from "./Header";
 import Moodboard from "./Moodboard/Moodboard";
 
-
 function Profile() {
   const [tabValue, setTabValue] = useState(0);
 
@@ -35,7 +34,6 @@ function Profile() {
       <Grid item xs={12} md={12} lg={12} sx={{ ml: "auto" }}>
         <AppBar position="static">
           <Tabs
-
             value={tabValue}
             onChange={handleSetTabValue}
             centered
@@ -93,7 +91,6 @@ function Profile() {
                 </Typography>
             </Button>
             <Button p={2}>
-              <Grid container spacing={3}>
                 <Grid item xs={12} md={6} xl={3}>
                   <Moodboard
                     image={spacejoy}
@@ -136,15 +133,13 @@ function Profile() {
                     }}
                   />
                 </Grid>
-                <Grid item xs={12} md={6} xl={3}></Grid>
-              </Grid>
-            </Button>
-          </Card>
-        </Grid>
-      ) : (
-        <></>
-      )}
-    </Container>
+              </Button>
+            </Card>
+          </Grid>
+        ) : (
+          <></>
+        )}
+      </Container>
   );
 }
 

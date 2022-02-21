@@ -32,7 +32,7 @@ const PostCard = (props) => {
 			<CardMedia
 				component="img"
 				width="100%"
-				objectFit="scale-down"
+				objectfit="scale-down"
 				image={post.image}
 				alt="post picture"
 			/>

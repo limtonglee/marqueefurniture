@@ -7,7 +7,17 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import NewTag from "../Tags/NewTag";
 
-const FilterButton = ({ handleTag }) => {
+import { styled } from "@mui/material/styles";
+import Chip from "@mui/material/Chip";
+import Paper from "@mui/material/Paper";
+import TagFacesIcon from "@mui/icons-material/TagFaces";
+
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+
+let previousDesignTags = [];
+
+const FilterButton = ({ tags, handleTag, clearAllFilters }) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
 	const handleClick = (event) => {
@@ -22,8 +32,6 @@ const FilterButton = ({ handleTag }) => {
 	const open = Boolean(anchorEl);
 	const id = open ? "simple-popover" : undefined;
 
-	const tags = ["Living Room", "Cosy", "Wood", "Kitchen"];
-
 	const filterButtonStyles = {
 		"&.MuiButton-root": {
 			borderRadius: 1.5,
@@ -34,6 +42,26 @@ const FilterButton = ({ handleTag }) => {
 			borderColor: "#F2F2F2",
 		},
 	};
+
+	const designTags = [
+		{ id: 0, title: "Art Deco" },
+		{ id: 1, title: "Asian Zen" },
+		{ id: 2, title: "Bohemian" },
+		{ id: 3, title: "Coastal" },
+		{ id: 4, title: "Contemporary" },
+		{ id: 5, title: "Eclectic" },
+		{ id: 6, title: "French Country" },
+		{ id: 7, title: "Industrial" },
+		{ id: 8, title: "Meditarranean" },
+		{ id: 9, title: "Minimalist" },
+		{ id: 10, title: "Modern" },
+		{ id: 11, title: "Modern Farmhouse" },
+		{ id: 12, title: "Rustic" },
+		{ id: 13, title: "Scandinavian" },
+		{ id: 14, title: "Shabby Chic" },
+		{ id: 15, title: "Traditional" },
+		{ id: 16, title: "Transitional" },
+	];
 
 	return (
 		<>
@@ -60,21 +88,68 @@ const FilterButton = ({ handleTag }) => {
 					horizontal: "right",
 				}}
 			>
-				<Box sx={{ py: 2, px: 2 }}>
+				<Box sx={{ py: 2, px: 2, minWidth: 350 }}>
 					<Box
 						sx={{
-							width: 350,
 							display: "flex",
 							justifyContent: "space-between",
-							alignItems: "center",
 						}}
 					>
-						<Typography variant="h6" gutterBottom component="div">
+						<Typography
+							variant="h6"
+							gutterBottom
+							component="div"
+							sx={{ m: 0 }}
+						>
 							Filter by more categories
 						</Typography>
-						<Button size="small">Clear All</Button>
+						<Button size="small" onClick={clearAllFilters}>
+							Clear All
+						</Button>
 					</Box>
-					<Typography variant="subtitle1">Room Tags</Typography>
+					<Box sx={{ mt: 3 }}>
+						<Autocomplete
+							multiple
+							limitTags={2}
+							id="room-type"
+							options={designTags}
+							getOptionLabel={(option) => option.title}
+							defaultValue={[]}
+							renderInput={(params) => (
+								<TextField
+									{...params}
+									label="Filter by room type"
+									placeholder="Search room type"
+								/>
+							)}
+							isOptionEqualToValue={(option, value) =>
+								option.id === value.id
+							}
+							onChange={(e, value) => {
+								let changedTag = "";
+								if (value.length < previousDesignTags.length) {
+									changedTag = previousDesignTags.filter(
+										(x) => !value.includes(x)
+									)[0].title;
+								} else {
+									console.log("previous", previousDesignTags);
+									console.log("new values", value);
+									changedTag = value.filter(
+										(x) => !previousDesignTags.includes(x)
+									)[0].title;
+								}
+								handleTag(changedTag);
+								previousDesignTags = value;
+								console.log(
+									"updated previousDesignTags",
+									previousDesignTags
+								);
+							}}
+							sx={{ width: "500px" }}
+						/>
+					</Box>
+
+					{/* <Typography variant="subtitle1">Room Tags</Typography>
 					<Box sx={{ maxWidth: 300 }}>
 						<Stack
 							direction="row"
@@ -93,7 +168,7 @@ const FilterButton = ({ handleTag }) => {
 								);
 							})}
 						</Stack>
-					</Box>
+					</Box> */}
 				</Box>
 			</Popover>
 		</>

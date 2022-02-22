@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import Tag from "./Tag";
 
-// let selected = false;
-
 const NewTag = ({ tag, handleTag }) => {
 	const defaultVars = {
 		"&.MuiChip-root": {
@@ -28,19 +26,21 @@ const NewTag = ({ tag, handleTag }) => {
 	};
 
 	const [vars, setVars] = useState(defaultVars);
-	const [selected, setSelected] = useState(false);
+	// const [selected, setSelected] = useState(tag.selected);
 
 	const handleClick = (e) => {
-		setVars(selected ? defaultVars : selectedVars);
-		// selected = !selected;
-		setSelected(!selected);
-		handleTag(tag);
+		console.log("initial selected", tag.selected);
+		setVars(tag.selected ? selectedVars : defaultVars);
+		// setSelected(!selected);
+		tag.toggleSelected();
+		console.log("after calling toggle method", tag.selected);
+		handleTag(tag.tagName);
 	};
 
 	return (
 		<>
 			<Tag
-				label={tag}
+				label={tag.tagName}
 				size="large"
 				variant="outlined"
 				sx={vars}

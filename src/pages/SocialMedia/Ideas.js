@@ -6,14 +6,47 @@ import FeedGrid from "./FeedGrid/FeedGrid";
 import { Box } from "@mui/material";
 import Container from "@mui/material/Container";
 import { postData } from "../../data/postData";
-import NewTag from "../../components/Tags/NewTag";
+// import NewTag from "../../components/Tags/NewTag";
+import tagsData from "../../data/tagsData";
 
 let selectedTags = [];
 const tagBin = new Map();
 let currentSort = "popular";
 
 const Ideas = () => {
-	const tags = ["Living Room", "Cosy", "Wood", "Kitchen"];
+	// const tags = ["Living Room", "Cosy", "Wood", "Kitchen"];
+
+	// const tags = [
+	// 	{
+	// 		tagName: "Living Room",
+	// 		selected: "false",
+	// 		toggleSelected() {
+	// 			console.log("toggleSelected");
+	// 			this.selected = !this.selected;
+	// 		},
+	// 	},
+	// 	{
+	// 		tagName: "Cosy",
+	// 		selected: "false",
+	// 		toggleSelected() {
+	// 			this.selected = !this.selected;
+	// 		},
+	// 	},
+	// 	{
+	// 		tagName: "Wood",
+	// 		selected: "false",
+	// 		toggleSelected() {
+	// 			this.selected = !this.selected;
+	// 		},
+	// 	},
+	// 	{
+	// 		tagName: "Kitchen",
+	// 		selected: "false",
+	// 		toggleSelected() {
+	// 			this.selected = !this.selected;
+	// 		},
+	// 	},
+	// ];
 
 	const pageStyles = {
 		tags: {
@@ -96,9 +129,30 @@ const Ideas = () => {
 		}
 	};
 
+	const clearAllFilters = () => {
+		console.log("reached clearAllFilters() in Ideas.js");
+		selectedTags.forEach((tag) => {
+			handleTag(tag); // works but doesn't update styling
+		});
+	};
+
 	return (
 		<>
 			<Container sx={{ pt: 2 }}>
+				{/* <Box sx={pageStyles.tags}>
+					<Stack direction="row">
+						Showing ideas for
+						{selectedTags.map((tag, index) => {
+							return (
+								<NewTag
+									key={index}
+									tag={tag}
+									handleTag={handleTag}
+								></NewTag>
+							);
+						})}
+					</Stack>
+				</Box>
 				<Box sx={pageStyles.tags}>
 					<Stack direction="row">
 						{tags.map((tag, index) => {
@@ -111,10 +165,14 @@ const Ideas = () => {
 							);
 						})}
 					</Stack>
-				</Box>
+				</Box> */}
 				<Box sx={pageStyles.sortFilter}>
 					<SortButton handleSort={handleSort} />
-					<FilterButton handleTag={handleTag} />
+					<FilterButton
+						tags={tagsData}
+						handleTag={handleTag}
+						clearAllFilters={clearAllFilters}
+					/>
 				</Box>
 				<Box sx={pageStyles.masonry}>
 					<FeedGrid posts={posts} />

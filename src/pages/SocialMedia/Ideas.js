@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from "react";
-import Stack from "@mui/material/Stack";
 import SortButton from "../../components/SortButton";
 import FilterButton from "../../components/Buttons/FilterButton";
 import FeedGrid from "./FeedGrid/FeedGrid";
 import { Box } from "@mui/material";
 import Container from "@mui/material/Container";
 import { postData } from "../../data/postData";
-import NewTag from "../../components/Tags/NewTag";
 
 let selectedTags = [];
-const tagBin = new Map();
+let tagBin = new Map();
 let currentSort = "popular";
 
 const Ideas = () => {
-	const tags = ["Living Room", "Cosy", "Wood", "Kitchen"];
-
 	const pageStyles = {
 		tags: {
 			p: 2,
@@ -30,7 +26,6 @@ const Ideas = () => {
 	};
 
 	const handleTag = (tag) => {
-		console.log(tag);
 		if (selectedTags.includes(tag)) {
 			// remove tag from selectedTags
 			selectedTags = selectedTags.filter((item) => item !== tag);
@@ -39,7 +34,7 @@ const Ideas = () => {
 			let newPosts = [...posts];
 			newPosts.push(...tagBin.get(tag));
 			setPosts(newPosts);
-			console.log("after adding back", posts);
+			// console.log("after adding back", posts);
 
 			// delete bin for tag
 			tagBin.delete(tag);
@@ -53,14 +48,14 @@ const Ideas = () => {
 			// update posts lists
 			setPosts((oldPosts) => {
 				let newPosts = oldPosts.filter((post) => {
-					if (post.roomTags.includes(tag)) {
+					if (post.tags.flat().includes(tag)) {
 						return true;
 					} else {
 						tagBin.get(tag).push(post); // add to bin for restoration later
 						return false;
 					}
 				});
-				console.log("after removing", newPosts);
+				// console.log("after removing", newPosts);
 				return newPosts;
 			});
 		}
@@ -82,39 +77,35 @@ const Ideas = () => {
 		if (currentSort === "popular") {
 			// sorting by descending amount of likes
 			let newPosts = [...posts];
-			setPosts(newPosts.sort((a, b) => b.likes - a.likes));
+			setPosts(newPosts.sort((a, b) => b.likes.length - a.likes.length));
 		}
 		if (currentSort === "recent") {
 			// fake sort (bec dk how datetime looks like in json): ascending amount of likes
 			let newPosts = [...posts];
-			setPosts(newPosts.sort((a, b) => a.likes - b.likes));
+			setPosts(newPosts.sort((a, b) => a.likes.length - b.likes.length));
 		}
 		if (currentSort === "for you") {
 			// fake sort (bec dk the "for you" logic yet): ascending amount of likes
 			let newPosts = [...posts];
-			setPosts(newPosts.sort((a, b) => a.likes - b.likes));
+			setPosts(newPosts.sort((a, b) => a.likes.length - b.likes.length));
 		}
+	};
+
+	const resetDisplay = () => {
+		setPosts(postData);
+		selectedTags = [];
+		tagBin = new Map();
 	};
 
 	return (
 		<>
 			<Container sx={{ pt: 2 }}>
-				<Box sx={pageStyles.tags}>
-					<Stack direction="row">
-						{tags.map((tag, index) => {
-							return (
-								<NewTag
-									key={index}
-									tag={tag}
-									handleTag={handleTag}
-								></NewTag>
-							);
-						})}
-					</Stack>
-				</Box>
 				<Box sx={pageStyles.sortFilter}>
 					<SortButton handleSort={handleSort} />
-					<FilterButton />
+					<FilterButton
+						handleTag={handleTag}
+						resetDisplay={resetDisplay}
+					/>
 				</Box>
 				<Box sx={pageStyles.masonry}>
 					<FeedGrid posts={posts} />

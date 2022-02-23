@@ -8,6 +8,7 @@ class userStore {
   name = "John doe";
   isLoggedIn = false;
   isSeller = false;
+  isAdmin = false;
   // userStore.isSeller = false
   // getter no need but setter need 
 
@@ -26,6 +27,10 @@ class userStore {
   };
   setIsSeller = () => {
     this.isSeller = true;
+  }
+
+  setIsAdmin = () => {
+    this.isAdmin = true;
   }
 }
 

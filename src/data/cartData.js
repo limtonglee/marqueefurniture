@@ -7,6 +7,7 @@ export const cartData = [
       author: '@FurnitureFirstStop',
       description: 'This is a description of the brown sofa',
       price: '$3',
+      brand: 'Ikea',
     },
     {
       id: '1',
@@ -16,6 +17,7 @@ export const cartData = [
       author: '@FurnitureLife',
       description: 'This is a description of the brown sofa',
       price: '$3',
+      brand: 'Ikea',
     },
     {
       id: '2',
@@ -25,6 +27,7 @@ export const cartData = [
       author: '@HelloThisIsFurniture',
       description: 'This is a description of the brown sofa',
       price: '$3',
+      brand: 'Ikea',
     },
     {
       id: '3',
@@ -34,6 +37,7 @@ export const cartData = [
       author: '@PaintingLife',
       description: 'This is a description of the brown sofa',
       price: '$3',
+      brand: 'Ikea',
     },
     {
       id: '4',
@@ -43,6 +47,7 @@ export const cartData = [
       author: 'MrCapentry',
       description: 'This is a description of the brown sofa',
       price: '$3',
+      brand: 'Ikea',
     },
     {
       id: '5',
@@ -52,6 +57,7 @@ export const cartData = [
       author: '@CoolTiles',
       description: 'This is a description of the brown sofa',
       price: '$3',
+      brand: 'Ikea',
     },
     {
       id: '6',
@@ -61,5 +67,6 @@ export const cartData = [
       author: '@DrillBits',
       description: 'This is a description of the brown sofa',
       price: '$3',
+      brand: 'Ikea',
     },
   ];

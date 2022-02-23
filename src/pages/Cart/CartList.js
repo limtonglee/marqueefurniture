@@ -48,10 +48,10 @@ export default function Cart() {
                     {cartItem.author}
                   </Typography>
                   <Typography variant="body2" gutterBottom>
-                    {cartItem.title}
+                    Item: {cartItem.title}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {cartItem.brand}
+                    Brand: {cartItem.brand}
                   </Typography>
                 </Grid>
                 <Grid item>

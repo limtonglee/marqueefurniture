@@ -1,23 +1,15 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import NavBar from "./components/Navbar";
+import ForgetPassword from "./pages/ForgetPassword";
 import Login from "./pages/Login";
 import MarketPlace from "./pages/MarketPlace";
 import { ItemDetails } from "./pages/MarketPlace/ItemDetails";
 import { Listings } from "./pages/MarketPlace/Listings";
-import SellerCenter from "./pages/SellerCenter";
-import { Orders } from "./pages/SellerCenter/Orders";
-import { MyListings } from "./pages/SellerCenter/Listings/MyListings";
-import { AddNewListing } from "./pages/SellerCenter/Listings/AddNewListing";
-import { Voucher } from "./pages/SellerCenter/Voucher";
-import { ShopProfile } from "./pages/SellerCenter/Shop/Profile";
-import { ShopRating } from "./pages/SellerCenter/Shop/Rating";
-import { ShopCategories } from "./pages/SellerCenter/Shop/Categories";
-import { Income } from "./pages/SellerCenter/Finance/Income";
-import { Balance } from "./pages/SellerCenter/Finance/Balance";
 import SignUp from "./pages/Signup";
 import Ideas from "./pages/SocialMedia/Ideas";
 import Post from "./pages/SocialMedia/Posts/Post";
+
 
 const PreLogin = () => {
   return (
@@ -46,7 +38,9 @@ const PreLogin = () => {
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
+        <Route path="/sellercenter" element={<Login />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgetpassword" element={<ForgetPassword />} />
         <Route path="/signup" element={<SignUp />} />
 
       </Routes>

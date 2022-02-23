@@ -7,6 +7,10 @@ import { makeAutoObservable } from "mobx";
 class userStore {
   name = "John doe";
   isLoggedIn = false;
+  isSeller = false;
+  isAdmin = false;
+  // userStore.isSeller = false
+  // getter no need but setter need 
 
   constructor() {
     makeAutoObservable(this);
@@ -21,6 +25,13 @@ class userStore {
   setIsLoggedOut = () => {
     this.isLoggedIn = false;
   };
+  setIsSeller = () => {
+    this.isSeller = true;
+  }
+
+  setIsAdmin = () => {
+    this.isAdmin = true;
+  }
 }
 
 export default userStore;

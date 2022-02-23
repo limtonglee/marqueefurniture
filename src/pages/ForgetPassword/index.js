@@ -1,46 +1,28 @@
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
-import Container from "@mui/material/Container";
-import CssBaseline from "@mui/material/CssBaseline";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import * as React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useStores } from "../../stores/RootStore";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import { Link } from "react-router-dom";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-const Login = () => {
+const ForgetPassword = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
-    console.log({
+       console.log({
       email: data.get("email"),
-      password: data.get("password"),
+    //   password: data.get("password"),
     });
 
-    //on success set login
-    setLogin();
-
-    //on failure to do
-  };
-
-  const { userStore } = useStores();
-
-  let navigate = useNavigate();
-
-  const setLogin = () => {
-    userStore.setIsLoggedIn();
-    //userStore.setIsAdmin();
-    if (userStore.isAdmin) {
-      navigate("/admin");
-    } else {
-      navigate("/marketplace");
-    }
   };
 
   return (
@@ -59,7 +41,7 @@ const Login = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Recover Password
           </Typography>
           <Box
             component="form"
@@ -77,7 +59,7 @@ const Login = () => {
               autoComplete="email"
               autoFocus
             />
-            <TextField
+            {/* <TextField
               margin="normal"
               required
               fullWidth
@@ -90,23 +72,27 @@ const Login = () => {
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Email Password To Me
             </Button>
-            <Grid container>
+            {/* <Grid container>
               <Grid item xs>
-                <Link to="/error">Forgot password? (to do)</Link>
+                <Link to="/error" >
+                  Forgot password? (to do)
+                </Link>
               </Grid>
               <Grid item>
-                <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
+                <Link to="/signup" >
+                  {"Don't have an account? Sign Up"}
+                </Link>
               </Grid>
-            </Grid>
+            </Grid> */}
           </Box>
         </Box>
       </Container>
@@ -114,4 +100,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgetPassword;

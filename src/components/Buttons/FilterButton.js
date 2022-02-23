@@ -112,6 +112,12 @@ const FilterButton = ({ handleTag, resetDisplay }) => {
 				sx={filterButtonStyles}
 			>
 				Filter
+				{filterRoomValues.length + filterDesignValues.length > 0 && (
+					<span>
+						&nbsp;(
+						{filterRoomValues.length + filterDesignValues.length})
+					</span>
+				)}
 			</Button>
 			<Popover
 				id={id}

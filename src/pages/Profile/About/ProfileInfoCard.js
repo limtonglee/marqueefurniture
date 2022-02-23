@@ -11,6 +11,8 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 // Soft UI Dashboard PRO React base styles
 import typography from "../../../theme/typography";
+import Button from "@mui/material/Button";
+import Grid from '@mui/material/Grid';
 
 function ProfileInfoCard({ title, description, info, social, action }) {
   const labels = [];
@@ -90,6 +92,29 @@ function ProfileInfoCard({ title, description, info, social, action }) {
           </Box>
         </Box>
       </Box>
+      
+       <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Button
+              type="submit"
+              // fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              href="/profile/sell"
+            >
+              Start Selling
+            </Button>
+
+        </Box>
+
+      
+      
     </Card>
   );
 }

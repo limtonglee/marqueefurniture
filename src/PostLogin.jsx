@@ -54,6 +54,8 @@ const PostLogin = () => {
         <Route path="/profile" element={<Profiles />}>
           <Route path="" element={<Profile />} />
           <Route path=":moodboardId" element={<MoodboardDetails />} />
+          <Route path="edit" element={<EditProfile />} />
+          <Route path="sell" element={<StartSelling />} />
         </Route>
       </Routes>
     </>

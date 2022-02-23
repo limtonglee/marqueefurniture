@@ -1,0 +1,64 @@
+{
+  "sellers": [
+    {
+      "shopname": "orangestuffonly",
+      "website": "www.orangestuffonly.com",
+      "description": "We sell only orange stuff.",
+      "id": 1
+    },
+    {
+      "shopname": "bluestuffonly",
+      "website": "www.bluestuffonly.com",
+      "description": "We sell only blue stuff.",
+      "id": 2
+    },
+    {
+      "shopname": "weirdstuffonly",
+      "website": "www.weirdstuffonly.com",
+      "description": "We sell only weird stuff.",
+      "id": 3
+    },
+    {
+      "shopname": "hello",
+      "website": "hello",
+      "description": "hello",
+      "id": 4
+    },
+    {
+      "shopname": "Banana",
+      "website": "www.banana.com",
+      "description": "Banananananananananananana",
+      "id": 5
+    },
+    {
+      "shopname": "hello",
+      "website": "hello",
+      "description": "hello",
+      "id": 6
+    },
+    {
+      "shopname": "hello",
+      "website": "hello",
+      "description": "hello",
+      "id": 7
+    },
+    {
+      "shopname": "Banana",
+      "website": "www.banana.com",
+      "description": "banananananana",
+      "id": 8
+    },
+    {
+      "shopname": "hello",
+      "website": "hello",
+      "description": "hello",
+      "id": 9
+    },
+    {
+      "shopname": "Banana",
+      "website": "www.banana.com",
+      "description": "hahahah",
+      "id": 10
+    }
+  ]
+}

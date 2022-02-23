@@ -4,9 +4,7 @@ export const postData = [
 		image: "https://picsum.photos/200/300",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Living Room"],
-		textureTags: ["Soft"],
-		styleTags: ["Cosy"],
+		tags: [["Living Room"], ["Minimalist"]],
 		likes: 4,
 		comments: [
 			{
@@ -62,9 +60,7 @@ export const postData = [
 		image: "https://picsum.photos/200/200",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
+		tags: [["Kitchen"], ["Minimalist"]],
 		likes: 8,
 		comments: [
 			{
@@ -120,9 +116,7 @@ export const postData = [
 		image: "https://picsum.photos/300/400",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
+		tags: [["Bedroom"], ["Art Deco"]],
 		likes: 10,
 		comments: [
 			{
@@ -148,9 +142,7 @@ export const postData = [
 		image: "https://picsum.photos/300/200",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
+		tags: [["Balcony"], ["Bohemian"]],
 		likes: 3,
 		comments: [
 			{
@@ -176,9 +168,7 @@ export const postData = [
 		image: "https://picsum.photos/300/300",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
+		tags: [["Study Room"], ["Asian Zen"]],
 		likes: 2,
 		comments: [
 			{
@@ -204,9 +194,7 @@ export const postData = [
 		image: "https://picsum.photos/300/400",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
+		tags: [["Living Room"], ["Contemporary"]],
 		likes: 4,
 		comments: [
 			{
@@ -232,9 +220,7 @@ export const postData = [
 		image: "https://picsum.photos/400/600",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
+		tags: [["Service Yard"], ["Coastal"]],
 		likes: 11,
 		comments: [
 			{
@@ -260,9 +246,7 @@ export const postData = [
 		image: "https://picsum.photos/700/600",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
+		tags: [["Kitchen"], ["Rustic"]],
 		likes: 2,
 		comments: [
 			{
@@ -288,9 +272,7 @@ export const postData = [
 		image: "https://picsum.photos/700/500",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
+		tags: [["Bedroom"], ["Industrial"]],
 		likes: 14,
 		comments: [
 			{
@@ -316,9 +298,7 @@ export const postData = [
 		image: "https://picsum.photos/500/700",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
+		tags: [["Study Room"], ["Shabby Chic"]],
 		likes: 12,
 		comments: [
 			{
@@ -344,9 +324,7 @@ export const postData = [
 		image: "https://picsum.photos/600/700",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
+		tags: [["Living Room"], ["Traditional"]],
 		likes: 1,
 		comments: [
 			{

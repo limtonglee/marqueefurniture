@@ -48,7 +48,7 @@ const Ideas = () => {
 			// update posts lists
 			setPosts((oldPosts) => {
 				let newPosts = oldPosts.filter((post) => {
-					if (post.roomTags.includes(tag)) {
+					if (post.tags.flat().includes(tag)) {
 						return true;
 					} else {
 						tagBin.get(tag).push(post); // add to bin for restoration later

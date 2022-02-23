@@ -1,6 +1,7 @@
 import { Container } from "@mui/material";
 import { Observer } from "mobx-react";
 import React from "react";
+import Admin from "./pages/Admin";
 import PostLogin from "./PostLogin";
 import PreLogin from "./PreLogin";
 import { useStores } from "./stores/RootStore";
@@ -27,7 +28,15 @@ const App = () => {
         <ThemeConfig>
           <>
             <Container maxWidth="xl">
-              {userStore.isLoggedIn ? <PostLogin /> : <PreLogin />}
+              <>
+                {userStore.isLoggedIn ? (
+                  !userStore.isAdmin &&
+                  <PostLogin />
+                ) : (
+                  <PreLogin />
+                )}
+                {userStore.isLoggedIn && userStore.isAdmin && <Admin />}
+              </>
             </Container>
           </>
         </ThemeConfig>

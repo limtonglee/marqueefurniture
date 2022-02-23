@@ -35,7 +35,12 @@ const Login = () => {
 
   const setLogin = () => {
     userStore.setIsLoggedIn();
-    navigate("/marketplace");
+      userStore.setIsAdmin();
+    if (userStore.isAdmin) {
+      navigate("/admin");
+    } else {
+      navigate("/marketplace");
+    }
   };
 
   return (

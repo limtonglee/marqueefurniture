@@ -69,8 +69,7 @@ export default function Cart() {
           </Grid>
           ))}
         </ImageList>
-      </Paper>
-      
+      </Paper> 
     </Container>
     
   );

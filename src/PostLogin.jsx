@@ -10,8 +10,6 @@ import { MoodboardDetails } from "./pages/Profile/Moodboard/MoodboardDetails";
 import Profiles from "./pages/Profiles";
 import SellerCenter from "./pages/SellerCenter";
 import Cart from "./pages/Cart/CartList";
-import Ideas from "./pages/SocialMedia/Ideas";
-
 import { Balance } from "./pages/SellerCenter/Finance/Balance";
 import { Income } from "./pages/SellerCenter/Finance/Income";
 import { AddNewListing } from "./pages/SellerCenter/Listings/AddNewListing";

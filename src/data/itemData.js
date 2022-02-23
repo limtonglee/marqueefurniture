@@ -83,7 +83,7 @@ export const itemData = [
       listingType: 'Service',
       img: 'https://images.unsplash.com/photo-1505798577917-a65157d3320a',
       title: 'Carpentry',
-      author: 'MrCapentry',
+      author: '@MrCapentry',
       description: 'This is a description of the brown sofa',
       price: '$3',
       video: '',

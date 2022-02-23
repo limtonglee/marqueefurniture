@@ -12,6 +12,16 @@ import SellerCenter from "./pages/SellerCenter";
 import Cart from "./pages/Cart/CartList";
 import Ideas from "./pages/SocialMedia/Ideas";
 
+import { Balance } from "./pages/SellerCenter/Finance/Balance";
+import { Income } from "./pages/SellerCenter/Finance/Income";
+import { AddNewListing } from "./pages/SellerCenter/Listings/AddNewListing";
+import { MyListings } from "./pages/SellerCenter/Listings/MyListings";
+import { Orders } from "./pages/SellerCenter/Orders";
+import { ShopCategories } from "./pages/SellerCenter/Shop/Categories";
+import { ShopProfile } from "./pages/SellerCenter/Shop/Profile";
+import { ShopRating } from "./pages/SellerCenter/Shop/Rating";
+import { Voucher } from "./pages/SellerCenter/Voucher";
+import Ideas from "./pages/SocialMedia/Ideas";
 
 const PostLogin = () => {
   return (
@@ -25,10 +35,27 @@ const PostLogin = () => {
         </Route>
         <Route path="/ideas" element={<Ideas />}></Route>
         <Route path="/login" element={<Login />} />
-        <Route path="/sellercenter" element={<SellerCenter />} />
-        <Route path="/profile" element={<Profile />} />
         <Route path="/cart" element={<Cart />} />
 
+        <Route path="/sellercenter" element={<SellerCenter />}>
+          <Route path="" element={<Orders />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="listings" element={<MyListings />} />
+          <Route path="listings/mylistings" element={<MyListings />} />
+          <Route path="listings/addNewListing" element={<AddNewListing />} />
+          <Route path="voucher" element={<Voucher />} />
+          <Route path="shop" element={<ShopProfile />} />
+          <Route path="shop/profile" element={<ShopProfile />} />
+          <Route path="shop/rating" element={<ShopRating />} />
+          <Route path="shop/categories" element={<ShopCategories />} />
+          <Route path="finance" element={<Income />} />
+          <Route path="finance/income" element={<Income />} />
+          <Route path="finance/balance" element={<Balance />} />
+        </Route>
+        <Route path="/profile" element={<Profiles />}>
+          <Route path="" element={<Profile />} />
+          <Route path=":moodboardId" element={<MoodboardDetails />} />
+        </Route>
       </Routes>
     </>
   );

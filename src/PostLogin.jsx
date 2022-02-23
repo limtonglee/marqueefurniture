@@ -21,6 +21,8 @@ import { ShopRating } from "./pages/SellerCenter/Shop/Rating";
 import { Voucher } from "./pages/SellerCenter/Voucher";
 import Ideas from "./pages/SocialMedia/Ideas";
 import Post from "./pages/SocialMedia/Posts/Post";
+import EditProfile from "./pages/Profile/About/EditProfile";
+import StartSelling from "./pages/Profile/About/StartSelling";
 
 const PostLogin = () => {
   return (

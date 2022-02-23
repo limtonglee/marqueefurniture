@@ -28,7 +28,10 @@ import { useEffect, useState } from "react";
 
 import { moodboardData } from "../../data/moodboardData";
 
+import Box from "@mui/material/Box";
+
 function Profile() {
+  
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
 
@@ -67,6 +70,8 @@ function Profile() {
             value={tabValue}
             onChange={handleSetTabValue}
             sx={{ background: "white" }}
+            centered
+           variant="fullWidth"
           >
             <Tab label="Moodboard" icon={<AccountBoxIcon />} />
             <Tab label="Posts" icon={<MessageIcon />} />
@@ -78,13 +83,15 @@ function Profile() {
         <Grid>
           <Grid item xs={12} md={12} xl={12}>
             <ProfileInfoCard
-              title="profile information"
+              title="bio"
               description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
               info={{
-                fullName: "Alec M. Thompson",
-                mobile: "(44) 123 1234 123",
-                email: "alecthompson@mail.com",
-                location: "USA",
+                // username: "Alec M. Thompson",
+                // contact: "(44) 123 1234 123",
+                // email: "alecthompson@mail.com",
+                // location: "USA",
+                link: "https://www.facebook.com/",
+                
               }}
               social={[
                 {
@@ -103,10 +110,32 @@ function Profile() {
                   color: "instagram",
                 },
               ]}
-              action={{ route: "", tooltip: "Edit Profile" }}
+              action={{ 
+                route: "/profile/edit", tooltip: "Edit Profile",
+              }}
             />
+             {/* <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Button
+              type="submit"
+              // fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              href="/profile/sell"
+            >
+              Start Selling
+            </Button>
+
+        </Box> */}
           </Grid>
         </Grid>
+        
       ) : (
         <></>
       )}

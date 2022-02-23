@@ -95,10 +95,10 @@ const Login = () => {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link to="/error">Forgot password? (to do)</Link>
+              <Grid item xs sx={{ mt: 3, mb: 5 }}>
+                <Link to="/forgetpassword">Forgot password?</Link>
               </Grid>
-              <Grid item>
+              <Grid item sx={{ mt: 3, mb: 5 }}>
                 <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
               </Grid>
             </Grid>

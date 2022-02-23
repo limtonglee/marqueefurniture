@@ -11,6 +11,8 @@ import Profiles from "./pages/Profiles";
 import SellerCenter from "./pages/SellerCenter";
 import Ideas from "./pages/SocialMedia/Ideas";
 import Moodboard from "./pages/Profile/Moodboard/Moodboard";
+import EditProfile from "./pages/Profile/About/EditProfile";
+import StartSelling from "./pages/Profile/About/StartSelling";
 
 
 const PostLogin = () => {
@@ -29,6 +31,8 @@ const PostLogin = () => {
         <Route path="/profile" element={<Profiles />}>
           <Route path="" element={<Profile />} />
           <Route path=":moodboardId" element={<MoodboardDetails />} />
+          <Route path="edit" element={<EditProfile />} />
+          <Route path="sell" element={<StartSelling />} />
         </Route>
       </Routes>
     </>

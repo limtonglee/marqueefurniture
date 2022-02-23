@@ -13,6 +13,7 @@
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
+    "date-fns": "^2.28.0",
     "markdown-to-jsx": "^7.1.6",
     "mobx": "^6.3.13",
     "mobx-react": "^7.2.1",
@@ -20,8 +21,10 @@
     "react-data-grid": "^7.0.0-beta.11",
     "react-dom": "^17.0.2",
     "react-minimal-side-navigation": "^1.9.2",
+    "react-perfect-scrollbar": "^1.5.8",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "uuid": "^8.3.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

@@ -16,6 +16,8 @@ import { ShopCategories } from "./pages/SellerCenter/Shop/Categories";
 import { Income } from "./pages/SellerCenter/Finance/Income";
 import { Balance } from "./pages/SellerCenter/Finance/Balance";
 import SignUp from "./pages/Signup";
+import Ideas from "./pages/SocialMedia/Ideas";
+import Post from "./pages/SocialMedia/Posts/Post";
 
 const PreLogin = () => {
   return (
@@ -38,7 +40,8 @@ const PreLogin = () => {
           <Route path="finance/income" element={<Income />} />
           <Route path="finance/balance" element={<Balance />} />
         </Route>
-        <Route path="/socialmedia" element={<Login />} />
+        <Route path="/ideas" element={<Ideas />} />
+        <Route path="/ideas/:id" element={<Post />} />
         <Route path="/marketplace" element={<MarketPlace />}>
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />

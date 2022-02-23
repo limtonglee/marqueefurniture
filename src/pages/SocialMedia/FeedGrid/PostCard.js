@@ -86,6 +86,11 @@ const PostCard = (props) => {
 		return false;
 	};
 
+	const redirectToPost = () => {
+		console.log("hi");
+		window.location.replace("ideas/1");
+	};
+
 	return (
 		<Card sx={{ width: 200, position: "relative" }}>
 			<CardMedia
@@ -94,9 +99,9 @@ const PostCard = (props) => {
 				objectfit="scale-down"
 				image={post.image}
 				alt="post picture"
+				onClick={() => redirectToPost()}
 			/>
 			<CardActions sx={postCardStyles.cardActions}>
-				{likesChecked.toString()}
 				<Checkbox
 					{...label}
 					icon={<PushPinOutlinedIcon fontSize="small" />}

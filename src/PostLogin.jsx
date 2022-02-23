@@ -20,6 +20,7 @@ import { ShopProfile } from "./pages/SellerCenter/Shop/Profile";
 import { ShopRating } from "./pages/SellerCenter/Shop/Rating";
 import { Voucher } from "./pages/SellerCenter/Voucher";
 import Ideas from "./pages/SocialMedia/Ideas";
+import Post from "./pages/SocialMedia/Posts/Post";
 
 const PostLogin = () => {
   return (
@@ -31,7 +32,8 @@ const PostLogin = () => {
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
-        <Route path="/ideas" element={<Ideas />}></Route>
+        <Route path="/ideas" element={<Ideas />} />
+        <Route path="/ideas/:id" element={<Post />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/sellercenter" element={<SellerCenter />}>

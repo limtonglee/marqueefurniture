@@ -7,6 +7,8 @@ import MarketPlace from "./pages/MarketPlace";
 import { ItemDetails } from "./pages/MarketPlace/ItemDetails";
 import { Listings } from "./pages/MarketPlace/Listings";
 import SignUp from "./pages/Signup";
+import Ideas from "./pages/SocialMedia/Ideas";
+import Post from "./pages/SocialMedia/Posts/Post";
 
 
 const PreLogin = () => {
@@ -16,6 +18,8 @@ const PreLogin = () => {
       <Routes>
         <Route path="/" element={<Navigate to="/marketplace" />} />
         <Route path="/socialmedia" element={<Login />} />
+        <Route path="/ideas" element={<Ideas />} />
+        <Route path="/ideas/:id" element={<Post />} />
         <Route path="/marketplace" element={<MarketPlace />}>
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />

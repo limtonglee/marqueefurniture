@@ -60,7 +60,9 @@ export const Listings = () => {
     const lowercasedCriteria = criteria.toLowerCase().trim();
     if (lowercasedCriteria === '') updateData(value);
     else {
-      const filteredListing = data.filter((filterList) => {
+      console.log(value)
+      updateData(value)
+      const filteredListing = tabData.filter((filterList) => {
         return Object.keys(filterList).some((key) => 
         filterList[key].toString().toLowerCase().includes(lowercasedCriteria)
         )
@@ -102,7 +104,7 @@ export const Listings = () => {
         </Tabs>
       </Box>
 
-      <ImageList sx={{ width: "auto", height: "auto" }}>
+      <ImageList sx={{ width: "auto", height: "auto" }} align= "center" >
         {data.map((item) => (
           <ImageListItem key={item.img}>
             <Link to={`/marketplace/${item.id}`}>

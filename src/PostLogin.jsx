@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import { MoodboardDetails } from "./pages/Profile/Moodboard/MoodboardDetails";
 import Profiles from "./pages/Profiles";
 import SellerCenter from "./pages/SellerCenter";
+import Cart from "./pages/Cart/CartList";
 import { Balance } from "./pages/SellerCenter/Finance/Balance";
 import { Income } from "./pages/SellerCenter/Finance/Income";
 import { AddNewListing } from "./pages/SellerCenter/Listings/AddNewListing";
@@ -32,6 +33,8 @@ const PostLogin = () => {
         </Route>
         <Route path="/ideas" element={<Ideas />}></Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/cart" element={<Cart />} />
+
         <Route path="/sellercenter" element={<SellerCenter />}>
           <Route path="" element={<Orders />} />
           <Route path="orders" element={<Orders />} />

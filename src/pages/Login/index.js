@@ -35,7 +35,7 @@ const Login = () => {
 
   const setLogin = () => {
     userStore.setIsLoggedIn();
-      userStore.setIsAdmin();
+    //userStore.setIsAdmin();
     if (userStore.isAdmin) {
       navigate("/admin");
     } else {

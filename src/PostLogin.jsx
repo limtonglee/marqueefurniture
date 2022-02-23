@@ -34,7 +34,6 @@ const PostLogin = () => {
         <Route path="/ideas" element={<Ideas />}></Route>
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
-
         <Route path="/sellercenter" element={<SellerCenter />}>
           <Route path="" element={<Orders />} />
           <Route path="orders" element={<Orders />} />

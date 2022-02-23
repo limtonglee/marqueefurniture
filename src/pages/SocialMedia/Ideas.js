@@ -1,53 +1,16 @@
 import React, { useState, useEffect } from "react";
-import Stack from "@mui/material/Stack";
 import SortButton from "../../components/SortButton";
 import FilterButton from "../../components/Buttons/FilterButton";
 import FeedGrid from "./FeedGrid/FeedGrid";
 import { Box } from "@mui/material";
 import Container from "@mui/material/Container";
 import { postData } from "../../data/postData";
-// import NewTag from "../../components/Tags/NewTag";
-import tagsData from "../../data/tagsData";
 
 let selectedTags = [];
-const tagBin = new Map();
+let tagBin = new Map();
 let currentSort = "popular";
 
 const Ideas = () => {
-	// const tags = ["Living Room", "Cosy", "Wood", "Kitchen"];
-
-	// const tags = [
-	// 	{
-	// 		tagName: "Living Room",
-	// 		selected: "false",
-	// 		toggleSelected() {
-	// 			console.log("toggleSelected");
-	// 			this.selected = !this.selected;
-	// 		},
-	// 	},
-	// 	{
-	// 		tagName: "Cosy",
-	// 		selected: "false",
-	// 		toggleSelected() {
-	// 			this.selected = !this.selected;
-	// 		},
-	// 	},
-	// 	{
-	// 		tagName: "Wood",
-	// 		selected: "false",
-	// 		toggleSelected() {
-	// 			this.selected = !this.selected;
-	// 		},
-	// 	},
-	// 	{
-	// 		tagName: "Kitchen",
-	// 		selected: "false",
-	// 		toggleSelected() {
-	// 			this.selected = !this.selected;
-	// 		},
-	// 	},
-	// ];
-
 	const pageStyles = {
 		tags: {
 			p: 2,
@@ -63,7 +26,6 @@ const Ideas = () => {
 	};
 
 	const handleTag = (tag) => {
-		console.log(tag);
 		if (selectedTags.includes(tag)) {
 			// remove tag from selectedTags
 			selectedTags = selectedTags.filter((item) => item !== tag);
@@ -72,7 +34,7 @@ const Ideas = () => {
 			let newPosts = [...posts];
 			newPosts.push(...tagBin.get(tag));
 			setPosts(newPosts);
-			console.log("after adding back", posts);
+			// console.log("after adding back", posts);
 
 			// delete bin for tag
 			tagBin.delete(tag);
@@ -93,7 +55,7 @@ const Ideas = () => {
 						return false;
 					}
 				});
-				console.log("after removing", newPosts);
+				// console.log("after removing", newPosts);
 				return newPosts;
 			});
 		}
@@ -129,49 +91,20 @@ const Ideas = () => {
 		}
 	};
 
-	const clearAllFilters = () => {
-		console.log("reached clearAllFilters() in Ideas.js");
-		selectedTags.forEach((tag) => {
-			handleTag(tag); // works but doesn't update styling
-		});
+	const resetDisplay = () => {
+		setPosts(postData);
+		selectedTags = [];
+		tagBin = new Map();
 	};
 
 	return (
 		<>
 			<Container sx={{ pt: 2 }}>
-				{/* <Box sx={pageStyles.tags}>
-					<Stack direction="row">
-						Showing ideas for
-						{selectedTags.map((tag, index) => {
-							return (
-								<NewTag
-									key={index}
-									tag={tag}
-									handleTag={handleTag}
-								></NewTag>
-							);
-						})}
-					</Stack>
-				</Box>
-				<Box sx={pageStyles.tags}>
-					<Stack direction="row">
-						{tags.map((tag, index) => {
-							return (
-								<NewTag
-									key={index}
-									tag={tag}
-									handleTag={handleTag}
-								></NewTag>
-							);
-						})}
-					</Stack>
-				</Box> */}
 				<Box sx={pageStyles.sortFilter}>
 					<SortButton handleSort={handleSort} />
 					<FilterButton
-						tags={tagsData}
 						handleTag={handleTag}
-						clearAllFilters={clearAllFilters}
+						resetDisplay={resetDisplay}
 					/>
 				</Box>
 				<Box sx={pageStyles.masonry}>

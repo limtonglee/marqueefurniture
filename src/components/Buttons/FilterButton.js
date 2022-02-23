@@ -1,32 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import NewTag from "../Tags/NewTag";
-
-import { styled } from "@mui/material/styles";
-import Chip from "@mui/material/Chip";
-import Paper from "@mui/material/Paper";
-import TagFacesIcon from "@mui/icons-material/TagFaces";
-
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 
 let previousDesignTags = [];
 
-const FilterButton = ({ tags, handleTag, clearAllFilters }) => {
+const FilterButton = ({ handleTag, resetDisplay }) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
+
+	const [filterRoomValues, setfilterRoomValues] = useState([]);
+	const [filterDesignValues, setfilterDesignValues] = useState([]);
 
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
-		console.log("click");
 	};
 
 	const handleClose = () => {
 		setAnchorEl(null);
+	};
+
+	const handleChangeForFilterRoom = (event, value) => {
+		setfilterRoomValues(value);
+
+		let changedTag = "";
+		if (value.length < previousDesignTags.length) {
+			changedTag = previousDesignTags.filter((x) => !value.includes(x))[0]
+				.title;
+		} else {
+			changedTag = value.filter((x) => !previousDesignTags.includes(x))[0]
+				.title;
+		}
+		handleTag(changedTag);
+		previousDesignTags = value;
+	};
+
+	const handleChangeForFilterDesign = (event, value) => {
+		setfilterDesignValues(value);
+
+		let changedTag = "";
+		if (value.length < previousDesignTags.length) {
+			changedTag = previousDesignTags.filter((x) => !value.includes(x))[0]
+				.title;
+		} else {
+			changedTag = value.filter((x) => !previousDesignTags.includes(x))[0]
+				.title;
+		}
+		handleTag(changedTag);
+		previousDesignTags = value;
 	};
 
 	const open = Boolean(anchorEl);
@@ -42,6 +66,15 @@ const FilterButton = ({ tags, handleTag, clearAllFilters }) => {
 			borderColor: "#F2F2F2",
 		},
 	};
+
+	const roomTags = [
+		{ id: 0, title: "Living Room" },
+		{ id: 1, title: "Kitchen" },
+		{ id: 2, title: "Balcony" },
+		{ id: 3, title: "Bedroom" },
+		{ id: 4, title: "Study Room" },
+		{ id: 5, title: "Service Yard" },
+	];
 
 	const designTags = [
 		{ id: 0, title: "Art Deco" },
@@ -62,6 +95,12 @@ const FilterButton = ({ tags, handleTag, clearAllFilters }) => {
 		{ id: 15, title: "Traditional" },
 		{ id: 16, title: "Transitional" },
 	];
+
+	const clearAllFilters = () => {
+		resetDisplay();
+		setfilterRoomValues([]);
+		setfilterDesignValues([]);
+	};
 
 	return (
 		<>
@@ -108,11 +147,19 @@ const FilterButton = ({ tags, handleTag, clearAllFilters }) => {
 						</Button>
 					</Box>
 					<Box sx={{ mt: 3 }}>
+						<Typography
+							variant="subtitle1"
+							gutterBottom
+							component="div"
+						>
+							Room type
+						</Typography>
 						<Autocomplete
+							value={filterRoomValues}
 							multiple
 							limitTags={2}
 							id="room-type"
-							options={designTags}
+							options={roomTags}
 							getOptionLabel={(option) => option.title}
 							defaultValue={[]}
 							renderInput={(params) => (
@@ -125,50 +172,40 @@ const FilterButton = ({ tags, handleTag, clearAllFilters }) => {
 							isOptionEqualToValue={(option, value) =>
 								option.id === value.id
 							}
-							onChange={(e, value) => {
-								let changedTag = "";
-								if (value.length < previousDesignTags.length) {
-									changedTag = previousDesignTags.filter(
-										(x) => !value.includes(x)
-									)[0].title;
-								} else {
-									console.log("previous", previousDesignTags);
-									console.log("new values", value);
-									changedTag = value.filter(
-										(x) => !previousDesignTags.includes(x)
-									)[0].title;
-								}
-								handleTag(changedTag);
-								previousDesignTags = value;
-								console.log(
-									"updated previousDesignTags",
-									previousDesignTags
-								);
-							}}
+							onChange={handleChangeForFilterRoom}
 							sx={{ width: "500px" }}
 						/>
 					</Box>
-
-					{/* <Typography variant="subtitle1">Room Tags</Typography>
-					<Box sx={{ maxWidth: 300 }}>
-						<Stack
-							direction="row"
-							sx={{
-								flexWrap: "wrap",
-								justifyContent: "flex-start",
-							}}
+					<Box sx={{ mt: 3 }}>
+						<Typography
+							variant="subtitle1"
+							gutterBottom
+							component="div"
 						>
-							{tags.map((tag, index) => {
-								return (
-									<NewTag
-										key={index}
-										tag={tag}
-										handleTag={handleTag}
-									></NewTag>
-								);
-							})}
-						</Stack>
-					</Box> */}
+							Interior design style
+						</Typography>
+						<Autocomplete
+							value={filterDesignValues}
+							multiple
+							limitTags={2}
+							id="design-type"
+							options={designTags}
+							getOptionLabel={(option) => option.title}
+							defaultValue={[]}
+							renderInput={(params) => (
+								<TextField
+									{...params}
+									label="Filter by interior design style"
+									placeholder="Search design style"
+								/>
+							)}
+							isOptionEqualToValue={(option, value) =>
+								option.id === value.id
+							}
+							onChange={handleChangeForFilterDesign}
+							sx={{ width: "500px" }}
+						/>
+					</Box>
 				</Box>
 			</Popover>
 		</>

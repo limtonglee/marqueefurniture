@@ -13,11 +13,14 @@ import { Link } from "react-router-dom";
 import typography from "../../../theme/typography";
 import Button from "@mui/material/Button";
 import Grid from '@mui/material/Grid';
+import { useStores } from "../../../stores/RootStore";
 
 function ProfileInfoCard({ title, description, info, social, action }) {
   const labels = [];
   const values = [];
   const { size } = typography;
+
+  const { userStore } = useStores();
 
   // Convert this form `objectKey` of the object key in to this `object key`
   Object.keys(info).forEach((el) => {
@@ -76,7 +79,7 @@ function ProfileInfoCard({ title, description, info, social, action }) {
       <Box p={2}>
         <Box mb={2} lineHeight={1}>
           <Typography variant="button" color="text" fontWeight="regular">
-            {description}
+            {userStore.name}
           </Typography>
         </Box>
         <Box opacity={0.3}>

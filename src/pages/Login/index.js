@@ -35,6 +35,8 @@ const Login = () => {
 
   const setLogin = () => {
     userStore.setIsLoggedIn();
+    userStore.setUserName("john doe");
+    userStore.setUserWebLink("www.examplelink.com")
     //userStore.setIsAdmin();
     if (userStore.isAdmin) {
       navigate("/admin");

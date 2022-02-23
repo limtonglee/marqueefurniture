@@ -5,10 +5,11 @@ import { makeAutoObservable } from "mobx";
 //to be edited
 
 class userStore {
-  name = "John doe";
+  name = "";
   isLoggedIn = false;
   isSeller = false;
   isAdmin = false;
+  userWebLink = "";
   // userStore.isSeller = false
   // getter no need but setter need 
 
@@ -31,6 +32,10 @@ class userStore {
 
   setIsAdmin = () => {
     this.isAdmin = true;
+  }
+
+  setUserWebLink = (link) => {
+    this.userWebLink = link
   }
 }
 

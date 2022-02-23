@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
 import { Container, ImageList } from '@mui/material';
 import { cartData } from "../../data/cartData";
+import { Link } from "react-router-dom";
 
 let cartItems = cartData
 
@@ -34,9 +35,11 @@ export default function Cart() {
           {cartItems.map((cartItem) => (
           <Grid container spacing={2}>
             <Grid item>
-              <ButtonBase sx={{ width: 128, height: 128 }}>
-                <Img src= {cartItem.img} alt={cartItem.title} />
-              </ButtonBase>
+              <Link to={`/marketplace/${cartItem.id}`}>
+                <ButtonBase sx={{ width: 128, height: 128 }}>
+                  <Img src= {cartItem.img} alt={cartItem.title} />
+                </ButtonBase>
+              </Link>
             </Grid>
             <Grid item xs={12} sm container>
               <Grid item xs container direction="column" spacing={2}>

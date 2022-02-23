@@ -17,21 +17,7 @@ const PreLogin = () => {
       <NavBar />
       <Routes>
         <Route path="/" element={<Navigate to="/marketplace" />} />
-        <Route path="/sellercenter" element={<SellerCenter />}>
-          <Route path="" element={<Orders />} />
-          <Route path="orders" element={<Orders />} />
-          <Route path="listings" element={<MyListings />} />
-          <Route path="listings/mylistings" element={<MyListings />} />
-          <Route path="listings/addNewListing" element={<AddNewListing />} />
-          <Route path="voucher" element={<Voucher />} />
-          <Route path="shop" element={<ShopProfile />} />
-          <Route path="shop/profile" element={<ShopProfile />} />
-          <Route path="shop/rating" element={<ShopRating />} />
-          <Route path="shop/categories" element={<ShopCategories />} />
-          <Route path="finance" element={<Income />} />
-          <Route path="finance/income" element={<Income />} />
-          <Route path="finance/balance" element={<Balance />} />
-        </Route>
+        <Route path="/socialmedia" element={<Login />} />
         <Route path="/ideas" element={<Ideas />} />
         <Route path="/ideas/:id" element={<Post />} />
         <Route path="/marketplace" element={<MarketPlace />}>

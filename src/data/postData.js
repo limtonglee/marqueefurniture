@@ -5,13 +5,12 @@ export const postData = [
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
 		tags: [["Living Room"], ["Minimalist"]],
-		likes: 4,
+		likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -25,8 +24,7 @@ export const postData = [
 			{
 				id: "2",
 				user: {
-					firstName: "Bob",
-					lastName: "Chua",
+					username: "bobchua",
 					email: "bobchua@gmail.com",
 					contactNum: "98361129",
 					password: "BobChua123",
@@ -61,13 +59,24 @@ export const postData = [
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
 		tags: [["Kitchen"], ["Minimalist"]],
-		likes: 8,
+		likes: [
+			"alicetan",
+			"bobchua",
+			"charleswong",
+			"dianasim",
+			"ericlim",
+			"fionatan",
+			"georgeyeo",
+			"hellenwong",
+			"iguanagoh",
+			"jasonong",
+			"kellytan",
+		],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -81,8 +90,7 @@ export const postData = [
 			{
 				id: "2",
 				user: {
-					firstName: "Bob",
-					lastName: "Chua",
+					username: "bobchua",
 					email: "bobchua@gmail.com",
 					contactNum: "98361129",
 					password: "BobChua123",
@@ -117,13 +125,21 @@ export const postData = [
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
 		tags: [["Bedroom"], ["Art Deco"]],
-		likes: 10,
+		likes: [
+			"alicetan",
+			"bobchua",
+			"charleswong",
+			"dianasim",
+			"ericlim",
+			"fionatan",
+			"georgeyeo",
+			"hellenwong",
+		],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -143,13 +159,12 @@ export const postData = [
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
 		tags: [["Balcony"], ["Bohemian"]],
-		likes: 3,
+		likes: ["alicetan", "bobchua", "charleswong"],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -169,13 +184,12 @@ export const postData = [
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
 		tags: [["Study Room"], ["Asian Zen"]],
-		likes: 2,
+		likes: ["alicetan", "bobchua"],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -195,13 +209,12 @@ export const postData = [
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
 		tags: [["Living Room"], ["Contemporary"]],
-		likes: 4,
+		likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -221,13 +234,25 @@ export const postData = [
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
 		tags: [["Service Yard"], ["Coastal"]],
-		likes: 11,
+		likes: [
+			"alicetan",
+			"bobchua",
+			"charleswong",
+			"dianasim",
+			"ericlim",
+			"fionatan",
+			"georgeyeo",
+			"hellenwong",
+			"iguanagoh",
+			"jasonong",
+			"kellytan",
+			"lindyteng",
+		],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -247,13 +272,19 @@ export const postData = [
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
 		tags: [["Kitchen"], ["Rustic"]],
-		likes: 2,
+		likes: [
+			"alicetan",
+			"bobchua",
+			"charleswong",
+			"dianasim",
+			"ericlim",
+			"fionatan",
+		],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -273,13 +304,24 @@ export const postData = [
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
 		tags: [["Bedroom"], ["Industrial"]],
-		likes: 14,
+		likes: [
+			"alicetan",
+			"bobchua",
+			"charleswong",
+			"dianasim",
+			"ericlim",
+			"fionatan",
+			"georgeyeo",
+			"hellenwong",
+			"iguanagoh",
+			"jasonong",
+			"kellytan",
+		],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -299,13 +341,20 @@ export const postData = [
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
 		tags: [["Study Room"], ["Shabby Chic"]],
-		likes: 12,
+		likes: [
+			"alicetan",
+			"bobchua",
+			"charleswong",
+			"dianasim",
+			"ericlim",
+			"fionatan",
+			"georgeyeo",
+		],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -325,13 +374,12 @@ export const postData = [
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
 		tags: [["Living Room"], ["Traditional"]],
-		likes: 1,
+		likes: ["alicetan", "bobchua", "charleswong"],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",

@@ -2,12 +2,16 @@ import ArchitectureIcon from '@mui/icons-material/Architecture';
 import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import ShareIcon from "@mui/icons-material/Share";
 import WeekendIcon from '@mui/icons-material/Weekend';
-import { Alert, Box, Container, Fab, ImageList, ImageListItem, ImageListItemBar, Snackbar, Tab, Tabs } from "@mui/material";
+import { Alert, Box, Checkbox, Container, Fab, ImageList, ImageListItem, ImageListItemBar, Snackbar, Tab, Tabs } from "@mui/material";
 import Button from "@mui/material/Button";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import Searchbar from "../../components/Searchbar";
 import { itemData } from "../../data/itemData";
+import { Grid } from '@mui/material';
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import Favorite from "@mui/icons-material/Favorite";
+import { user } from "../../data/currentUserData";
 
 //This is the main marketplace page
 /*Things to do:
@@ -16,12 +20,13 @@ Linking bar up with the difference in the listings Done
 Sharing of URL to the exact listing Done
 Add search bar Done
 Add filtering 
-Updating of the page to show only furniture, initial loading shows all the listing 
+Updating of the page to show only furniture, initial loading shows all the listing Done
 */
 export const Listings = () => {
 
   let tabData = itemData.filter((item) => item.listingType === "Furniture");
 
+  const {username, likedPosts, moodboards } = user;
   const [value, setValue] = React.useState(0);
   const [data, setData] = React.useState(tabData);
   // const [searchResults, setSearchResults] = React.useState(tabData);
@@ -46,17 +51,21 @@ export const Listings = () => {
     updateData(newValue);
   };
 
+  const handleLikeChange = (event, likedItem) => {
+    console.log("Like has been clicked");
+    console.log(likedItem.likes)
+    if(likedItem.likes.includes(username)) {
+      likedItem.likes = likedItem.likes.filter((user) => user !== username);
+    } else {
+      likedItem.likes.push(username);
+    }
+  }
+
   const handleSearch = (value) => {
     findListing(value);
   }
 
-  /*const checkStatus = () => {
-    console.log(value + "here");
-    updateData();
-  }*/
-
   const findListing = (criteria) => {
-    //checkStatus();
     const lowercasedCriteria = criteria.toLowerCase().trim();
     if (lowercasedCriteria === '') updateData(value);
     else {
@@ -121,22 +130,23 @@ export const Listings = () => {
               sx={{ backgroundColor: "primary", fontWeight: "bold" }}
               title={item.title}
               subtitle={item.author}
-              actionIcon={
-                <Fab size="small" sx={{ color: "secondary" }}>
-                  <ShareIcon onClick = {() => {
-                    handleSnack();
-                    navigator.clipboard.writeText(window.location.toString() + '/' + item.id)
-                    }
-                  } />
-                  <Snackbar open ={open} autoHideDuration={2000} onClose={handleSnackClose}>
-                    <Alert onClose={handleSnackClose} severity="success" sx= {{ width:'auto'}}>
-                      Copied to Clipboard!
-                    </Alert>
-                   </Snackbar>
-                </Fab>
-              }
               position="below"
             />
+            <Grid container spacing = {2}> 
+              <Grid item xs = {7}>
+              {item.price}
+              </Grid>
+              <Grid item xs = {5}>
+                <Checkbox 
+                  size="small" 
+                  sx={{ color: "secondary" }}
+                  icon = {<FavoriteBorder fontSize='small' />}
+                  checkedIcon = {<Favorite fontSize="small" />}
+                  value={item}
+                  onChange = {e => {handleLikeChange(e, item)}}
+                   />
+              </Grid>
+           </Grid>
           </ImageListItem>
         ))}
       </ImageList>

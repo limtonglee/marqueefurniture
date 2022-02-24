@@ -19,6 +19,7 @@ export const itemData = [
       stockAvailable: 100,
       variation: 'red',
       dimension: 10,
+      likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
 
     },
     {
@@ -39,6 +40,7 @@ export const itemData = [
       stockAvailable: 100,
       variation: 'red',
       dimension: 10,
+      likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
     },
     {
       id: '2',
@@ -58,6 +60,7 @@ export const itemData = [
       stockAvailable: 100,
       variation: 'red',
       dimension: 10,
+      likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
     },
     {
       id: '3',
@@ -77,6 +80,7 @@ export const itemData = [
       stockAvailable: 100,
       variation: 'red',
       dimension: 10,
+      likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
     },
     {
       id: '4',
@@ -96,6 +100,7 @@ export const itemData = [
       stockAvailable: 100,
       variation: 'red',
       dimension: 10,
+      likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
     },
     {
       id: '5',
@@ -115,6 +120,7 @@ export const itemData = [
       stockAvailable: 100,
       variation: 'red',
       dimension: 10,
+      likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
     },
     {
       id: '6',
@@ -134,6 +140,7 @@ export const itemData = [
       stockAvailable: 100,
       variation: 'red',
       dimension: 10,
+      likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
     },
     {
       id: '7',
@@ -152,6 +159,7 @@ export const itemData = [
       variation: 'red',
       dimension: 10,
       description: 'This is a description of the tropical vibe',
+      likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
     },
     {
       id: '8',
@@ -170,6 +178,7 @@ export const itemData = [
       variation: 'red',
       dimension: 10,
       description: 'This is a description of the sea life vibe',
+      likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
     },
     {
       id: '9',
@@ -188,6 +197,7 @@ export const itemData = [
       variation: 'red',
       dimension: 10,
       description: 'This is a description of the minimal life',
+      likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
     },
     {
       id: '10',
@@ -206,6 +216,7 @@ export const itemData = [
       variation: 'red',
       dimension: 10,
       description: 'This is a description of the dark theme',
+      likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
     },
     {
       id: '11',
@@ -224,6 +235,7 @@ export const itemData = [
       variation: 'red',
       dimension: 10,
       description: 'This is a description of the modern lifestyle',
+      likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
     },
   ];
   

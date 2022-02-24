@@ -23,15 +23,15 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { postData } from "../../../data/postData";
 import { useParams } from "react-router-dom";
 import MoodboardModal from "../Moodboard/MoodboardModal";
-import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const { username } = user;
 
-const Post = (props) => {
+const Post = () => {
 	const { postId } = useParams();
+
+	const { moodboards } = user;
 
 	const post = postData.filter((post) => post.id === parseInt(postId))[0];
 
@@ -62,6 +62,20 @@ const Post = (props) => {
 		},
 	};
 
+	const pinnedToMoodboardButtonStyles = {
+		"&.MuiButton-root": {
+			borderRadius: 1.5,
+		},
+		backgroundColor: "#2E6B75",
+		borderColor: "#2E6B75",
+		color: "#FFFFFF",
+		"&:hover": {
+			backgroundColor: "#2E6B75",
+			borderColor: "#2E6B75",
+			color: "#FFFFFF",
+		},
+	};
+
 	const commentButtonStyles = {
 		textTransform: "none",
 		color: "grey !important",
@@ -75,18 +89,6 @@ const Post = (props) => {
 	const [postLikesCount, setPostLikesCount] = useState(post.likes.length);
 
 	const [commentActivated, setCommentActivated] = useState(false);
-
-	const style = {
-		position: "absolute",
-		top: "50%",
-		left: "50%",
-		transform: "translate(-50%, -50%)",
-		width: 400,
-		bgcolor: "background.paper",
-		border: "2px solid #000",
-		boxShadow: 24,
-		p: 4,
-	};
 
 	const [open, setOpen] = React.useState(false);
 
@@ -154,6 +156,20 @@ const Post = (props) => {
 		event.preventDefault();
 	};
 
+	const postInUserMoodboards = () => {
+		const moodboardsWithThisPost = moodboards.filter((moodboard) => {
+			for (let moodboardItem of moodboard.moodboardItems) {
+				if (moodboardItem.id === post.id) {
+					return true;
+				}
+			}
+			return false;
+		});
+		return moodboardsWithThisPost.length > 0;
+	};
+
+	const [postPinned, setPostPinned] = useState(postInUserMoodboards());
+
 	return (
 		<>
 			<Container sx={{ pt: 2 }}>
@@ -203,15 +219,24 @@ const Post = (props) => {
 										<span>{postLikesCount}</span>
 									</Box>
 								</Stack>
-
-								<Button
-									startIcon={<PushPinOutlinedIcon />}
-									variant="outlined"
-									onClick={handleClick}
-									sx={addToMoodboardButtonStyles}
-								>
-									Add to moodboard
-								</Button>
+								{postPinned ? (
+									<Button
+										startIcon={<PushPinOutlinedIcon />}
+										onClick={handleClick}
+										sx={pinnedToMoodboardButtonStyles}
+									>
+										Pinned
+									</Button>
+								) : (
+									<Button
+										startIcon={<PushPinOutlinedIcon />}
+										variant="outlined"
+										onClick={handleClick}
+										sx={addToMoodboardButtonStyles}
+									>
+										Add to moodboard
+									</Button>
+								)}
 							</Box>
 							<MoodboardModal
 								open={open}

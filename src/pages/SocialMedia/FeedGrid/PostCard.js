@@ -31,12 +31,23 @@ const PostCard = (props) => {
 		},
 	};
 
+	const postInUserMoodboards = () => {
+		const moodboardsWithThisPost = moodboards.filter((moodboard) => {
+			for (let moodboardItem of moodboard.moodboardItems) {
+				if (moodboardItem.id === post.id) {
+					return true;
+				}
+			}
+			return false;
+		});
+		return moodboardsWithThisPost.length > 0;
+	};
+
 	const [likesChecked, setLikesChecked] = useState(
 		post.likes.includes(username)
 	);
 
-	// const [pinChecked, setPinChecked] = useState(postInUserMoodboards());
-	const [pinChecked, setPinChecked] = useState(false);
+	const [pinChecked, setPinChecked] = useState(postInUserMoodboards());
 
 	const handleChangeForPin = (event) => {
 		console.log("clicked pin");
@@ -73,17 +84,6 @@ const PostCard = (props) => {
 
 		// update icon colour on front end
 		setLikesChecked(!likesChecked);
-	};
-
-	const postInUserMoodboards = () => {
-		moodboards.forEach((board) => {
-			board.moodboardItems.forEach((moodboardItems) => {
-				if (moodboardItems.id === post.id) {
-					return true;
-				}
-			});
-		});
-		return false;
 	};
 
 	const redirectToPost = () => {

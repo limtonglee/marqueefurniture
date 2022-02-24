@@ -11,6 +11,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Checkbox from "@mui/material/Checkbox";
 import Avatar from "@mui/material/Avatar";
+import { user } from "../../../data/currentUserData";
 
 const MoodboardModal = ({ open, closeMoodboardModal }) => {
 	const modalStyles = {
@@ -29,15 +30,14 @@ const MoodboardModal = ({ open, closeMoodboardModal }) => {
 			flexDirection: "column",
 			marginTop: "20px",
 			marginBottom: "15px",
-			".MuiInput-root": {
-				marginBottom: "20px",
-			},
 		},
 		buttons: {
 			display: "flex",
 			justifyContent: "end",
 		},
 	};
+
+	const { moodboards } = user;
 
 	const handleClick = () => {
 		console.log("click");
@@ -56,6 +56,8 @@ const MoodboardModal = ({ open, closeMoodboardModal }) => {
 		}
 
 		setChecked(newChecked);
+		console.log("hi", value);
+		console.log("newChecked", newChecked);
 	};
 
 	return (
@@ -70,25 +72,23 @@ const MoodboardModal = ({ open, closeMoodboardModal }) => {
 					Add post to moodboard
 				</Typography>
 				<Box sx={modalStyles.inputFields}>
-					<List
-						dense
-						sx={{
-							width: "100%",
-							maxWidth: 360,
-							bgcolor: "background.paper",
-						}}
-					>
-						{[0, 1, 2, 3].map((value) => {
-							const labelId = `checkbox-list-secondary-label-${value}`;
+					<List dense>
+						{moodboards.map((moodboard, index) => {
+							const moodboardName = moodboard.boardName;
+							const labelId = `checkbox-list-secondary-label-${moodboardName}`;
 							return (
 								<ListItem
-									key={value}
+									key={moodboardName}
 									secondaryAction={
 										<Checkbox
 											edge="end"
-											onChange={handleToggle(value)}
+											onChange={handleToggle(
+												moodboardName
+											)}
 											checked={
-												checked.indexOf(value) !== -1
+												checked.indexOf(
+													moodboardName
+												) !== -1
 											}
 											inputProps={{
 												"aria-labelledby": labelId,
@@ -97,16 +97,17 @@ const MoodboardModal = ({ open, closeMoodboardModal }) => {
 									}
 									disablePadding
 								>
-									<ListItemButton>
+									<ListItemButton sx={{ pl: 0 }}>
 										<ListItemAvatar>
 											<Avatar
-												alt={`Avatar n°${value + 1}`}
+												alt={`Avatar n°${index + 1}`}
 												src={`https://picsum.photos/200`}
+												sx={{ borderRadius: "10%" }}
 											/>
 										</ListItemAvatar>
 										<ListItemText
 											id={labelId}
-											primary={`Line item ${value + 1}`}
+											primary={moodboardName}
 										/>
 									</ListItemButton>
 								</ListItem>

@@ -23,6 +23,7 @@ Updating of the page to show only furniture, initial loading shows all the listi
 Liking and unliking a post Done
 Showcasing that the item has been liked before
 Add filtering 
+Formatting of the listings
 */
 export const Listings = () => {
 
@@ -135,7 +136,7 @@ export const Listings = () => {
               position="below"
             />
             <Grid container spacing = {2}> 
-              <Grid item xs = {7}>
+              <Grid item xs = {7} sx = {{fontWeight: "bold" ,fontSize: 25}}>
               {item.price}
               </Grid>
               <Grid item xs = {5}>

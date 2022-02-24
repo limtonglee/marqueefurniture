@@ -30,8 +30,22 @@ import { moodboardData } from "../../data/moodboardData";
 
 import Box from "@mui/material/Box";
 
+import { useStores } from "../../stores/RootStore";
+
+
+
 function Profile() {
   const [tabValue, setTabValue] = useState(0);
+
+  const { userStore } = useStores();
+
+  //still not working
+  //username in header component does not update
+  const [username, setUsername] = useState(userStore.name);
+
+  useEffect(()=> {
+    setUsername(userStore.name)
+  }, [username])
 
   const handleSetTabValue = (event, newValue) => {
     setTabValue(newValue);
@@ -40,6 +54,7 @@ function Profile() {
   return (
     <Container maxWidth="xl">
       <Header />
+      {/* <Header name={userStore.name} /> */}
       <Grid item xs={12} md={12} lg={12} sx={{ ml: "auto" }}>
         <AppBar position="static">
           <Tabs

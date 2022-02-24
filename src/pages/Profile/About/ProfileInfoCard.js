@@ -8,7 +8,7 @@ import Divider from "@mui/material/Divider";
 import EditIcon from '@mui/icons-material/Edit';import Tooltip from "@mui/material/Tooltip";
 // prop-types is library for typechecking of props
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // Soft UI Dashboard PRO React base styles
 import typography from "../../../theme/typography";
 import Button from "@mui/material/Button";
@@ -24,6 +24,17 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
+import Avatar from "@mui/material/Avatar";
+import CssBaseline from "@mui/material/CssBaseline";
+import Container from "@mui/material/Container";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import { ThemeProvider, createTheme } from '@mui/system';
+import { Fade } from '@mui/material';
+
+
 function ProfileInfoCard({ title, description, website, info, social, action }) {
   const labels = [];
   const values = [];
@@ -31,23 +42,29 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
 
   const { userStore } = useStores();
 
-  const [start, setStart] = useState(true);
+  let navigate = useNavigate();
+
+  const [start, setStart] = useState(false);
 
    const handleStart = () => {
     setStart(true);
-    console.log("hello there!!!")
   };
 
   const handleStop = () => {
     setStart(false);
   };
 
-  const [username, setUsername] = useState('')
-  const [bio, setBio] = useState('')
-  const [link, setLink] = useState('')
+  const [username, setUsername] = useState(userStore.name)
+  const [bio, setBio] = useState(userStore.description)
+  const [link, setLink] = useState(userStore.userWebLink)
 
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  // const handleOpen = () => setOpen(true);
+  const handleOpen = (() => {
+    setOpen(true)
+    setTimeout(()=> setOpen(false), 500)
+  });
+
   const handleClose = () => setOpen(false);
 
   const handleSubmit = (event) => {
@@ -57,7 +74,23 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
     userStore.setUserWebLink(link);
   }
 
-   
+  const [shopname, setShopname] = useState('')
+  const [web, setWeb] = useState('')
+  const [extract, setExtract] = useState('')
+
+    const handleSubmits = (event) => {
+    event.preventDefault();
+     if (shopname && web && extract) {
+      fetch('http://localhost:8000/sellers', {
+        method: 'POST',
+        headers: {"Content-type": "application/json"},
+        body: JSON.stringify({ shopname, website, description })
+      }).then(() => navigate("/sellercenter"))
+     
+      
+    } 
+  };
+
 
   const style = {
   position: 'absolute',
@@ -71,18 +104,26 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
   p: 4,
 };
 
+//styling for the pop-up modal after saving changes to profile
+ const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'lightgreen',
+  opacity: 0.5,
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 const buttonStyle = {
   // position: 'relative',
 // height: 500,
 // alignItems: 'center',
 justifyContent: 'center',
 }
-
-  // useEffect(() => {
-  //   setUsername(userStore.name)
-  //   // setBio(userStore.description)
-  //   // setLink(userStore.userWebLink)
-  // },[username])
 
   // Convert this form `objectKey` of the object key in to this `object key`
   Object.keys(info).forEach((el) => {
@@ -141,13 +182,6 @@ justifyContent: 'center',
           {title}
         </Typography>
 
-
-        {/* <Typography component={Link} to={action.route} variant="body2" color="secondary">
-          <Tooltip title={action.tooltip} placement="top">
-            <EditIcon/>
-          </Tooltip>
-        </Typography> */}
-
       </Box>
 
       <Box p={2}>
@@ -157,10 +191,6 @@ justifyContent: 'center',
           defaultValue= {userStore.name} 
           label= {userStore.name} 
           onChange={(e) => setUsername(e.target.value)}>
-
-          {/* <Typography variant="button" color="text" fontWeight="regular">
-            {userStore.name}
-          </Typography> */}
 
           </TextField>
           
@@ -204,15 +234,15 @@ justifyContent: 'center',
             onChange={(e) => setLink(e.target.value)}>
           
         </TextField>
-          {/* <Typography variant="button" color="text" fontWeight="regular">
-            {userStore.userWebLink}
-          </Typography> */}
+  
         </Box>
 
 
         <Box>
           {renderItems}
           <Box display="flex" py={1} pr={2}>
+
+            {/* commented out social media part */}
             {/* <Typography variant="button" fontWeight="bold" textTransform="capitalize">
               social: &nbsp;
             </Typography> */}
@@ -229,7 +259,6 @@ justifyContent: 'center',
             alignItems: "center",
           }}
         >       
-
           <Button
               type="submit"
               variant="contained"
@@ -245,8 +274,9 @@ justifyContent: 'center',
         // onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+      
       >
-        <Box sx={style}>
+        <Box sx={modalStyle}>
           <Typography 
           id="modal-modal-title" 
           variant="h6" 
@@ -254,18 +284,14 @@ justifyContent: 'center',
           align="center">
             Changes Saved
           </Typography>
-          {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography> */}
-          <Typography align='center'>
+          {/* in case we want the close button */}
+          {/* <Typography align='center'>
           <Button onClick={handleClose} 
           sx={buttonStyle}
           >
             Close
             </Button>
-
-          </Typography>
-          
+          </Typography> */}
         </Box>
       </Modal>
 
@@ -280,41 +306,98 @@ justifyContent: 'center',
             >
               Start Selling
             </Button>
-          <Dialog start={start} onClose={handleStop}>
-        <DialogTitle>Subscribe</DialogTitle>
+          <Dialog open={start} onClose={handleStop}>
+        {/* <DialogTitle>Subscribe</DialogTitle> */}
         <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here. We
-            will send updates occasionally.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
+          <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Create Shop Profile
+          </Typography>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmits}
+            sx={{ mt: 10 }}
+          >
+            <Grid container spacing={2}>
+              <Typography variant="h6">
+            Shop Name
+          </Typography>
+         <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  onChange={(e) => setShopname(e.target.value)}
+                  id="shopname"
+                  label="Shop Name"
+                  name="shopname"
+                  autoComplete="shopname"
+                />
+              </Grid>
+              <Typography variant="h6" mt={5}>
+            Shop Website
+          </Typography>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  onChange={(e) => setWeb(e.target.value)}
+                  id="website"
+                  label="Shop Website"
+                  name="website"
+                  autoComplete="website"
+                />
+              </Grid>
+              <Typography variant="h6" mt={5}>
+            Shop Description
+          </Typography>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  multiline
+                  rows={4}
+                  onChange={(e) => setExtract(e.target.value)}
+                  name="description"
+                  label="Shop Description"
+                  // type="description"
+                  id="description"
+                  autoComplete="description"
+                />
+              </Grid>
+            
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 5, mb: 8 }}
+            >
+              Sign Up
+            </Button>
+            
+          </Box>
+        </Box>
+      </Container>
+         
         </DialogContent>
         <DialogActions>
           <Button onClick={handleStop}>Cancel</Button>
-          <Button onClick={handleStop}>Subscribe</Button>
+         
         </DialogActions>
       </Dialog>
-
-
-
-
-          {/* <Button
-              type="submit"
-              // fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              href="/profile/sell"
-            >
-              Start Selling
-            </Button> */}
 
         </Box>
 

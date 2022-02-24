@@ -11,6 +11,7 @@ class userStore {
   isAdmin = false;
   userWebLink = "";
   description = "";
+  shop="";
   // userStore.isSeller = false
   // getter no need but setter need 
 
@@ -42,6 +43,10 @@ class userStore {
 
   setDescription = (description) => {
     this.description = description;
+  };
+
+  setShop = (shop) => {
+    this.shop = shop;
   };
 }
 

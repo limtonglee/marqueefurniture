@@ -59,20 +59,6 @@ const ForgetPassword = () => {
               autoComplete="email"
               autoFocus
             />
-            {/* <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
             <Button
               type="submit"
               fullWidth
@@ -81,18 +67,6 @@ const ForgetPassword = () => {
             >
               Email Password To Me
             </Button>
-            {/* <Grid container>
-              <Grid item xs>
-                <Link to="/error" >
-                  Forgot password? (to do)
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link to="/signup" >
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid> */}
           </Box>
         </Box>
       </Container>

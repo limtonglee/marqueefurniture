@@ -22,6 +22,8 @@ import { Voucher } from "./pages/SellerCenter/Voucher";
 import Ideas from "./pages/SocialMedia/Ideas";
 import Post from "./pages/SocialMedia/Posts/Post";
 import CreateNewPost from "./pages/SocialMedia/Posts/CreateNewPost";
+import ViewMoodboard from "./pages/SocialMedia/Moodboard/ViewMoodboard";
+import CreateMoodboard from "./pages/SocialMedia/Moodboard/CreateMoodboard";
 import EditProfile from "./pages/Profile/About/EditProfile";
 import StartSelling from "./pages/Profile/About/StartSelling";
 
@@ -38,6 +40,8 @@ const PostLogin = () => {
         <Route path="/ideas" element={<Ideas />} />
         <Route path="/new-idea" element={<CreateNewPost />} />
         <Route path="/ideas/:postId" element={<Post />} />
+        <Route path="/view-moodboard" element={<ViewMoodboard />} />
+        <Route path="/create-moodboard" element={<CreateMoodboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/sellercenter" element={<SellerCenter />}>

@@ -35,8 +35,9 @@ const Login = () => {
 
   const setLogin = () => {
     userStore.setIsLoggedIn();
-    userStore.setUserName("john doe");
-    userStore.setUserWebLink("www.examplelink.com")
+    userStore.setUserName("cosyrosie")
+    userStore.setDescription("Hi, I’m Rosie. Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality")
+    userStore.setUserWebLink("www.example.com")
     //userStore.setIsAdmin();
     if (userStore.isAdmin) {
       navigate("/admin");

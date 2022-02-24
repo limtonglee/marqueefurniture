@@ -10,6 +10,7 @@ class userStore {
   isSeller = false;
   isAdmin = false;
   userWebLink = "";
+  description = "";
   // userStore.isSeller = false
   // getter no need but setter need 
 
@@ -20,6 +21,7 @@ class userStore {
   setUserName = (name) => {
     this.name = name;
   };
+
   setIsLoggedIn = () => {
     this.isLoggedIn = true;
   };
@@ -37,6 +39,10 @@ class userStore {
   setUserWebLink = (link) => {
     this.userWebLink = link
   }
+
+  setDescription = (description) => {
+    this.description = description;
+  };
 }
 
 export default userStore;

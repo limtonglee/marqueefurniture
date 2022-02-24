@@ -15,10 +15,14 @@ import { Snackbar } from "@mui/material";
 import { Alert } from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Box } from "@mui/material";
+import { Link } from "react-router-dom";
 
 //This is the listing page 
 /* 
-Expansion of item details for this
+Expansion of item details for this Done
+Link of profile Done
+URL Sharing Done
+Add to cart 
 */
 export const ItemDetails = () => {
   const param = useParams();
@@ -50,9 +54,12 @@ export const ItemDetails = () => {
     <Card>
       <CardContent key={item.key}>
         <CardHeader
-          avatar = {<Avatar sx={{ bgcolor: 'red' }} aria-label="recipe">
-            R
-          </Avatar>}
+          avatar = {
+            <Link to={`/profile`}> 
+              <Avatar sx={{ bgcolor: 'red' }} aria-label="recipe">
+                R
+              </Avatar>
+            </Link>}
           title = {item.author}
           />
         <CardMedia width = 'auto' align = 'center'>

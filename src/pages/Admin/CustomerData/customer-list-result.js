@@ -1,23 +1,31 @@
-import { useState } from 'react';
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import PropTypes from 'prop-types';
-import { format } from 'date-fns';
+import { useState } from "react";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import PropTypes from "prop-types";
+import { format } from "date-fns";
 import {
   Avatar,
   Box,
   Card,
   Checkbox,
+  Icon,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
   TableRow,
-  Typography
-} from '@mui/material';
+  Typography,
+} from "@mui/material";
 //import { getInitials } from '../../utils/get-initials';
 
-export const CustomerListResults = ({ customers, ...rest }) => {
+import BlockIcon from "@mui/icons-material/Block";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { pink } from "@mui/material/colors";
+
+import UserMoreMenu from "./UserMoreMenu";
+import SearchNotFound from "../../../components/SearchNotFound";
+
+export const CustomerListResults = ({ customers, filterName, ...rest }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
@@ -39,11 +47,18 @@ export const CustomerListResults = ({ customers, ...rest }) => {
     let newSelectedCustomerIds = [];
 
     if (selectedIndex === -1) {
-      newSelectedCustomerIds = newSelectedCustomerIds.concat(selectedCustomerIds, id);
+      newSelectedCustomerIds = newSelectedCustomerIds.concat(
+        selectedCustomerIds,
+        id
+      );
     } else if (selectedIndex === 0) {
-      newSelectedCustomerIds = newSelectedCustomerIds.concat(selectedCustomerIds.slice(1));
+      newSelectedCustomerIds = newSelectedCustomerIds.concat(
+        selectedCustomerIds.slice(1)
+      );
     } else if (selectedIndex === selectedCustomerIds.length - 1) {
-      newSelectedCustomerIds = newSelectedCustomerIds.concat(selectedCustomerIds.slice(0, -1));
+      newSelectedCustomerIds = newSelectedCustomerIds.concat(
+        selectedCustomerIds.slice(0, -1)
+      );
     } else if (selectedIndex > 0) {
       newSelectedCustomerIds = newSelectedCustomerIds.concat(
         selectedCustomerIds.slice(0, selectedIndex),
@@ -62,6 +77,8 @@ export const CustomerListResults = ({ customers, ...rest }) => {
     setPage(newPage);
   };
 
+  const isUserNotFound = customers.length === 0;
+
   return (
     <Card {...rest}>
       <PerfectScrollbar>
@@ -74,27 +91,19 @@ export const CustomerListResults = ({ customers, ...rest }) => {
                     checked={selectedCustomerIds.length === customers.length}
                     color="primary"
                     indeterminate={
-                      selectedCustomerIds.length > 0
-                      && selectedCustomerIds.length < customers.length
+                      selectedCustomerIds.length > 0 &&
+                      selectedCustomerIds.length < customers.length
                     }
                     onChange={handleSelectAll}
                   />
                 </TableCell>
-                <TableCell>
-                  Name
-                </TableCell>
-                <TableCell>
-                  Email
-                </TableCell>
-                <TableCell>
-                  Location
-                </TableCell>
-                <TableCell>
-                  Phone
-                </TableCell>
-                <TableCell>
-                  Registration date
-                </TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Location</TableCell>
+                <TableCell>Phone</TableCell>
+                <TableCell>Registration date</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -114,39 +123,46 @@ export const CustomerListResults = ({ customers, ...rest }) => {
                   <TableCell>
                     <Box
                       sx={{
-                        alignItems: 'center',
-                        display: 'flex'
+                        alignItems: "center",
+                        display: "flex",
                       }}
                     >
-                      <Avatar
-                        src={customer.avatarUrl}
-                        sx={{ mr: 2 }}
-                      >
-                        {(customer.name)}
+                      <Avatar src={customer.avatarUrl} sx={{ mr: 2 }}>
+                        {customer.name}
                       </Avatar>
-                      <Typography
-                        color="textPrimary"
-                        variant="body1"
-                      >
+                      <Typography color="textPrimary" variant="body1">
                         {customer.name}
                       </Typography>
                     </Box>
                   </TableCell>
+                  <TableCell>{customer.email}</TableCell>
+                  <TableCell>{`${customer.address}`}</TableCell>
+                  <TableCell>{customer.phone}</TableCell>
                   <TableCell>
-                    {customer.email}
+                    {format(customer.createdAt, "dd/MM/yyyy")}
                   </TableCell>
-                  <TableCell>
-                    {`${customer.address.city}, ${customer.address.state}, ${customer.address.country}`}
+                  <TableCell align="left">
+                    {customer.status === "banned" ? (
+                      <BlockIcon sx={{ color: pink[500] }} />
+                    ) : (
+                      <CheckCircleOutlineIcon color="success" />
+                    )}
                   </TableCell>
-                  <TableCell>
-                    {customer.phone}
-                  </TableCell>
-                  <TableCell>
-                    {format(customer.createdAt, 'dd/MM/yyyy')}
+                  <TableCell align="right">
+                    <UserMoreMenu status={customer.status} />
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
+            {isUserNotFound && (
+              <TableBody>
+                <TableRow>
+                  <TableCell align="center" colSpan={8} sx={{ py: 3 }}>
+                    <SearchNotFound searchQuery={filterName}/>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            )}
           </Table>
         </Box>
       </PerfectScrollbar>
@@ -164,5 +180,5 @@ export const CustomerListResults = ({ customers, ...rest }) => {
 };
 
 CustomerListResults.propTypes = {
-  customers: PropTypes.array.isRequired
+  customers: PropTypes.array.isRequired,
 };

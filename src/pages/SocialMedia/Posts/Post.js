@@ -22,6 +22,9 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { postData } from "../../../data/postData";
 import { useParams } from "react-router-dom";
+import MoodboardModal from "../Moodboard/MoodboardModal";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -29,9 +32,8 @@ const { username } = user;
 
 const Post = (props) => {
 	const { postId } = useParams();
-	console.log("postId:", postId);
 
-	const post = postData.filter((post) => post.id == postId)[0];
+	const post = postData.filter((post) => post.id === parseInt(postId))[0];
 
 	const postCardStyles = {
 		cardActions: {
@@ -74,6 +76,24 @@ const Post = (props) => {
 
 	const [commentActivated, setCommentActivated] = useState(false);
 
+	const style = {
+		position: "absolute",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		width: 400,
+		bgcolor: "background.paper",
+		border: "2px solid #000",
+		boxShadow: 24,
+		p: 4,
+	};
+
+	const [open, setOpen] = React.useState(false);
+
+	const closeMoodboardModal = () => {
+		setOpen(false);
+	};
+
 	const handleChangeForLike = (event) => {
 		console.log("clicked like");
 		console.log("no. of likes before clicking:", post.likes.length);
@@ -103,6 +123,7 @@ const Post = (props) => {
 
 	const handleClick = (event) => {
 		console.log("click");
+		setOpen(true);
 	};
 
 	const handleAddComment = () => {
@@ -192,6 +213,10 @@ const Post = (props) => {
 									Add to moodboard
 								</Button>
 							</Box>
+							<MoodboardModal
+								open={open}
+								closeMoodboardModal={closeMoodboardModal}
+							/>
 							<Box sx={{ pt: 1 }}>
 								{post.comments.map((comment) => (
 									<Comment

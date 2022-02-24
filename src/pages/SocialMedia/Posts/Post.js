@@ -20,66 +20,18 @@ import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { postData } from "../../../data/postData";
+import { useParams } from "react-router-dom";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const { username } = user;
 
-const Post = () => {
-	const post = {
-		id: 0,
-		image: "https://picsum.photos/200/300",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		tags: [["Living Room"], ["Minimalist"]],
-		likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
-		comments: [
-			{
-				id: "0",
-				user: {
-					username: "alicetan",
-					email: "alicetan@gmail.com",
-					contactNum: "97662340",
-					password: "AliceTan123",
-					type: "Customer",
-					profilePic: "https://picsum.photos/200/200",
-					addresses: ["Address 1", "Address 2"],
-				},
-				comment: "That looks great",
-				datetime: "",
-			},
-			{
-				id: "2",
-				user: {
-					username: "bobchua",
-					email: "bobchua@gmail.com",
-					contactNum: "98361129",
-					password: "BobChua123",
-					type: "Customer",
-					profilePic: "https://picsum.photos/100/100",
-					addresses: ["Address 1", "Address 2"],
-				},
-				comment: "Very nice",
-				datetime: "",
-			},
-		],
-		products: [
-			{
-				id: "0",
-				listingType: "Furniture",
-				img: "https://images.unsplash.com/photo-1540574163026-643ea20ade25",
-				title: "Brown Sofa",
-				author: "@FurnitureFirstStop",
-			},
-			{
-				id: "1",
-				listingType: "Furniture",
-				img: "https://images.unsplash.com/photo-1550581190-9c1c48d21d6c",
-				title: "Black Sofa",
-				author: "@FurnitureLife",
-			},
-		],
-	};
+const Post = (props) => {
+	const { postId } = useParams();
+	console.log("postId:", postId);
+
+	const post = postData.filter((post) => post.id == postId)[0];
 
 	const postCardStyles = {
 		cardActions: {

@@ -33,7 +33,7 @@ const PostLogin = () => {
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
         <Route path="/ideas" element={<Ideas />} />
-        <Route path="/ideas/:id" element={<Post />} />
+        <Route path="/ideas/:postId" element={<Post />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/sellercenter" element={<SellerCenter />}>

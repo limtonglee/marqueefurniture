@@ -87,8 +87,7 @@ const PostCard = (props) => {
 	};
 
 	const redirectToPost = () => {
-		console.log("hi");
-		window.location.replace("ideas/1");
+		window.location.replace(`ideas/${post.id}`);
 	};
 
 	return (

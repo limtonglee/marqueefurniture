@@ -19,7 +19,7 @@ const PreLogin = () => {
         <Route path="/" element={<Navigate to="/marketplace" />} />
         <Route path="/socialmedia" element={<Login />} />
         <Route path="/ideas" element={<Ideas />} />
-        <Route path="/ideas/:id" element={<Post />} />
+        <Route path="/ideas/:postId" element={<Post />} />
         <Route path="/marketplace" element={<MarketPlace />}>
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />

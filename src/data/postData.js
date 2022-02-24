@@ -4,16 +4,13 @@ export const postData = [
 		image: "https://picsum.photos/200/300",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Living Room"],
-		textureTags: ["Soft"],
-		styleTags: ["Cosy"],
-		likes: 4,
+		tags: [["Living Room"], ["Minimalist"]],
+		likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -27,8 +24,7 @@ export const postData = [
 			{
 				id: "2",
 				user: {
-					firstName: "Bob",
-					lastName: "Chua",
+					username: "bobchua",
 					email: "bobchua@gmail.com",
 					contactNum: "98361129",
 					password: "BobChua123",
@@ -62,16 +58,25 @@ export const postData = [
 		image: "https://picsum.photos/200/200",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
-		likes: 8,
+		tags: [["Kitchen"], ["Minimalist"]],
+		likes: [
+			"alicetan",
+			"bobchua",
+			"charleswong",
+			"dianasim",
+			"ericlim",
+			"fionatan",
+			"georgeyeo",
+			"hellenwong",
+			"iguanagoh",
+			"jasonong",
+			"kellytan",
+		],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -85,8 +90,7 @@ export const postData = [
 			{
 				id: "2",
 				user: {
-					firstName: "Bob",
-					lastName: "Chua",
+					username: "bobchua",
 					email: "bobchua@gmail.com",
 					contactNum: "98361129",
 					password: "BobChua123",
@@ -120,16 +124,22 @@ export const postData = [
 		image: "https://picsum.photos/300/400",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
-		likes: 10,
+		tags: [["Bedroom"], ["Art Deco"]],
+		likes: [
+			"alicetan",
+			"bobchua",
+			"charleswong",
+			"dianasim",
+			"ericlim",
+			"fionatan",
+			"georgeyeo",
+			"hellenwong",
+		],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -148,16 +158,13 @@ export const postData = [
 		image: "https://picsum.photos/300/200",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
-		likes: 3,
+		tags: [["Balcony"], ["Bohemian"]],
+		likes: ["alicetan", "bobchua", "charleswong"],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -176,16 +183,13 @@ export const postData = [
 		image: "https://picsum.photos/300/300",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
-		likes: 2,
+		tags: [["Study Room"], ["Asian Zen"]],
+		likes: ["alicetan", "bobchua"],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -204,16 +208,13 @@ export const postData = [
 		image: "https://picsum.photos/300/400",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
-		likes: 4,
+		tags: [["Living Room"], ["Contemporary"]],
+		likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -232,16 +233,26 @@ export const postData = [
 		image: "https://picsum.photos/400/600",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
-		likes: 11,
+		tags: [["Service Yard"], ["Coastal"]],
+		likes: [
+			"alicetan",
+			"bobchua",
+			"charleswong",
+			"dianasim",
+			"ericlim",
+			"fionatan",
+			"georgeyeo",
+			"hellenwong",
+			"iguanagoh",
+			"jasonong",
+			"kellytan",
+			"lindyteng",
+		],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -260,16 +271,20 @@ export const postData = [
 		image: "https://picsum.photos/700/600",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
-		likes: 2,
+		tags: [["Kitchen"], ["Rustic"]],
+		likes: [
+			"alicetan",
+			"bobchua",
+			"charleswong",
+			"dianasim",
+			"ericlim",
+			"fionatan",
+		],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -288,16 +303,25 @@ export const postData = [
 		image: "https://picsum.photos/700/500",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
-		likes: 14,
+		tags: [["Bedroom"], ["Industrial"]],
+		likes: [
+			"alicetan",
+			"bobchua",
+			"charleswong",
+			"dianasim",
+			"ericlim",
+			"fionatan",
+			"georgeyeo",
+			"hellenwong",
+			"iguanagoh",
+			"jasonong",
+			"kellytan",
+		],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -316,16 +340,21 @@ export const postData = [
 		image: "https://picsum.photos/500/700",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
-		likes: 12,
+		tags: [["Study Room"], ["Shabby Chic"]],
+		likes: [
+			"alicetan",
+			"bobchua",
+			"charleswong",
+			"dianasim",
+			"ericlim",
+			"fionatan",
+			"georgeyeo",
+		],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",
@@ -344,16 +373,13 @@ export const postData = [
 		image: "https://picsum.photos/600/700",
 		description:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		roomTags: ["Kitchen"],
-		textureTags: ["Concrete"],
-		styleTags: ["Modern"],
-		likes: 1,
+		tags: [["Living Room"], ["Traditional"]],
+		likes: ["alicetan", "bobchua", "charleswong"],
 		comments: [
 			{
 				id: "0",
 				user: {
-					firstName: "Alice",
-					lastName: "Tan",
+					username: "alicetan",
 					email: "alicetan@gmail.com",
 					contactNum: "97662340",
 					password: "AliceTan123",

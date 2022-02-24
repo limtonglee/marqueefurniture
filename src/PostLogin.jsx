@@ -20,6 +20,9 @@ import { ShopProfile } from "./pages/SellerCenter/Shop/Profile";
 import { ShopRating } from "./pages/SellerCenter/Shop/Rating";
 import { Voucher } from "./pages/SellerCenter/Voucher";
 import Ideas from "./pages/SocialMedia/Ideas";
+import Post from "./pages/SocialMedia/Posts/Post";
+import EditProfile from "./pages/Profile/About/EditProfile";
+import StartSelling from "./pages/Profile/About/StartSelling";
 
 const PostLogin = () => {
   return (
@@ -31,10 +34,10 @@ const PostLogin = () => {
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
-        <Route path="/ideas" element={<Ideas />}></Route>
+        <Route path="/ideas" element={<Ideas />} />
+        <Route path="/ideas/:id" element={<Post />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
-
         <Route path="/sellercenter" element={<SellerCenter />}>
           <Route path="" element={<Orders />} />
           <Route path="orders" element={<Orders />} />
@@ -53,6 +56,8 @@ const PostLogin = () => {
         <Route path="/profile" element={<Profiles />}>
           <Route path="" element={<Profile />} />
           <Route path=":moodboardId" element={<MoodboardDetails />} />
+          <Route path="edit" element={<EditProfile />} />
+          <Route path="sell" element={<StartSelling />} />
         </Route>
       </Routes>
     </>

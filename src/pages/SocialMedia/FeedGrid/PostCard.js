@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardMedia from "@mui/material/CardMedia";
@@ -7,8 +7,11 @@ import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import PushPinIcon from "@mui/icons-material/PushPin";
+import { user } from "../../../data/currentUserData";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
+
+const { username, likedPosts, moodboards } = user;
 
 const PostCard = (props) => {
 	const post = props.post;
@@ -27,6 +30,67 @@ const PostCard = (props) => {
 			},
 		},
 	};
+
+	const [likesChecked, setLikesChecked] = useState(
+		post.likes.includes(username)
+	);
+
+	// const [pinChecked, setPinChecked] = useState(postInUserMoodboards());
+	const [pinChecked, setPinChecked] = useState(false);
+
+	const handleChangeForPin = (event) => {
+		console.log("clicked pin");
+		console.log("pin checked before clicking", pinChecked);
+		setPinChecked(!pinChecked); // not working
+		console.log("pin checked after clicking", pinChecked);
+
+		// if postInUserMoodboards -> unpin
+		//// if only in one board - confirm unpin from 1 board?
+		//// if present in multiple boards - dialog to select which boards to unpin from???
+
+		// if !postInUserMoodboards -> pin -> dialog to select which boards to pin to
+	};
+
+	const handleChangeForLike = (event) => {
+		console.log("clicked like");
+		console.log("no. of likes before clicking:", post.likes.length);
+		console.log("liked by before clicking:", post.likes);
+		if (post.likes.includes(username)) {
+			// unlike
+			// remove user from likes array
+			post.likes = post.likes.filter((user) => user !== username);
+
+			// TODO: remove this post from the user's likes
+		} else {
+			// like
+			// add user to likes array
+			post.likes.push(username);
+			// TODO: add this post to user's likes
+		}
+
+		console.log("no. of likes after clicking:", post.likes.length);
+		console.log("liked by after clicking:", post.likes);
+
+		// update icon colour on front end
+		setLikesChecked(!likesChecked);
+	};
+
+	const postInUserMoodboards = () => {
+		moodboards.forEach((board) => {
+			board.moodboardItems.forEach((moodboardItems) => {
+				if (moodboardItems.id === post.id) {
+					return true;
+				}
+			});
+		});
+		return false;
+	};
+
+	const redirectToPost = () => {
+		console.log("hi");
+		window.location.replace("ideas/1");
+	};
+
 	return (
 		<Card sx={{ width: 200, position: "relative" }}>
 			<CardMedia
@@ -35,6 +99,7 @@ const PostCard = (props) => {
 				objectfit="scale-down"
 				image={post.image}
 				alt="post picture"
+				onClick={() => redirectToPost()}
 			/>
 			<CardActions sx={postCardStyles.cardActions}>
 				<Checkbox
@@ -42,12 +107,16 @@ const PostCard = (props) => {
 					icon={<PushPinOutlinedIcon fontSize="small" />}
 					checkedIcon={<PushPinIcon fontSize="small" />}
 					sx={postCardStyles.checkboxes}
+					onChange={handleChangeForPin}
+					checked={pinChecked}
 				/>
 				<Checkbox
 					{...label}
 					icon={<FavoriteBorder fontSize="small" />}
 					checkedIcon={<Favorite fontSize="small" />}
 					sx={postCardStyles.checkboxes}
+					onChange={handleChangeForLike}
+					checked={likesChecked}
 				/>
 			</CardActions>
 		</Card>

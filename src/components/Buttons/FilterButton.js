@@ -1,28 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import NewTag from "../Tags/NewTag";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
 
-const FilterButton = () => {
+let previousDesignTags = [];
+
+const FilterButton = ({ handleTag, resetDisplay }) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
+
+	const [filterRoomValues, setfilterRoomValues] = useState([]);
+	const [filterDesignValues, setfilterDesignValues] = useState([]);
 
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
-		console.log("click");
 	};
 
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
 
+	const handleChangeForFilterRoom = (event, value) => {
+		setfilterRoomValues(value);
+
+		let changedTag = "";
+		if (value.length < previousDesignTags.length) {
+			changedTag = previousDesignTags.filter((x) => !value.includes(x))[0]
+				.title;
+		} else {
+			changedTag = value.filter((x) => !previousDesignTags.includes(x))[0]
+				.title;
+		}
+		handleTag(changedTag);
+		previousDesignTags = value;
+	};
+
+	const handleChangeForFilterDesign = (event, value) => {
+		setfilterDesignValues(value);
+
+		let changedTag = "";
+		if (value.length < previousDesignTags.length) {
+			changedTag = previousDesignTags.filter((x) => !value.includes(x))[0]
+				.title;
+		} else {
+			changedTag = value.filter((x) => !previousDesignTags.includes(x))[0]
+				.title;
+		}
+		handleTag(changedTag);
+		previousDesignTags = value;
+	};
+
 	const open = Boolean(anchorEl);
 	const id = open ? "simple-popover" : undefined;
-
-	const tags = ["Living Room", "Cosy", "Wood", "Kitchen"];
 
 	const filterButtonStyles = {
 		"&.MuiButton-root": {
@@ -35,6 +67,41 @@ const FilterButton = () => {
 		},
 	};
 
+	const roomTags = [
+		{ id: 0, title: "Living Room" },
+		{ id: 1, title: "Kitchen" },
+		{ id: 2, title: "Balcony" },
+		{ id: 3, title: "Bedroom" },
+		{ id: 4, title: "Study Room" },
+		{ id: 5, title: "Service Yard" },
+	];
+
+	const designTags = [
+		{ id: 0, title: "Art Deco" },
+		{ id: 1, title: "Asian Zen" },
+		{ id: 2, title: "Bohemian" },
+		{ id: 3, title: "Coastal" },
+		{ id: 4, title: "Contemporary" },
+		{ id: 5, title: "Eclectic" },
+		{ id: 6, title: "French Country" },
+		{ id: 7, title: "Industrial" },
+		{ id: 8, title: "Meditarranean" },
+		{ id: 9, title: "Minimalist" },
+		{ id: 10, title: "Modern" },
+		{ id: 11, title: "Modern Farmhouse" },
+		{ id: 12, title: "Rustic" },
+		{ id: 13, title: "Scandinavian" },
+		{ id: 14, title: "Shabby Chic" },
+		{ id: 15, title: "Traditional" },
+		{ id: 16, title: "Transitional" },
+	];
+
+	const clearAllFilters = () => {
+		resetDisplay();
+		setfilterRoomValues([]);
+		setfilterDesignValues([]);
+	};
+
 	return (
 		<>
 			<Button
@@ -45,6 +112,12 @@ const FilterButton = () => {
 				sx={filterButtonStyles}
 			>
 				Filter
+				{filterRoomValues.length + filterDesignValues.length > 0 && (
+					<span>
+						&nbsp;(
+						{filterRoomValues.length + filterDesignValues.length})
+					</span>
+				)}
 			</Button>
 			<Popover
 				id={id}
@@ -60,33 +133,84 @@ const FilterButton = () => {
 					horizontal: "right",
 				}}
 			>
-				<Box sx={{ py: 2, px: 2 }}>
+				<Box sx={{ py: 2, px: 2, minWidth: 350 }}>
 					<Box
 						sx={{
-							width: 350,
 							display: "flex",
 							justifyContent: "space-between",
-							alignItems: "center",
 						}}
 					>
-						<Typography variant="h6" gutterBottom component="div">
+						<Typography
+							variant="h6"
+							gutterBottom
+							component="div"
+							sx={{ m: 0 }}
+						>
 							Filter by more categories
 						</Typography>
-						<Button size="small">Clear All</Button>
+						<Button size="small" onClick={clearAllFilters}>
+							Clear All
+						</Button>
 					</Box>
-					<Typography variant="subtitle1">Room Tags</Typography>
-					<Box sx={{ maxWidth: 300 }}>
-						<Stack
-							direction="row"
-							sx={{
-								flexWrap: "wrap",
-								justifyContent: "flex-start",
-							}}
+					<Box sx={{ mt: 3 }}>
+						<Typography
+							variant="subtitle1"
+							gutterBottom
+							component="div"
 						>
-							{tags.map((tag, index) => {
-								return <NewTag key={index} tag={tag}></NewTag>;
-							})}
-						</Stack>
+							Room type
+						</Typography>
+						<Autocomplete
+							value={filterRoomValues}
+							multiple
+							limitTags={2}
+							id="room-type"
+							options={roomTags}
+							getOptionLabel={(option) => option.title}
+							defaultValue={[]}
+							renderInput={(params) => (
+								<TextField
+									{...params}
+									label="Filter by room type"
+									placeholder="Search room type"
+								/>
+							)}
+							isOptionEqualToValue={(option, value) =>
+								option.id === value.id
+							}
+							onChange={handleChangeForFilterRoom}
+							sx={{ width: "500px" }}
+						/>
+					</Box>
+					<Box sx={{ mt: 3 }}>
+						<Typography
+							variant="subtitle1"
+							gutterBottom
+							component="div"
+						>
+							Interior design style
+						</Typography>
+						<Autocomplete
+							value={filterDesignValues}
+							multiple
+							limitTags={2}
+							id="design-type"
+							options={designTags}
+							getOptionLabel={(option) => option.title}
+							defaultValue={[]}
+							renderInput={(params) => (
+								<TextField
+									{...params}
+									label="Filter by interior design style"
+									placeholder="Search design style"
+								/>
+							)}
+							isOptionEqualToValue={(option, value) =>
+								option.id === value.id
+							}
+							onChange={handleChangeForFilterDesign}
+							sx={{ width: "500px" }}
+						/>
 					</Box>
 				</Box>
 			</Popover>

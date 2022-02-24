@@ -99,6 +99,37 @@ const MoodboardModal = ({
 
 	const updatePostPinnedLocations = () => {
 		console.log("updatePostPinnedLocations");
+		const unchanged = prevChecked.filter((x) => checked.includes(x));
+		const toRemovePostFrom = prevChecked.filter(
+			(x) => !checked.includes(x)
+		);
+		const toAddPostTo = checked.filter((x) => !prevChecked.includes(x));
+
+		console.log("unchanged", unchanged);
+		console.log("toRemovePostFrom", toRemovePostFrom);
+		console.log("toAddPostTo", toAddPostTo);
+
+		const newMoodboardList = [...moodboards];
+		for (let moodboard of newMoodboardList) {
+			if (toRemovePostFrom.includes(moodboard.id)) {
+				const newMbPosts = [...moodboard.moodboardItems].filter(
+					(item) => item.id !== post.id
+				);
+				moodboard.moodboardItems = newMbPosts;
+			}
+			if (toAddPostTo.includes(moodboard.id)) {
+				moodboard.moodboardItems = [...moodboard.moodboardItems, post];
+			}
+		}
+
+		// update moodboard state
+		setMoodboards(newMoodboardList);
+		closeMoodboardModal();
+		console.log(moodboards);
+
+		setPrevChecked(checked);
+
+		handleClickSnackbar();
 	};
 
 	const [openSnackbar, setOpenSnackbar] = React.useState(false);
@@ -135,7 +166,10 @@ const MoodboardModal = ({
 			{!postPinned && (
 				<Modal
 					open={open}
-					onClose={closeMoodboardModal}
+					onClose={() => {
+						closeMoodboardModal();
+						setChecked(prevChecked);
+					}}
 					aria-labelledby="modal-modal-title"
 					aria-describedby="modal-modal-description"
 				>
@@ -256,7 +290,10 @@ const MoodboardModal = ({
 			{postPinned && (
 				<Modal
 					open={open}
-					onClose={closeMoodboardModal}
+					onClose={() => {
+						closeMoodboardModal();
+						setChecked(prevChecked);
+					}}
 					aria-labelledby="modal-modal-title"
 					aria-describedby="modal-modal-description"
 				>

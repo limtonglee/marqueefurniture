@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
@@ -31,7 +31,8 @@ const { username } = user;
 const Post = () => {
 	const { postId } = useParams();
 
-	const { moodboards } = user;
+	// const { moodboards } = user;
+	const [moodboards, setMoodboards] = useState(user.moodboards);
 
 	const post = postData.filter((post) => post.id === parseInt(postId))[0];
 
@@ -172,6 +173,10 @@ const Post = () => {
 		postInUserMoodboards() ? true : false
 	);
 
+	useEffect(() => {
+		setPostPinned(postInUserMoodboards() ? true : false);
+	}, [moodboards]);
+
 	return (
 		<>
 			<Container sx={{ pt: 2 }}>
@@ -243,7 +248,10 @@ const Post = () => {
 							<MoodboardModal
 								open={open}
 								closeMoodboardModal={closeMoodboardModal}
+								post={post}
 								postPinned={postPinned}
+								moodboards={moodboards}
+								setMoodboards={setMoodboards}
 							/>
 							<Box sx={{ pt: 1 }}>
 								{post.comments.map((comment) => (

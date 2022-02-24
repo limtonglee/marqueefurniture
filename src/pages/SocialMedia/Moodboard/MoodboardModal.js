@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -15,14 +15,27 @@ import { user } from "../../../data/currentUserData";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
-const MoodboardModal = ({ open, closeMoodboardModal, postPinned }) => {
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+const MoodboardModal = ({
+	open,
+	closeMoodboardModal,
+	post,
+	postPinned,
+	moodboards,
+	setMoodboards,
+}) => {
 	const modalStyles = {
 		wrapper: {
 			position: "absolute",
 			top: "50%",
 			left: "50%",
 			transform: "translate(-50%, -50%)",
-			width: 300,
 			bgcolor: "background.paper",
 			boxShadow: 24,
 			p: 4,
@@ -41,13 +54,10 @@ const MoodboardModal = ({ open, closeMoodboardModal, postPinned }) => {
 		},
 	};
 
-	const { moodboards } = user;
+	// const { moodboards } = user;
 
-	const handleClick = () => {
-		console.log("click");
-	};
-
-	const [checked, setChecked] = React.useState([1]);
+	const [checked, setChecked] = useState([]);
+	const [prevChecked, setPrevChecked] = useState([]);
 
 	const handleToggle = (value) => () => {
 		const currentIndex = checked.indexOf(value);
@@ -60,12 +70,68 @@ const MoodboardModal = ({ open, closeMoodboardModal, postPinned }) => {
 		}
 
 		setChecked(newChecked);
-		console.log("hi", value);
-		console.log("newChecked", newChecked);
+	};
+
+	const addPostToMoodboard = () => {
+		const newMoodboardList = [...moodboards].filter(
+			(moodboard) => !checked.includes(moodboard.id)
+		);
+
+		for (let moodboardId of checked) {
+			const moodboard = moodboards.filter(
+				(moodboard) => moodboard.id === moodboardId
+			)[0];
+			moodboard.moodboardItems.push(post);
+			newMoodboardList.push(moodboard);
+		}
+		setMoodboards(newMoodboardList);
+		closeMoodboardModal();
+		console.log(moodboards);
+
+		setPrevChecked(checked);
+
+		handleClickSnackbar();
+	};
+
+	const addPostToNewMoodboard = () => {
+		console.log("addPostToNewMoodboard");
+	};
+
+	const updatePostPinnedLocations = () => {
+		console.log("updatePostPinnedLocations");
+	};
+
+	const [openSnackbar, setOpenSnackbar] = React.useState(false);
+
+	const handleClickSnackbar = () => {
+		setOpenSnackbar(true);
+	};
+
+	const handleCloseSnackbar = (event, reason) => {
+		if (reason === "clickaway") {
+			return;
+		}
+
+		setOpenSnackbar(false);
 	};
 
 	return (
 		<>
+			<Snackbar
+				open={openSnackbar}
+				autoHideDuration={2500}
+				onClose={handleCloseSnackbar}
+				anchorOrigin={{ vertical: "top", horizontal: "center" }}
+				key={"top" + "center"}
+			>
+				<Alert
+					onClose={handleCloseSnackbar}
+					severity="success"
+					sx={{ width: "100%" }}
+				>
+					Updated successfully
+				</Alert>
+			</Snackbar>
 			{!postPinned && (
 				<Modal
 					open={open}
@@ -100,19 +166,20 @@ const MoodboardModal = ({ open, closeMoodboardModal, postPinned }) => {
 							<List dense>
 								{moodboards.map((moodboard, index) => {
 									const moodboardName = moodboard.boardName;
+									const moodboardId = moodboard.id;
 									const labelId = `checkbox-list-secondary-label-${moodboardName}`;
 									return (
 										<ListItem
-											key={moodboardName}
+											key={moodboardId}
 											secondaryAction={
 												<Checkbox
 													edge="end"
 													onChange={handleToggle(
-														moodboardName
+														moodboardId
 													)}
 													checked={
 														checked.indexOf(
-															moodboardName
+															moodboardId
 														) !== -1
 													}
 													inputProps={{
@@ -136,7 +203,7 @@ const MoodboardModal = ({ open, closeMoodboardModal, postPinned }) => {
 													/>
 												</ListItemAvatar>
 												<ListItemText
-													id={labelId}
+													id={moodboardId}
 													primary={moodboardName}
 												/>
 											</ListItemButton>
@@ -146,12 +213,42 @@ const MoodboardModal = ({ open, closeMoodboardModal, postPinned }) => {
 							</List>
 						</Box>
 						<Box>
-							<Button size="small">Add to new moodboard</Button>
+							{checked.length === 0 ? (
+								<Button
+									size="small"
+									onClick={addPostToNewMoodboard}
+									disabled
+								>
+									Add to new moodboard
+								</Button>
+							) : (
+								<Button
+									size="small"
+									onClick={addPostToNewMoodboard}
+								>
+									Add to new moodboard
+								</Button>
+							)}
 						</Box>
 						<Box sx={modalStyles.contents}>
-							<Button size="small" variant="contained">
-								Add
-							</Button>
+							{checked.length === 0 ? (
+								<Button
+									size="small"
+									variant="contained"
+									onClick={addPostToMoodboard}
+									disabled
+								>
+									Add
+								</Button>
+							) : (
+								<Button
+									size="small"
+									variant="contained"
+									onClick={addPostToMoodboard}
+								>
+									Add
+								</Button>
+							)}
 						</Box>
 					</Box>
 				</Modal>
@@ -164,30 +261,46 @@ const MoodboardModal = ({ open, closeMoodboardModal, postPinned }) => {
 					aria-describedby="modal-modal-description"
 				>
 					<Box sx={modalStyles.wrapper}>
-						<Typography
-							id="modal-modal-title"
-							variant="h6"
-							component="h2"
+						<Box
+							sx={{
+								display: "flex",
+								justifyContent: "space-between",
+								alignItems: "center",
+							}}
 						>
-							Pinned to moodboard
-						</Typography>
-						<Box sx={modalStyles.inputFields}>
+							<Typography
+								id="modal-modal-title"
+								variant="h6"
+								component="h2"
+							>
+								Pinned to moodboard
+							</Typography>
+							<IconButton
+								aria-label="delete"
+								onClick={closeMoodboardModal}
+							>
+								<CloseIcon />
+							</IconButton>
+						</Box>
+
+						<Box sx={modalStyles.contents}>
 							<List dense>
 								{moodboards.map((moodboard, index) => {
 									const moodboardName = moodboard.boardName;
+									const moodboardId = moodboard.id;
 									const labelId = `checkbox-list-secondary-label-${moodboardName}`;
 									return (
 										<ListItem
-											key={moodboardName}
+											key={moodboardId}
 											secondaryAction={
 												<Checkbox
 													edge="end"
 													onChange={handleToggle(
-														moodboardName
+														moodboardId
 													)}
 													checked={
 														checked.indexOf(
-															moodboardName
+															moodboardId
 														) !== -1
 													}
 													inputProps={{
@@ -211,7 +324,7 @@ const MoodboardModal = ({ open, closeMoodboardModal, postPinned }) => {
 													/>
 												</ListItemAvatar>
 												<ListItemText
-													id={labelId}
+													id={moodboardId}
 													primary={moodboardName}
 												/>
 											</ListItemButton>
@@ -220,10 +333,13 @@ const MoodboardModal = ({ open, closeMoodboardModal, postPinned }) => {
 								})}
 							</List>
 						</Box>
-						<Box sx={modalStyles.buttons}>
-							<Button onClick={handleClick}>Submit</Button>
-							<Button onClick={closeMoodboardModal}>
-								Cancel
+						<Box sx={modalStyles.contents}>
+							<Button
+								size="small"
+								variant="contained"
+								onClick={updatePostPinnedLocations}
+							>
+								Update
 							</Button>
 						</Box>
 					</Box>

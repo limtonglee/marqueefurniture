@@ -19,8 +19,10 @@ Inclusion of the bar to separate the different listings: "Furniture / Design / S
 Linking bar up with the difference in the listings Done
 Sharing of URL to the exact listing Done
 Add search bar Done
-Add filtering 
 Updating of the page to show only furniture, initial loading shows all the listing Done
+Liking and unliking a post Done
+Showcasing that the item has been liked before
+Add filtering 
 */
 export const Listings = () => {
 
@@ -143,8 +145,15 @@ export const Listings = () => {
                   icon = {<FavoriteBorder fontSize='small' />}
                   checkedIcon = {<Favorite fontSize="small" />}
                   value={item}
-                  onChange = {e => {handleLikeChange(e, item)}}
+                  onChange = {e => {
+                    handleSnack()
+                    handleLikeChange(e, item)}}
                    />
+                <Snackbar open ={open} autoHideDuration={2000} onClose={handleSnackClose}>
+                <Alert onClose={handleSnackClose} severity="success" sx= {{ width:'auto'}}>
+                  Liked!
+                </Alert>
+              </Snackbar>
               </Grid>
            </Grid>
           </ImageListItem>

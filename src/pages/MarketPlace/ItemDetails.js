@@ -112,10 +112,6 @@ export const ItemDetails = () => {
 
 
         </CardContent>
-            <Fab size="small" sx={{ color: "secondary"}}>
-              <FavoriteIcon />
-            </Fab>
-
             <Fab size="small" sx={{ color: "secondary" , margin: 1}}>
               <ShareIcon onClick = {() => {
                 handleSnack();

@@ -82,13 +82,13 @@ const Ideas = () => {
 		if (currentSort === "recent") {
 			// fake sort (bec dk how datetime looks like in json): ascending amount of likes
 			let newPosts = [...posts];
-			setPosts(newPosts.sort((a, b) => a.likes.length - b.likes.length));
+			setPosts(newPosts.sort((a, b) => a.id - b.id));
 		}
-		if (currentSort === "for you") {
-			// fake sort (bec dk the "for you" logic yet): ascending amount of likes
-			let newPosts = [...posts];
-			setPosts(newPosts.sort((a, b) => a.likes.length - b.likes.length));
-		}
+		// if (currentSort === "for you") {
+		// 	// fake sort (bec dk the "for you" logic yet): ascending amount of likes
+		// 	let newPosts = [...posts];
+		// 	setPosts(newPosts.sort((a, b) => a.likes.length - b.likes.length));
+		// }
 	};
 
 	const resetDisplay = () => {

@@ -3,9 +3,7 @@ import Box from "@mui/material/Box";
 import Masonry from "@mui/lab/Masonry";
 import PostCard from "./PostCard";
 
-const FeedGrid = (props) => {
-	const posts = props.posts;
-
+const FeedGrid = ({ posts }) => {
 	return (
 		<Box sx={{ maxWidth: 1200 }}>
 			<Masonry columns={4} spacing={2}>

@@ -40,6 +40,7 @@ const MoodboardModal = ({
 			boxShadow: 24,
 			p: 4,
 			width: 350,
+			borderRadius: 2,
 		},
 		contents: {
 			display: "flex",
@@ -205,6 +206,13 @@ const MoodboardModal = ({
 			setPrevChecked(checked);
 		}
 	}, []);
+
+	const noChangeMade = () => {
+		return (
+			prevChecked.filter((x) => !checked.includes(x)).length === 0 &&
+			checked.filter((x) => !prevChecked.includes(x)).length === 0
+		);
+	};
 
 	return (
 		<>
@@ -429,13 +437,24 @@ const MoodboardModal = ({
 							</Button>
 						</Box>
 						<Box sx={modalStyles.contents}>
-							<Button
-								size="small"
-								variant="contained"
-								onClick={updatePostPinnedLocations}
-							>
-								Update
-							</Button>
+							{noChangeMade() ? (
+								<Button
+									size="small"
+									variant="contained"
+									onClick={updatePostPinnedLocations}
+									disabled
+								>
+									Update
+								</Button>
+							) : (
+								<Button
+									size="small"
+									variant="contained"
+									onClick={updatePostPinnedLocations}
+								>
+									Update
+								</Button>
+							)}
 						</Box>
 					</Box>
 				</Modal>

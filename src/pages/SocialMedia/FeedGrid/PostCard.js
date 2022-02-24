@@ -64,12 +64,15 @@ const PostCard = (props) => {
 			// remove user from likes array
 			post.likes = post.likes.filter((user) => user !== username);
 
-			// TODO: remove this post from the user's likes
+			// remove this post from the user's likes
+			removePostFromUserLikes();
 		} else {
 			// like
 			// add user to likes array
 			post.likes.push(username);
-			// TODO: add this post to user's likes
+
+			// add this post to user's likes
+			addPostFromUserLikes();
 		}
 
 		console.log("no. of likes after clicking:", post.likes.length);
@@ -77,6 +80,18 @@ const PostCard = (props) => {
 
 		// update icon colour on front end
 		setLikesChecked(!likesChecked);
+	};
+
+	const removePostFromUserLikes = () => {
+		const newLikePostsList = [...user.likedPosts].filter(
+			(item) => item.id !== post.id
+		);
+		user.likedPosts = newLikePostsList;
+	};
+
+	const addPostFromUserLikes = () => {
+		const newLikePostsList = [...user.likedPosts, post];
+		user.likedPosts = newLikePostsList;
 	};
 
 	const redirectToPost = () => {

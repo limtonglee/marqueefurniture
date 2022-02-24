@@ -14,15 +14,10 @@ import Stack from "@mui/material/Stack";
 import Comment from "./Comment";
 import Avatar from "@mui/material/Avatar";
 import SendIcon from "@mui/icons-material/Send";
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import FormControl from "@mui/material/FormControl";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { postData } from "../../../data/postData";
 import { useParams } from "react-router-dom";
 import MoodboardModal from "../Moodboard/MoodboardModal";
+import TextField from "@mui/material/TextField";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -34,7 +29,10 @@ const Post = () => {
 	// const { moodboards } = user;
 	const [moodboards, setMoodboards] = useState(user.moodboards);
 
-	const post = postData.filter((post) => post.id === parseInt(postId))[0];
+	// const post = postData.filter((post) => post.id === parseInt(postId))[0];
+	const [post, setPost] = useState(
+		postData.filter((post) => post.id === parseInt(postId))[0]
+	);
 
 	const postCardStyles = {
 		cardActions: {
@@ -133,29 +131,6 @@ const Post = () => {
 		setCommentActivated(true);
 	};
 
-	const [values, setValues] = React.useState({
-		amount: "",
-		password: "",
-		weight: "",
-		weightRange: "",
-		showPassword: false,
-	});
-
-	const handleChange = (prop) => (event) => {
-		setValues({ ...values, [prop]: event.target.value });
-	};
-
-	const handleClickShowPassword = () => {
-		setValues({
-			...values,
-			showPassword: !values.showPassword,
-		});
-	};
-
-	const handleMouseDownPassword = (event) => {
-		event.preventDefault();
-	};
-
 	const postInUserMoodboards = () => {
 		const moodboardsWithThisPost = moodboards.filter((moodboard) => {
 			for (let moodboardItem of moodboard.moodboardItems) {
@@ -175,6 +150,39 @@ const Post = () => {
 	useEffect(() => {
 		setPostPinned(postInUserMoodboards() ? true : false);
 	}, [moodboards]);
+
+	const [comment, setComment] = useState("");
+
+	const updateComment = (e) => {
+		setComment(e.target.value);
+	};
+
+	const handleKeyDown = (e) => {
+		//it triggers by pressing the enter key
+		console.log(e);
+		if (e.keyCode === 13) {
+			console.log("pressed enter");
+		}
+	};
+
+	const sendComment = () => {
+		console.log("sendComment");
+		console.log(comment);
+
+		const newId = Math.floor(Math.random() * 100 + 1);
+
+		const newComment = {
+			id: newId,
+			user: user,
+			comment: comment,
+			datetime: "",
+		};
+
+		const newPost = { ...post };
+		newPost.comments = [...newPost.comments, newComment];
+		setPost(newPost);
+		setComment("");
+	};
 
 	return (
 		<>
@@ -257,10 +265,12 @@ const Post = () => {
 									<Comment
 										key={comment.id}
 										comment={comment}
+										post={post}
+										setPost={setPost}
 									/>
 								))}
 							</Box>
-							<Box sx={{ pt: 1 }}>
+							<Box sx={{ pt: 1, width: "100%" }}>
 								<Stack
 									direction="row"
 									spacing={0.5}
@@ -274,12 +284,6 @@ const Post = () => {
 										src="https://picsum.photos/200"
 										sx={{ width: 24, height: 24 }}
 									/>
-									{/* <Button
-										sx={commentButtonStyles}
-										onClick={handleAddComment}
-									>
-										Add a comment...
-									</Button> */}
 									{!commentActivated && (
 										<Button
 											sx={commentButtonStyles}
@@ -289,53 +293,50 @@ const Post = () => {
 										</Button>
 									)}
 									{commentActivated && (
-										<Box>
-											<FormControl
-												sx={{
-													width: "25ch",
-													ml: 1,
+										<Box
+											sx={{
+												display: "flex",
+												justifyContent: "space-between",
+												width: "100%",
+											}}
+										>
+											<TextField
+												id="outlined-basic"
+												variant="outlined"
+												size="small"
+												placeholder="Type comment..."
+												InputLabelProps={{
+													shrink: true,
 												}}
-												variant="standard"
-											>
-												<InputLabel
-													htmlFor="standard-adornment-password"
-													sx={{ mt: 0 }}
+												sx={{ width: "100%", mr: 1 }}
+												autoFocus={true}
+												onChange={updateComment}
+												value={comment}
+											/>
+											{comment.length == 0 ? (
+												<Button
+													endIcon={<SendIcon />}
+													variant="outlined"
+													onClick={sendComment}
+													sx={
+														addToMoodboardButtonStyles
+													}
+													disabled
 												>
-													Type comment
-												</InputLabel>
-												<Input
-													sx={{ mt: "0!important" }}
-													id="standard-adornment-password"
-													type={
-														values.showPassword
-															? "text"
-															: "password"
+													Send
+												</Button>
+											) : (
+												<Button
+													endIcon={<SendIcon />}
+													variant="outlined"
+													onClick={sendComment}
+													sx={
+														addToMoodboardButtonStyles
 													}
-													value={values.password}
-													onChange={handleChange(
-														"password"
-													)}
-													endAdornment={
-														<InputAdornment position="end">
-															<SendIcon
-																aria-label="toggle password visibility"
-																onClick={
-																	handleClickShowPassword
-																}
-																onMouseDown={
-																	handleMouseDownPassword
-																}
-															>
-																{values.showPassword ? (
-																	<VisibilityOff />
-																) : (
-																	<Visibility />
-																)}
-															</SendIcon>
-														</InputAdornment>
-													}
-												/>
-											</FormControl>
+												>
+													Send
+												</Button>
+											)}
 										</Box>
 									)}
 								</Stack>

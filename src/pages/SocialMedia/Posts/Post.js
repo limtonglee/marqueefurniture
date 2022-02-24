@@ -250,6 +250,7 @@ const Post = () => {
 								post={post}
 								moodboards={moodboards}
 								setMoodboards={setMoodboards}
+								postPinned={postPinned}
 							/>
 							<Box sx={{ pt: 1 }}>
 								{post.comments.map((comment) => (

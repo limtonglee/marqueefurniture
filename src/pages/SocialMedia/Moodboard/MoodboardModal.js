@@ -28,6 +28,7 @@ const MoodboardModal = ({
 	post,
 	moodboards,
 	setMoodboards,
+	postPinned,
 }) => {
 	const modalStyles = {
 		wrapper: {
@@ -191,22 +192,6 @@ const MoodboardModal = ({
 
 		setOpenSnackbar(false);
 	};
-
-	const postInUserMoodboards = () => {
-		const moodboardsWithThisPost = moodboards.filter((moodboard) => {
-			for (let moodboardItem of moodboard.moodboardItems) {
-				if (moodboardItem.id === post.id) {
-					return true;
-				}
-			}
-			return false;
-		});
-		return moodboardsWithThisPost.length > 0;
-	};
-
-	const [postPinned, setPostPinned] = useState(
-		postInUserMoodboards() ? true : false
-	);
 
 	useEffect(() => {
 		if (postPinned && checked.length === 0) {

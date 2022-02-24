@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardMedia from "@mui/material/CardMedia";
@@ -55,21 +55,6 @@ const PostCard = (props) => {
 		post.likes.includes(username)
 	);
 
-	// const [pinChecked, setPinChecked] = useState(postInUserMoodboards());
-
-	// const handleChangeForPin = (event) => {
-	// 	console.log("clicked pin");
-	// 	console.log("pin checked before clicking", pinChecked);
-	// 	setPinChecked(!pinChecked); // not working
-	// 	console.log("pin checked after clicking", pinChecked);
-
-	// 	// if postInUserMoodboards -> unpin
-	// 	//// if only in one board - confirm unpin from 1 board?
-	// 	//// if present in multiple boards - dialog to select which boards to unpin from???
-
-	// 	// if !postInUserMoodboards -> pin -> dialog to select which boards to pin to
-	// };
-
 	const handleChangeForLike = (event) => {
 		console.log("clicked like");
 		console.log("no. of likes before clicking:", post.likes.length);
@@ -108,6 +93,10 @@ const PostCard = (props) => {
 		setOpen(true);
 	};
 
+	useEffect(() => {
+		setPostPinned(postInUserMoodboards() ? true : false);
+	}, [moodboards]);
+
 	return (
 		<>
 			<Card sx={{ width: 200, position: "relative" }}>
@@ -145,6 +134,7 @@ const PostCard = (props) => {
 				post={post}
 				moodboards={moodboards}
 				setMoodboards={setMoodboards}
+				postPinned={postPinned}
 			/>
 		</>
 	);

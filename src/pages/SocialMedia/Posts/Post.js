@@ -168,7 +168,9 @@ const Post = () => {
 		return moodboardsWithThisPost.length > 0;
 	};
 
-	const [postPinned, setPostPinned] = useState(postInUserMoodboards());
+	const [postPinned, setPostPinned] = useState(
+		postInUserMoodboards() ? true : false
+	);
 
 	return (
 		<>
@@ -241,6 +243,7 @@ const Post = () => {
 							<MoodboardModal
 								open={open}
 								closeMoodboardModal={closeMoodboardModal}
+								postPinned={postPinned}
 							/>
 							<Box sx={{ pt: 1 }}>
 								{post.comments.map((comment) => (

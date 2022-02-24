@@ -12,8 +12,10 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Checkbox from "@mui/material/Checkbox";
 import Avatar from "@mui/material/Avatar";
 import { user } from "../../../data/currentUserData";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
-const MoodboardModal = ({ open, closeMoodboardModal }) => {
+const MoodboardModal = ({ open, closeMoodboardModal, postPinned }) => {
 	const modalStyles = {
 		wrapper: {
 			position: "absolute",
@@ -24,12 +26,14 @@ const MoodboardModal = ({ open, closeMoodboardModal }) => {
 			bgcolor: "background.paper",
 			boxShadow: 24,
 			p: 4,
+			width: 350,
 		},
-		inputFields: {
+		contents: {
 			display: "flex",
 			flexDirection: "column",
 			marginTop: "20px",
 			marginBottom: "15px",
+			justifyContent: "flex-start",
 		},
 		buttons: {
 			display: "flex",
@@ -61,66 +65,171 @@ const MoodboardModal = ({ open, closeMoodboardModal }) => {
 	};
 
 	return (
-		<Modal
-			open={open}
-			onClose={closeMoodboardModal}
-			aria-labelledby="modal-modal-title"
-			aria-describedby="modal-modal-description"
-		>
-			<Box sx={modalStyles.wrapper}>
-				<Typography id="modal-modal-title" variant="h6" component="h2">
-					Add post to moodboard
-				</Typography>
-				<Box sx={modalStyles.inputFields}>
-					<List dense>
-						{moodboards.map((moodboard, index) => {
-							const moodboardName = moodboard.boardName;
-							const labelId = `checkbox-list-secondary-label-${moodboardName}`;
-							return (
-								<ListItem
-									key={moodboardName}
-									secondaryAction={
-										<Checkbox
-											edge="end"
-											onChange={handleToggle(
-												moodboardName
-											)}
-											checked={
-												checked.indexOf(
-													moodboardName
-												) !== -1
+		<>
+			{!postPinned && (
+				<Modal
+					open={open}
+					onClose={closeMoodboardModal}
+					aria-labelledby="modal-modal-title"
+					aria-describedby="modal-modal-description"
+				>
+					<Box sx={modalStyles.wrapper}>
+						<Box
+							sx={{
+								display: "flex",
+								justifyContent: "space-between",
+								alignItems: "center",
+							}}
+						>
+							<Typography
+								id="modal-modal-title"
+								variant="h6"
+								component="h2"
+							>
+								Add post to moodboard
+							</Typography>
+							<IconButton
+								aria-label="delete"
+								onClick={closeMoodboardModal}
+							>
+								<CloseIcon />
+							</IconButton>
+						</Box>
+
+						<Box sx={modalStyles.contents}>
+							<List dense>
+								{moodboards.map((moodboard, index) => {
+									const moodboardName = moodboard.boardName;
+									const labelId = `checkbox-list-secondary-label-${moodboardName}`;
+									return (
+										<ListItem
+											key={moodboardName}
+											secondaryAction={
+												<Checkbox
+													edge="end"
+													onChange={handleToggle(
+														moodboardName
+													)}
+													checked={
+														checked.indexOf(
+															moodboardName
+														) !== -1
+													}
+													inputProps={{
+														"aria-labelledby":
+															labelId,
+													}}
+												/>
 											}
-											inputProps={{
-												"aria-labelledby": labelId,
-											}}
-										/>
-									}
-									disablePadding
-								>
-									<ListItemButton sx={{ pl: 0 }}>
-										<ListItemAvatar>
-											<Avatar
-												alt={`Avatar n°${index + 1}`}
-												src={`https://picsum.photos/200`}
-												sx={{ borderRadius: "10%" }}
-											/>
-										</ListItemAvatar>
-										<ListItemText
-											id={labelId}
-											primary={moodboardName}
-										/>
-									</ListItemButton>
-								</ListItem>
-							);
-						})}
-					</List>
-				</Box>
-				<Box sx={modalStyles.buttons}>
-					<Button onClick={handleClick}>Submit</Button>
-					<Button onClick={closeMoodboardModal}>Cancel</Button>
-				</Box>
-			</Box>
-		</Modal>
+											disablePadding
+										>
+											<ListItemButton sx={{ pl: 0 }}>
+												<ListItemAvatar>
+													<Avatar
+														alt={`Avatar n°${
+															index + 1
+														}`}
+														src={`https://picsum.photos/200`}
+														sx={{
+															borderRadius: "10%",
+														}}
+													/>
+												</ListItemAvatar>
+												<ListItemText
+													id={labelId}
+													primary={moodboardName}
+												/>
+											</ListItemButton>
+										</ListItem>
+									);
+								})}
+							</List>
+						</Box>
+						<Box>
+							<Button size="small">Add to new moodboard</Button>
+						</Box>
+						<Box sx={modalStyles.contents}>
+							<Button size="small" variant="contained">
+								Add
+							</Button>
+						</Box>
+					</Box>
+				</Modal>
+			)}
+			{postPinned && (
+				<Modal
+					open={open}
+					onClose={closeMoodboardModal}
+					aria-labelledby="modal-modal-title"
+					aria-describedby="modal-modal-description"
+				>
+					<Box sx={modalStyles.wrapper}>
+						<Typography
+							id="modal-modal-title"
+							variant="h6"
+							component="h2"
+						>
+							Pinned to moodboard
+						</Typography>
+						<Box sx={modalStyles.inputFields}>
+							<List dense>
+								{moodboards.map((moodboard, index) => {
+									const moodboardName = moodboard.boardName;
+									const labelId = `checkbox-list-secondary-label-${moodboardName}`;
+									return (
+										<ListItem
+											key={moodboardName}
+											secondaryAction={
+												<Checkbox
+													edge="end"
+													onChange={handleToggle(
+														moodboardName
+													)}
+													checked={
+														checked.indexOf(
+															moodboardName
+														) !== -1
+													}
+													inputProps={{
+														"aria-labelledby":
+															labelId,
+													}}
+												/>
+											}
+											disablePadding
+										>
+											<ListItemButton sx={{ pl: 0 }}>
+												<ListItemAvatar>
+													<Avatar
+														alt={`Avatar n°${
+															index + 1
+														}`}
+														src={`https://picsum.photos/200`}
+														sx={{
+															borderRadius: "10%",
+														}}
+													/>
+												</ListItemAvatar>
+												<ListItemText
+													id={labelId}
+													primary={moodboardName}
+												/>
+											</ListItemButton>
+										</ListItem>
+									);
+								})}
+							</List>
+						</Box>
+						<Box sx={modalStyles.buttons}>
+							<Button onClick={handleClick}>Submit</Button>
+							<Button onClick={closeMoodboardModal}>
+								Cancel
+							</Button>
+						</Box>
+					</Box>
+				</Modal>
+			)}
+		</>
 	);
 };
 

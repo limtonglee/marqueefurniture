@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -26,7 +26,6 @@ const MoodboardModal = ({
 	open,
 	closeMoodboardModal,
 	post,
-	postPinned,
 	moodboards,
 	setMoodboards,
 }) => {
@@ -72,6 +71,24 @@ const MoodboardModal = ({
 		setChecked(newChecked);
 	};
 
+	const forceToggle = (value) => {
+		console.log("FORCE TOGGLEEE");
+		const currentIndex = checked.indexOf(value);
+		const newChecked = [...checked];
+
+		if (currentIndex === -1) {
+			newChecked.push(value);
+			console.log("a");
+		} else {
+			newChecked.splice(currentIndex, 1);
+			console.log("b");
+		}
+
+		setChecked([...newChecked]);
+		console.log("supposed newChecked", newChecked);
+		console.log("but it's not updated into the state leh", checked);
+	};
+
 	const addPostToMoodboard = () => {
 		const newMoodboardList = [...moodboards].filter(
 			(moodboard) => !checked.includes(moodboard.id)
@@ -95,9 +112,38 @@ const MoodboardModal = ({
 
 	const addPostToNewMoodboard = () => {
 		console.log("addPostToNewMoodboard");
+		console.log("original moodboards", moodboards);
+		const newId = Math.floor(Math.random() * 100 + 1);
+
+		forceToggle(newId);
+
+		const newMoodboard = {
+			id: newId,
+			boardName: "New board",
+			description: "",
+			tags: [[], []],
+			isPrivate: false,
+			moodboardItems: [],
+		};
+
+		newMoodboard.moodboardItems.push(post);
+
+		const newMoodboardList = [...moodboards, newMoodboard];
+
+		// update moodboard state
+		setMoodboards(newMoodboardList);
+		closeMoodboardModal();
+		console.log(moodboards);
+
+		setPrevChecked(checked);
+
+		handleClickSnackbar();
 	};
 
 	const updatePostPinnedLocations = () => {
+		if (checked.length === 0) {
+			console.log("no board selected");
+		}
 		console.log("updatePostPinnedLocations");
 		const unchanged = prevChecked.filter((x) => checked.includes(x));
 		const toRemovePostFrom = prevChecked.filter(
@@ -145,6 +191,35 @@ const MoodboardModal = ({
 
 		setOpenSnackbar(false);
 	};
+
+	const postInUserMoodboards = () => {
+		const moodboardsWithThisPost = moodboards.filter((moodboard) => {
+			for (let moodboardItem of moodboard.moodboardItems) {
+				if (moodboardItem.id === post.id) {
+					return true;
+				}
+			}
+			return false;
+		});
+		return moodboardsWithThisPost.length > 0;
+	};
+
+	const [postPinned, setPostPinned] = useState(
+		postInUserMoodboards() ? true : false
+	);
+
+	useEffect(() => {
+		if (postPinned && checked.length === 0) {
+			moodboards.forEach((moodboard) => {
+				for (let moodboardItem of moodboard.moodboardItems) {
+					if (moodboardItem.id === post.id) {
+						checked.push(moodboard.id);
+					}
+				}
+			});
+			setPrevChecked(checked);
+		}
+	}, []);
 
 	return (
 		<>
@@ -247,22 +322,12 @@ const MoodboardModal = ({
 							</List>
 						</Box>
 						<Box>
-							{checked.length === 0 ? (
-								<Button
-									size="small"
-									onClick={addPostToNewMoodboard}
-									disabled
-								>
-									Add to new moodboard
-								</Button>
-							) : (
-								<Button
-									size="small"
-									onClick={addPostToNewMoodboard}
-								>
-									Add to new moodboard
-								</Button>
-							)}
+							<Button
+								size="small"
+								onClick={addPostToNewMoodboard}
+							>
+								Add to new moodboard
+							</Button>
 						</Box>
 						<Box sx={modalStyles.contents}>
 							{checked.length === 0 ? (
@@ -369,6 +434,14 @@ const MoodboardModal = ({
 									);
 								})}
 							</List>
+						</Box>
+						<Box>
+							<Button
+								size="small"
+								onClick={addPostToNewMoodboard}
+							>
+								Add to new moodboard
+							</Button>
 						</Box>
 						<Box sx={modalStyles.contents}>
 							<Button

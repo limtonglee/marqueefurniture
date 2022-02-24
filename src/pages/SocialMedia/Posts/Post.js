@@ -125,7 +125,6 @@ const Post = () => {
 	};
 
 	const handleClick = (event) => {
-		console.log("click");
 		setOpen(true);
 	};
 
@@ -249,7 +248,6 @@ const Post = () => {
 								open={open}
 								closeMoodboardModal={closeMoodboardModal}
 								post={post}
-								postPinned={postPinned}
 								moodboards={moodboards}
 								setMoodboards={setMoodboards}
 							/>

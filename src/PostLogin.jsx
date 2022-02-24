@@ -21,6 +21,7 @@ import { ShopRating } from "./pages/SellerCenter/Shop/Rating";
 import { Voucher } from "./pages/SellerCenter/Voucher";
 import Ideas from "./pages/SocialMedia/Ideas";
 import Post from "./pages/SocialMedia/Posts/Post";
+import CreateNewPost from "./pages/SocialMedia/Posts/CreateNewPost";
 
 const PostLogin = () => {
   return (
@@ -33,6 +34,7 @@ const PostLogin = () => {
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
         <Route path="/ideas" element={<Ideas />} />
+        <Route path="/new-idea" element={<CreateNewPost />} />
         <Route path="/ideas/:postId" element={<Post />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />

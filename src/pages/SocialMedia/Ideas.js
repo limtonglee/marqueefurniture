@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import SortButton from "../../components/SortButton";
 import FilterButton from "../../components/Buttons/FilterButton";
 import FeedGrid from "./FeedGrid/FeedGrid";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Container from "@mui/material/Container";
 import { postData } from "../../data/postData";
+import AddIcon from "@mui/icons-material/Add";
+import Stack from "@mui/material/Stack";
+import { Link } from "react-router-dom";
 
 let selectedTags = [];
 let tagBin = new Map();
@@ -97,15 +100,41 @@ const Ideas = () => {
 		tagBin = new Map();
 	};
 
+	const addToMoodboardButtonStyles = {
+		"&.MuiButton-root": {
+			borderRadius: 1.5,
+		},
+		borderColor: "#2E6B75",
+		color: "#2E6B75",
+		"&:hover": {
+			borderColor: "#F2F2F2",
+		},
+	};
+
+	const handleCreatePost = () => {
+		console.log("handleCreatePost");
+		window.location.replace(`new-idea`);
+	};
+
 	return (
 		<>
 			<Container sx={{ pt: 2 }}>
 				<Box sx={pageStyles.sortFilter}>
 					<SortButton handleSort={handleSort} />
-					<FilterButton
-						handleTag={handleTag}
-						resetDisplay={resetDisplay}
-					/>
+					<Stack direction="row" spacing={2}>
+						<Button
+							startIcon={<AddIcon />}
+							variant="outlined"
+							onClick={handleCreatePost}
+							sx={addToMoodboardButtonStyles}
+						>
+							New Post
+						</Button>
+						<FilterButton
+							handleTag={handleTag}
+							resetDisplay={resetDisplay}
+						/>
+					</Stack>
 				</Box>
 				<Box sx={pageStyles.masonry}>
 					<FeedGrid posts={posts} />

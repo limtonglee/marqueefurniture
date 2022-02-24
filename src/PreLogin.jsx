@@ -9,7 +9,7 @@ import { Listings } from "./pages/MarketPlace/Listings";
 import SignUp from "./pages/Signup";
 import Ideas from "./pages/SocialMedia/Ideas";
 import Post from "./pages/SocialMedia/Posts/Post";
-
+import CreateNewPost from "./pages/SocialMedia/Posts/CreateNewPost";
 
 const PreLogin = () => {
   return (
@@ -19,6 +19,7 @@ const PreLogin = () => {
         <Route path="/" element={<Navigate to="/marketplace" />} />
         <Route path="/socialmedia" element={<Login />} />
         <Route path="/ideas" element={<Ideas />} />
+        <Route path="/new-idea" element={<CreateNewPost />} />
         <Route path="/ideas/:postId" element={<Post />} />
         <Route path="/marketplace" element={<MarketPlace />}>
           <Route path="" element={<Listings />} />

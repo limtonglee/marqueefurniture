@@ -11,6 +11,14 @@ import Ideas from "./pages/SocialMedia/Ideas";
 import Post from "./pages/SocialMedia/Posts/Post";
 import CreateNewPost from "./pages/SocialMedia/Posts/CreateNewPost";
 
+// below to remove later
+import Users from "./pages/Users";
+import {UserDetails} from "./pages/Users/UserDetails";
+import { UserIndex } from "./pages/Users/UserIndex";
+import StartSelling from "./pages/Profile/About/StartSelling";
+import Profile from "./pages/Profile/";
+
+
 const PreLogin = () => {
   return (
     <>
@@ -29,6 +37,17 @@ const PreLogin = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/forgetpassword" element={<ForgetPassword />} />
         <Route path="/signup" element={<SignUp />} />
+        
+
+      {/* below to remove later */}
+      <Route path="/profile/sell" element={<StartSelling />} />
+      <Route path="/profile/" element={<Profile />} />
+      <Route path="users" element={<Users />}>
+           <Route path="" element={<UserIndex />} />
+           <Route path=":userId" element={<UserDetails />} />
+         </Route>
+
+
 
       </Routes>
     </>

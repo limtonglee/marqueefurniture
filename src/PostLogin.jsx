@@ -23,6 +23,7 @@ import Ideas from "./pages/SocialMedia/Ideas";
 import Post from "./pages/SocialMedia/Posts/Post";
 import EditProfile from "./pages/Profile/About/EditProfile";
 import StartSelling from "./pages/Profile/About/StartSelling";
+import Chat from "./pages/Chat/ChatModule";
 
 const PostLogin = () => {
   return (
@@ -34,6 +35,7 @@ const PostLogin = () => {
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
+        <Route path="/Chat" element={<Chat/>} />
         <Route path="/ideas" element={<Ideas />} />
         <Route path="/ideas/:id" element={<Post />} />
         <Route path="/login" element={<Login />} />

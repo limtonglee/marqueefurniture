@@ -34,6 +34,8 @@ import AlertTitle from '@mui/material/AlertTitle';
 import { ThemeProvider, createTheme } from '@mui/system';
 import { Fade } from '@mui/material';
 
+import Snackbar from '@mui/material/Snackbar';
+
 
 function ProfileInfoCard({ title, description, website, info, social, action }) {
   const labels = [];
@@ -57,36 +59,81 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
   const [username, setUsername] = useState(userStore.name)
   const [bio, setBio] = useState(userStore.description)
   const [link, setLink] = useState(userStore.userWebLink)
+  const [usernameError, setUsernameError] = useState(false)
+  const [bioError, setBioError] = useState(false)
+  const [linkError, setLinkError] = useState(false)
 
   const [open, setOpen] = useState(false);
   // const handleOpen = () => setOpen(true);
-  const handleOpen = (() => {
+  // const handleOpen = (() => {
+  //   setOpen(true)
+  //   setTimeout(()=> setOpen(false), 500)
+  // });
+
+  // const handleClose = () => setOpen(false);
+
+  const handleSnack = () => {
     setOpen(true)
     setTimeout(()=> setOpen(false), 500)
-  });
+  }
 
-  const handleClose = () => setOpen(false);
+  const handleSnackClose = () => setOpen(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setUsernameError(false)
+    setBioError(false)
+    setLinkError(false)
+    
+    if (username == '') {
+      setUsernameError(true)
+    }
+    if (bio == '') {
+      setBioError(true)
+    }
+      if (link == '') {
+      setLinkError(true)
+    }
+  
     userStore.setUserName(username);
     userStore.setDescription(bio);
     userStore.setUserWebLink(link);
   }
 
+  //this part is for the start selling form
   const [shopname, setShopname] = useState('')
   const [web, setWeb] = useState('')
   const [extract, setExtract] = useState('')
+  const [shopnameError, setShopnameError] = useState(false)
+  const [webError, setWebError] = useState(false)
+  const [extractError, setExtractError] = useState(false)
 
     const handleSubmits = (event) => {
     event.preventDefault();
+    setShopnameError(false)
+    setWebError(false)
+    setExtractError(false)
+    
+    if (shopname == '') {
+      setShopnameError(true)
+    }
+    if (web == '') {
+      setWebError(true)
+    }
+      if (extract == '') {
+      setExtractError(true)
+    }
+
+
+    //  if (shopname && web && extract) {
+    //   fetch('http://localhost:8000/sellers', {
+    //     method: 'POST',
+    //     headers: {"Content-type": "application/json"},
+    //     body: JSON.stringify({ shopname, website, description })
+    //   }).then(() => navigate("/sellercenter"))
      if (shopname && web && extract) {
-      fetch('http://localhost:8000/sellers', {
-        method: 'POST',
-        headers: {"Content-type": "application/json"},
-        body: JSON.stringify({ shopname, website, description })
-      }).then(() => navigate("/sellercenter"))
-     
+       console.log(shopname, web, extract)
+        navigate("/sellercenter")
       
     } 
   };
@@ -189,8 +236,14 @@ justifyContent: 'center',
           <TextField 
           variant="outlined" 
           defaultValue= {userStore.name} 
-          label= {userStore.name} 
-          onChange={(e) => setUsername(e.target.value)}>
+          // label= {userStore.name === "" ? 'Error' : ' '}
+          // label= {userStore.name} 
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          error={usernameError}
+          helperText={userStore.name === "" ? 'Username required' : ' '}
+          // label= {userStore.name === "" ? 'Error' : ' '}
+          >
 
           </TextField>
           
@@ -212,10 +265,13 @@ justifyContent: 'center',
         rows={4}
         fullWidth
         defaultValue= {userStore.description} 
-        label= {userStore.description}
-        
+        // label= {userStore.description}
         onChange={(e) => setBio(e.target.value)}
-        >
+        required
+        error={bioError}
+        helperText={userStore.description === "" ? 'Bio required' : ' '}
+        // label= {userStore.description === "" ? 'Error' : ' '}
+       >
           
         </TextField>
           
@@ -230,8 +286,13 @@ justifyContent: 'center',
             <TextField 
             variant="outlined"       
             defaultValue= {userStore.userWebLink}
-            label= {userStore.userWebLink}
-            onChange={(e) => setLink(e.target.value)}>
+            // label= {userStore.userWebLink}
+            onChange={(e) => setLink(e.target.value)}
+            required
+             error={linkError}
+             helperText={userStore.userWebLink === "" ? 'Website required' : ' '}
+          //  label= {userStore.userWebLink === "" ? 'Error' : ' '}
+           >
           
         </TextField>
   
@@ -263,13 +324,14 @@ justifyContent: 'center',
               type="submit"
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={handleOpen}
+              // onClick={handleOpen}
+              onClick={handleSnack}
             >
               Save
             </Button>
 
             {/* modal being used */}
-            <Modal
+            {/* <Modal
         open={open}
         // onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -283,7 +345,7 @@ justifyContent: 'center',
           component="h2" 
           align="center">
             Changes Saved
-          </Typography>
+          </Typography> */}
           {/* in case we want the close button */}
           {/* <Typography align='center'>
           <Button onClick={handleClose} 
@@ -292,8 +354,15 @@ justifyContent: 'center',
             Close
             </Button>
           </Typography> */}
-        </Box>
-      </Modal>
+        {/* </Box>
+      </Modal> */}
+
+        {/* trying out snackbar */}
+      <Snackbar open ={open} autoHideDuration={2000} onClose={handleSnackClose}>
+                <Alert onClose={handleSnackClose} severity="success" sx= {{ width:'auto'}}>
+                  Changes Saved
+                </Alert>
+              </Snackbar>
 
       {/* button for start selling */}
       <Button
@@ -339,11 +408,16 @@ justifyContent: 'center',
                 <TextField
                   required
                   fullWidth
-                  onChange={(e) => setShopname(e.target.value)}
+                  onChange={(e) => 
+                    setShopname(e.target.value)                     
+                  }
                   id="shopname"
                   label="Shop Name"
                   name="shopname"
                   autoComplete="shopname"
+                  error={shopnameError}
+                  helperText={shopnameError && "Shop name required"}
+                  // helperText={shopname === "" ? 'Shop name required!' : ' '}
                 />
               </Grid>
               <Typography variant="h6" mt={5}>
@@ -358,6 +432,9 @@ justifyContent: 'center',
                   label="Shop Website"
                   name="website"
                   autoComplete="website"
+                  error={webError}
+                  helperText={webError && "Shop website required"}
+                  // helperText={web === "" ? 'Website required!' : ' '}
                 />
               </Grid>
               <Typography variant="h6" mt={5}>
@@ -375,6 +452,9 @@ justifyContent: 'center',
                   // type="description"
                   id="description"
                   autoComplete="description"
+                  error={extractError}
+                  helperText={extractError && "Shop description required"}
+                  // helperText={extract === "" ? 'Description required!' : ' '}
                 />
               </Grid>
             
@@ -387,7 +467,6 @@ justifyContent: 'center',
             >
               Sign Up
             </Button>
-            
           </Box>
         </Box>
       </Container>
@@ -398,6 +477,7 @@ justifyContent: 'center',
          
         </DialogActions>
       </Dialog>
+
 
         </Box>
 

@@ -7,10 +7,13 @@ import { makeLocalStorage } from "./makeLocalStorage.tsx";
 //to be edited
 
 class userStore {
-  name = "John doe";
+  name = "";
   isLoggedIn = false;
   isSeller = false;
   isAdmin = false;
+  userWebLink = "";
+  description = "";
+  shop = "";
   // userStore.isSeller = false
   // getter no need but setter need
 
@@ -20,18 +23,25 @@ class userStore {
       isLoggedIn: observable,
       isSeller: observable,
       isAdmin: observable,
+      userWebLink: observable,
+      description: observable,
+      shop: observable,
     });
     makeLocalStorage(this, "userStore", [
       "name",
       "isLoggedIn",
       "isSeller",
       "isAdmin",
+      "userWebLink",
+      "description",
+      "shop",
     ]);
   }
 
   setUserName = (name) => {
     this.name = name;
   };
+
   setIsLoggedIn = () => {
     this.isLoggedIn = true;
   };
@@ -40,6 +50,9 @@ class userStore {
     this.name = "";
     this.isSeller = false;
     this.isAdmin = false;
+    this.userWebLink = null;
+    this.description = null;
+    this.shop = null;
   };
   setIsSeller = () => {
     this.isSeller = true;
@@ -47,6 +60,18 @@ class userStore {
 
   setIsAdmin = () => {
     this.isAdmin = true;
+  };
+
+  setUserWebLink = (link) => {
+    this.userWebLink = link;
+  };
+
+  setDescription = (description) => {
+    this.description = description;
+  };
+
+  setShop = (shop) => {
+    this.shop = shop;
   };
 }
 

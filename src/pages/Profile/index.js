@@ -30,8 +30,22 @@ import { moodboardData } from "../../data/moodboardData";
 
 import Box from "@mui/material/Box";
 
+import { useStores } from "../../stores/RootStore";
+
+
+
 function Profile() {
   const [tabValue, setTabValue] = useState(0);
+
+  const { userStore } = useStores();
+
+  //still not working
+  //username in header component does not update
+  const [username, setUsername] = useState(userStore.name);
+
+  useEffect(()=> {
+    setUsername(userStore.name)
+  }, [username])
 
   const handleSetTabValue = (event, newValue) => {
     setTabValue(newValue);
@@ -40,6 +54,7 @@ function Profile() {
   return (
     <Container maxWidth="xl">
       <Header />
+      {/* <Header name={userStore.name} /> */}
       <Grid item xs={12} md={12} lg={12} sx={{ ml: "auto" }}>
         <AppBar position="static">
           <Tabs
@@ -61,14 +76,15 @@ function Profile() {
         <Grid>
           <Grid item xs={12} md={12} xl={12}>
             <ProfileInfoCard
-              title="bio"
-              description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
+              title="username"
+              description="Bio"
+              website="Website"
               info={{
                 // username: "Alec M. Thompson",
                 // contact: "(44) 123 1234 123",
                 // email: "alecthompson@mail.com",
                 // location: "USA",
-                link: "https://www.facebook.com/",
+                // link: "https://www.facebook.com/",
                 
               }}
               social={[

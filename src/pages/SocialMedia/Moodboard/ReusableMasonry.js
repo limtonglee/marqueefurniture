@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import SortButton from "../../components/SortButton";
-import FilterButton from "../../components/Buttons/FilterButton";
-import FeedGrid from "./FeedGrid/FeedGrid";
+import SortButton from "../../../components/SortButton";
+import FilterButton from "../../../components/Buttons/FilterButton";
+import FeedGrid from "../FeedGrid/FeedGrid";
 import { Box, Button } from "@mui/material";
 import Container from "@mui/material/Container";
-import { postData } from "../../data/postData";
+// import { postData } from "../../data/postData";
 import AddIcon from "@mui/icons-material/Add";
 import Stack from "@mui/material/Stack";
 
-const Ideas = () => {
+const ReusableMasonry = ({ postData }) => {
+	console.log(postData);
 	let selectedTags = [];
 	let tagBin = new Map();
 	let currentSort = "popular";
@@ -63,7 +64,7 @@ const Ideas = () => {
 		}
 	};
 
-	const [posts, setPosts] = useState(postData);
+	const [posts, setPosts] = useState(postData.moodboardItems);
 
 	useEffect(() => {
 		sortFeed();
@@ -94,7 +95,7 @@ const Ideas = () => {
 	};
 
 	const resetDisplay = () => {
-		setPosts(postData);
+		setPosts(postData.moodboardItems);
 		selectedTags = [];
 		tagBin = new Map();
 	};
@@ -143,4 +144,4 @@ const Ideas = () => {
 	);
 };
 
-export default Ideas;
+export default ReusableMasonry;

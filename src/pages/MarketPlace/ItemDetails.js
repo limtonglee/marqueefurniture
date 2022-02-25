@@ -21,7 +21,7 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 //This is the listing page 
 /* 
 Expansion of item details for this Done
-Link of profile Done
+Link of profile To be edited
 URL Sharing Done
 Add to cart 
 */

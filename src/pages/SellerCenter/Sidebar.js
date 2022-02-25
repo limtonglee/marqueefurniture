@@ -11,7 +11,6 @@ import { useLocation } from 'react-router-dom';
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location.pathname);
   return (
     <>
       <Navigation

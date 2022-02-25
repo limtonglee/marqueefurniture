@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import * as React from "react";
-import { Avatar, CardContent, CardHeader, CardMedia, Container, Fab, ImageList, Stack } from "@mui/material";
+import { Avatar, CardContent, CardHeader, CardMedia, Container, Fab, ImageList, Modal, Stack } from "@mui/material";
 import { ImageListItem } from "@mui/material";
 import { ImageListItemBar } from "@mui/material";
 import { itemData } from "../../data/itemData";
@@ -28,11 +28,25 @@ Add to cart
 export const ItemDetails = () => {
   const param = useParams();
   const item = itemData[param.itemId];
-
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
   const [open, setOpen] = React.useState(false);
+  const [openSnack, setOpenSnack] = React.useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleSnack = () => {
-    setOpen(true)
+    setOpenSnack(true)
   }
 
   const handleSnackClose = (event, reason) => {
@@ -40,7 +54,7 @@ export const ItemDetails = () => {
       return
     }
 
-    setOpen(false)
+    setOpenSnack(false)
   }
 
   const isDesign = (item) => {
@@ -85,35 +99,43 @@ export const ItemDetails = () => {
           <Typography variant= "button" color="text.secondary" fontWeight="bold" >
             "put in place the rating and stars"
           </Typography>
-          
-          <Typography variant= "h3" color="text.secondary" fontWeight="bold" >
-            Shipping Provider: {item.shippingProvider}
-          </Typography>
+          <br/>
+          <Button onClick ={handleOpen} sx = {{fontSize: 30, fontWeight: "bold"}}>Details</Button>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            >
+              <Box sx = {style}>
+                <Typography variant= "h3" color="text.secondary" fontWeight="bold" >
+                  Shipping Provider: {item.shippingProvider}
+                </Typography>
 
-          <Typography variant="h3" color="text.secondary" >
-            Product Details:
-          </Typography>
-          
-          <Typography variant="overline" color="blue" fontWeight="bold">
-            <div>
-              Category: {item.category}
-              <br/>
-              Brand: {item.brand}
-              <br/>
-              Warranty Type: {item.warrantyType}
-              <br/>
-              Parcel Size: {item.parcelSize}
-              <br/>
-              Weight: {item.weight}
-              <br/>
-              Stock Available: {item.stockAvailable}
-              <br/>
-              Variation: {item.variation}
-              <br/>
-              Dimension: {item.dimension}
-            </div>
-          </Typography>
-
+                <Typography variant="h3" color="text.secondary" >
+                  Product Details:
+                </Typography>
+                
+                <Typography variant="overline" color="blue" fontWeight="bold">
+                  <div>
+                    Category: {item.category}
+                    <br/>
+                    Brand: {item.brand}
+                    <br/>
+                    Warranty Type: {item.warrantyType}
+                    <br/>
+                    Parcel Size: {item.parcelSize}
+                    <br/>
+                    Weight: {item.weight}
+                    <br/>
+                    Stock Available: {item.stockAvailable}
+                    <br/>
+                    Variation: {item.variation}
+                    <br/>
+                    Dimension: {item.dimension}
+                  </div>
+                </Typography>
+              </Box>
+            </Modal>
+          <br />
           <Typography variant= "overline" color="text.secondary">
             {item.description}
           </Typography>
@@ -126,7 +148,7 @@ export const ItemDetails = () => {
                 navigator.clipboard.writeText(window.location.toString())
                 }
               } />
-              <Snackbar open ={open} autoHideDuration={2000} onClose={handleSnackClose}>
+              <Snackbar open ={openSnack} autoHideDuration={2000} onClose={handleSnackClose}>
                 <Alert onClose={handleSnackClose} severity="success" sx= {{ width:'auto'}}>
                   Copied to Clipboard!
                 </Alert>

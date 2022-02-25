@@ -16,7 +16,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router";
 import Searchbar from "../../../components/Searchbar";
 import EditListingModal from "./EditListingModal";
-import { InsertEmoticon } from '@mui/icons-material';
+import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 
 
 export const MyListings = () => {
@@ -56,8 +56,6 @@ export const MyListings = () => {
         { field: 'sales', headerName: 'Sales', width: 70 },
     ];
 
-
-
     const handleSearch = (value) => {
         findListing(value);
     }
@@ -75,6 +73,11 @@ export const MyListings = () => {
             setData(filteredListing)
         }
     };
+
+    const handleDelist = (event, item) => {
+        item.status = 'Delisted';
+        handleChange();
+    }
 
     const CardStyle = styled('div')({
         marginLeft: '10px',
@@ -150,6 +153,19 @@ export const MyListings = () => {
                                         <CardStyle>Stock: {item.stock}</CardStyle>
                                         <CardStyle>Sales: {item.sales}</CardStyle>
                                         <EditListingModal>{item}</EditListingModal>
+                                        <Button
+                                            variant="contained"
+                                            startIcon={<PlaylistRemoveIcon />}
+                                            style={{
+                                                height: '50px',
+                                                marginLeft: '5px',
+                                            }}
+                                            onClick={e => {
+                                                handleDelist(e, item);
+                                            }}
+                                        >
+                                            Delist Listing
+                                        </Button>
                                     </div>
                                 </Card>
                             ))}

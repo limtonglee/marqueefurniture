@@ -26,6 +26,7 @@ import ViewMoodboard from "./pages/SocialMedia/Moodboard/ViewMoodboard";
 import CreateMoodboard from "./pages/SocialMedia/Moodboard/CreateMoodboard";
 import EditProfile from "./pages/Profile/About/EditProfile";
 import StartSelling from "./pages/Profile/About/StartSelling";
+import Chat from "./pages/Chat/ChatModule";
 
 const PostLogin = () => {
   return (
@@ -37,6 +38,7 @@ const PostLogin = () => {
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
+        <Route path="/Chat" element={<Chat/>} />
         <Route path="/ideas" element={<Ideas />} />
         <Route path="/new-idea" element={<CreateNewPost />} />
         <Route path="/ideas/:postId" element={<Post />} />

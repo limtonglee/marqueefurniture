@@ -16,11 +16,12 @@ import { Alert } from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Box } from "@mui/material";
 import { Link } from "react-router-dom";
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 
 //This is the listing page 
 /* 
 Expansion of item details for this Done
-Link of profile Done
+Link of profile To be edited
 URL Sharing Done
 Add to cart 
 */
@@ -55,7 +56,7 @@ export const ItemDetails = () => {
       <CardContent key={item.key}>
         <CardHeader
           avatar = {
-            <Link to={`/profile`}> 
+            <Link to={`/profile`} underline= "none"> 
               <Avatar sx={{ bgcolor: 'red' }} aria-label="recipe">
                 R
               </Avatar>
@@ -133,6 +134,11 @@ export const ItemDetails = () => {
             </Fab>
             <Fab marginRight>
               <ShoppingCartIcon />
+            </Fab>
+            <Fab>
+              <Link underline = "none" to = {`/chat`}>
+                <ChatBubbleIcon />
+              </Link>
             </Fab>         
         </CardContent>
       </Card>

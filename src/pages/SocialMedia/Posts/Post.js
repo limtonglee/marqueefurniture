@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
@@ -14,72 +14,25 @@ import Stack from "@mui/material/Stack";
 import Comment from "./Comment";
 import Avatar from "@mui/material/Avatar";
 import SendIcon from "@mui/icons-material/Send";
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import FormControl from "@mui/material/FormControl";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { postData } from "../../../data/postData";
+import { useParams } from "react-router-dom";
+import MoodboardModal from "../Moodboard/MoodboardModal";
+import TextField from "@mui/material/TextField";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const { username } = user;
 
 const Post = () => {
-	const post = {
-		id: 0,
-		image: "https://picsum.photos/200/300",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-		tags: [["Living Room"], ["Minimalist"]],
-		likes: ["alicetan", "bobchua", "charleswong", "dianasim"],
-		comments: [
-			{
-				id: "0",
-				user: {
-					username: "alicetan",
-					email: "alicetan@gmail.com",
-					contactNum: "97662340",
-					password: "AliceTan123",
-					type: "Customer",
-					profilePic: "https://picsum.photos/200/200",
-					addresses: ["Address 1", "Address 2"],
-				},
-				comment: "That looks great",
-				datetime: "",
-			},
-			{
-				id: "2",
-				user: {
-					username: "bobchua",
-					email: "bobchua@gmail.com",
-					contactNum: "98361129",
-					password: "BobChua123",
-					type: "Customer",
-					profilePic: "https://picsum.photos/100/100",
-					addresses: ["Address 1", "Address 2"],
-				},
-				comment: "Very nice",
-				datetime: "",
-			},
-		],
-		products: [
-			{
-				id: "0",
-				listingType: "Furniture",
-				img: "https://images.unsplash.com/photo-1540574163026-643ea20ade25",
-				title: "Brown Sofa",
-				author: "@FurnitureFirstStop",
-			},
-			{
-				id: "1",
-				listingType: "Furniture",
-				img: "https://images.unsplash.com/photo-1550581190-9c1c48d21d6c",
-				title: "Black Sofa",
-				author: "@FurnitureLife",
-			},
-		],
-	};
+	const { postId } = useParams();
+
+	// const { moodboards } = user;
+	const [moodboards, setMoodboards] = useState(user.moodboards);
+
+	// const post = postData.filter((post) => post.id === parseInt(postId))[0];
+	const [post, setPost] = useState(
+		postData.filter((post) => post.id === parseInt(postId))[0]
+	);
 
 	const postCardStyles = {
 		cardActions: {
@@ -108,6 +61,20 @@ const Post = () => {
 		},
 	};
 
+	const pinnedToMoodboardButtonStyles = {
+		"&.MuiButton-root": {
+			borderRadius: 1.5,
+		},
+		backgroundColor: "#2E6B75",
+		borderColor: "#2E6B75",
+		color: "#FFFFFF",
+		"&:hover": {
+			backgroundColor: "#2E6B75",
+			borderColor: "#2E6B75",
+			color: "#FFFFFF",
+		},
+	};
+
 	const commentButtonStyles = {
 		textTransform: "none",
 		color: "grey !important",
@@ -121,6 +88,12 @@ const Post = () => {
 	const [postLikesCount, setPostLikesCount] = useState(post.likes.length);
 
 	const [commentActivated, setCommentActivated] = useState(false);
+
+	const [open, setOpen] = React.useState(false);
+
+	const closeMoodboardModal = () => {
+		setOpen(false);
+	};
 
 	const handleChangeForLike = (event) => {
 		console.log("clicked like");
@@ -150,7 +123,7 @@ const Post = () => {
 	};
 
 	const handleClick = (event) => {
-		console.log("click");
+		setOpen(true);
 	};
 
 	const handleAddComment = () => {
@@ -158,27 +131,57 @@ const Post = () => {
 		setCommentActivated(true);
 	};
 
-	const [values, setValues] = React.useState({
-		amount: "",
-		password: "",
-		weight: "",
-		weightRange: "",
-		showPassword: false,
-	});
-
-	const handleChange = (prop) => (event) => {
-		setValues({ ...values, [prop]: event.target.value });
-	};
-
-	const handleClickShowPassword = () => {
-		setValues({
-			...values,
-			showPassword: !values.showPassword,
+	const postInUserMoodboards = () => {
+		const moodboardsWithThisPost = moodboards.filter((moodboard) => {
+			for (let moodboardItem of moodboard.moodboardItems) {
+				if (moodboardItem.id === post.id) {
+					return true;
+				}
+			}
+			return false;
 		});
+		return moodboardsWithThisPost.length > 0;
 	};
 
-	const handleMouseDownPassword = (event) => {
-		event.preventDefault();
+	const [postPinned, setPostPinned] = useState(
+		postInUserMoodboards() ? true : false
+	);
+
+	useEffect(() => {
+		setPostPinned(postInUserMoodboards() ? true : false);
+	}, [moodboards]);
+
+	const [comment, setComment] = useState("");
+
+	const updateComment = (e) => {
+		setComment(e.target.value);
+	};
+
+	const handleKeyDown = (e) => {
+		//it triggers by pressing the enter key
+		console.log(e);
+		if (e.keyCode === 13) {
+			console.log("pressed enter");
+		}
+	};
+
+	const sendComment = () => {
+		console.log("sendComment");
+		console.log(comment);
+
+		const newId = Math.floor(Math.random() * 100 + 1);
+
+		const newComment = {
+			id: newId,
+			user: user,
+			comment: comment,
+			datetime: "",
+		};
+
+		const newPost = { ...post };
+		newPost.comments = [...newPost.comments, newComment];
+		setPost(newPost);
+		setComment("");
 	};
 
 	return (
@@ -230,25 +233,44 @@ const Post = () => {
 										<span>{postLikesCount}</span>
 									</Box>
 								</Stack>
-
-								<Button
-									startIcon={<PushPinOutlinedIcon />}
-									variant="outlined"
-									onClick={handleClick}
-									sx={addToMoodboardButtonStyles}
-								>
-									Add to moodboard
-								</Button>
+								{postPinned ? (
+									<Button
+										startIcon={<PushPinOutlinedIcon />}
+										onClick={handleClick}
+										sx={pinnedToMoodboardButtonStyles}
+									>
+										Pinned
+									</Button>
+								) : (
+									<Button
+										startIcon={<PushPinOutlinedIcon />}
+										variant="outlined"
+										onClick={handleClick}
+										sx={addToMoodboardButtonStyles}
+									>
+										Add to moodboard
+									</Button>
+								)}
 							</Box>
+							<MoodboardModal
+								open={open}
+								closeMoodboardModal={closeMoodboardModal}
+								post={post}
+								moodboards={moodboards}
+								setMoodboards={setMoodboards}
+								postPinned={postPinned}
+							/>
 							<Box sx={{ pt: 1 }}>
 								{post.comments.map((comment) => (
 									<Comment
 										key={comment.id}
 										comment={comment}
+										post={post}
+										setPost={setPost}
 									/>
 								))}
 							</Box>
-							<Box sx={{ pt: 1 }}>
+							<Box sx={{ pt: 1, width: "100%" }}>
 								<Stack
 									direction="row"
 									spacing={0.5}
@@ -262,12 +284,6 @@ const Post = () => {
 										src="https://picsum.photos/200"
 										sx={{ width: 24, height: 24 }}
 									/>
-									{/* <Button
-										sx={commentButtonStyles}
-										onClick={handleAddComment}
-									>
-										Add a comment...
-									</Button> */}
 									{!commentActivated && (
 										<Button
 											sx={commentButtonStyles}
@@ -277,53 +293,50 @@ const Post = () => {
 										</Button>
 									)}
 									{commentActivated && (
-										<Box>
-											<FormControl
-												sx={{
-													width: "25ch",
-													ml: 1,
+										<Box
+											sx={{
+												display: "flex",
+												justifyContent: "space-between",
+												width: "100%",
+											}}
+										>
+											<TextField
+												id="outlined-basic"
+												variant="outlined"
+												size="small"
+												placeholder="Type comment..."
+												InputLabelProps={{
+													shrink: true,
 												}}
-												variant="standard"
-											>
-												<InputLabel
-													htmlFor="standard-adornment-password"
-													sx={{ mt: 0 }}
+												sx={{ width: "100%", mr: 1 }}
+												autoFocus={true}
+												onChange={updateComment}
+												value={comment}
+											/>
+											{comment.length == 0 ? (
+												<Button
+													endIcon={<SendIcon />}
+													variant="outlined"
+													onClick={sendComment}
+													sx={
+														addToMoodboardButtonStyles
+													}
+													disabled
 												>
-													Type comment
-												</InputLabel>
-												<Input
-													sx={{ mt: "0!important" }}
-													id="standard-adornment-password"
-													type={
-														values.showPassword
-															? "text"
-															: "password"
+													Send
+												</Button>
+											) : (
+												<Button
+													endIcon={<SendIcon />}
+													variant="outlined"
+													onClick={sendComment}
+													sx={
+														addToMoodboardButtonStyles
 													}
-													value={values.password}
-													onChange={handleChange(
-														"password"
-													)}
-													endAdornment={
-														<InputAdornment position="end">
-															<SendIcon
-																aria-label="toggle password visibility"
-																onClick={
-																	handleClickShowPassword
-																}
-																onMouseDown={
-																	handleMouseDownPassword
-																}
-															>
-																{values.showPassword ? (
-																	<VisibilityOff />
-																) : (
-																	<Visibility />
-																)}
-															</SendIcon>
-														</InputAdornment>
-													}
-												/>
-											</FormControl>
+												>
+													Send
+												</Button>
+											)}
 										</Box>
 									)}
 								</Stack>

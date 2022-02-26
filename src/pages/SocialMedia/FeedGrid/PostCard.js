@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardMedia from "@mui/material/CardMedia";
@@ -8,13 +8,17 @@ import Favorite from "@mui/icons-material/Favorite";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import { user } from "../../../data/currentUserData";
+import MoodboardModal from "../Moodboard/MoodboardModal";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
-const { username, likedPosts, moodboards } = user;
+const { username } = user;
 
 const PostCard = (props) => {
 	const post = props.post;
+
+	const [moodboards, setMoodboards] = useState(user.moodboards);
+
 	const postCardStyles = {
 		cardActions: {
 			position: "absolute",
@@ -31,25 +35,25 @@ const PostCard = (props) => {
 		},
 	};
 
+	const postInUserMoodboards = () => {
+		const moodboardsWithThisPost = moodboards.filter((moodboard) => {
+			for (let moodboardItem of moodboard.moodboardItems) {
+				if (moodboardItem.id === post.id) {
+					return true;
+				}
+			}
+			return false;
+		});
+		return moodboardsWithThisPost.length > 0;
+	};
+
+	const [postPinned, setPostPinned] = useState(
+		postInUserMoodboards() ? true : false
+	);
+
 	const [likesChecked, setLikesChecked] = useState(
 		post.likes.includes(username)
 	);
-
-	// const [pinChecked, setPinChecked] = useState(postInUserMoodboards());
-	const [pinChecked, setPinChecked] = useState(false);
-
-	const handleChangeForPin = (event) => {
-		console.log("clicked pin");
-		console.log("pin checked before clicking", pinChecked);
-		setPinChecked(!pinChecked); // not working
-		console.log("pin checked after clicking", pinChecked);
-
-		// if postInUserMoodboards -> unpin
-		//// if only in one board - confirm unpin from 1 board?
-		//// if present in multiple boards - dialog to select which boards to unpin from???
-
-		// if !postInUserMoodboards -> pin -> dialog to select which boards to pin to
-	};
 
 	const handleChangeForLike = (event) => {
 		console.log("clicked like");
@@ -60,12 +64,15 @@ const PostCard = (props) => {
 			// remove user from likes array
 			post.likes = post.likes.filter((user) => user !== username);
 
-			// TODO: remove this post from the user's likes
+			// remove this post from the user's likes
+			removePostFromUserLikes();
 		} else {
 			// like
 			// add user to likes array
 			post.likes.push(username);
-			// TODO: add this post to user's likes
+
+			// add this post to user's likes
+			addPostFromUserLikes();
 		}
 
 		console.log("no. of likes after clicking:", post.likes.length);
@@ -75,51 +82,76 @@ const PostCard = (props) => {
 		setLikesChecked(!likesChecked);
 	};
 
-	const postInUserMoodboards = () => {
-		moodboards.forEach((board) => {
-			board.moodboardItems.forEach((moodboardItems) => {
-				if (moodboardItems.id === post.id) {
-					return true;
-				}
-			});
-		});
-		return false;
+	const removePostFromUserLikes = () => {
+		const newLikePostsList = [...user.likedPosts].filter(
+			(item) => item.id !== post.id
+		);
+		user.likedPosts = newLikePostsList;
+	};
+
+	const addPostFromUserLikes = () => {
+		const newLikePostsList = [...user.likedPosts, post];
+		user.likedPosts = newLikePostsList;
 	};
 
 	const redirectToPost = () => {
-		console.log("hi");
-		window.location.replace("ideas/1");
+		window.location.replace(`ideas/${post.id}`);
 	};
 
+	const [open, setOpen] = React.useState(false);
+
+	const closeMoodboardModal = () => {
+		setOpen(false);
+	};
+
+	const handleClick = (event) => {
+		setOpen(true);
+	};
+
+	useEffect(() => {
+		setPostPinned(postInUserMoodboards() ? true : false);
+	}, [moodboards]);
+
 	return (
-		<Card sx={{ width: 200, position: "relative" }}>
-			<CardMedia
-				component="img"
-				width="100%"
-				objectfit="scale-down"
-				image={post.image}
-				alt="post picture"
-				onClick={() => redirectToPost()}
+		<>
+			<Card sx={{ width: 200, position: "relative" }}>
+				<CardMedia
+					component="img"
+					width="100%"
+					objectfit="scale-down"
+					image={post.image}
+					alt="post picture"
+					onClick={() => redirectToPost()}
+				/>
+				<CardActions sx={postCardStyles.cardActions}>
+					<Checkbox
+						{...label}
+						icon={<PushPinOutlinedIcon fontSize="small" />}
+						checkedIcon={<PushPinIcon fontSize="small" />}
+						sx={postCardStyles.checkboxes}
+						// onChange={handleChangeForPin}
+						onClick={handleClick}
+						checked={postPinned}
+					/>
+					<Checkbox
+						{...label}
+						icon={<FavoriteBorder fontSize="small" />}
+						checkedIcon={<Favorite fontSize="small" />}
+						sx={postCardStyles.checkboxes}
+						onChange={handleChangeForLike}
+						checked={likesChecked}
+					/>
+				</CardActions>
+			</Card>
+			<MoodboardModal
+				open={open}
+				closeMoodboardModal={closeMoodboardModal}
+				post={post}
+				moodboards={moodboards}
+				setMoodboards={setMoodboards}
+				postPinned={postPinned}
 			/>
-			<CardActions sx={postCardStyles.cardActions}>
-				<Checkbox
-					{...label}
-					icon={<PushPinOutlinedIcon fontSize="small" />}
-					checkedIcon={<PushPinIcon fontSize="small" />}
-					sx={postCardStyles.checkboxes}
-					onChange={handleChangeForPin}
-					checked={pinChecked}
-				/>
-				<Checkbox
-					{...label}
-					icon={<FavoriteBorder fontSize="small" />}
-					checkedIcon={<Favorite fontSize="small" />}
-					sx={postCardStyles.checkboxes}
-					onChange={handleChangeForLike}
-					checked={likesChecked}
-				/>
-			</CardActions>
-		</Card>
+		</>
 	);
 };
 

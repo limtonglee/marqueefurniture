@@ -1,6 +1,8 @@
 //store user logged in information
 
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, observable } from "mobx";
+import { autorun } from "mobx";
+import { makeLocalStorage } from "./makeLocalStorage.tsx";
 
 //to be edited
 
@@ -11,12 +13,29 @@ class userStore {
   isAdmin = false;
   userWebLink = "";
   description = "";
-  shop="";
+  shop = "";
   // userStore.isSeller = false
-  // getter no need but setter need 
+  // getter no need but setter need
 
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {
+      name: observable,
+      isLoggedIn: observable,
+      isSeller: observable,
+      isAdmin: observable,
+      userWebLink: observable,
+      description: observable,
+      shop: observable,
+    });
+    makeLocalStorage(this, "userStore", [
+      "name",
+      "isLoggedIn",
+      "isSeller",
+      "isAdmin",
+      "userWebLink",
+      "description",
+      "shop",
+    ]);
   }
 
   setUserName = (name) => {
@@ -28,18 +47,24 @@ class userStore {
   };
   setIsLoggedOut = () => {
     this.isLoggedIn = false;
+    this.name = "";
+    this.isSeller = false;
+    this.isAdmin = false;
+    this.userWebLink = null;
+    this.description = null;
+    this.shop = null;
   };
   setIsSeller = () => {
     this.isSeller = true;
-  }
+  };
 
   setIsAdmin = () => {
     this.isAdmin = true;
-  }
+  };
 
   setUserWebLink = (link) => {
-    this.userWebLink = link
-  }
+    this.userWebLink = link;
+  };
 
   setDescription = (description) => {
     this.description = description;

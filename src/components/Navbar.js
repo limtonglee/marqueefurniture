@@ -18,6 +18,7 @@ const pageLinks = [
 	{ text: "Market Place", link: "/marketplace" },
 	{ text: "Seller Center", link: "/sellercenter" },
 	{ text: "Ideas", link: "/ideas" },
+	{ text: "Moodboard", link: "/view-moodboard" },
 	{ text: "Login", link: "/login" },
 ];
 

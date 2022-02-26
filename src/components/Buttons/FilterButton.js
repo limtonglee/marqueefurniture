@@ -7,13 +7,15 @@ import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 
-let previousDesignTags = [];
+// let previousDesignTags = [];
 
 const FilterButton = ({ handleTag, resetDisplay }) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
 	const [filterRoomValues, setfilterRoomValues] = useState([]);
 	const [filterDesignValues, setfilterDesignValues] = useState([]);
+
+	let previousDesignTags = [];
 
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);

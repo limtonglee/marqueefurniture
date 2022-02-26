@@ -15,10 +15,15 @@ import { Snackbar } from "@mui/material";
 import { Alert } from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Box } from "@mui/material";
+import { Link } from "react-router-dom";
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 
 //This is the listing page 
 /* 
-Expansion of item details for this
+Expansion of item details for this Done
+Link of profile To be edited
+URL Sharing Done
+Add to cart 
 */
 export const ItemDetails = () => {
   const param = useParams();
@@ -50,9 +55,12 @@ export const ItemDetails = () => {
     <Card>
       <CardContent key={item.key}>
         <CardHeader
-          avatar = {<Avatar sx={{ bgcolor: 'red' }} aria-label="recipe">
-            R
-          </Avatar>}
+          avatar = {
+            <Link to={`/profile`} underline= "none"> 
+              <Avatar sx={{ bgcolor: 'red' }} aria-label="recipe">
+                R
+              </Avatar>
+            </Link>}
           title = {item.author}
           />
         <CardMedia width = 'auto' align = 'center'>
@@ -112,10 +120,6 @@ export const ItemDetails = () => {
 
 
         </CardContent>
-            <Fab size="small" sx={{ color: "secondary"}}>
-              <FavoriteIcon />
-            </Fab>
-
             <Fab size="small" sx={{ color: "secondary" , margin: 1}}>
               <ShareIcon onClick = {() => {
                 handleSnack();
@@ -130,6 +134,11 @@ export const ItemDetails = () => {
             </Fab>
             <Fab marginRight>
               <ShoppingCartIcon />
+            </Fab>
+            <Fab>
+              <Link underline = "none" to = {`/chat`}>
+                <ChatBubbleIcon />
+              </Link>
             </Fab>         
         </CardContent>
       </Card>

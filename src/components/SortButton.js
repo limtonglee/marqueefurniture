@@ -141,7 +141,7 @@ export default function UnstyledSelectSimple(props) {
 		<CustomSelect defaultValue={"popular"} onChange={props.handleSort}>
 			<StyledOption value={"popular"}>Popular</StyledOption>
 			<StyledOption value={"recent"}>Recent</StyledOption>
-			<StyledOption value={"for you"}>For You</StyledOption>
+			{/* <StyledOption value={"for you"}>For You</StyledOption> */}
 		</CustomSelect>
 	);
 }

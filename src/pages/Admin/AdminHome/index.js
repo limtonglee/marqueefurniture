@@ -1,12 +1,10 @@
 import { Container } from "@mui/material";
-import { Outlet } from "react-router-dom";
-import Customers from "../customer";
+import MFUsers from "../mfusers";
 
 const AdminHome = () => {
   return (
     <Container maxWidth="xl">
-      <h1>Admin home - todo</h1>
-      <Customers/>
+      <MFUsers/>
     </Container>
   );
 };

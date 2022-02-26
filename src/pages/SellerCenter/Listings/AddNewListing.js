@@ -44,7 +44,6 @@ export const AddNewListing = () => {
     const [submitting, setSubmitting] = useState(false);
 
     const handleChange = (event) => {
-
         setFormData({
             name: event.target.name,
             value: event.target.value,

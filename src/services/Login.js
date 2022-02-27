@@ -4,18 +4,18 @@ import { api } from "../services/api";
 import { URL_LOGOUT } from "../services/endpoints";
 
 const encryptPassword = (password) => {
-    //todo
-    return password;
-}
+  //todo
+  return password;
+};
 
-const login = (username, password) => encryptPassword(password)
-.then((data) => {
-    const {encryptedPassword} = data;
+const login = (username, password) =>
+  encryptPassword(password).then((data) => {
+    const { encryptedPassword } = data;
     return api.postAsFormInput(URL_LOGIN, {
-        username,
-        password: encryptedPassword
-    })
-})
+      username,
+      password: encryptedPassword,
+    });
+  });
 
 export const logout = () =>
   api.postAsJson(URL_LOGOUT).then((res) => {
@@ -23,4 +23,4 @@ export const logout = () =>
     return res;
   });
 
-  export default login;
+export default login;

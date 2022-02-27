@@ -5,7 +5,7 @@ import rootStore from '../stores/RootStore';
 
 const instance = axios.create({
     withCredentials:true,
-    baseURL: '.',
+    baseURL: '',
     timeout: 30000
   });
 

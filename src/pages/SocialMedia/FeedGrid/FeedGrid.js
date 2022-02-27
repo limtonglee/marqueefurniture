@@ -4,7 +4,6 @@ import Masonry from "@mui/lab/Masonry";
 import PostCard from "./PostCard";
 
 const FeedGrid = ({ posts }) => {
-	console.log(posts);
 	return (
 		<Box sx={{ maxWidth: 1200 }}>
 			<Masonry columns={4} spacing={2}>

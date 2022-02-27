@@ -9,7 +9,6 @@ import AddIcon from "@mui/icons-material/Add";
 import Stack from "@mui/material/Stack";
 
 const ReusableMasonry = ({ postData }) => {
-	console.log(postData);
 	let selectedTags = [];
 	let tagBin = new Map();
 	let currentSort = "popular";
@@ -118,28 +117,26 @@ const ReusableMasonry = ({ postData }) => {
 
 	return (
 		<>
-			<Container sx={{ pt: 2 }}>
-				<Box sx={pageStyles.sortFilter}>
-					<SortButton handleSort={handleSort} />
-					<Stack direction="row" spacing={2}>
-						<Button
-							startIcon={<AddIcon />}
-							variant="outlined"
-							onClick={handleCreatePost}
-							sx={addToMoodboardButtonStyles}
-						>
-							New Post
-						</Button>
-						<FilterButton
-							handleTag={handleTag}
-							resetDisplay={resetDisplay}
-						/>
-					</Stack>
-				</Box>
-				<Box sx={pageStyles.masonry}>
-					<FeedGrid posts={posts} />
-				</Box>
-			</Container>
+			<Box sx={pageStyles.sortFilter}>
+				<SortButton handleSort={handleSort} />
+				<Stack direction="row" spacing={2}>
+					<Button
+						startIcon={<AddIcon />}
+						variant="outlined"
+						onClick={handleCreatePost}
+						sx={addToMoodboardButtonStyles}
+					>
+						New Post
+					</Button>
+					<FilterButton
+						handleTag={handleTag}
+						resetDisplay={resetDisplay}
+					/>
+				</Stack>
+			</Box>
+			<Box sx={pageStyles.masonry}>
+				<FeedGrid posts={posts} />
+			</Box>
 		</>
 	);
 };

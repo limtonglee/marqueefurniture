@@ -207,6 +207,10 @@ const MoodboardModal = ({
 		}
 	}, []);
 
+	// useEffect(() => {
+	// 	console.log(moodboards);
+	// }, [moodboards]);
+
 	const noChangeMade = () => {
 		return (
 			prevChecked.filter((x) => !checked.includes(x)).length === 0 &&

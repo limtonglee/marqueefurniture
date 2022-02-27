@@ -6,19 +6,17 @@ import Login from "./pages/Login";
 import MarketPlace from "./pages/MarketPlace";
 import { ItemDetails } from "./pages/MarketPlace/ItemDetails";
 import { Listings } from "./pages/MarketPlace/Listings";
+import Profile from "./pages/Profile/";
 import SignUp from "./pages/Signup";
 import Ideas from "./pages/SocialMedia/Ideas";
-import Post from "./pages/SocialMedia/Posts/Post";
-import CreateNewPost from "./pages/SocialMedia/Posts/CreateNewPost";
-import ViewMoodboard from "./pages/SocialMedia/Moodboard/ViewMoodboard";
 import CreateMoodboard from "./pages/SocialMedia/Moodboard/CreateMoodboard";
-
-// below to remove later
+import ViewMoodboard from "./pages/SocialMedia/Moodboard/ViewMoodboard";
+import CreateNewPost from "./pages/SocialMedia/Posts/CreateNewPost";
+import Post from "./pages/SocialMedia/Posts/Post";
 import Users from "./pages/Users";
-import {UserDetails} from "./pages/Users/UserDetails";
+import { UserDetails } from "./pages/Users/UserDetails";
 import { UserIndex } from "./pages/Users/UserIndex";
-import StartSelling from "./pages/Profile/About/StartSelling";
-import Profile from "./pages/Profile/";
+
 
 
 const PreLogin = () => {
@@ -42,9 +40,6 @@ const PreLogin = () => {
         <Route path="/forgetpassword" element={<ForgetPassword />} />
         <Route path="/signup" element={<SignUp />} />
         
-
-      {/* below to remove later */}
-      <Route path="/profile/sell" element={<StartSelling />} />
       <Route path="/profile/" element={<Profile />} />
       <Route path="users" element={<Users />}>
            <Route path="" element={<UserIndex />} />

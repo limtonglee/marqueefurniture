@@ -15,9 +15,8 @@ import {
     Link,
 
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
-
+import AddCategoryModal from './AddCategoryModal';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
@@ -31,15 +30,7 @@ export const ShopCategories = () => {
                 <Typography variant="h4" gutterBottom>
                     My Shop Categories
                 </Typography>
-                <Button
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    onClick={() => {
-
-                    }}
-                >
-                    Add Category
-                </Button>
+                <AddCategoryModal></AddCategoryModal>
             </Stack>
             <Grid container spacing={2}>
                 <Grid item xs={2.4}>

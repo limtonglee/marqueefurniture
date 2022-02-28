@@ -9,10 +9,11 @@ import { Listings } from "./pages/MarketPlace/Listings";
 import Profile from "./pages/Profile/";
 import SignUp from "./pages/Signup";
 import Ideas from "./pages/SocialMedia/Ideas";
-import CreateMoodboard from "./pages/SocialMedia/Moodboard/CreateMoodboard";
-import ViewMoodboard from "./pages/SocialMedia/Moodboard/ViewMoodboard";
-import CreateNewPost from "./pages/SocialMedia/Posts/CreateNewPost";
 import Post from "./pages/SocialMedia/Posts/Post";
+import CreateNewPost from "./pages/SocialMedia/Posts/CreateNewPost";
+import ViewMoodboard from "./pages/SocialMedia/Moodboard/ViewMoodboard";
+
+// below to remove later
 import Users from "./pages/Users";
 import { UserDetails } from "./pages/Users/UserDetails";
 import { UserIndex } from "./pages/Users/UserIndex";
@@ -29,8 +30,7 @@ const PreLogin = () => {
         <Route path="/ideas" element={<Ideas />} />
         <Route path="/new-idea" element={<CreateNewPost />} />
         <Route path="/ideas/:postId" element={<Post />} />
-        <Route path="/view-moodboard" element={<ViewMoodboard />} />
-        <Route path="/create-moodboard" element={<CreateMoodboard />} />
+        <Route path="/moodboard/:username/:moodboardId" element={<ViewMoodboard />} />
         <Route path="/marketplace" element={<MarketPlace />}>
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />

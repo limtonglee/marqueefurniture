@@ -16,6 +16,8 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import Autocomplete from "@mui/material/Autocomplete";
 
+import TagProductsModal from "./TagProductsModal";
+
 const Input = styled("input")({
 	display: "none",
 });
@@ -23,16 +25,12 @@ const Input = styled("input")({
 const CreateNewPost = () => {
 	const [fileUploaded, setFileUploaded] = useState("");
 
-	const updateFile = (e) => {
-		console.log(e);
+	const updateFile = (event) => {
+		console.log(event.target.value);
+		setFileUploaded(event.target.value);
 	};
 
-	const mockFileUpload = () => {
-		console.log("mockFileUpload");
-		setFileUploaded("https://picsum.photos/200/300");
-		console.log(fileUploaded);
-	};
-
+	const [selectedProductsValues, setSelectedProductsValues] = useState([]);
 	const [boardDescription, setBoardDescription] = useState("");
 	const [filterRoomValues, setfilterRoomValues] = useState([]);
 	const [filterDesignValues, setfilterDesignValues] = useState([]);
@@ -80,12 +78,24 @@ const CreateNewPost = () => {
 
 	const createPost = () => {
 		console.log("createPost");
+		console.log(fileUploaded);
+		console.log(selectedProductsValues);
 		console.log(filterRoomValues);
 		console.log(filterDesignValues);
 		console.log(boardDescription);
 	};
 
 	useEffect(() => {}, []);
+
+	const [open, setOpen] = React.useState(false);
+
+	const closeProductsModal = () => {
+		setOpen(false);
+	};
+
+	const openProductsModal = (event) => {
+		setOpen(true);
+	};
 
 	return (
 		<>
@@ -115,7 +125,7 @@ const CreateNewPost = () => {
 				<Box sx={{ flexGrow: 1 }}>
 					<Grid container spacing={2}>
 						<Grid item md={6} xs={12} sx={{ px: 2 }}>
-							{mockFileUpload.length === 0 ? (
+							{fileUploaded.length === 0 ? (
 								<Box
 									sx={{
 										width: "100%",
@@ -126,7 +136,6 @@ const CreateNewPost = () => {
 										backgroundColor: "#F0F0F0",
 										borderRadius: 3,
 									}}
-									onClick={mockFileUpload}
 								>
 									<label htmlFor="contained-button-file">
 										<Input
@@ -169,23 +178,60 @@ const CreateNewPost = () => {
 									alignItems: "center",
 								}}
 							>
-								<Button
-									size="large"
-									variant="contained"
-									sx={{ width: "100%" }}
-								>
-									<Box
+								{selectedProductsValues.length === 0 ? (
+									<Button
+										size="large"
+										variant="contained"
 										sx={{
-											display: "flex",
-											justifyContent: "space-between",
-											alignItems: "center",
 											width: "100%",
+											backgroundColor: "primary",
 										}}
+										onClick={openProductsModal}
 									>
-										<span>Tag photo with products</span>
-										<ArrowForwardIosIcon fontSize="small" />
-									</Box>
-								</Button>
+										<Box
+											sx={{
+												display: "flex",
+												justifyContent: "space-between",
+												alignItems: "center",
+												width: "100%",
+											}}
+										>
+											<span>Tag photo with products</span>
+											<ArrowForwardIosIcon fontSize="small" />
+										</Box>
+									</Button>
+								) : (
+									<Button
+										size="large"
+										variant="contained"
+										sx={{
+											width: "100%",
+											backgroundColor: "aliceblue",
+											color: "lightslategray",
+										}}
+										onClick={openProductsModal}
+									>
+										<Box
+											sx={{
+												display: "flex",
+												justifyContent: "space-between",
+												alignItems: "center",
+												width: "100%",
+											}}
+										>
+											<span>{`Tagged with ${
+												selectedProductsValues.length
+											} product${
+												selectedProductsValues.length >
+												1
+													? "s"
+													: ""
+											}`}</span>
+
+											<ArrowForwardIosIcon fontSize="small" />
+										</Box>
+									</Button>
+								)}
 							</Box>
 							<Box sx={{ mt: 3 }}>
 								<Typography
@@ -269,6 +315,12 @@ const CreateNewPost = () => {
 					</Grid>
 				</Box>
 			</Container>
+			<TagProductsModal
+				open={open}
+				closeProductsModal={closeProductsModal}
+				selectedProductsValues={selectedProductsValues}
+				setSelectedProductsValues={setSelectedProductsValues}
+			/>
 		</>
 	);
 };

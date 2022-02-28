@@ -9,6 +9,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
+import { user } from "../../../data/currentUserData";
 
 const MoodboardDetailsModal = ({ open, closeMoodboardModal }) => {
 	const modalStyles = {
@@ -92,6 +93,20 @@ const MoodboardDetailsModal = ({ open, closeMoodboardModal }) => {
 		console.log(filterDesignValues);
 		console.log(boardDescription);
 		console.log(boardName);
+
+		const newId = Math.floor(Math.random() * 100 + 1);
+
+		const newMoodboard = {
+			id: { newId },
+			boardName: { boardName },
+			description: { boardDescription },
+			tags: [{ filterRoomValues }, { filterDesignValues }],
+			isPrivate: false,
+			moodboardItems: [],
+		};
+
+		user.moodboards.push(newMoodboard);
+		window.location.replace(`/moodboard/${user.username}/${newId}`);
 	};
 
 	return (

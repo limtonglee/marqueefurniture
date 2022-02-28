@@ -36,6 +36,8 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
 import MoodboardDetailsModal from "./MoodboardDetailsModal";
+import ShareIcon from "@mui/icons-material/Share";
+import IconButton from "@mui/material/IconButton";
 
 import { useParams } from "react-router-dom";
 
@@ -256,7 +258,7 @@ const ViewMoodboard = () => {
 					}}
 				>
 					<Grid container spacing={2}>
-						<Grid item xs={7} md={9}>
+						<Grid item xs={7} md={9} sx={{ display: "flex" }}>
 							<Autocomplete
 								disablePortal
 								id="combo-box-demo"
@@ -278,7 +280,18 @@ const ViewMoodboard = () => {
 									option.id === value.id
 								}
 							/>
+							<IconButton
+								onClick={() => {
+									handleClickSnackbar("Copied to clipboard");
+									navigator.clipboard.writeText(
+										window.location.toString()
+									);
+								}}
+							>
+								<ShareIcon />
+							</IconButton>
 						</Grid>
+
 						<Grid item xs={5} md={3}>
 							<Button
 								startIcon={<AddIcon />}

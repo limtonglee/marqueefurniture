@@ -26,35 +26,32 @@ import Stack from "@mui/material/Stack";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
 
-const ListItem = styled("li")(({ theme }) => ({
-	margin: theme.spacing(0.5),
-}));
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 const ViewMoodboard = () => {
-	// const [moodboards, setMoodboards] = useState(user.moodboards);
+	// const moodboards = user.moodboards;
 
-	const moodboards = user.moodboards;
-
-	// const [currentMoodboardId, setCurrentMoodboardId] = useState(
-	// 	user.moodboards[0].id
-	// );
-
+	const [moodboards, setMoodboards] = useState(user.moodboards);
 	const [currentMoodboard, setCurrentMoodboard] = useState(moodboards[0]);
 
-	const top100Films = [
-		{ label: "The Shawshank Redemption", year: 1994 },
-		{ label: "The Godfather", year: 1972 },
-		{ label: "The Godfather: Part II", year: 1974 },
-		{ label: "The Dark Knight", year: 2008 },
-		{ label: "12 Angry Men", year: 1957 },
-	];
-
-	const moodboardOptions = moodboards.map((moodboard) => {
-		const moodboardOption = {};
-		moodboardOption.label = moodboard.boardName;
-		moodboardOption.id = moodboard.id;
-		return moodboardOption;
-	});
+	const [moodboardOptions, setMoodboardOptions] = useState(
+		moodboards.map((moodboard) => {
+			const moodboardOption = {};
+			moodboardOption.label = moodboard.boardName;
+			moodboardOption.id = moodboard.id;
+			return moodboardOption;
+		})
+	);
 
 	const [selectedMoodboard, setSelectedMoodboard] = useState(
 		moodboardOptions[0]
@@ -88,14 +85,98 @@ const ViewMoodboard = () => {
 
 	const handleDeleteMoodboard = () => {
 		console.log("handleDeleteMoodboard");
+
+		// delete from selected
+		const newMoodboardOptions = [...moodboardOptions].filter(
+			(item) => item.id !== currentMoodboard.id
+		);
+		setSelectedMoodboard(newMoodboardOptions[0]);
+		setMoodboardOptions(newMoodboardOptions);
+
+		// delete from moodboards
+
+		const newMoodboards = [...moodboards].filter(
+			(moodboard) => moodboard.id !== currentMoodboard.id
+		);
+		setCurrentMoodboard(newMoodboards[0]);
+		setMoodboards(newMoodboards);
+
+		handleCloseDialog();
+		handleClickSnackbar();
+		setExpanded(false);
 	};
 
-	// useEffect(() => {
-	// 	console.log(currentMoodboard);
-	// }, [currentMoodboard]);
+	const [openDialog, setOpenDialog] = React.useState(false);
+
+	const handleClickOpenDialog = () => {
+		setOpenDialog(true);
+	};
+
+	const handleCloseDialog = () => {
+		setOpenDialog(false);
+	};
+
+	const [openSnackbar, setOpenSnackbar] = React.useState(false);
+
+	const handleClickSnackbar = () => {
+		setOpenSnackbar(true);
+	};
+
+	const handleCloseSnackbar = (event, reason) => {
+		if (reason === "clickaway") {
+			return;
+		}
+
+		setOpenSnackbar(false);
+	};
+
+	const [expanded, setExpanded] = React.useState(false);
+
+	const handleChange = (panel) => (event, isExpanded) => {
+		setExpanded(isExpanded ? panel : false);
+	};
+
+	useEffect(() => {}, [moodboards]);
 
 	return (
 		<>
+			<Snackbar
+				open={openSnackbar}
+				autoHideDuration={2500}
+				onClose={handleCloseSnackbar}
+				anchorOrigin={{ vertical: "top", horizontal: "center" }}
+				key={"top" + "center"}
+			>
+				<Alert
+					onClose={handleCloseSnackbar}
+					severity="success"
+					sx={{ width: "100%" }}
+				>
+					Deleted successfully
+				</Alert>
+			</Snackbar>
+			<Dialog
+				open={openDialog}
+				onClose={handleCloseDialog}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			>
+				<DialogTitle id="alert-dialog-title">
+					{"Delete this moodboard?"}
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="alert-dialog-description">
+						Are you sure you want to delete this moodboard? Your
+						actions cannot be undone.
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleCloseDialog}>Disagree</Button>
+					<Button onClick={handleDeleteMoodboard} autoFocus>
+						Agree
+					</Button>
+				</DialogActions>
+			</Dialog>
 			<Container sx={{ pt: 2 }}>
 				<Box
 					sx={{
@@ -141,7 +222,10 @@ const ViewMoodboard = () => {
 					</Grid>
 				</Box>
 				<Box sx={{ mt: 2 }}>
-					<Accordion>
+					<Accordion
+						expanded={expanded === "boarddetails"}
+						onChange={handleChange("boarddetails")}
+					>
 						<AccordionSummary
 							expandIcon={<ExpandMoreIcon />}
 							aria-controls="panel1a-content"
@@ -197,7 +281,7 @@ const ViewMoodboard = () => {
 											variant="contained"
 											sx={{ width: "100%" }}
 											startIcon={<DeleteOutlineIcon />}
-											onClick={handleDeleteMoodboard}
+											onClick={handleClickOpenDialog}
 											color="error"
 										>
 											Delete Board

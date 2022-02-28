@@ -35,6 +35,8 @@ import { ThemeProvider, createTheme } from '@mui/system';
 import { Fade } from '@mui/material';
 
 import Snackbar from '@mui/material/Snackbar';
+// import startselling from "../../../services/StartSelling";
+// import editprofile from "../../../services/EditProfile";
 
 
 function ProfileInfoCard({ title, description, website, info, social, action }) {
@@ -77,15 +79,19 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
 
   // const handleClose = () => setOpen(false);
 
+
+  
+
   //handleSubmit functionality placed inside here for now
   const handleSnack = () => {
-     if (username == '') {
+
+     if (username === '') {
       setUsernameError(true)
     }
-    if (bio == '') {
+    if (bio === '') {
       setBioError(true)
     }
-      if (link == '') {
+      if (link === '') {
       setLinkError(true)
     }
 
@@ -112,13 +118,13 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
 
   //hardcoded values to return to default when clicking Cancel button
   const handleCancel = () => {
-    if (username == '') {
+    if (username === '') {
       setUsername("cosyrosie")
     }
-    if (bio == '') {
+    if (bio === '') {
       setBio("Hi, I’m Rosie. Decisions: If You Can’t Decide, The Answer Is No. If Two Equally Difficult Paths, Choose The One More Painful In The Short Term (Pain Avoidance Is Creating An Illusion Of Equality")
     }
-      if (link == '') {
+      if (link === '') {
       setLink("Www.Example.Com")
     }
     setShowEdit(!showEdit)
@@ -129,19 +135,39 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
 
   //handleSubmit not being called
   const handleSubmit = (event) => {
-    console.log("hello")
+
+  // commented out the service part below 
+    // const data = new FormData(event.currentTarget);
+    //  // eslint-disable-next-line no-console
+    // console.log(data);
+    // editprofile(
+    //   data.get(username),
+    //   data.get(bio),
+    //   data.get(link),
+    // )
+    //   .then(
+    //     console.log("edit profile successful")
+    //     )
+    //   .catch((error) => {
+    //     console.log("edit profile failed");
+    //     return Promise.reject(error);
+    //   })
+    // commented out the service part above 
+
+    // console.log("hello")
     event.preventDefault();
     setUsernameError(false)
     setBioError(false)
     setLinkError(false)
+
     
-    if (username == '') {
+    if (username === '') {
       setUsernameError(true)
     }
-    if (bio == '') {
+    if (bio === '') {
       setBioError(true)
     }
-      if (link == '') {
+      if (link === '') {
       setLinkError(true)
     }
   
@@ -161,17 +187,38 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
 
     const handleSubmits = (event) => {
     event.preventDefault();
+
+    // commented out the service part below 
+
+    // const data = new FormData(event.currentTarget);
+    //  // eslint-disable-next-line no-console
+    // console.log(data);
+    // startselling(
+    //   data.get(shopname),
+    //   data.get(web),
+    //   data.get(extract),
+    // )
+    //   .then(
+    //     console.log("sign up as seller successful")
+    //     )
+    //   .catch((error) => {
+    //     console.log("sign up as seller failed");
+    //     return Promise.reject(error);
+    //   })
+
+    // commented out the service part above 
+
     setShopnameError(false)
     setWebError(false)
     setExtractError(false)
     
-    if (shopname == '') {
+    if (shopname === '') {
       setShopnameError(true)
     }
-    if (web == '') {
+    if (web === '') {
       setWebError(true)
     }
-      if (extract == '') {
+      if (extract === '') {
       setExtractError(true)
     }
 

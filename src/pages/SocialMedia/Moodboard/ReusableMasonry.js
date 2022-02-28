@@ -8,9 +8,9 @@ import Container from "@mui/material/Container";
 import AddIcon from "@mui/icons-material/Add";
 import Stack from "@mui/material/Stack";
 
-const ReusableMasonry = ({ postData }) => {
-	let selectedTags = [];
-	let tagBin = new Map();
+const ReusableMasonry = ({ moodboard }) => {
+	const [selectedTags, setSelectedTags] = useState([]);
+	const [tagBin, setTagBin] = useState(new Map());
 	let currentSort = "popular";
 
 	const pageStyles = {
@@ -18,19 +18,22 @@ const ReusableMasonry = ({ postData }) => {
 			p: 2,
 		},
 		sortFilter: {
-			p: 2,
+			pt: 2,
 			display: "flex",
 			justifyContent: "space-between",
 		},
 		masonry: {
-			p: 2,
+			pt: 2,
 		},
 	};
 
 	const handleTag = (tag) => {
 		if (selectedTags.includes(tag)) {
 			// remove tag from selectedTags
-			selectedTags = selectedTags.filter((item) => item !== tag);
+			const newSelectedTags = [...selectedTags].filter(
+				(item) => item !== tag
+			);
+			setSelectedTags(newSelectedTags);
 
 			// update posts lists
 			let newPosts = [...posts];
@@ -42,7 +45,9 @@ const ReusableMasonry = ({ postData }) => {
 			tagBin.delete(tag);
 		} else {
 			// add tag to selectedTags
-			selectedTags.push(tag);
+			const newSelectedTags = [...selectedTags];
+			newSelectedTags.push(tag);
+			setSelectedTags(newSelectedTags);
 
 			// create bin for tag
 			tagBin.set(tag, []);
@@ -63,11 +68,15 @@ const ReusableMasonry = ({ postData }) => {
 		}
 	};
 
-	const [posts, setPosts] = useState(postData.moodboardItems);
+	const [posts, setPosts] = useState(moodboard.moodboardItems);
 
 	useEffect(() => {
 		sortFeed();
 	}, []);
+
+	useEffect(() => {
+		resetDisplay();
+	}, [moodboard]);
 
 	const handleSort = (sortType) => {
 		console.log(sortType);
@@ -94,9 +103,13 @@ const ReusableMasonry = ({ postData }) => {
 	};
 
 	const resetDisplay = () => {
-		setPosts(postData.moodboardItems);
-		selectedTags = [];
-		tagBin = new Map();
+		setPosts(moodboard.moodboardItems);
+		setSelectedTags([]);
+		setTagBin(new Map());
+	};
+
+	const refreshPosts = () => {
+		setPosts(moodboard.moodboardItems);
 	};
 
 	const addToMoodboardButtonStyles = {
@@ -120,14 +133,14 @@ const ReusableMasonry = ({ postData }) => {
 			<Box sx={pageStyles.sortFilter}>
 				<SortButton handleSort={handleSort} />
 				<Stack direction="row" spacing={2}>
-					<Button
-						startIcon={<AddIcon />}
-						variant="outlined"
-						onClick={handleCreatePost}
-						sx={addToMoodboardButtonStyles}
-					>
-						New Post
-					</Button>
+					{/* <Button
+							startIcon={<AddIcon />}
+							variant="outlined"
+							onClick={handleCreatePost}
+							sx={addToMoodboardButtonStyles}
+						>
+							New Post
+						</Button> */}
 					<FilterButton
 						handleTag={handleTag}
 						resetDisplay={resetDisplay}
@@ -135,7 +148,11 @@ const ReusableMasonry = ({ postData }) => {
 				</Stack>
 			</Box>
 			<Box sx={pageStyles.masonry}>
-				<FeedGrid posts={posts} />
+				<FeedGrid
+					posts={posts}
+					refreshPosts={refreshPosts}
+					sourceMoodboardId={moodboard.id}
+				/>
 			</Box>
 		</>
 	);

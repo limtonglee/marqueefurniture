@@ -14,8 +14,8 @@ const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const { username } = user;
 
-const PostCard = (props) => {
-	const post = props.post;
+const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
+	// const post = props.post;
 
 	const [moodboards, setMoodboards] = useState(user.moodboards);
 
@@ -150,6 +150,8 @@ const PostCard = (props) => {
 				moodboards={moodboards}
 				setMoodboards={setMoodboards}
 				postPinned={postPinned}
+				refreshPosts={refreshPosts}
+				sourceMoodboardId={sourceMoodboardId}
 			/>
 		</>
 	);

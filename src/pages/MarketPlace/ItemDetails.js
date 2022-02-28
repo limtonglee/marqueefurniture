@@ -73,7 +73,7 @@ export const ItemDetails = () => {
         <CardContent key={item.key}>
           <CardHeader
             avatar={
-              <Link to={`/profile`} underline="none">
+              <Link to={`/sellerProfile`} underline="none">
                 <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
                   R
                 </Avatar>
@@ -101,7 +101,7 @@ export const ItemDetails = () => {
                 </Typography>
 
                 <Typography variant="h3" color="text.secondary" fontWeight="bold" >
-                  {isDesign(item.listingType) ? <>Price: {item.price}</> : 'Chat with designer for more information.'}
+                  {isDesign(item.listingType) ? <>Price: {item.price.toFixed(2)}</> : 'Chat with designer for more information.'}
                 </Typography>
 
                 <Typography variant="button" color="text.secondary" fontWeight="bold" >

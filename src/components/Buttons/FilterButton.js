@@ -7,15 +7,14 @@ import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 
-// let previousDesignTags = [];
-
 const FilterButton = ({ handleTag, resetDisplay }) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
 	const [filterRoomValues, setfilterRoomValues] = useState([]);
 	const [filterDesignValues, setfilterDesignValues] = useState([]);
 
-	let previousDesignTags = [];
+	const [prevRoomTags, setPrevRoomTags] = useState([]);
+	const [prevDesignTags, setPrevDesignTags] = useState([]);
 
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
@@ -29,30 +28,31 @@ const FilterButton = ({ handleTag, resetDisplay }) => {
 		setfilterRoomValues(value);
 
 		let changedTag = "";
-		if (value.length < previousDesignTags.length) {
-			changedTag = previousDesignTags.filter((x) => !value.includes(x))[0]
+		if (value.length < prevRoomTags.length) {
+			changedTag = prevRoomTags.filter((x) => !value.includes(x))[0]
 				.title;
 		} else {
-			changedTag = value.filter((x) => !previousDesignTags.includes(x))[0]
+			changedTag = value.filter((x) => !prevRoomTags.includes(x))[0]
 				.title;
 		}
 		handleTag(changedTag);
-		previousDesignTags = value;
+
+		setPrevRoomTags(value);
 	};
 
 	const handleChangeForFilterDesign = (event, value) => {
 		setfilterDesignValues(value);
 
 		let changedTag = "";
-		if (value.length < previousDesignTags.length) {
-			changedTag = previousDesignTags.filter((x) => !value.includes(x))[0]
+		if (value.length < prevDesignTags.length) {
+			changedTag = prevDesignTags.filter((x) => !value.includes(x))[0]
 				.title;
 		} else {
-			changedTag = value.filter((x) => !previousDesignTags.includes(x))[0]
+			changedTag = value.filter((x) => !prevDesignTags.includes(x))[0]
 				.title;
 		}
 		handleTag(changedTag);
-		previousDesignTags = value;
+		setPrevDesignTags(value);
 	};
 
 	const open = Boolean(anchorEl);
@@ -102,6 +102,8 @@ const FilterButton = ({ handleTag, resetDisplay }) => {
 		resetDisplay();
 		setfilterRoomValues([]);
 		setfilterDesignValues([]);
+		setPrevRoomTags([]);
+		setPrevDesignTags([]);
 	};
 
 	return (

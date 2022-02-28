@@ -17,6 +17,7 @@ import ViewMoodboard from "./pages/SocialMedia/Moodboard/ViewMoodboard";
 import Users from "./pages/Users";
 import { UserDetails } from "./pages/Users/UserDetails";
 import { UserIndex } from "./pages/Users/UserIndex";
+import SellerProfile from "./pages/SellerProfile/SellerProfile";
 
 
 
@@ -31,6 +32,7 @@ const PreLogin = () => {
         <Route path="/new-idea" element={<CreateNewPost />} />
         <Route path="/ideas/:postId" element={<Post />} />
         <Route path="/moodboard/:username/:moodboardId" element={<ViewMoodboard />} />
+        <Route path="/sellerProfile" element={<SellerProfile/>} />
         <Route path="/marketplace" element={<MarketPlace />}>
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />

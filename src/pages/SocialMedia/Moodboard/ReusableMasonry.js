@@ -130,10 +130,14 @@ const ReusableMasonry = ({ moodboard }) => {
 
 	return (
 		<>
-			<Box sx={pageStyles.sortFilter}>
-				<SortButton handleSort={handleSort} />
-				<Stack direction="row" spacing={2}>
-					{/* <Button
+			{moodboard.moodboardItems.length == 0 ? (
+				<h1>nothing here</h1>
+			) : (
+				<>
+					<Box sx={pageStyles.sortFilter}>
+						<SortButton handleSort={handleSort} />
+						<Stack direction="row" spacing={2}>
+							{/* <Button
 							startIcon={<AddIcon />}
 							variant="outlined"
 							onClick={handleCreatePost}
@@ -141,19 +145,21 @@ const ReusableMasonry = ({ moodboard }) => {
 						>
 							New Post
 						</Button> */}
-					<FilterButton
-						handleTag={handleTag}
-						resetDisplay={resetDisplay}
-					/>
-				</Stack>
-			</Box>
-			<Box sx={pageStyles.masonry}>
-				<FeedGrid
-					posts={posts}
-					refreshPosts={refreshPosts}
-					sourceMoodboardId={moodboard.id}
-				/>
-			</Box>
+							<FilterButton
+								handleTag={handleTag}
+								resetDisplay={resetDisplay}
+							/>
+						</Stack>
+					</Box>
+					<Box sx={pageStyles.masonry}>
+						<FeedGrid
+							posts={posts}
+							refreshPosts={refreshPosts}
+							sourceMoodboardId={moodboard.id}
+						/>
+					</Box>
+				</>
+			)}
 		</>
 	);
 };

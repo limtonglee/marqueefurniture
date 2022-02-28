@@ -35,14 +35,42 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
+import MoodboardDetailsModal from "./MoodboardDetailsModal";
+
+import { useParams } from "react-router-dom";
+
+const { username } = user;
+
 const Alert = React.forwardRef(function Alert(props, ref) {
 	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 const ViewMoodboard = () => {
 	// const moodboards = user.moodboards;
 
+	//edit this
+	// const { moodboardId } = useParams();
+	// const [moodboards, setMoodboards] = useState(user.moodboards);
+
+	// const [post, setPost] = useState(
+	// 	postData.filter((post) => post.id === parseInt(postId))[0]
+	// );
+
+	const { username, moodboardId } = useParams(); // new
+
+	console.log("moodboardId", moodboardId);
+
 	const [moodboards, setMoodboards] = useState(user.moodboards);
-	const [currentMoodboard, setCurrentMoodboard] = useState(moodboards[0]);
+	// const [currentMoodboard, setCurrentMoodboard] = useState(moodboards[0]);
+
+	console.log("moodboards", moodboards);
+
+	const [currentMoodboard, setCurrentMoodboard] = useState(
+		moodboards.filter(
+			(moodboard) => moodboard.id === parseInt(moodboardId)
+		)[0]
+	); //new
+
+	console.log("currentMoodboard", currentMoodboard);
 
 	const [moodboardOptions, setMoodboardOptions] = useState(
 		moodboards.map((moodboard) => {
@@ -53,13 +81,28 @@ const ViewMoodboard = () => {
 		})
 	);
 
+	console.log("moodboardOptions", moodboardOptions);
+
+	const getSelectedMoodboard = () => {
+		for (let moodboardOption of moodboardOptions) {
+			console.log(moodboardOption.id, parseInt(moodboardId));
+			if (moodboardOption.id === parseInt(moodboardId)) {
+				console.log(moodboardOption.label);
+				return moodboardOption;
+			}
+		}
+		console.log("none");
+	};
+
 	const [selectedMoodboard, setSelectedMoodboard] = useState(
-		moodboardOptions[0]
+		getSelectedMoodboard()
 	);
 
 	const handleMoodboardChange = (event, value) => {
 		setSelectedMoodboard(value);
 		setCurrentMoodboard(moodboards[value.id]);
+
+		window.location.replace(`/moodboard/${username}/${value.id}`);
 	};
 
 	const createMoodboardButtonStyles = {
@@ -76,7 +119,7 @@ const ViewMoodboard = () => {
 
 	const handleCreateMoodboard = () => {
 		console.log("handleCreateMoodboard");
-		window.location.replace(`create-moodboard`);
+		setOpen(true);
 	};
 
 	const handleEditMoodboard = () => {
@@ -136,10 +179,22 @@ const ViewMoodboard = () => {
 		setExpanded(isExpanded ? panel : false);
 	};
 
-	useEffect(() => {}, [moodboards]);
+	useEffect(() => {
+		console.log(selectedMoodboard);
+	}, [selectedMoodboard]);
+
+	const [open, setOpen] = React.useState(false);
+
+	const closeMoodboardModal = () => {
+		setOpen(false);
+	};
 
 	return (
 		<>
+			<MoodboardDetailsModal
+				open={open}
+				closeMoodboardModal={closeMoodboardModal}
+			/>
 			<Snackbar
 				open={openSnackbar}
 				autoHideDuration={2500}

@@ -1,10 +1,10 @@
+import Button from "@mui/material/Button";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import ShareIcon from "@mui/icons-material/Share";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import {
   Alert, Avatar, Card, CardContent,
-  CardHeader,
-  CardMedia, Fab, Snackbar, Typography
+  CardHeader, Fab, Modal, Snackbar, Typography, Box, CardMedia
 } from "@mui/material";
 import * as React from "react";
 import { Link, useParams } from "react-router-dom";
@@ -24,20 +24,34 @@ export const ItemDetails = () => {
 
   const param = useParams();
   const item = itemData[param.itemId];
-
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
   const [open, setOpen] = React.useState(false);
+  const [openSnack, setOpenSnack] = React.useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleSnack = () => {
-    setOpen(true);
-  };
+    setOpenSnack(true)
+  }
 
   const handleSnackClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
 
-    setOpen(false);
-  };
+    setOpenSnack(false)
+  }
 
   const isDesign = (item) => {
     if (item === "Design") {
@@ -49,7 +63,7 @@ export const ItemDetails = () => {
   const handleAddCart = (item) => {
 
     cartStore.addItems(item);
-   // console.log(item);
+    // console.log(item);
   };
 
   return (
@@ -66,10 +80,10 @@ export const ItemDetails = () => {
             }
             title={item.author}
           />
-          <CardMedia width="auto" align="center">
+          <CardMedia width='auto' align='center'>
             <img
-              height="auto"
-              width="100%"
+              height='auto'
+              width='100%'
               src={item.img}
               srcSet={item.img}
               alt={item.title}
@@ -81,21 +95,16 @@ export const ItemDetails = () => {
               {item.title}
             </Typography>
 
-            <Typography variant="h3" color="text.secondary" fontWeight="bold">
-              {isDesign(item.listingType) ? (
-                <>Price: {item.price}</>
-              ) : (
-                "Chat with designer for more information."
-              )}
+            <Typography variant="h3" color="text.secondary" fontWeight="bold" >
+              {isDesign(item.listingType) ? <>Price: {item.price}</> : 'Chat with designer for more information.'}
             </Typography>
 
-            <Typography
-              variant="button"
-              color="text.secondary"
-              fontWeight="bold"
-            >
+            <Typography variant="button" color="text.secondary" fontWeight="bold" >
               "put in place the rating and stars"
             </Typography>
+            <br />
+
+
 
             <Typography variant="h3" color="text.secondary" fontWeight="bold">
               Shipping Provider: {item.shippingProvider}
@@ -133,25 +142,17 @@ export const ItemDetails = () => {
             <ShareIcon
               onClick={() => {
                 handleSnack();
-                navigator.clipboard.writeText(window.location.toString());
-              }}
-            />
-            <Snackbar
-              open={open}
-              autoHideDuration={2000}
-              onClose={handleSnackClose}
-            >
-              <Alert
-                onClose={handleSnackClose}
-                severity="success"
-                sx={{ width: "auto" }}
-              >
+                navigator.clipboard.writeText(window.location.toString())
+              }
+              } />
+            <Snackbar open={openSnack} autoHideDuration={2000} onClose={handleSnackClose}>
+              <Alert onClose={handleSnackClose} severity="success" sx={{ width: 'auto' }}>
                 Copied to Clipboard!
               </Alert>
             </Snackbar>
           </Fab>
           <Fab marginRight>
-            <ShoppingCartIcon onClick={() => handleAddCart(item)}/>
+            <ShoppingCartIcon onClick={() => handleAddCart(item)} />
           </Fab>
           <Fab>
             <Link underline="none" to={`/chat`}>

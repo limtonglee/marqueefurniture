@@ -1,82 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ReusableMasonry from "./ReusableMasonry";
 import { user } from "../../../data/currentUserData";
 import Box from "@mui/material/Box";
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
-
-import { styled } from "@mui/material/styles";
 import Chip from "@mui/material/Chip";
-import Paper from "@mui/material/Paper";
-import TagFacesIcon from "@mui/icons-material/TagFaces";
 import Container from "@mui/material/Container";
-
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Grid from "@mui/material/Grid";
-
 import Stack from "@mui/material/Stack";
-
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
-
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-
 import MoodboardDetailsModal from "./MoodboardDetailsModal";
 import ShareIcon from "@mui/icons-material/Share";
 import IconButton from "@mui/material/IconButton";
-
 import BurstModeIcon from "@mui/icons-material/BurstMode";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-
 import { useParams } from "react-router-dom";
 import ProductView from "./ProductView";
-
-const { username } = user;
 
 const Alert = React.forwardRef(function Alert(props, ref) {
 	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 const ViewMoodboard = () => {
-	// const moodboards = user.moodboards;
-
-	//edit this
-	// const { moodboardId } = useParams();
-	// const [moodboards, setMoodboards] = useState(user.moodboards);
-
-	// const [post, setPost] = useState(
-	// 	postData.filter((post) => post.id === parseInt(postId))[0]
-	// );
-
-	const { username, moodboardId } = useParams(); // new
-
-	// console.log("moodboardId", moodboardId);
+	const { username, moodboardId } = useParams();
 
 	const [moodboards, setMoodboards] = useState(user.moodboards);
-	// const [currentMoodboard, setCurrentMoodboard] = useState(moodboards[0]);
-
-	// console.log("moodboards", moodboards);
 
 	const [currentMoodboard, setCurrentMoodboard] = useState(
 		moodboards.filter(
 			(moodboard) => moodboard.id === parseInt(moodboardId)
 		)[0]
-	); //new
-
-	// console.log("currentMoodboard", currentMoodboard);
+	);
 
 	const [moodboardOptions, setMoodboardOptions] = useState(
 		moodboards.map((moodboard) => {
@@ -87,17 +55,12 @@ const ViewMoodboard = () => {
 		})
 	);
 
-	// console.log("moodboardOptions", moodboardOptions);
-
 	const getSelectedMoodboard = () => {
 		for (let moodboardOption of moodboardOptions) {
-			// console.log(moodboardOption.id, parseInt(moodboardId));
 			if (moodboardOption.id === parseInt(moodboardId)) {
-				// console.log(moodboardOption.label);
 				return moodboardOption;
 			}
 		}
-		// console.log("none");
 	};
 
 	const [selectedMoodboard, setSelectedMoodboard] = useState(
@@ -191,10 +154,6 @@ const ViewMoodboard = () => {
 		setExpanded(isExpanded ? panel : false);
 	};
 
-	// useEffect(() => {
-	// 	console.log(selectedMoodboard);
-	// }, [selectedMoodboard]);
-
 	const [open, setOpen] = React.useState(false);
 
 	const closeMoodboardModal = () => {
@@ -227,7 +186,6 @@ const ViewMoodboard = () => {
 				autoHideDuration={2500}
 				onClose={handleCloseSnackbar}
 				anchorOrigin={{ vertical: "top", horizontal: "center" }}
-				key={"top" + "center"}
 			>
 				<Alert
 					onClose={handleCloseSnackbar}
@@ -290,25 +248,6 @@ const ViewMoodboard = () => {
 									option.id === value.id
 								}
 							/>
-							{/* <IconButton
-								onClick={() => {
-									handleClickSnackbar("Copied to clipboard");
-									navigator.clipboard.writeText(
-										window.location.toString()
-									);
-								}}
-							>
-								<ShareIcon />
-							</IconButton>
-							{isPostView ? (
-								<IconButton onClick={() => toggleView()}>
-									<BurstModeIcon />
-								</IconButton>
-							) : (
-								<IconButton onClick={() => toggleView()}>
-									<ShoppingBagIcon />
-								</IconButton>
-							)} */}
 						</Grid>
 
 						<Grid item xs={12} md={5} sx={{ display: "flex" }}>

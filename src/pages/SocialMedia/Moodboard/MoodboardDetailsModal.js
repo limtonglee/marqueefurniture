@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
@@ -11,7 +11,14 @@ import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import { user } from "../../../data/currentUserData";
 
-const MoodboardDetailsModal = ({ open, closeMoodboardModal }) => {
+const MoodboardDetailsModal = ({
+	open,
+	closeMoodboardModal,
+	moodboardToEdit,
+	isEditing,
+	setIsEditing,
+	handleClickSnackbar,
+}) => {
 	const modalStyles = {
 		wrapper: {
 			position: "absolute",
@@ -109,6 +116,61 @@ const MoodboardDetailsModal = ({ open, closeMoodboardModal }) => {
 		window.location.replace(`/moodboard/${user.username}/${newId}`);
 	};
 
+	const prepareToUpdate = () => {
+		setBoardName(moodboardToEdit.boardName);
+		setBoardDescription(moodboardToEdit.description);
+
+		const newFilterRoomValues = [];
+		for (let tag of roomTags) {
+			if (moodboardToEdit.tags[0].includes(tag.title)) {
+				newFilterRoomValues.push(tag);
+			}
+		}
+		setfilterRoomValues(newFilterRoomValues);
+
+		const newFilterDesignValues = [];
+		for (let tag of designTags) {
+			if (moodboardToEdit.tags[1].includes(tag.title)) {
+				newFilterDesignValues.push(tag);
+			}
+		}
+		setfilterDesignValues(newFilterDesignValues);
+	};
+
+	const prepareToCreate = () => {
+		setBoardName("");
+		setBoardDescription("");
+		setfilterRoomValues([]);
+		setfilterDesignValues([]);
+	};
+
+	useEffect(() => {
+		isEditing ? prepareToUpdate() : prepareToCreate();
+	}, [isEditing]);
+
+	const updateMoodboard = () => {
+		console.log("update moodboard");
+
+		const newMoodboard = {
+			...moodboardToEdit,
+			boardName: { boardName },
+			boardDescription: { boardDescription },
+			tags: [filterRoomValues, filterDesignValues],
+		};
+
+		//TODO: update new moodboard
+		for (let moodboard in user.moodboards) {
+			if (moodboard.id === moodboardToEdit.id) {
+				moodboard = newMoodboard;
+			}
+		}
+
+		console.log("updated moodboard", newMoodboard);
+		setIsEditing(false);
+		closeMoodboardModal();
+		handleClickSnackbar("Updated successfully");
+	};
+
 	return (
 		<>
 			<Modal
@@ -127,13 +189,24 @@ const MoodboardDetailsModal = ({ open, closeMoodboardModal }) => {
 							alignItems: "center",
 						}}
 					>
-						<Typography
-							id="modal-modal-title"
-							variant="h6"
-							component="h2"
-						>
-							Create new moodboard
-						</Typography>
+						{isEditing ? (
+							<Typography
+								id="modal-modal-title"
+								variant="h6"
+								component="h2"
+							>
+								Edit moodboard
+							</Typography>
+						) : (
+							<Typography
+								id="modal-modal-title"
+								variant="h6"
+								component="h2"
+							>
+								Create new moodboard
+							</Typography>
+						)}
+
 						<IconButton
 							aria-label="delete"
 							onClick={closeMoodboardModal}
@@ -256,14 +329,25 @@ const MoodboardDetailsModal = ({ open, closeMoodboardModal }) => {
 						</Grid>
 					</Stack>
 					<Box>
-						<Button
-							size="small"
-							variant="contained"
-							sx={{ width: "100%", mt: 3 }}
-							onClick={createMoodboard}
-						>
-							Create
-						</Button>
+						{isEditing ? (
+							<Button
+								size="small"
+								variant="contained"
+								sx={{ width: "100%", mt: 3 }}
+								onClick={updateMoodboard}
+							>
+								Update
+							</Button>
+						) : (
+							<Button
+								size="small"
+								variant="contained"
+								sx={{ width: "100%", mt: 3 }}
+								onClick={createMoodboard}
+							>
+								Create
+							</Button>
+						)}
 					</Box>
 				</Box>
 			</Modal>

@@ -57,12 +57,12 @@ const ViewMoodboard = () => {
 
 	const { username, moodboardId } = useParams(); // new
 
-	console.log("moodboardId", moodboardId);
+	// console.log("moodboardId", moodboardId);
 
 	const [moodboards, setMoodboards] = useState(user.moodboards);
 	// const [currentMoodboard, setCurrentMoodboard] = useState(moodboards[0]);
 
-	console.log("moodboards", moodboards);
+	// console.log("moodboards", moodboards);
 
 	const [currentMoodboard, setCurrentMoodboard] = useState(
 		moodboards.filter(
@@ -70,7 +70,7 @@ const ViewMoodboard = () => {
 		)[0]
 	); //new
 
-	console.log("currentMoodboard", currentMoodboard);
+	// console.log("currentMoodboard", currentMoodboard);
 
 	const [moodboardOptions, setMoodboardOptions] = useState(
 		moodboards.map((moodboard) => {
@@ -81,17 +81,17 @@ const ViewMoodboard = () => {
 		})
 	);
 
-	console.log("moodboardOptions", moodboardOptions);
+	// console.log("moodboardOptions", moodboardOptions);
 
 	const getSelectedMoodboard = () => {
 		for (let moodboardOption of moodboardOptions) {
-			console.log(moodboardOption.id, parseInt(moodboardId));
+			// console.log(moodboardOption.id, parseInt(moodboardId));
 			if (moodboardOption.id === parseInt(moodboardId)) {
-				console.log(moodboardOption.label);
+				// console.log(moodboardOption.label);
 				return moodboardOption;
 			}
 		}
-		console.log("none");
+		// console.log("none");
 	};
 
 	const [selectedMoodboard, setSelectedMoodboard] = useState(
@@ -123,7 +123,9 @@ const ViewMoodboard = () => {
 	};
 
 	const handleEditMoodboard = () => {
-		console.log("handleEditMoodboard");
+		console.log("handleEitMoodboard");
+		setOpen(true);
+		setIsEditing(true);
 	};
 
 	const handleDeleteMoodboard = () => {
@@ -145,7 +147,7 @@ const ViewMoodboard = () => {
 		setMoodboards(newMoodboards);
 
 		handleCloseDialog();
-		handleClickSnackbar();
+		handleClickSnackbar("Deleted successfully");
 		setExpanded(false);
 	};
 
@@ -159,9 +161,12 @@ const ViewMoodboard = () => {
 		setOpenDialog(false);
 	};
 
+	const [snackbarMessage, setSnackbarMessage] = React.useState("");
+
 	const [openSnackbar, setOpenSnackbar] = React.useState(false);
 
-	const handleClickSnackbar = () => {
+	const handleClickSnackbar = (message) => {
+		setSnackbarMessage(message);
 		setOpenSnackbar(true);
 	};
 
@@ -171,6 +176,7 @@ const ViewMoodboard = () => {
 		}
 
 		setOpenSnackbar(false);
+		setSnackbarMessage("");
 	};
 
 	const [expanded, setExpanded] = React.useState(false);
@@ -179,21 +185,30 @@ const ViewMoodboard = () => {
 		setExpanded(isExpanded ? panel : false);
 	};
 
-	useEffect(() => {
-		console.log(selectedMoodboard);
-	}, [selectedMoodboard]);
+	// useEffect(() => {
+	// 	console.log(selectedMoodboard);
+	// }, [selectedMoodboard]);
 
 	const [open, setOpen] = React.useState(false);
 
 	const closeMoodboardModal = () => {
 		setOpen(false);
+		if (isEditing) {
+			setIsEditing(false);
+		}
 	};
+
+	const [isEditing, setIsEditing] = React.useState(false);
 
 	return (
 		<>
 			<MoodboardDetailsModal
 				open={open}
 				closeMoodboardModal={closeMoodboardModal}
+				moodboardToEdit={currentMoodboard}
+				isEditing={isEditing}
+				setIsEditing={setIsEditing}
+				handleClickSnackbar={handleClickSnackbar}
 			/>
 			<Snackbar
 				open={openSnackbar}
@@ -207,7 +222,7 @@ const ViewMoodboard = () => {
 					severity="success"
 					sx={{ width: "100%" }}
 				>
-					Deleted successfully
+					{snackbarMessage}
 				</Alert>
 			</Snackbar>
 			<Dialog
@@ -373,7 +388,7 @@ const ViewMoodboard = () => {
 						</AccordionDetails>
 					</Accordion>
 				</Box>
-				{console.log(currentMoodboard)}
+				{/* {console.log(currentMoodboard)} */}
 				<ReusableMasonry moodboard={currentMoodboard} />
 			</Container>
 		</>

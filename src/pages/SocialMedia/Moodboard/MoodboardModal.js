@@ -18,6 +18,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+
 const Alert = React.forwardRef(function Alert(props, ref) {
 	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -29,6 +35,8 @@ const MoodboardModal = ({
 	moodboards,
 	setMoodboards,
 	postPinned,
+	refreshPosts,
+	sourceMoodboardId,
 }) => {
 	const modalStyles = {
 		wrapper: {
@@ -59,6 +67,8 @@ const MoodboardModal = ({
 
 	const [checked, setChecked] = useState([]);
 	const [prevChecked, setPrevChecked] = useState([]);
+
+	const onMoodboardPage = refreshPosts ? true : false;
 
 	const handleToggle = (value) => () => {
 		const currentIndex = checked.indexOf(value);
@@ -178,6 +188,36 @@ const MoodboardModal = ({
 		setPrevChecked(checked);
 
 		handleClickSnackbar();
+
+		if (refreshPosts) {
+			refreshPosts();
+		}
+	};
+
+	const deletePostFromThisMoodboard = () => {
+		console.log("deletePostFromThisMoodboard");
+		console.log("sourceMoodboardId", sourceMoodboardId);
+
+		const newMoodboardList = [...moodboards];
+		for (let moodboard of newMoodboardList) {
+			if (moodboard.id === sourceMoodboardId) {
+				const newMbPosts = [...moodboard.moodboardItems].filter(
+					(item) => item.id !== post.id
+				);
+				moodboard.moodboardItems = newMbPosts;
+			}
+		}
+
+		// update moodboard state
+		setMoodboards(newMoodboardList);
+		closeMoodboardModal();
+		console.log(moodboards);
+
+		handleClickSnackbar();
+
+		if (refreshPosts) {
+			refreshPosts();
+		}
 	};
 
 	const [openSnackbar, setOpenSnackbar] = React.useState(false);
@@ -207,11 +247,25 @@ const MoodboardModal = ({
 		}
 	}, []);
 
+	// useEffect(() => {
+	// 	console.log(moodboards);
+	// }, [moodboards]);
+
 	const noChangeMade = () => {
 		return (
 			prevChecked.filter((x) => !checked.includes(x)).length === 0 &&
 			checked.filter((x) => !prevChecked.includes(x)).length === 0
 		);
+	};
+
+	const [openDialog, setOpenDialog] = React.useState(false);
+
+	const handleClickOpenDialog = () => {
+		setOpenDialog(true);
+	};
+
+	const handleCloseDialog = () => {
+		setOpenDialog(false);
 	};
 
 	return (
@@ -231,6 +285,28 @@ const MoodboardModal = ({
 					Updated successfully
 				</Alert>
 			</Snackbar>
+			<Dialog
+				open={openDialog}
+				onClose={handleCloseDialog}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			>
+				<DialogTitle id="alert-dialog-title">
+					{"Delete from this moodboard?"}
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="alert-dialog-description">
+						Are you sure you want to remove this post from this
+						moodboard?
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleCloseDialog}>Disagree</Button>
+					<Button onClick={deletePostFromThisMoodboard} autoFocus>
+						Agree
+					</Button>
+				</DialogActions>
+			</Dialog>
 			{!postPinned && (
 				<Modal
 					open={open}
@@ -435,6 +511,15 @@ const MoodboardModal = ({
 							>
 								Add to new moodboard
 							</Button>
+							{onMoodboardPage && (
+								<Button
+									size="small"
+									color="error"
+									onClick={handleClickOpenDialog}
+								>
+									Delete from this moodboard
+								</Button>
+							)}
 						</Box>
 						<Box sx={modalStyles.contents}>
 							{noChangeMade() ? (

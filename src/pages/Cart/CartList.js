@@ -7,6 +7,8 @@ import ButtonBase from '@mui/material/ButtonBase';
 import { Container, ImageList } from '@mui/material';
 import { cartData } from "../../data/cartData";
 import { Link } from "react-router-dom";
+import { useStores } from "../../stores/RootStore";
+import { toJS } from 'mobx';
 
 let cartItems = cartData
 
@@ -18,6 +20,14 @@ const Img = styled('img')({
 });
 
 export default function Cart() {
+
+  const { cartStore } = useStores();
+
+  const items = toJS(cartStore.getItems());
+  console.log("cartstore items : " + items);
+  console.log(items);
+
+
   return (
     <Container>"
       <Typography variant="h1" fontWeight="bold">
@@ -32,7 +42,7 @@ export default function Cart() {
           theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
       }}>
         <ImageList cols = {1} gap ={15}>
-          {cartItems.map((cartItem) => (
+          {items.map((cartItem) => (
           <Grid container spacing={2}>
             <Grid item>
               <Link to={`/marketplace/${cartItem.id}`}>

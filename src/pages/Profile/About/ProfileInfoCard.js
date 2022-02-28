@@ -1,40 +1,32 @@
 // react-routers components
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Typography } from "@mui/material";
+import Alert from '@mui/material/Alert';
+import Avatar from "@mui/material/Avatar";
 // Soft UI Dashboard PRO React components
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 // @mui material components
 import Card from "@mui/material/Card";
-import Divider from "@mui/material/Divider";
-import EditIcon from '@mui/icons-material/Edit';import Tooltip from "@mui/material/Tooltip";
-// prop-types is library for typechecking of props
-import PropTypes from "prop-types";
-import { Link, useNavigate } from "react-router-dom";
-// Soft UI Dashboard PRO React base styles
-import typography from "../../../theme/typography";
-import Button from "@mui/material/Button";
-import Grid from '@mui/material/Grid';
-import { useStores } from "../../../stores/RootStore";
-import TextField from '@mui/material/TextField';
-import React, { useState, useEffect } from "react";
-import { BikeScooterTwoTone } from "@mui/icons-material";
-import Modal from '@mui/material/Modal';
+import Container from "@mui/material/Container";
+import CssBaseline from "@mui/material/CssBaseline";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-
-import Avatar from "@mui/material/Avatar";
-import CssBaseline from "@mui/material/CssBaseline";
-import Container from "@mui/material/Container";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
-import { ThemeProvider, createTheme } from '@mui/system';
-import { Fade } from '@mui/material';
-
+import Divider from "@mui/material/Divider";
+import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
+import TextField from '@mui/material/TextField';
+// prop-types is library for typechecking of props
+import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useStores } from "../../../stores/RootStore";
+// Soft UI Dashboard PRO React base styles
+import typography from "../../../theme/typography";
+
+
+
 // import startselling from "../../../services/StartSelling";
 // import editprofile from "../../../services/EditProfile";
 

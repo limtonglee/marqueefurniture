@@ -2,10 +2,12 @@
 
 import React from "react";
 import UserStore from "./UserStore";
+import CartStore from "./CartStore";
 
 class RootStore {
   constructor() {
     this.userStore = new UserStore(this);
+    this.cartStore = new CartStore(this);
   }
 }
 

@@ -39,7 +39,11 @@ import MoodboardDetailsModal from "./MoodboardDetailsModal";
 import ShareIcon from "@mui/icons-material/Share";
 import IconButton from "@mui/material/IconButton";
 
+import BurstModeIcon from "@mui/icons-material/BurstMode";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+
 import { useParams } from "react-router-dom";
+import ProductView from "./ProductView";
 
 const { username } = user;
 
@@ -202,6 +206,12 @@ const ViewMoodboard = () => {
 
 	const [isEditing, setIsEditing] = React.useState(false);
 
+	const [isPostView, setIsPostView] = React.useState(true);
+
+	const toggleView = () => {
+		setIsPostView(!isPostView);
+	};
+
 	return (
 		<>
 			<MoodboardDetailsModal
@@ -258,7 +268,7 @@ const ViewMoodboard = () => {
 					}}
 				>
 					<Grid container spacing={2}>
-						<Grid item xs={7} md={9} sx={{ display: "flex" }}>
+						<Grid item xs={12} md={7} sx={{ display: "flex" }}>
 							<Autocomplete
 								disablePortal
 								id="combo-box-demo"
@@ -280,7 +290,7 @@ const ViewMoodboard = () => {
 									option.id === value.id
 								}
 							/>
-							<IconButton
+							{/* <IconButton
 								onClick={() => {
 									handleClickSnackbar("Copied to clipboard");
 									navigator.clipboard.writeText(
@@ -290,17 +300,51 @@ const ViewMoodboard = () => {
 							>
 								<ShareIcon />
 							</IconButton>
+							{isPostView ? (
+								<IconButton onClick={() => toggleView()}>
+									<BurstModeIcon />
+								</IconButton>
+							) : (
+								<IconButton onClick={() => toggleView()}>
+									<ShoppingBagIcon />
+								</IconButton>
+							)} */}
 						</Grid>
 
-						<Grid item xs={5} md={3}>
-							<Button
-								startIcon={<AddIcon />}
-								variant="outlined"
-								onClick={handleCreateMoodboard}
-								sx={createMoodboardButtonStyles}
-							>
-								New Moodboard
-							</Button>
+						<Grid item xs={12} md={5} sx={{ display: "flex" }}>
+							<Grid item xs={9} md={9}>
+								<Button
+									startIcon={<AddIcon />}
+									variant="outlined"
+									onClick={handleCreateMoodboard}
+									sx={createMoodboardButtonStyles}
+								>
+									New Moodboard
+								</Button>
+							</Grid>
+							<Grid item xs={3} md={3}>
+								<IconButton
+									onClick={() => {
+										handleClickSnackbar(
+											"Copied to clipboard"
+										);
+										navigator.clipboard.writeText(
+											window.location.toString()
+										);
+									}}
+								>
+									<ShareIcon />
+								</IconButton>
+								{isPostView ? (
+									<IconButton onClick={() => toggleView()}>
+										<BurstModeIcon />
+									</IconButton>
+								) : (
+									<IconButton onClick={() => toggleView()}>
+										<ShoppingBagIcon />
+									</IconButton>
+								)}
+							</Grid>
 						</Grid>
 					</Grid>
 				</Box>
@@ -372,37 +416,15 @@ const ViewMoodboard = () => {
 									</Stack>
 								</Grid>
 							</Grid>
-							{/* <Box>
-								<Typography variant="subtitle2" component="div">
-									About
-								</Typography>
-								<Typography variant="body1">
-									{currentMoodboard.description}
-								</Typography>
-							</Box>
-							<Box sx={{ mt: 2 }}>
-								<Typography
-									variant="subtitle2"
-									gutterBottom
-									component="div"
-								>
-									Tags
-								</Typography>
-								<Stack direction="row" spacing={1}>
-									{currentMoodboard.tags.flat().map((tag) => (
-										<Chip
-											label={tag}
-											variant="outlined"
-											key={tag.toString()}
-										/>
-									))}
-								</Stack>
-							</Box> */}
 						</AccordionDetails>
 					</Accordion>
+					{/* <IconButton onClick={() => toggleView()}>
+						<ShareIcon />
+					</IconButton> */}
 				</Box>
+				{isPostView && <ReusableMasonry moodboard={currentMoodboard} />}
+				{!isPostView && <ProductView moodboard={currentMoodboard} />}
 				{/* {console.log(currentMoodboard)} */}
-				<ReusableMasonry moodboard={currentMoodboard} />
 			</Container>
 		</>
 	);

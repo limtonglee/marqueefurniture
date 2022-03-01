@@ -34,7 +34,7 @@ const PostLogin = () => {
   return (
     <>
       <PostLoginNavBar />
-      <Box sx={{ mt: 8 }}></Box>
+      <Box sx={{ mt: 10 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/marketplace" />} />
         <Route path="/marketplace" element={<MarketPlace />}>

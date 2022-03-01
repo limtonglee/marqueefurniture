@@ -1,30 +1,28 @@
-import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import Badge from "@mui/material/Badge";
-import { useStores } from "../stores/RootStore";
-import { Divider } from "@mui/material";
-
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import StorefrontIcon from '@mui/icons-material/Storefront';
-import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import palette from "../theme/palette";
-
+import { Divider } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
+import Badge from "@mui/material/Badge";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Toolbar from "@mui/material/Toolbar";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useStores } from "../stores/RootStore";
 import ControlledSwitches from "./SwitchNav";
+
+
+
 
 const pageLinks = [
   { text: "Seller Center", link: "/sellercenter" },
@@ -78,7 +76,7 @@ const PostLoginNavBar = () => {
   return (
     <>
       <AppBar position="fixed" sx={appbarStyle}>
-        <Container maxWidth="xxl">
+        <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Link
               key={"mf"}
@@ -100,6 +98,7 @@ const PostLoginNavBar = () => {
               }}
             >
               <ControlledSwitches />
+              
 
               {!!userStore.isAdmin &&
                 AdminPageLinks.map((page) => (

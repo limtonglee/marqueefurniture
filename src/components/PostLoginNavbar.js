@@ -41,7 +41,7 @@ const AdminPageLinks = [
 const settings = [
   { text: "Profile", link: "/profile" },
   { text: "Cart", link: "/cart" },
-  { text: "Account", link: "/account" },
+  { text: "Chat", link: "/chat" },
   { text: "Dashboard", link: "/dashboard" },
 ];
 
@@ -261,7 +261,7 @@ const PostLoginNavBar = () => {
                           </Tooltip>
                         </>
                       )}
-                      {setting.text === "Account" && (
+                      {setting.text === "Chat" && (
                         <Tooltip title="Chat" placement="right">
                           <ChatBubbleOutlineIcon
                             sx={{ color: "common.black" }}

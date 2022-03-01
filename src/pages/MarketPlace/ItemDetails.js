@@ -7,7 +7,15 @@ import {
   CardHeader, Fab, Modal, Snackbar, Typography, CardMedia, Stack
 } from "@mui/material";
 import * as React from "react";
-import { Link, useParams } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Navigate,
+  useParams,
+  useNavigate
+} from "react-router-dom";
 import { itemData } from "../../data/itemData";
 import { useStores } from "../../stores/RootStore";
 import { Grid } from "@mui/material";
@@ -50,7 +58,15 @@ export const ItemDetails = () => {
     horizontal: 'center',
   });
 
+  const [cartState, setCartState] = React.useState({
+    cartOpen: false,
+    vertical: 'top',
+    horizontal: 'center',
+  });
+
   const { vertical, horizontal, open } = state;
+  const { cartOpen } = cartState;
+  const navigate = useNavigate();
 
   const handleClick = (newState) => () => {
     console.log("Got fire here")
@@ -65,6 +81,13 @@ export const ItemDetails = () => {
     setState({ ...state, open: false });
   };
 
+  const handleCartClose = (event, reason) => {
+    if(reason === "clickaway") {
+      return;
+    }
+    setCartState({ ...cartState, cartOpen: false });
+  };
+
   const isDesign = (item) => {
     if (item === "Design") {
       return;
@@ -72,19 +95,18 @@ export const ItemDetails = () => {
     return true;
   };
 
-  const handleAddCart = (item) => {
+  const handleAddCart = (item, newState) => {
 
     cartStore.addItems(item);
-    // console.log(item);
+    console.log("Got fire here")
+    setCartState({ cartOpen: true, ...newState });
   };
 
   return (
     <>
       <Card>
         <CardContent key={item.key}>
-            <Link to={`/marketplace`} style={{ textDecoration: 'none', color: 'blue' }}>
-              <ArrowCircleLeftIcon />
-            </Link>
+            <ArrowCircleLeftIcon fontSize= "large" onClick={() => navigate(-1)} color= "primary"/>
           <Grid container spacing = {2}>
             <Grid item md = {6} xs={12} >
               <CardMedia width='auto' align='center'>
@@ -109,6 +131,7 @@ export const ItemDetails = () => {
                   </Link>
                 }
                 title={item.author}
+                sx = {{p: 0}}
                 />
                 <Typography variant="h1" color="text.secondary" fontWeight="bold">
                   {item.title}
@@ -186,11 +209,28 @@ export const ItemDetails = () => {
                 </Fab>
                 <Button 
                   variant="outlined"
-                  onClick={() => handleAddCart(item)}
+                  onClick={() => {
+                    handleAddCart(item, {vertical: 'top',
+                    horizontal: 'center'})}}
                   startIcon={<ShoppingCartIcon/>}
                 >
                   Add to cart
                 </Button>
+                <Snackbar
+                    anchorOrigin={{ vertical, horizontal }}
+                    open={cartOpen}
+                    onClose={handleCartClose} 
+                    autoHideDuration={1500} 
+                    key={vertical + horizontal}>
+                    <Alert 
+                      onClose={handleCartClose}
+                      variant= "filled"
+                      severity="success"
+                      sx={{ width: 'auto' }}
+                    >
+                      Added to Cart!
+                    </Alert>
+                  </Snackbar>
                 <Button 
                   variant="outlined"
                   startIcon={<ChatIcon/>}

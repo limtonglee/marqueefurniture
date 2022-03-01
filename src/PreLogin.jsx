@@ -13,12 +13,14 @@ import Post from "./pages/SocialMedia/Posts/Post";
 import CreateNewPost from "./pages/SocialMedia/Posts/CreateNewPost";
 import ViewMoodboard from "./pages/SocialMedia/Moodboard/ViewMoodboard";
 
+import { Box } from "@mui/material";
 
 
 const PreLogin = () => {
   return (
     <>
       <NavBar />
+      <Box sx={{ mt: 10 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/marketplace" />} />
         <Route path="/socialmedia" element={<Login />} />

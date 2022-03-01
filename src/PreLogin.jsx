@@ -19,12 +19,14 @@ import { UserDetails } from "./pages/Users/UserDetails";
 import { UserIndex } from "./pages/Users/UserIndex";
 import SellerProfile from "./pages/SellerProfile/SellerProfile";
 
+import { Box } from "@mui/material";
 
 
 const PreLogin = () => {
   return (
     <>
       <NavBar />
+      <Box sx={{ mt: 10 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/marketplace" />} />
         <Route path="/socialmedia" element={<Login />} />

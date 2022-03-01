@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import AppBar from "@mui/material/AppBar";
@@ -13,8 +13,16 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import Badge from '@mui/material/Badge';
 import { useStores } from "../stores/RootStore";
+import { Divider } from "@mui/material";
 
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import palette from "../theme/palette";
 //const pages = ["Seller Center", "MarketPlace", "Social Media", "Login"];
 //const links = ["sellercenter", "marketplace", "socialmedia", "login"];
 
@@ -33,7 +41,7 @@ const AdminPageLinks = [
 const settings = [
   { text: "Profile", link: "/profile" },
   { text: "Cart", link: "/cart" },
-  { text: "Account", link: "/account" },
+  { text: "Chat", link: "/chat" },
   { text: "Dashboard", link: "/dashboard" },
 ];
 
@@ -58,6 +66,8 @@ const PostLoginNavBar = () => {
 
   const { userStore } = useStores();
 
+  const { cartStore } = useStores();
+
   let navigate = useNavigate();
 
   const setLogout = (e) => {
@@ -65,20 +75,27 @@ const PostLoginNavBar = () => {
     navigate("/marketplace");
   };
 
+  useEffect(() => {});
+
   return (
     <>
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+            <Link
+              key={"mf"}
+              to={"/"}
+              style={{ textDecoration: "none", color: "white" }}
             >
-              MF
-            </Typography>
-
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+              >
+                MF
+              </Typography>
+            </Link>
             <Box
               sx={{
                 flexGrow: 1,
@@ -221,18 +238,51 @@ const PostLoginNavBar = () => {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <Link
-                    key={setting.link}
-                    to={setting.link}
-                    style={{ textDecoration: "none" }}
-                  >
+                  <Link key={setting.link} to={setting.link}>
                     <MenuItem key={setting.link} onClick={handleCloseUserMenu}>
-                      <Typography textAlign="center">{setting.text}</Typography>
+                      {setting.text === "Profile" && (
+                        <Tooltip title="Profile" placement="right">
+                          <AccountCircleOutlinedIcon
+                            sx={{ color: "common.black" }}
+                          />
+                        </Tooltip>
+                      )}
+                      {setting.text === "Cart" && (
+                        <>
+                          <Tooltip title="Cart" placement="right">
+                            <Badge
+                              color="secondary"
+                              badgeContent={cartStore.items.length}
+                            >
+                              <ShoppingCartCheckoutIcon
+                                sx={{ color: "common.black" }}
+                              />
+                            </Badge>
+                          </Tooltip>
+                        </>
+                      )}
+                      {setting.text === "Chat" && (
+                        <Tooltip title="Chat" placement="right">
+                          <ChatBubbleOutlineIcon
+                            sx={{ color: "common.black" }}
+                          />
+                        </Tooltip>
+                      )}
+                      {setting.text === "Dashboard" && (
+                        <Tooltip title="Settings" placement="right">
+                          <SettingsOutlinedIcon
+                            sx={{ color: "common.black" }}
+                          />
+                        </Tooltip>
+                      )}
                     </MenuItem>
                   </Link>
                 ))}
+                <Divider sx={{ my: 0.5 }} />
                 <MenuItem onClick={setLogout}>
-                  <Typography textAlign="center">Logout</Typography>
+                  <Tooltip title="Logout" placement="right">
+                    <LogoutOutlinedIcon sx={{ color: "common.black" }} />
+                  </Tooltip>
                 </MenuItem>
               </Menu>
             </Box>

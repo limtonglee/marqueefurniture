@@ -1,5 +1,4 @@
 import axios from 'axios';
-import rootStore from '../stores/RootStore';
 
 //get post delete methods 
 

@@ -1,43 +1,41 @@
 // react-routers components
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Typography } from "@mui/material";
+import Alert from '@mui/material/Alert';
+import Avatar from "@mui/material/Avatar";
 // Soft UI Dashboard PRO React components
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 // @mui material components
 import Card from "@mui/material/Card";
-import Divider from "@mui/material/Divider";
-import EditIcon from '@mui/icons-material/Edit';import Tooltip from "@mui/material/Tooltip";
-// prop-types is library for typechecking of props
-import PropTypes from "prop-types";
-import { Link, useNavigate } from "react-router-dom";
-// Soft UI Dashboard PRO React base styles
-import typography from "../../../theme/typography";
-import Button from "@mui/material/Button";
-import Grid from '@mui/material/Grid';
-import { useStores } from "../../../stores/RootStore";
-import TextField from '@mui/material/TextField';
-import React, { useState, useEffect } from "react";
-import { BikeScooterTwoTone } from "@mui/icons-material";
-import Modal from '@mui/material/Modal';
+import Container from "@mui/material/Container";
+import CssBaseline from "@mui/material/CssBaseline";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-
-import Avatar from "@mui/material/Avatar";
-import CssBaseline from "@mui/material/CssBaseline";
-import Container from "@mui/material/Container";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
-import { ThemeProvider, createTheme } from '@mui/system';
-import { Fade } from '@mui/material';
-
+import Divider from "@mui/material/Divider";
+import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
+import TextField from '@mui/material/TextField';
+// prop-types is library for typechecking of props
+import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useStores } from "../../../stores/RootStore";
+// Soft UI Dashboard PRO React base styles
+import typography from "../../../theme/typography";
+
+
+
+// import startselling from "../../../services/StartSelling";
+// import editprofile from "../../../services/EditProfile";
 
 
 function ProfileInfoCard({ title, description, website, info, social, action }) {
+ 
+  const [showEdit, setShowEdit] = useState(false);
+  const [showUser, setShowUser] = useState(true);
+ 
   const labels = [];
   const values = [];
   const { size } = typography;
@@ -59,6 +57,7 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
   const [username, setUsername] = useState(userStore.name)
   const [bio, setBio] = useState(userStore.description)
   const [link, setLink] = useState(userStore.userWebLink)
+   
   const [usernameError, setUsernameError] = useState(false)
   const [bioError, setBioError] = useState(false)
   const [linkError, setLinkError] = useState(false)
@@ -72,32 +71,102 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
 
   // const handleClose = () => setOpen(false);
 
+
+  
+
+  //handleSubmit functionality placed inside here for now
   const handleSnack = () => {
-    setOpen(true)
+
+     if (username === '') {
+      setUsernameError(true)
+    }
+    if (bio === '') {
+      setBioError(true)
+    }
+      if (link === '') {
+      setLinkError(true)
+    }
+
+    if (username !=='' && bio !== '' && link !== '') {
+
+      setOpen(true)
     setTimeout(()=> setOpen(false), 500)
+    console.log("hello")
+    // event.preventDefault();
+    setUsernameError(false)
+    setBioError(false)
+    setLinkError(false)
+  
+    userStore.setUserName(username);
+    userStore.setDescription(bio);
+    userStore.setUserWebLink(link);
+    console.log(username, bio, link)
+    setShowEdit(!showEdit)
+    setShowUser(!showUser)
+
+    }
+    
+  }
+
+  //hardcoded values to return to default when clicking Cancel button
+  const handleCancel = () => {
+    if (username === '') {
+      setUsername("cosyrosie")
+    }
+    if (bio === '') {
+      setBio("Hi, I’m Rosie. Decisions: If You Can’t Decide, The Answer Is No. If Two Equally Difficult Paths, Choose The One More Painful In The Short Term (Pain Avoidance Is Creating An Illusion Of Equality")
+    }
+      if (link === '') {
+      setLink("Www.Example.Com")
+    }
+    setShowEdit(!showEdit)
+        setShowUser(!showUser)
   }
 
   const handleSnackClose = () => setOpen(false);
 
+  //handleSubmit not being called
   const handleSubmit = (event) => {
+
+  // commented out the service part below 
+    // const data = new FormData(event.currentTarget);
+    //  // eslint-disable-next-line no-console
+    // console.log(data);
+    // editprofile(
+    //   data.get(username),
+    //   data.get(bio),
+    //   data.get(link),
+    // )
+    //   .then(
+    //     console.log("edit profile successful")
+    //     )
+    //   .catch((error) => {
+    //     console.log("edit profile failed");
+    //     return Promise.reject(error);
+    //   })
+    // commented out the service part above 
+
+    // console.log("hello")
     event.preventDefault();
     setUsernameError(false)
     setBioError(false)
     setLinkError(false)
+
     
-    if (username == '') {
+    if (username === '') {
       setUsernameError(true)
     }
-    if (bio == '') {
+    if (bio === '') {
       setBioError(true)
     }
-      if (link == '') {
+      if (link === '') {
       setLinkError(true)
     }
   
     userStore.setUserName(username);
     userStore.setDescription(bio);
     userStore.setUserWebLink(link);
+    console.log(username, bio, link)
   }
 
   //this part is for the start selling form
@@ -110,17 +179,38 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
 
     const handleSubmits = (event) => {
     event.preventDefault();
+
+    // commented out the service part below 
+
+    // const data = new FormData(event.currentTarget);
+    //  // eslint-disable-next-line no-console
+    // console.log(data);
+    // startselling(
+    //   data.get(shopname),
+    //   data.get(web),
+    //   data.get(extract),
+    // )
+    //   .then(
+    //     console.log("sign up as seller successful")
+    //     )
+    //   .catch((error) => {
+    //     console.log("sign up as seller failed");
+    //     return Promise.reject(error);
+    //   })
+
+    // commented out the service part above 
+
     setShopnameError(false)
     setWebError(false)
     setExtractError(false)
     
-    if (shopname == '') {
+    if (shopname === '') {
       setShopnameError(true)
     }
-    if (web == '') {
+    if (web === '') {
       setWebError(true)
     }
-      if (extract == '') {
+      if (extract === '') {
       setExtractError(true)
     }
 
@@ -216,13 +306,31 @@ justifyContent: 'center',
 
   return (
     
-    <Box
+    // <Box
+    //         component="form"
+    //         noValidate
+    //         onSubmit={handleSubmit}
+    //         sx={{ mt: 3 }}
+    //       >
+    <>
+    
+    {/* start of edit profile */}
+   {showEdit && <Box
             component="form"
             noValidate
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
     
+     {/* This is EDIT PROFILE
+    <button onClick={() => {
+        setShowEdit(!showEdit)
+        setShowUser(!showUser)
+      }
+        }>      
+        Show User Profile
+      </button> */}
+
     <Card sx={{ height: "100%" }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" pt={2} px={2}>
         <Typography variant="h6" fontWeight="medium" textTransform="capitalize">
@@ -235,13 +343,15 @@ justifyContent: 'center',
         <Box mb={2} lineHeight={1}>      
           <TextField 
           variant="outlined" 
-          defaultValue= {userStore.name} 
+          // defaultValue= {userStore.name} 
+          defaultValue= {username} 
           // label= {userStore.name === "" ? 'Error' : ' '}
           // label= {userStore.name} 
           onChange={(e) => setUsername(e.target.value)}
           required
           error={usernameError}
-          helperText={userStore.name === "" ? 'Username required' : ' '}
+          helperText={username === "" ? 'Username required' : ' '}
+          // helperText={userStore.name === "" ? 'Username required' : ' '}
           // label= {userStore.name === "" ? 'Error' : ' '}
           >
 
@@ -264,12 +374,14 @@ justifyContent: 'center',
         multiline
         rows={4}
         fullWidth
-        defaultValue= {userStore.description} 
+        // defaultValue= {userStore.description} 
+        defaultValue= {bio} 
         // label= {userStore.description}
         onChange={(e) => setBio(e.target.value)}
         required
         error={bioError}
-        helperText={userStore.description === "" ? 'Bio required' : ' '}
+        helperText={bio === "" ? 'Bio required' : ' '}
+        // helperText={userStore.description === "" ? 'Bio required' : ' '}
         // label= {userStore.description === "" ? 'Error' : ' '}
        >
           
@@ -285,12 +397,14 @@ justifyContent: 'center',
 
             <TextField 
             variant="outlined"       
-            defaultValue= {userStore.userWebLink}
+            // defaultValue= {userStore.userWebLink}
+            defaultValue= {link} 
             // label= {userStore.userWebLink}
             onChange={(e) => setLink(e.target.value)}
             required
              error={linkError}
-             helperText={userStore.userWebLink === "" ? 'Website required' : ' '}
+             helperText={link === "" ? 'Website required' : ' '}
+            //  helperText={userStore.userWebLink === "" ? 'Website required' : ' '}
           //  label= {userStore.userWebLink === "" ? 'Error' : ' '}
            >
           
@@ -329,6 +443,212 @@ justifyContent: 'center',
             >
               Save
             </Button>
+
+            <Button
+              // type="submit"
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={handleCancel}> 
+              Cancel Changes
+            </Button>
+
+            
+    {/* <button onClick={() => {
+        setShowEdit(!showEdit)
+        setShowUser(!showUser)
+      }
+        }>      
+        Show User Profile
+      </button> */}
+
+            {/* modal being used */}
+            {/* <Modal
+        open={open}
+        // onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      
+      >
+        <Box sx={modalStyle}>
+          <Typography 
+          id="modal-modal-title" 
+          variant="h6" 
+          component="h2" 
+          align="center">
+            Changes Saved
+          </Typography> */}
+          {/* in case we want the close button */}
+          {/* <Typography align='center'>
+          <Button onClick={handleClose} 
+          sx={buttonStyle}
+          >
+            Close
+            </Button>
+          </Typography> */}
+        {/* </Box>
+      </Modal> */}
+
+        {/* trying out snackbar */}
+      <Snackbar open ={open} autoHideDuration={2000} onClose={handleSnackClose}>
+                <Alert onClose={handleSnackClose} severity="success" sx= {{ width:'auto'}}>
+                  Changes Saved
+                </Alert>
+              </Snackbar>
+
+      {/* button for start selling */}
+     
+
+        </Box>
+
+      </Card>
+      </Box>}
+      {/* end of show edit form */}
+
+
+{/* start of show user profile */}
+      {showUser &&  <Box
+            component="form"
+            noValidate
+            // onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
+
+            {/* This is USER PROFILE */}
+     {/* <button onClick={() => {
+          setShowEdit(!showEdit)
+          setShowUser(!showUser)
+        }
+        }>
+          Show Edit profile</button> */}
+    <Card sx={{ height: "100%" }}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" pt={2} px={2}>
+        <Typography variant="h6" fontWeight="medium" textTransform="capitalize">
+          {title}
+        </Typography>
+
+      </Box>
+
+      <Box p={2}>
+        <Box mb={2} lineHeight={1}>      
+          {/* <TextField 
+          variant="outlined" 
+          defaultValue= {userStore.name} 
+          // label= {userStore.name === "" ? 'Error' : ' '}
+          // label= {userStore.name} 
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          error={usernameError}
+          helperText={userStore.name === "" ? 'Username required' : ' '}
+          // label= {userStore.name === "" ? 'Error' : ' '}
+          >
+
+          </TextField> */}
+          <Typography variant="button" color="text" fontWeight="regular">
+            {/* {userStore.name} */}
+            {username}
+          </Typography> 
+          
+        </Box>
+        <Box opacity={0.3}>
+          <Divider />
+        </Box>
+
+
+        <Typography variant="h6" fontWeight="medium" textTransform="capitalize">
+          {description}
+        </Typography>
+
+      <Box mb={2} lineHeight={1}>
+
+        {/* <TextField 
+        variant="outlined" 
+        multiline
+        rows={4}
+        fullWidth
+        defaultValue= {userStore.description} 
+        // label= {userStore.description}
+        onChange={(e) => setBio(e.target.value)}
+        required
+        error={bioError}
+        helperText={userStore.description === "" ? 'Bio required' : ' '}
+        // label= {userStore.description === "" ? 'Error' : ' '}
+       >
+          
+        </TextField> */}
+         <Typography variant="button" color="text" fontWeight="regular">
+            {/* {userStore.description} */}
+            {bio}
+          </Typography>  
+        </Box>
+
+      <Typography variant="h6" fontWeight="medium" textTransform="capitalize">
+          {website}
+        </Typography>
+
+         <Box mb={2} lineHeight={1}>
+
+            {/* <TextField 
+            variant="outlined"       
+            defaultValue= {userStore.userWebLink}
+            // label= {userStore.userWebLink}
+            onChange={(e) => setLink(e.target.value)}
+            required
+             error={linkError}
+             helperText={userStore.userWebLink === "" ? 'Website required' : ' '}
+          //  label= {userStore.userWebLink === "" ? 'Error' : ' '}
+           >
+          
+        </TextField> */}
+        <Typography variant="button" color="text" fontWeight="regular">
+            {/* {userStore.userWebLink} */}
+            {link}
+          </Typography> 
+  
+        </Box>
+
+
+        <Box>
+          {renderItems}
+          <Box display="flex" py={1} pr={2}>
+
+            {/* commented out social media part */}
+            {/* <Typography variant="button" fontWeight="bold" textTransform="capitalize">
+              social: &nbsp;
+            </Typography> */}
+            {/* {renderSocial} */}
+          </Box>
+        </Box>
+      </Box>
+      
+       <Box
+          sx={{
+            marginTop: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >       
+          {/* <Button
+              type="submit"
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              // onClick={handleOpen}
+              onClick={handleSnack}
+            >
+              Save
+            </Button> */}
+
+          <Button
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={() => {
+          setShowEdit(!showEdit)
+          setShowUser(!showUser)
+        }
+        }>
+              Edit Profile
+            </Button>
+           
 
             {/* modal being used */}
             {/* <Modal
@@ -369,7 +689,7 @@ justifyContent: 'center',
               // type="submit"
               // fullWidth
               variant="contained"
-              sx={{ mt: 10, mb: 10 }}
+              sx={{ mt: 3, mb: 2 }}
               onClick={handleStart}
               // href="/profile/sell"
             >
@@ -478,11 +798,15 @@ justifyContent: 'center',
         </DialogActions>
       </Dialog>
 
-
         </Box>
 
       </Card>
-      </Box>
+      </Box>}
+
+
+
+      
+      </>
   );
 }
 

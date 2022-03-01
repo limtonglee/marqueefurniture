@@ -156,8 +156,8 @@ export const ItemDetails = () => {
                   </Alert>
                 </Snackbar>
               </Fab>
-              <Fab marginRight>
-                <ShoppingCartIcon onClick={() => handleAddCart(item)} />
+              <Fab  onClick={() => handleAddCart(item)}>
+                <ShoppingCartIcon />
               </Fab>
               <Fab>
                 <Link underline="none" to={`/chat`}>

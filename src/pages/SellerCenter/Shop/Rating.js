@@ -302,7 +302,7 @@ export const ShopRating = () => {
                                     onChange={updateComment}
                                 />
                                 <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                                    {comment.length == 0 ? (
+                                    {comment.length === 0 ? (
                                         <Button
                                             endIcon={<SendIcon />}
                                             variant="outlined"

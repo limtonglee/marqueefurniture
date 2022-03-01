@@ -16,6 +16,7 @@ import { AddNewListing } from "./pages/SellerCenter/Listings/AddNewListing";
 import { MyListings } from "./pages/SellerCenter/Listings/MyListings";
 import { Orders } from "./pages/SellerCenter/Orders";
 import { ShopCategories } from "./pages/SellerCenter/Shop/Categories";
+import { ShopCategoryDetails } from "./pages/SellerCenter/Shop/CategoryDetails";
 import { ShopProfile } from "./pages/SellerCenter/Shop/Profile";
 import { ShopRating } from "./pages/SellerCenter/Shop/Rating";
 import { Voucher } from "./pages/SellerCenter/Voucher";
@@ -38,7 +39,7 @@ const PostLogin = () => {
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
-        <Route path="/Chat" element={<Chat/>} />
+        <Route path="/Chat" element={<Chat />} />
         <Route path="/ideas" element={<Ideas />} />
         <Route path="/new-idea" element={<CreateNewPost />} />
         <Route path="/ideas/:postId" element={<Post />} />
@@ -57,6 +58,7 @@ const PostLogin = () => {
           <Route path="shop/profile" element={<ShopProfile />} />
           <Route path="shop/rating" element={<ShopRating />} />
           <Route path="shop/categories" element={<ShopCategories />} />
+          <Route path="shop/categories/:categoryId" element={<ShopCategoryDetails />} />
           <Route path="finance" element={<Income />} />
           <Route path="finance/income" element={<Income />} />
           <Route path="finance/balance" element={<Balance />} />

@@ -4,7 +4,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import {
   Alert, Avatar, Card, CardContent,
-  CardHeader, Fab, Modal, Snackbar, Typography, Box, CardMedia
+  CardHeader, Fab, Modal, Snackbar, Typography, CardMedia
 } from "@mui/material";
 import * as React from "react";
 import { Link, useParams } from "react-router-dom";
@@ -101,7 +101,7 @@ export const ItemDetails = () => {
                 </Typography>
 
                 <Typography variant="h3" color="text.secondary" fontWeight="bold" >
-                  {isDesign(item.listingType) ? <>Price: {item.price.toFixed(2)}</> : 'Chat with designer for more information.'}
+                  {isDesign(item.listingType) ? <>Price: ${item.price.toFixed(2)}</> : 'Chat with designer for more information.'}
                 </Typography>
 
                 <Typography variant="button" color="text.secondary" fontWeight="bold" >

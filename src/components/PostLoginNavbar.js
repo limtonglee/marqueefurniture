@@ -14,6 +14,13 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useStores } from "../stores/RootStore";
+import { Divider } from "@mui/material";
+
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 
 //const pages = ["Seller Center", "MarketPlace", "Social Media", "Login"];
 //const links = ["sellercenter", "marketplace", "socialmedia", "login"];
@@ -201,7 +208,7 @@ const PostLoginNavBar = () => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"  />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -221,18 +228,36 @@ const PostLoginNavBar = () => {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <Link
-                    key={setting.link}
-                    to={setting.link}
-                    style={{ textDecoration: "none" }}
-                  >
+                  <Link key={setting.link} to={setting.link}>
                     <MenuItem key={setting.link} onClick={handleCloseUserMenu}>
-                      <Typography textAlign="center">{setting.text}</Typography>
+                      {setting.text === "Profile" && (
+                        <Tooltip title="Profile" placement='right'>
+                          <AccountCircleIcon color='info'/>
+                        </Tooltip>
+                      )}
+                      {setting.text === "Cart" && (
+                        <Tooltip title="Cart" placement='right'>
+                          <ShoppingCartCheckoutIcon color='info'/>
+                        </Tooltip>
+                      )}
+                      {setting.text === "Account" && (
+                        <Tooltip title="Chat" placement='right'>
+                          <ChatBubbleOutlineIcon color='info'/>
+                        </Tooltip>
+                      )}
+                      {setting.text === "Dashboard" && (
+                        <Tooltip title="Settings" placement='right'>
+                          <SettingsOutlinedIcon color='info'/>
+                        </Tooltip>
+                      )}
                     </MenuItem>
                   </Link>
                 ))}
+                <Divider sx={{ my: 0.5 }} />
                 <MenuItem onClick={setLogout}>
-                  <Typography textAlign="center">Logout</Typography>
+                  <Tooltip title="Logout" placement='right'>
+                    <LogoutOutlinedIcon color='info'/>
+                  </Tooltip>
                 </MenuItem>
               </Menu>
             </Box>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import AppBar from "@mui/material/AppBar";
@@ -13,15 +13,16 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import Badge from '@mui/material/Badge';
 import { useStores } from "../stores/RootStore";
 import { Divider } from "@mui/material";
 
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-
+import palette from "../theme/palette";
 //const pages = ["Seller Center", "MarketPlace", "Social Media", "Login"];
 //const links = ["sellercenter", "marketplace", "socialmedia", "login"];
 
@@ -65,12 +66,16 @@ const PostLoginNavBar = () => {
 
   const { userStore } = useStores();
 
+  const { cartStore } = useStores();
+
   let navigate = useNavigate();
 
   const setLogout = (e) => {
     userStore.setIsLoggedOut();
     navigate("/marketplace");
   };
+
+  useEffect(() => {});
 
   return (
     <>
@@ -237,22 +242,37 @@ const PostLoginNavBar = () => {
                     <MenuItem key={setting.link} onClick={handleCloseUserMenu}>
                       {setting.text === "Profile" && (
                         <Tooltip title="Profile" placement="right">
-                          <AccountCircleOutlinedIcon sx={{color: "common.black"}} />
+                          <AccountCircleOutlinedIcon
+                            sx={{ color: "common.black" }}
+                          />
                         </Tooltip>
                       )}
                       {setting.text === "Cart" && (
-                        <Tooltip title="Cart" placement="right">
-                          <ShoppingCartCheckoutIcon sx={{color: "common.black"}} />
-                        </Tooltip>
+                        <>
+                          <Tooltip title="Cart" placement="right">
+                            <Badge
+                              color="secondary"
+                              badgeContent={cartStore.items.length}
+                            >
+                              <ShoppingCartCheckoutIcon
+                                sx={{ color: "common.black" }}
+                              />
+                            </Badge>
+                          </Tooltip>
+                        </>
                       )}
                       {setting.text === "Account" && (
                         <Tooltip title="Chat" placement="right">
-                          <ChatBubbleOutlineIcon sx={{color: "common.black"}} />
+                          <ChatBubbleOutlineIcon
+                            sx={{ color: "common.black" }}
+                          />
                         </Tooltip>
                       )}
                       {setting.text === "Dashboard" && (
                         <Tooltip title="Settings" placement="right">
-                          <SettingsOutlinedIcon sx={{color: "common.black"}} />
+                          <SettingsOutlinedIcon
+                            sx={{ color: "common.black" }}
+                          />
                         </Tooltip>
                       )}
                     </MenuItem>
@@ -261,7 +281,7 @@ const PostLoginNavBar = () => {
                 <Divider sx={{ my: 0.5 }} />
                 <MenuItem onClick={setLogout}>
                   <Tooltip title="Logout" placement="right">
-                    <LogoutOutlinedIcon sx={{color: "common.black"}} />
+                    <LogoutOutlinedIcon sx={{ color: "common.black" }} />
                   </Tooltip>
                 </MenuItem>
               </Menu>

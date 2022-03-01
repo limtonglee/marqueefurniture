@@ -1,23 +1,29 @@
 import Button from "@mui/material/Button";
-import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
+import ChatIcon from '@mui/icons-material/Chat';
 import ShareIcon from "@mui/icons-material/Share";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import {
   Alert, Avatar, Card, CardContent,
-  CardHeader, Fab, Modal, Snackbar, Typography, CardMedia
+  CardHeader, Fab, Modal, Snackbar, Typography, CardMedia, Stack
 } from "@mui/material";
 import * as React from "react";
 import { Link, useParams } from "react-router-dom";
 import { itemData } from "../../data/itemData";
 import { useStores } from "../../stores/RootStore";
 import { Grid } from "@mui/material";
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
 //This is the listing page
 /* 
 Expansion of item details for this Done
 Link of profile To be edited
 URL Sharing Done
-Add to cart 
+Add to cart Done
+Styling 
+Conditional display for the share add to cart and message - remove if not login
+Add in a back button Done
+Add in filter by category
 */
 export const ItemDetails = () => {
 
@@ -36,23 +42,28 @@ export const ItemDetails = () => {
     boxShadow: 24,
     p: 4,
   };
-  const [open, setOpen] = React.useState(false);
-  const [openSnack, setOpenSnack] = React.useState(false);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
-  const handleSnack = () => {
-    setOpenSnack(true)
-  }
+  const [state, setState] = React.useState({
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+  });
 
-  const handleSnackClose = (event, reason) => {
-    if (reason === "clickaway") {
+  const { vertical, horizontal, open } = state;
+
+  const handleClick = (newState) => () => {
+    console.log("Got fire here")
+    navigator.clipboard.writeText(window.location.toString())
+    setState({ open: true, ...newState });
+  };
+
+  const handleClose = (event, reason) => {
+    if(reason === "clickaway") {
       return;
     }
-
-    setOpenSnack(false)
-  }
+    setState({ ...state, open: false });
+  };
 
   const isDesign = (item) => {
     if (item === "Design") {
@@ -71,16 +82,9 @@ export const ItemDetails = () => {
     <>
       <Card>
         <CardContent key={item.key}>
-          <CardHeader
-            avatar={
-              <Link to={`/sellerProfile`} underline="none">
-                <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
-                  R
-                </Avatar>
-              </Link>
-            }
-            title={item.author}
-          />
+            <Link to={`/marketplace`} style={{ textDecoration: 'none', color: 'blue' }}>
+              <ArrowCircleLeftIcon />
+            </Link>
           <Grid container spacing = {2}>
             <Grid item md = {6} xs={12} >
               <CardMedia width='auto' align='center'>
@@ -96,6 +100,16 @@ export const ItemDetails = () => {
             </Grid>
             <Grid item md = {6} xs = {12} >
               <CardContent>
+                <CardHeader
+                avatar={
+                  <Link to={`/sellerProfile`} style={{ textDecoration: 'none' }}>
+                    <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
+                      R
+                    </Avatar>
+                  </Link>
+                }
+                title={item.author}
+                />
                 <Typography variant="h1" color="text.secondary" fontWeight="bold">
                   {item.title}
                 </Typography>
@@ -112,7 +126,12 @@ export const ItemDetails = () => {
 
 
                 <Typography variant="h3" color="text.secondary" fontWeight="bold">
+                  <LocalShippingIcon margin />
                   Shipping Provider: {item.shippingProvider}
+                </Typography>
+
+                <Typography variant="h3" color="text.secondary">
+                  {item.variation}
                 </Typography>
 
                 <Typography variant="h3" color="text.secondary">
@@ -133,8 +152,6 @@ export const ItemDetails = () => {
                     <br />
                     Stock Available: {item.stockAvailable}
                     <br />
-                    Variation: {item.variation}
-                    <br />
                     Dimension: {item.dimension}
                   </div>
                 </Typography>
@@ -143,27 +160,46 @@ export const ItemDetails = () => {
                   {item.description}
                 </Typography>
               </CardContent>
-              <Fab size="small" sx={{ color: "secondary", margin: 1 }}>
-                <ShareIcon
-                  onClick={() => {
-                    handleSnack();
-                    navigator.clipboard.writeText(window.location.toString())
-                  }
-                  } />
-                <Snackbar open={openSnack} autoHideDuration={2000} onClose={handleSnackClose}>
-                  <Alert onClose={handleSnackClose} severity="success" sx={{ width: 'auto' }}>
-                    Copied to Clipboard!
-                  </Alert>
-                </Snackbar>
-              </Fab>
-              <Fab  onClick={() => handleAddCart(item)}>
-                <ShoppingCartIcon />
-              </Fab>
-              <Fab>
-                <Link underline="none" to={`/chat`}>
-                  <ChatBubbleIcon />
-                </Link>
-              </Fab>
+              <Stack direction="row" spacing={2}>
+                <Fab sx={{ color: "secondary"}}>
+                  <ShareIcon
+                    onClick={handleClick({
+                        vertical: 'top',
+                        horizontal: 'center',
+                      })
+                    } />
+                  <Snackbar
+                    anchorOrigin={{ vertical, horizontal }}
+                    open={open}
+                    onClose={handleClose} 
+                    autoHideDuration={1500} 
+                    key={vertical + horizontal}>
+                    <Alert 
+                      onClose={handleClose}
+                      variant= "filled"
+                      severity="success"
+                      sx={{ width: 'auto' }}
+                    >
+                      Copied to Clipboard!
+                    </Alert>
+                  </Snackbar>
+                </Fab>
+                <Button 
+                  variant="outlined"
+                  onClick={() => handleAddCart(item)}
+                  startIcon={<ShoppingCartIcon/>}
+                >
+                  Add to cart
+                </Button>
+                <Button 
+                  variant="outlined"
+                  startIcon={<ChatIcon/>}
+                  disableElevation
+                  href="http://localhost:3000/chat"
+                > 
+                  Chat
+                </Button>
+              </Stack>
             </Grid>
           </Grid>
         </CardContent>

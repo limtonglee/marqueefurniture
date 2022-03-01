@@ -16,7 +16,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useStores } from "../stores/RootStore";
 import { Divider } from "@mui/material";
 
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
@@ -77,15 +77,20 @@ const PostLoginNavBar = () => {
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+            <Link
+              key={"mf"}
+              to={"/"}
+              style={{ textDecoration: "none", color: "white" }}
             >
-              MF
-            </Typography>
-
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+              >
+                MF
+              </Typography>
+            </Link>
             <Box
               sx={{
                 flexGrow: 1,
@@ -208,7 +213,7 @@ const PostLoginNavBar = () => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"  />
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -231,23 +236,23 @@ const PostLoginNavBar = () => {
                   <Link key={setting.link} to={setting.link}>
                     <MenuItem key={setting.link} onClick={handleCloseUserMenu}>
                       {setting.text === "Profile" && (
-                        <Tooltip title="Profile" placement='right'>
-                          <AccountCircleIcon color='info'/>
+                        <Tooltip title="Profile" placement="right">
+                          <AccountCircleOutlinedIcon sx={{color: "common.black"}} />
                         </Tooltip>
                       )}
                       {setting.text === "Cart" && (
-                        <Tooltip title="Cart" placement='right'>
-                          <ShoppingCartCheckoutIcon color='info'/>
+                        <Tooltip title="Cart" placement="right">
+                          <ShoppingCartCheckoutIcon sx={{color: "common.black"}} />
                         </Tooltip>
                       )}
                       {setting.text === "Account" && (
-                        <Tooltip title="Chat" placement='right'>
-                          <ChatBubbleOutlineIcon color='info'/>
+                        <Tooltip title="Chat" placement="right">
+                          <ChatBubbleOutlineIcon sx={{color: "common.black"}} />
                         </Tooltip>
                       )}
                       {setting.text === "Dashboard" && (
-                        <Tooltip title="Settings" placement='right'>
-                          <SettingsOutlinedIcon color='info'/>
+                        <Tooltip title="Settings" placement="right">
+                          <SettingsOutlinedIcon sx={{color: "common.black"}} />
                         </Tooltip>
                       )}
                     </MenuItem>
@@ -255,8 +260,8 @@ const PostLoginNavBar = () => {
                 ))}
                 <Divider sx={{ my: 0.5 }} />
                 <MenuItem onClick={setLogout}>
-                  <Tooltip title="Logout" placement='right'>
-                    <LogoutOutlinedIcon color='info'/>
+                  <Tooltip title="Logout" placement="right">
+                    <LogoutOutlinedIcon sx={{color: "common.black"}} />
                   </Tooltip>
                 </MenuItem>
               </Menu>

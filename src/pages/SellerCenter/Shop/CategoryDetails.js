@@ -13,6 +13,7 @@ import { shopCategoriesData } from "../../../data/shopCategoriesData";
 import { listingsData } from "../../../data/listingsData";
 import AddIcon from '@mui/icons-material/Add';
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
+import CategoryAddProductModal from './CategoryAddProductModal';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
@@ -67,18 +68,7 @@ export const ShopCategoryDetails = () => {
                             </Typography>
                         </Grid>
                         <Grid item xs={3}>
-                            <Button
-                                variant="contained"
-                                startIcon={<AddIcon />}
-                                style={{
-                                    height: '36px',
-                                }}
-                                onClick={e => {
-
-                                }}
-                            >
-                                Add Products
-                            </Button>
+                            <CategoryAddProductModal/>
                         </Grid>
                     </Grid>
                     <Grid container spacing={2} sx={{ marginTop: "12px" }}>

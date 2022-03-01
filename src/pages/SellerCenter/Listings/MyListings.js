@@ -11,6 +11,7 @@ import {
     Tab,
     Box,
     styled,
+    Grid
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router";
@@ -79,11 +80,6 @@ export const MyListings = () => {
         handleChange();
     }
 
-    const CardStyle = styled('div')({
-        marginLeft: '10px',
-        marginRight: '20px',
-    });
-
     return (
         <>
             <Layout>
@@ -106,19 +102,37 @@ export const MyListings = () => {
                     placeholder="Search Listing..."
                     onChange={(event) => handleSearch(event.target.value)}
                 />
-                <Card style={{ overflow: 'visible', height: 700 }}>
-                    <div className='page' style={{ height: '100%' }}>
-                        <Box sx={{ width: '100%' }}>
-                            <Tabs
-                                value={value}
-                                onChange={handleChange}
-                            >
-                                <Tab label="All" />
-                                <Tab label="Live" />
-                                <Tab label="Sold Out" />
-                                <Tab label="Violation" />
-                                <Tab label="Delisted" />
-                            </Tabs>
+                <Card style={{ overflow: 'visible' }}>
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                    >
+                        <Tab label="All" />
+                        <Tab label="Live" />
+                        <Tab label="Sold Out" />
+                        <Tab label="Violation" />
+                        <Tab label="Delisted" />
+                    </Tabs>
+                    <Grid container sx={{padding: "12px"}}>
+                        <Grid item xs={3}>
+                            Product Details
+                        </Grid>
+                        <Grid item xs={2}>
+                            Price
+                        </Grid>
+                        <Grid item xs={2}>
+                            Status
+                        </Grid>
+                        <Grid item xs={1}>
+                            Stock
+                        </Grid>
+                        <Grid item xs={1}>
+                            Sales
+                        </Grid>
+                        <Grid item xs={3}>
+                            Actions
+                        </Grid>
+                        <Grid item xs={12}>
                             {data.map((item) => (
                                 <Card key={item.id}
                                     sx={{
@@ -126,51 +140,50 @@ export const MyListings = () => {
                                         marginBottom: '10px',
                                         border: 1,
                                     }}>
-                                    <div className='item' style={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        padding: '10px',
-                                    }}>
-                                        <div className='image'>
+                                    <Grid container sx={{padding: "4px"}}>
+                                        <Grid item xs={3}>
                                             <img
                                                 src={`${item.img}?w=124&fit=crop&auto=format`}
                                                 srcSet={`${item.img}?w=124&fit=crop&auto=format&dpr=2 2x`}
                                                 alt={item.title}
                                                 loading="lazy"
                                             />
-                                        </div>
-                                        <div className='itemDetails' style={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            marginLeft: '5px',
-                                            marginRight: '10px'
-                                        }}>
                                             <div>{item.productName}</div>
                                             <div>Variation: {item.variation}</div>
-                                        </div>
-                                        <CardStyle>Price: S${item.price}</CardStyle>
-                                        <CardStyle>Status: {item.status}</CardStyle>
-                                        <CardStyle>Stock: {item.stock}</CardStyle>
-                                        <CardStyle>Sales: {item.sales}</CardStyle>
-                                        <EditListingModal>{item}</EditListingModal>
-                                        <Button
-                                            variant="contained"
-                                            startIcon={<PlaylistRemoveIcon />}
-                                            style={{
-                                                height: '50px',
-                                                marginLeft: '5px',
-                                            }}
-                                            onClick={e => {
-                                                handleDelist(e, item);
-                                            }}
-                                        >
-                                            Delist Listing
-                                        </Button>
-                                    </div>
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            S${item.price}
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            {item.status}
+                                        </Grid>
+                                        <Grid item xs={1}>
+                                            {item.stock}
+                                        </Grid>
+                                        <Grid item xs={1}>
+                                            {item.sales}
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            <EditListingModal>{item}</EditListingModal>
+                                            <Button
+                                                variant="contained"
+                                                startIcon={<PlaylistRemoveIcon />}
+                                                style={{
+                                                    width: '150px',
+                                                    marginTop: "12px"
+                                                }}
+                                                onClick={e => {
+                                                    handleDelist(e, item);
+                                                }}
+                                            >
+                                                Delist Listing
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
                                 </Card>
                             ))}
-                        </Box>
-                    </div>
+                        </Grid>
+                    </Grid>
                 </Card>
             </Layout>
         </>

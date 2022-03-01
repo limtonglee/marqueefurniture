@@ -103,7 +103,7 @@ export default function BasicModal({ children }) {
                 startIcon={<EditIcon />}
                 onClick={handleOpen}
                 style={{
-                    height: '50px',
+                    width: '150px',
                 }}
             >
                 Edit Listing

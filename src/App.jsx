@@ -27,7 +27,7 @@ const App = () => {
       {() => (
         <ThemeConfig>
           <>
-            <Container maxWidth="xl">
+            <Container maxWidth="xxl">
               <>
                 {userStore.isLoggedIn ? (
                   !userStore.isAdmin &&

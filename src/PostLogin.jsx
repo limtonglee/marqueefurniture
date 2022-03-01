@@ -28,10 +28,13 @@ import StartSelling from "./pages/Profile/About/StartSelling";
 import Chat from "./pages/Chat/ChatModule";
 import SellerProfile from "./pages/SellerProfile/SellerProfile";
 
+import { Box } from "@mui/material";
+
 const PostLogin = () => {
   return (
     <>
       <PostLoginNavBar />
+      <Box sx={{ mt: 8 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/marketplace" />} />
         <Route path="/marketplace" element={<MarketPlace />}>

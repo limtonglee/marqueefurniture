@@ -179,7 +179,7 @@ export const ItemDetails = () => {
                 <br/>
                 <Divider />
                 <br/>
-                  <Typography variant="h3" color="text.secondary">
+                  <Typography variant="h3" color={item.variation.toString()}>
                     {isDesign(item.listingType) && isService(item.listingType) ? <>Variation: {item.variation.toString().toUpperCase()}</> : 'Chat for more information.'}                    
                   </Typography>
                 <br/>

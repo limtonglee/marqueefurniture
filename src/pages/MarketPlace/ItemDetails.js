@@ -37,6 +37,8 @@ export const ItemDetails = () => {
 
   const { cartStore } = useStores();
 
+  const { userStore } = useStores();
+
   const param = useParams();
   const item = itemData[param.itemId];
   const style = {
@@ -96,10 +98,18 @@ export const ItemDetails = () => {
   };
 
   const handleAddCart = (item, newState) => {
-
+    console.log(userStore);
     cartStore.addItems(item);
     console.log("Add to cart handle has fired")
     setCartState({ cartOpen: true, ...newState });
+  };
+
+  const isLogin = (user) => {
+    console.log(user)
+    if (user.isLoggedIn === true) {
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -184,71 +194,18 @@ export const ItemDetails = () => {
                 </Typography>
               </CardContent>
               <Stack direction="row" spacing={2}>
-                {isDesign(item.listingType) ? 
-                <>
-                  <Fab sx={{ color: "secondary"}}>
-                    <ShareIcon
-                      onClick={handleClick({
-                          vertical: 'top',
-                          horizontal: 'center',
-                        })
-                      } />
-                    <Snackbar
-                      anchorOrigin={{ vertical, horizontal }}
-                      open={open}
-                      onClose={handleClose} 
-                      autoHideDuration={1500} 
-                      key={vertical + horizontal}>
-                      <Alert 
-                        onClose={handleClose}
-                        variant= "filled"
-                        severity="success"
-                        sx={{ width: 'auto' }}
-                      >
-                        Copied to Clipboard!
-                      </Alert>
-                    </Snackbar>
-                  </Fab>
-                  <Button 
-                    variant="outlined"
-                    onClick={() => {
-                      handleAddCart(item, {vertical: 'top',
-                      horizontal: 'center'})}}
-                    startIcon={<ShoppingCartIcon/>}
-                  >
-                    Add to cart
-                  </Button>
-                  <Snackbar
-                      anchorOrigin={{ vertical, horizontal }}
-                      open={cartOpen}
-                      onClose={handleCartClose} 
-                      autoHideDuration={1500} 
-                      key={vertical + horizontal}>
-                      <Alert 
-                        onClose={handleCartClose}
-                        variant= "filled"
-                        severity="success"
-                        sx={{ width: 'auto' }}
-                      >
-                        Added to Cart!
-                      </Alert>
-                  </Snackbar>
-                  <Button 
-                    variant="outlined"
-                    startIcon={<ChatIcon/>}
-                    disableElevation
-                    href="http://localhost:3000/chat"
-                  > 
-                    Chat
-                  </Button>
-                  </> : <>
-                    <Fab sx={{ color: "secondary"}}>
+                {isLogin(userStore) ? <>
+                  {isDesign(item.listingType) ? 
+                  <>
+                    <Fab size= "small" color="secondary">
                       <ShareIcon
                         onClick={handleClick({
                             vertical: 'top',
                             horizontal: 'center',
                           })
-                        } />
+                        }
+                        color= "primary"
+                        />
                       <Snackbar
                         anchorOrigin={{ vertical, horizontal }}
                         open={open}
@@ -267,14 +224,155 @@ export const ItemDetails = () => {
                     </Fab>
                     <Button 
                       variant="outlined"
+                      onClick={() => {
+                        handleAddCart(item, {vertical: 'top',
+                        horizontal: 'center'})}}
+                      startIcon={<ShoppingCartIcon/>}
+                    >
+                      Add to cart
+                    </Button>
+                    <Snackbar
+                        anchorOrigin={{ vertical, horizontal }}
+                        open={cartOpen}
+                        onClose={handleCartClose} 
+                        autoHideDuration={1500} 
+                        key={vertical + horizontal}>
+                        <Alert 
+                          onClose={handleCartClose}
+                          variant= "filled"
+                          severity="success"
+                          sx={{ width: 'auto' }}
+                        >
+                          Added to Cart!
+                        </Alert>
+                    </Snackbar>
+                    <Button 
+                      variant="outlined"
                       startIcon={<ChatIcon/>}
                       disableElevation
                       href="http://localhost:3000/chat"
                     > 
                       Chat
                     </Button>
-                  </>
+                    </> : <>
+                      <Fab size= "small" color="secondary">
+                        <ShareIcon
+                          onClick={handleClick({
+                              vertical: 'top',
+                              horizontal: 'center',
+                            })
+                          }
+                          color= "primary"
+                          />
+                        <Snackbar
+                          anchorOrigin={{ vertical, horizontal }}
+                          open={open}
+                          onClose={handleClose} 
+                          autoHideDuration={1500} 
+                          key={vertical + horizontal}>
+                          <Alert 
+                            onClose={handleClose}
+                            variant= "filled"
+                            severity="success"
+                            sx={{ width: 'auto' }}
+                          >
+                            Copied to Clipboard!
+                          </Alert>
+                        </Snackbar>
+                      </Fab>
+                      <Button 
+                        variant="outlined"
+                        startIcon={<ChatIcon/>}
+                        disableElevation
+                        href="http://localhost:3000/chat"
+                      > 
+                        Chat
+                      </Button>
+                    </>
                   }
+                  </> : <>
+                  {isDesign(item.listingType) ? 
+                  <>
+                    <Fab size= "small" color="secondary">
+                      <ShareIcon
+                        onClick={handleClick({
+                            vertical: 'top',
+                            horizontal: 'center',
+                          })
+                        }
+                        color= "primary"
+                        />
+                      <Snackbar
+                        anchorOrigin={{ vertical, horizontal }}
+                        open={open}
+                        onClose={handleClose} 
+                        autoHideDuration={1500} 
+                        key={vertical + horizontal}>
+                        <Alert 
+                          onClose={handleClose}
+                          variant= "filled"
+                          severity="success"
+                          sx={{ width: 'auto' }}
+                        >
+                          Copied to Clipboard!
+                        </Alert>
+                      </Snackbar>
+                    </Fab>
+                    <Button 
+                      variant="outlined"
+                      disabled
+                      startIcon={<ShoppingCartIcon/>}
+                    >
+                      Add to cart
+                    </Button>
+                    <Button 
+                      variant="outlined"
+                      startIcon={<ChatIcon/>}
+                      disabled
+                      disableElevation
+                      href="http://localhost:3000/chat"
+                    > 
+                      Chat
+                    </Button>
+                    </> : <>
+                      <Fab size= "small" color="secondary">
+                        <ShareIcon
+                          onClick={handleClick({
+                              vertical: 'top',
+                              horizontal: 'center',
+                            })
+                          }
+                          color= "primary"
+                          />
+                        <Snackbar
+                          anchorOrigin={{ vertical, horizontal }}
+                          open={open}
+                          onClose={handleClose} 
+                          autoHideDuration={1500} 
+                          key={vertical + horizontal}>
+                          <Alert 
+                            onClose={handleClose}
+                            variant= "filled"
+                            severity="success"
+                            sx={{ width: 'auto' }}
+                          >
+                            Copied to Clipboard!
+                          </Alert>
+                        </Snackbar>
+                      </Fab>
+                      <Button 
+                        variant="outlined"
+                        disabled
+                        startIcon={<ChatIcon/>}
+                        disableElevation
+                        href="http://localhost:3000/chat"
+                      > 
+                        Chat
+                      </Button>
+                    </>
+                  }
+                  </>
+                } 
               </Stack>
             </Grid>
           </Grid>

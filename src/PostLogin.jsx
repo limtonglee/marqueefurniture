@@ -26,6 +26,7 @@ import ViewMoodboard from "./pages/SocialMedia/Moodboard/ViewMoodboard";
 import Chat from "./pages/Chat/ChatModule";
 
 import { Box } from "@mui/material";
+import SellerProfile from "./pages/SellerProfile/SellerProfile";
 
 const PostLogin = () => {
   return (
@@ -38,7 +39,7 @@ const PostLogin = () => {
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
-  
+        <Route path="/SellerProfile" element={<SellerProfile/>} />
         <Route path="/Chat" element={<Chat/>} />
         <Route path="/ideas" element={<Ideas />} />
         <Route path="/new-idea" element={<CreateNewPost />} />

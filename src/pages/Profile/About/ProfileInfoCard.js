@@ -446,7 +446,6 @@ justifyContent: 'center',
         <Box mb={2} lineHeight={1}>      
           
           <Typography variant="button" color="text" fontWeight="regular">
-      
             {username}
           </Typography> 
           

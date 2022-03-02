@@ -1,6 +1,4 @@
 //store user logged in information
-
-import { flatMap } from "lodash";
 import { action, makeAutoObservable, observable } from "mobx";
 import { makeLocalStorage } from "./makeLocalStorage.tsx";
 
@@ -87,7 +85,6 @@ class cartStore {
     let objIndex = this.items.findIndex((obj) => obj.id === itemId);
     let currentQuantity = this.items[objIndex].itemQuantity;
     currentQuantity++;
-    console.log("obj index: " + objIndex)
     this.items[objIndex].itemQuantity = currentQuantity;
   }
 

@@ -97,6 +97,13 @@ export const ItemDetails = () => {
     return true;
   };
 
+  const isService = (item) => {
+    if (item === "Service") {
+      return;
+    }
+    return true;
+  };
+
   const handleAddCart = (item, newState) => {
     cartStore.addItems(item);
     console.log("Add to cart handle has fired")
@@ -150,7 +157,7 @@ export const ItemDetails = () => {
                 </Typography>
 
                 <Typography variant="h3" color="text.secondary" fontWeight="bold" >
-                  {isDesign(item.listingType) ? <>Price: ${item.price.toFixed(2)}</> : 'Chat with designer for more information.'}
+                  {isDesign(item.listingType) ? <>Price: ${item.price.toFixed(2)}</> : <></>}
                 </Typography>
                 <br/>
                 <Divider/>
@@ -173,13 +180,13 @@ export const ItemDetails = () => {
                 <Divider />
                 <br/>
                   <Typography variant="h3" color="text.secondary">
-                    Variation: {item.variation.toString().toUpperCase()}
+                    {isDesign(item.listingType) && isService(item.listingType) ? <>Variation: {item.variation.toString().toUpperCase()}</> : 'Chat for more information.'}                    
                   </Typography>
                 <br/>
                 <Divider />
                 <br/>
                 <Typography variant="h3" color="text.secondary">
-                  Product Details:
+                  Details:
                 </Typography>
 
                 <Grid container spacing={2} column={8}>
@@ -196,22 +203,24 @@ export const ItemDetails = () => {
                       Warranty:
                     </Typography>
                     <br/>
-                    <Typography variant="overline" color="text.secondary">
-                      Parcel Size:
-                    </Typography>
-                    <br/>
-                    <Typography variant="overline" color="text.secondary">
-                      Weight:
-                    </Typography>
-                    <br/>
-                    <Typography variant="overline" color="text.secondary">
-                      Stock Available:
-                    </Typography>
-                    <br/>
-                    <Typography variant="overline" color="text.secondary">
-                      Dimension:
-                    </Typography>
-                    <br/> 
+                    {isDesign(item.listingType) && isService(item.listingType) ? <>
+                      <Typography variant="overline" color="text.secondary">
+                        Parcel Size:
+                      </Typography>
+                      <br/>
+                      <Typography variant="overline" color="text.secondary">
+                        Weight:
+                      </Typography>
+                      <br/>
+                      <Typography variant="overline" color="text.secondary">
+                        Stock Available:
+                      </Typography>
+                      <br/>
+                      <Typography variant="overline" color="text.secondary">
+                        Dimension:
+                      </Typography>
+                      <br/>
+                      </> : <></>}  
                   </Grid>
                   <Grid item xs={4}>
                     <Typography variant="overline" color="text.secondary" >
@@ -226,29 +235,31 @@ export const ItemDetails = () => {
                       {item.warrantyInfo}
                     </Typography>
                     <br/>
-                    <Typography variant="overline" color="text.secondary" >
-                      {item.parcelSize}
-                    </Typography>
-                    <br/>
-                    <Typography variant="overline" color="text.secondary" >
-                      {item.weight}
-                    </Typography>
-                    <br/>
-                    <Typography variant="overline" color="text.secondary" >
-                      {item.stockAvailable}
-                    </Typography>
-                    <br/>
-                    <Typography variant="overline" color="text.secondary" >
-                      {item.dimension}
-                    </Typography>
-                    <br/>
+                    {isDesign(item.listingType) && isService(item.listingType) ? <>
+                      <Typography variant="overline" color="text.secondary" >
+                        {item.parcelSize}
+                      </Typography>
+                      <br/>
+                      <Typography variant="overline" color="text.secondary" >
+                        {item.weight}
+                      </Typography>
+                      <br/>
+                      <Typography variant="overline" color="text.secondary" >
+                        {item.stockAvailable}
+                      </Typography>
+                      <br/>
+                      <Typography variant="overline" color="text.secondary" >
+                        {item.dimension}
+                      </Typography>
+                      <br/>
+                      </> : <></>}
                   </Grid>
                 </Grid>
                 <br/>
                 <Typography variant="h3" color="text.secondary" fontWeight="bold">
                   Description
                 </Typography>
-                <Typography variant="overline" color="text.secondary">
+                <Typography variant="body1" color="text.secondary">
                   {item.description}
                 </Typography>
               </CardContent>

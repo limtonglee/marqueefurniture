@@ -4,7 +4,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import {
   Alert, Avatar, Card, CardContent,
-  CardHeader, Fab, Modal, Snackbar, Typography, CardMedia, Stack, Divider, ListItem, ListItemAvatar, ListItemText
+  CardHeader, Fab, Modal, Snackbar, Typography, CardMedia, Stack, Divider, ListItem, ListItemAvatar, ListItemText, Rating, Accordion, AccordionSummary
 } from "@mui/material";
 import * as React from "react";
 import {
@@ -29,7 +29,7 @@ Link of profile To be edited
 URL Sharing Done
 Add to cart Done
 Styling 
-Conditional display for the share add to cart and message - remove if not login
+Conditional display for the share add to cart and message - remove if not login Done
 Add in a back button Done
 Add in filter by category
 */
@@ -142,6 +142,9 @@ export const ItemDetails = () => {
                 title={item.author}
                 sx = {{p: 0}}
                 />
+                <br/>
+                <Divider/>
+                <br/>
                 <Typography variant="h1" color="text.secondary" fontWeight="bold">
                   {item.title}
                 </Typography>
@@ -149,49 +152,102 @@ export const ItemDetails = () => {
                 <Typography variant="h3" color="text.secondary" fontWeight="bold" >
                   {isDesign(item.listingType) ? <>Price: ${item.price.toFixed(2)}</> : 'Chat with designer for more information.'}
                 </Typography>
-
-                <Typography variant="button" color="text.secondary" fontWeight="bold" >
-                  "put in place the rating and stars"
+                <br/>
+                <Divider/>
+                <br/>
+                <Typography variant="button" sx= {{color: "text.secondary", fontWeight: "bold", fontSize: 20}}  >
+                  Rating:
+                  <br/>
+                  <Rating name="read-only" value="4.5" readOnly precision={0.5}/>
                 </Typography>
-                <br />
-
-                <Divider>
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar>
-                        <LocalShippingIcon sx={{color: "primary"}}/>
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Shipping Provider" secondary= {item.shippingProvider} />
-                  </ListItem>
-                </Divider>
-
-                <Typography variant="h3" color="text.secondary">
-                  {item.variation}
-                </Typography>
-
+                <br/>
+                <ListItem sx={{p: 0}}>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <LocalShippingIcon sx={{color: "primary"}}/>
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary="Shipping Provider" secondary= {item.shippingProvider} />
+                </ListItem>
+                <br/>
+                <Divider />
+                <br/>
+                  <Typography variant="h3" color="text.secondary">
+                    Variation: {item.variation.toString().toUpperCase()}
+                  </Typography>
+                <br/>
+                <Divider />
+                <br/>
                 <Typography variant="h3" color="text.secondary">
                   Product Details:
                 </Typography>
 
-                <Typography variant="overline" color="blue" fontWeight="bold">
-                  <div>
-                    Category: {item.category}
-                    <br />
-                    Brand: {item.brand}
-                    <br />
-                    Warranty Type: {item.warrantyType}
-                    <br />
-                    Parcel Size: {item.parcelSize}
-                    <br />
-                    Weight: {item.weight}
-                    <br />
-                    Stock Available: {item.stockAvailable}
-                    <br />
-                    Dimension: {item.dimension}
-                  </div>
+                <Grid container spacing={2} column={8}>
+                  <Grid item xs={4}>
+                    <Typography variant="overline" color="text.secondary">
+                      Categories:
+                    </Typography>
+                    <br/>
+                    <Typography variant="overline" color="text.secondary">
+                      Brand:
+                    </Typography>
+                    <br/>
+                    <Typography variant="overline" color="text.secondary">
+                      Warranty:
+                    </Typography>
+                    <br/>
+                    <Typography variant="overline" color="text.secondary">
+                      Parcel Size:
+                    </Typography>
+                    <br/>
+                    <Typography variant="overline" color="text.secondary">
+                      Weight:
+                    </Typography>
+                    <br/>
+                    <Typography variant="overline" color="text.secondary">
+                      Stock Available:
+                    </Typography>
+                    <br/>
+                    <Typography variant="overline" color="text.secondary">
+                      Dimension:
+                    </Typography>
+                    <br/> 
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Typography variant="overline" color="text.secondary" >
+                      {item.category}
+                    </Typography>
+                    <br/>
+                    <Typography variant="overline" color="text.secondary" >
+                      {item.brand}
+                    </Typography>
+                    <br/>
+                    <Typography variant="overline" color="text.secondary" >
+                      {item.warrantyInfo}
+                    </Typography>
+                    <br/>
+                    <Typography variant="overline" color="text.secondary" >
+                      {item.parcelSize}
+                    </Typography>
+                    <br/>
+                    <Typography variant="overline" color="text.secondary" >
+                      {item.weight}
+                    </Typography>
+                    <br/>
+                    <Typography variant="overline" color="text.secondary" >
+                      {item.stockAvailable}
+                    </Typography>
+                    <br/>
+                    <Typography variant="overline" color="text.secondary" >
+                      {item.dimension}
+                    </Typography>
+                    <br/>
+                  </Grid>
+                </Grid>
+                <br/>
+                <Typography variant="h3" color="text.secondary" fontWeight="bold">
+                  Description
                 </Typography>
-
                 <Typography variant="overline" color="text.secondary">
                   {item.description}
                 </Typography>

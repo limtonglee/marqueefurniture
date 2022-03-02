@@ -29,9 +29,6 @@ export default function Cart() {
   const { cartStore } = useStores();
   const [items, setItems] = useState(toJS(cartStore.getItems()));
 
-  console.log("cartstore items : " + items);
-  console.log(items);
-
   const handleDeleteAll = () => {
     cartStore.clearAllItems();
     setItems([]);
@@ -40,81 +37,106 @@ export default function Cart() {
   const handleDeleteOneItem = (itemId) => {
     console.log("removing itemID " + itemId);
 
+    cartStore.removeItems(itemId);
+    setItems(toJS(cartStore.getItems()));
+  };
+
+
+  const handleRemoveOneItem = (itemId) => {
     cartStore.clearOneItem(itemId);
     setItems(toJS(cartStore.getItems()));
   };
 
-  const handleDeleteAllItems = (itemId) => {};
+  const handleAddOneItem = (itemId) => {
+    cartStore.addItemCount(itemId);
+    setItems(toJS(cartStore.getItems()));
+  };
 
   return (
-      <Container>
-        <Typography variant="h1" fontWeight="bold">
-          My Cart
-        </Typography>
-        <br />
-        <Paper
-          sx={{
-            p: 2,
-            margin: "auto",
-            flexGrow: 1,
-            backgroundColor: (theme) =>
-              theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-          }}
+    <Container>
+      <Typography variant="h1" fontWeight="bold">
+        My Cart
+      </Typography>
+      <br />
+      <Paper
+        sx={{
+          p: 2,
+          margin: "auto",
+          flexGrow: 1,
+          backgroundColor: (theme) =>
+            theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+        }}
+      >
+        <Button
+          align="right"
+          onClick={handleDeleteAll}
+          endIcon={<DeleteOutlineIcon />}
         >
-          <Button
-            align="right"
-            onClick={handleDeleteAll}
-            endIcon={<DeleteOutlineIcon />}
-          >
-            Remove all
-          </Button>
-          <ImageList cols={1} gap={15}>
-            {items.map((cartItem) => (
-              <Grid container spacing={2}>
-                <Grid item>
-                  <Link to={`/marketplace/${cartItem.id}`}>
-                    <ButtonBase sx={{ width: 128, height: 128 }}>
-                      <Img src={cartItem.img} alt={cartItem.title} />
-                    </ButtonBase>
-                  </Link>
-                </Grid>
-                <Grid item xs={12} sm container>
-                  <Grid item xs container direction="column" spacing={2}>
-                    <Grid item xs>
-                      <Typography
-                        gutterBottom
-                        variant="subtitle1"
-                        component="div"
-                      >
-                        {cartItem.author}
-                      </Typography>
-                      <Typography variant="body2" gutterBottom>
-                        Item: {cartItem.title}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        Brand: {cartItem.brand}
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <Button
-                        align="right"
-                        onClick={() => handleDeleteOneItem(cartItem.id)}
-                        endIcon={<DeleteOutlineIcon />}
-                      >
-                        Remove item
-                      </Button>
-                    </Grid>
+          Remove all
+        </Button>
+        <ImageList cols={1} gap={15}>
+          {items.map((cartItem) => (
+            <Grid container spacing={2}>
+              <Grid item>
+                <Link to={`/marketplace/${cartItem.id}`}>
+                  <ButtonBase sx={{ width: 128, height: 128 }}>
+                    <Img src={cartItem.img} alt={cartItem.title} />
+                  </ButtonBase>
+                </Link>
+              </Grid>
+              <Grid item xs={12} sm container>
+                <Grid item xs container direction="column" spacing={2}>
+                  <Grid item xs>
+                    <Typography
+                      gutterBottom
+                      variant="subtitle1"
+                      component="div"
+                    >
+                      {cartItem.author}
+                    </Typography>
+                    <Typography variant="body2" gutterBottom>
+                      Item: {cartItem.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Brand: {cartItem.brand}
+                    </Typography>
+
+                    <Typography variant="body2" color="text.secondary">
+                      Quantity: {cartItem.itemQuantity}
+                    </Typography>
+                    <Button
+                      align="right"
+                      onClick={() => handleRemoveOneItem(cartItem.id)}
+                    >
+                      -
+                    </Button>
+                    <Button
+                      align="right"
+                      onClick={() => handleAddOneItem(cartItem.id)}
+                    >
+                      +
+                    </Button>
                   </Grid>
                   <Grid item>
-                    <Typography variant="subtitle1" component="div">
-                      {cartItem.price}
-                    </Typography>
+                    <Button
+                      align="right"
+                      onClick={() => handleDeleteOneItem(cartItem.id)}
+                      endIcon={<DeleteOutlineIcon />}
+                    >
+                      Remove item
+                    </Button>
                   </Grid>
                 </Grid>
+                <Grid item>
+                  <Typography variant="subtitle1" component="div">
+                    {cartItem.price}
+                  </Typography>
+                </Grid>
               </Grid>
-            ))}
-          </ImageList>
-        </Paper>
-      </Container>
+            </Grid>
+          ))}
+        </ImageList>
+      </Paper>
+    </Container>
   );
 }

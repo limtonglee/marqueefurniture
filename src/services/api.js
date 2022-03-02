@@ -10,7 +10,7 @@ const instance = axios.create({
 
 const request = (options) => instance.request(options);
 
-export const get = (url,params, headers={}) => request({
+export const get = (url,params={}, headers={}) => request({
     method: 'GET',
     url,
     params,

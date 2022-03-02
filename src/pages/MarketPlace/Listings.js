@@ -6,7 +6,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import WeekendIcon from "@mui/icons-material/Weekend";
 import {
   Alert,
-  Box, Checkbox,
+  Box,
+  Checkbox,
   Container,
   Grid,
   ImageListItem,
@@ -15,13 +16,17 @@ import {
   OutlinedInput,
   Snackbar,
   Tab,
-  Tabs
+  Tabs,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { user } from "../../data/currentUserData";
 import { itemData } from "../../data/itemData";
+
+import { getListings } from "../../services/Listings";
+
+import { useEffect } from "react";
 
 //This is the main marketplace page
 /*Things to do:
@@ -43,6 +48,13 @@ export const Listings = () => {
   const [data, setData] = React.useState(tabData);
   // const [searchResults, setSearchResults] = React.useState(tabData);
   const [open, setOpen] = React.useState(false);
+
+  const [listings, setListings] = React.useState("");
+  useEffect(() => {
+    getListings().then(response => {
+      setListings(response.data)
+    });
+  }, []);
 
   const handleSnack = () => {
     setOpen(true);
@@ -106,19 +118,19 @@ export const Listings = () => {
 
   return (
     <Container>
-        <Box sx={{ maxWidth: 400 }}>
-          <OutlinedInput
-            onChange={(event) => handleSearch(event.target.value)}
-            placeholder=" search for your item"
-            fullWidth
-            startAdornment={
-              <InputAdornment position="end">
-                <SearchIcon />
-              </InputAdornment>
-            }
-            variant="outlined"
-          />
-        </Box>
+      <Box sx={{ maxWidth: 400 }}>
+        <OutlinedInput
+          onChange={(event) => handleSearch(event.target.value)}
+          placeholder=" search for your item"
+          fullWidth
+          startAdornment={
+            <InputAdornment position="end">
+              <SearchIcon />
+            </InputAdornment>
+          }
+          variant="outlined"
+        />
+      </Box>
 
       <Box sx={{ width: "auto", bgcolor: "background" }}>
         <Tabs
@@ -170,7 +182,7 @@ export const Listings = () => {
                     fontWeight: "bold",
                     fontSize: 12,
                     color: "primary.main",
-                    mt:2,
+                    mt: 2,
                   }}
                 >
                   ${item.price.toFixed(2)}

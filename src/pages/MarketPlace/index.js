@@ -4,7 +4,6 @@ import { Outlet } from "react-router-dom";
 const MarketPlace = () => {
   return (
     <Container maxWidth="xl">
-      <h1>Marketplace</h1>
       <Outlet/>
     </Container>
   );

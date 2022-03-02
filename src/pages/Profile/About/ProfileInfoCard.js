@@ -27,7 +27,7 @@ import typography from "../../../theme/typography";
 
 
 
-// import startselling from "../../../services/StartSelling";
+import startselling from "../../../services/StartSelling";
 // import editprofile from "../../../services/EditProfile";
 
 
@@ -63,15 +63,6 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
   const [linkError, setLinkError] = useState(false)
 
   const [open, setOpen] = useState(false);
-  // const handleOpen = () => setOpen(true);
-  // const handleOpen = (() => {
-  //   setOpen(true)
-  //   setTimeout(()=> setOpen(false), 500)
-  // });
-
-  // const handleClose = () => setOpen(false);
-
-
   
 
   //handleSubmit functionality placed inside here for now
@@ -91,8 +82,7 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
 
       setOpen(true)
     setTimeout(()=> setOpen(false), 500)
-    console.log("hello")
-    // event.preventDefault();
+  
     setUsernameError(false)
     setBioError(false)
     setLinkError(false)
@@ -128,7 +118,7 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
   //handleSubmit not being called
   const handleSubmit = (event) => {
 
-  // commented out the service part below 
+  // commented out the service part below for now to be used later
     // const data = new FormData(event.currentTarget);
     //  // eslint-disable-next-line no-console
     // console.log(data);
@@ -146,7 +136,6 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
     //   })
     // commented out the service part above 
 
-    // console.log("hello")
     event.preventDefault();
     setUsernameError(false)
     setBioError(false)
@@ -180,7 +169,7 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
     const handleSubmits = (event) => {
     event.preventDefault();
 
-    // commented out the service part below 
+    // commented out the service part below to be used later 
 
     // const data = new FormData(event.currentTarget);
     //  // eslint-disable-next-line no-console
@@ -214,13 +203,6 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
       setExtractError(true)
     }
 
-
-    //  if (shopname && web && extract) {
-    //   fetch('http://localhost:8000/sellers', {
-    //     method: 'POST',
-    //     headers: {"Content-type": "application/json"},
-    //     body: JSON.stringify({ shopname, website, description })
-    //   }).then(() => navigate("/sellercenter"))
      if (shopname && web && extract) {
        console.log(shopname, web, extract)
         navigate("/sellercenter")
@@ -256,9 +238,6 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
 };
 
 const buttonStyle = {
-  // position: 'relative',
-// height: 500,
-// alignItems: 'center',
 justifyContent: 'center',
 }
 
@@ -306,12 +285,6 @@ justifyContent: 'center',
 
   return (
     
-    // <Box
-    //         component="form"
-    //         noValidate
-    //         onSubmit={handleSubmit}
-    //         sx={{ mt: 3 }}
-    //       >
     <>
     
     {/* start of edit profile */}
@@ -321,15 +294,6 @@ justifyContent: 'center',
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
-    
-     {/* This is EDIT PROFILE
-    <button onClick={() => {
-        setShowEdit(!showEdit)
-        setShowUser(!showUser)
-      }
-        }>      
-        Show User Profile
-      </button> */}
 
     <Card sx={{ height: "100%" }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" pt={2} px={2}>
@@ -343,16 +307,14 @@ justifyContent: 'center',
         <Box mb={2} lineHeight={1}>      
           <TextField 
           variant="outlined" 
-          // defaultValue= {userStore.name} 
+      
           defaultValue= {username} 
-          // label= {userStore.name === "" ? 'Error' : ' '}
-          // label= {userStore.name} 
+        
           onChange={(e) => setUsername(e.target.value)}
           required
           error={usernameError}
           helperText={username === "" ? 'Username required' : ' '}
-          // helperText={userStore.name === "" ? 'Username required' : ' '}
-          // label= {userStore.name === "" ? 'Error' : ' '}
+        
           >
 
           </TextField>
@@ -374,15 +336,14 @@ justifyContent: 'center',
         multiline
         rows={4}
         fullWidth
-        // defaultValue= {userStore.description} 
+
         defaultValue= {bio} 
-        // label= {userStore.description}
+      
         onChange={(e) => setBio(e.target.value)}
         required
         error={bioError}
         helperText={bio === "" ? 'Bio required' : ' '}
-        // helperText={userStore.description === "" ? 'Bio required' : ' '}
-        // label= {userStore.description === "" ? 'Error' : ' '}
+    
        >
           
         </TextField>
@@ -397,15 +358,14 @@ justifyContent: 'center',
 
             <TextField 
             variant="outlined"       
-            // defaultValue= {userStore.userWebLink}
+
             defaultValue= {link} 
-            // label= {userStore.userWebLink}
+         
             onChange={(e) => setLink(e.target.value)}
             required
              error={linkError}
              helperText={link === "" ? 'Website required' : ' '}
-            //  helperText={userStore.userWebLink === "" ? 'Website required' : ' '}
-          //  label= {userStore.userWebLink === "" ? 'Error' : ' '}
+      
            >
           
         </TextField>
@@ -417,11 +377,7 @@ justifyContent: 'center',
           {renderItems}
           <Box display="flex" py={1} pr={2}>
 
-            {/* commented out social media part */}
-            {/* <Typography variant="button" fontWeight="bold" textTransform="capitalize">
-              social: &nbsp;
-            </Typography> */}
-            {/* {renderSocial} */}
+           
           </Box>
         </Box>
       </Box>
@@ -438,64 +394,28 @@ justifyContent: 'center',
               type="submit"
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              // onClick={handleOpen}
+  
               onClick={handleSnack}
             >
               Save
             </Button>
 
             <Button
-              // type="submit"
+              
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               onClick={handleCancel}> 
               Cancel Changes
             </Button>
 
-            
-    {/* <button onClick={() => {
-        setShowEdit(!showEdit)
-        setShowUser(!showUser)
-      }
-        }>      
-        Show User Profile
-      </button> */}
 
-            {/* modal being used */}
-            {/* <Modal
-        open={open}
-        // onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      
-      >
-        <Box sx={modalStyle}>
-          <Typography 
-          id="modal-modal-title" 
-          variant="h6" 
-          component="h2" 
-          align="center">
-            Changes Saved
-          </Typography> */}
-          {/* in case we want the close button */}
-          {/* <Typography align='center'>
-          <Button onClick={handleClose} 
-          sx={buttonStyle}
-          >
-            Close
-            </Button>
-          </Typography> */}
-        {/* </Box>
-      </Modal> */}
-
-        {/* trying out snackbar */}
+        {/* using snackbar for showing changes saved */}
       <Snackbar open ={open} autoHideDuration={2000} onClose={handleSnackClose}>
                 <Alert onClose={handleSnackClose} severity="success" sx= {{ width:'auto'}}>
                   Changes Saved
                 </Alert>
               </Snackbar>
 
-      {/* button for start selling */}
      
 
         </Box>
@@ -509,17 +429,11 @@ justifyContent: 'center',
       {showUser &&  <Box
             component="form"
             noValidate
-            // onSubmit={handleSubmit}
+  
             sx={{ mt: 3 }}
           >
 
-            {/* This is USER PROFILE */}
-     {/* <button onClick={() => {
-          setShowEdit(!showEdit)
-          setShowUser(!showUser)
-        }
-        }>
-          Show Edit profile</button> */}
+      
     <Card sx={{ height: "100%" }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" pt={2} px={2}>
         <Typography variant="h6" fontWeight="medium" textTransform="capitalize">
@@ -530,21 +444,9 @@ justifyContent: 'center',
 
       <Box p={2}>
         <Box mb={2} lineHeight={1}>      
-          {/* <TextField 
-          variant="outlined" 
-          defaultValue= {userStore.name} 
-          // label= {userStore.name === "" ? 'Error' : ' '}
-          // label= {userStore.name} 
-          onChange={(e) => setUsername(e.target.value)}
-          required
-          error={usernameError}
-          helperText={userStore.name === "" ? 'Username required' : ' '}
-          // label= {userStore.name === "" ? 'Error' : ' '}
-          >
-
-          </TextField> */}
+          
           <Typography variant="button" color="text" fontWeight="regular">
-            {/* {userStore.name} */}
+      
             {username}
           </Typography> 
           
@@ -560,23 +462,9 @@ justifyContent: 'center',
 
       <Box mb={2} lineHeight={1}>
 
-        {/* <TextField 
-        variant="outlined" 
-        multiline
-        rows={4}
-        fullWidth
-        defaultValue= {userStore.description} 
-        // label= {userStore.description}
-        onChange={(e) => setBio(e.target.value)}
-        required
-        error={bioError}
-        helperText={userStore.description === "" ? 'Bio required' : ' '}
-        // label= {userStore.description === "" ? 'Error' : ' '}
-       >
-          
-        </TextField> */}
+        
          <Typography variant="button" color="text" fontWeight="regular">
-            {/* {userStore.description} */}
+         
             {bio}
           </Typography>  
         </Box>
@@ -587,20 +475,9 @@ justifyContent: 'center',
 
          <Box mb={2} lineHeight={1}>
 
-            {/* <TextField 
-            variant="outlined"       
-            defaultValue= {userStore.userWebLink}
-            // label= {userStore.userWebLink}
-            onChange={(e) => setLink(e.target.value)}
-            required
-             error={linkError}
-             helperText={userStore.userWebLink === "" ? 'Website required' : ' '}
-          //  label= {userStore.userWebLink === "" ? 'Error' : ' '}
-           >
           
-        </TextField> */}
         <Typography variant="button" color="text" fontWeight="regular">
-            {/* {userStore.userWebLink} */}
+
             {link}
           </Typography> 
   
@@ -611,11 +488,7 @@ justifyContent: 'center',
           {renderItems}
           <Box display="flex" py={1} pr={2}>
 
-            {/* commented out social media part */}
-            {/* <Typography variant="button" fontWeight="bold" textTransform="capitalize">
-              social: &nbsp;
-            </Typography> */}
-            {/* {renderSocial} */}
+          
           </Box>
         </Box>
       </Box>
@@ -628,15 +501,7 @@ justifyContent: 'center',
             alignItems: "center",
           }}
         >       
-          {/* <Button
-              type="submit"
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              // onClick={handleOpen}
-              onClick={handleSnack}
-            >
-              Save
-            </Button> */}
+          
 
           <Button
               variant="contained"
@@ -650,34 +515,7 @@ justifyContent: 'center',
             </Button>
            
 
-            {/* modal being used */}
-            {/* <Modal
-        open={open}
-        // onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      
-      >
-        <Box sx={modalStyle}>
-          <Typography 
-          id="modal-modal-title" 
-          variant="h6" 
-          component="h2" 
-          align="center">
-            Changes Saved
-          </Typography> */}
-          {/* in case we want the close button */}
-          {/* <Typography align='center'>
-          <Button onClick={handleClose} 
-          sx={buttonStyle}
-          >
-            Close
-            </Button>
-          </Typography> */}
-        {/* </Box>
-      </Modal> */}
-
-        {/* trying out snackbar */}
+        {/* snackbar for showing changes saved*/}
       <Snackbar open ={open} autoHideDuration={2000} onClose={handleSnackClose}>
                 <Alert onClose={handleSnackClose} severity="success" sx= {{ width:'auto'}}>
                   Changes Saved
@@ -686,17 +524,16 @@ justifyContent: 'center',
 
       {/* button for start selling */}
       <Button
-              // type="submit"
-              // fullWidth
+             
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               onClick={handleStart}
-              // href="/profile/sell"
+              
             >
               Start Selling
             </Button>
           <Dialog open={start} onClose={handleStop}>
-        {/* <DialogTitle>Subscribe</DialogTitle> */}
+       
         <DialogContent>
           <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -737,7 +574,7 @@ justifyContent: 'center',
                   autoComplete="shopname"
                   error={shopnameError}
                   helperText={shopnameError && "Shop name required"}
-                  // helperText={shopname === "" ? 'Shop name required!' : ' '}
+                 
                 />
               </Grid>
               <Typography variant="h6" mt={5}>
@@ -754,7 +591,7 @@ justifyContent: 'center',
                   autoComplete="website"
                   error={webError}
                   helperText={webError && "Shop website required"}
-                  // helperText={web === "" ? 'Website required!' : ' '}
+            
                 />
               </Grid>
               <Typography variant="h6" mt={5}>
@@ -769,12 +606,12 @@ justifyContent: 'center',
                   onChange={(e) => setExtract(e.target.value)}
                   name="description"
                   label="Shop Description"
-                  // type="description"
+               
                   id="description"
                   autoComplete="description"
                   error={extractError}
                   helperText={extractError && "Shop description required"}
-                  // helperText={extract === "" ? 'Description required!' : ' '}
+                  
                 />
               </Grid>
             

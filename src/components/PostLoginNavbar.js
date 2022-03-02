@@ -1,30 +1,28 @@
-import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import Badge from '@mui/material/Badge';
-import { useStores } from "../stores/RootStore";
-import { Divider } from "@mui/material";
-
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import palette from "../theme/palette";
-//const pages = ["Seller Center", "MarketPlace", "Social Media", "Login"];
-//const links = ["sellercenter", "marketplace", "socialmedia", "login"];
+import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import { Divider } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
+import Badge from "@mui/material/Badge";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Toolbar from "@mui/material/Toolbar";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useStores } from "../stores/RootStore";
+import ControlledSwitches from "./SwitchNav";
+
+
+
 
 const pageLinks = [
   { text: "Seller Center", link: "/sellercenter" },
@@ -42,7 +40,7 @@ const settings = [
   { text: "Profile", link: "/profile" },
   { text: "Cart", link: "/cart" },
   { text: "Chat", link: "/chat" },
-  { text: "Dashboard", link: "/dashboard" },
+  { text: "Seller Center", link: "/sellercenter" },
 ];
 
 const PostLoginNavBar = () => {
@@ -75,11 +73,9 @@ const PostLoginNavBar = () => {
     navigate("/marketplace");
   };
 
-  useEffect(() => {});
-
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="fixed" sx={appbarStyle}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Link
@@ -99,100 +95,11 @@ const PostLoginNavBar = () => {
             <Box
               sx={{
                 flexGrow: 1,
-                display: { xs: "flex", md: "none" },
               }}
             >
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: "block", md: "none" },
-                }}
-              >
-                {!userStore.isAdmin &&
-                  pageLinks.map((page) => (
-                    <MenuItem key={page.link} onClick={handleCloseNavMenu}>
-                      <Link
-                        key={page.link}
-                        to={page.link}
-                        style={{ textDecoration: "none" }}
-                      >
-                        <Typography textAlign="center">{page.text}</Typography>
-                      </Link>
-                    </MenuItem>
-                  ))}
-                {!!userStore.isAdmin &&
-                  AdminPageLinks.map((page) => (
-                    <MenuItem key={page.link} onClick={handleCloseNavMenu}>
-                      <Link
-                        key={page.link}
-                        to={page.link}
-                        style={{ textDecoration: "none" }}
-                      >
-                        <Typography textAlign="center">{page.text}</Typography>
-                      </Link>
-                    </MenuItem>
-                  ))}
-              </Menu>
-            </Box>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{
-                flexGrow: 1,
-                display: { xs: "flex", md: "none" },
-              }}
-            >
-              MF
-            </Typography>
-            <Box
-              sx={{
-                flexGrow: 1,
-                display: { xs: "none", md: "flex" },
-              }}
-            >
-              {!userStore.isAdmin &&
-                pageLinks.map((page) => (
-                  <Link
-                    key={page.link}
-                    to={page.link}
-                    style={{ textDecoration: "none" }}
-                  >
-                    <Button
-                      key={page.link}
-                      onClick={handleCloseNavMenu}
-                      sx={{
-                        my: 2,
-                        color: "white",
-                        display: "block",
-                      }}
-                    >
-                      {page.text}
-                    </Button>
-                  </Link>
-                ))}
+              <ControlledSwitches />
+              
+
               {!!userStore.isAdmin &&
                 AdminPageLinks.map((page) => (
                   <Link
@@ -268,9 +175,9 @@ const PostLoginNavBar = () => {
                           />
                         </Tooltip>
                       )}
-                      {setting.text === "Dashboard" && (
-                        <Tooltip title="Settings" placement="right">
-                          <SettingsOutlinedIcon
+                      {setting.text === "Seller Center" && (
+                        <Tooltip title="Seller Center" placement="right">
+                          <StorefrontIcon
                             sx={{ color: "common.black" }}
                           />
                         </Tooltip>
@@ -293,3 +200,7 @@ const PostLoginNavBar = () => {
   );
 };
 export default PostLoginNavBar;
+
+const appbarStyle = {
+  opacity: 1
+};

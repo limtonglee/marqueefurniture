@@ -208,7 +208,7 @@ export const ShopRating = () => {
                     </Card>
                 </Grid>
             </Grid>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} sx={{marginTop: "8px"}}>
                 <Grid item xs={4}>
                     <Card sx={{ height: '100%' }}>
                         <Grid container spacing={2}>

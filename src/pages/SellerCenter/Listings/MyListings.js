@@ -11,7 +11,9 @@ import {
     Tab,
     Box,
     styled,
-    Grid
+    Grid,
+    TextField,
+    MenuItem
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router";
@@ -46,32 +48,33 @@ export const MyListings = () => {
         }
         setData(tabData);
     };
-
-    const columns = [
-        { field: 'id', headerName: 'SKU', width: 100 },
-        { field: 'name', headerName: 'Product Name', width: 170 },
-        { field: 'status', headerName: 'Status', width: 130 },
-        { field: 'variation', headerName: 'Variation', width: 150 },
-        { field: 'price', headerName: 'Price', width: 70 },
-        { field: 'stock', headerName: 'Stock', width: 70 },
-        { field: 'sales', headerName: 'Sales', width: 70 },
+    const searchType = [
+        {
+            value: 'productName',
+            label: 'Product Name',
+        },
+        {
+            value: 'id',
+            label: 'SKU code',
+        },
     ];
+    let [type, setType] = React.useState('productName');
+    let handleSearchDropdown = (event) => {
+        setType(event.target.value);
+    };
 
     const handleSearch = (value) => {
         findListing(value);
     }
 
     const findListing = (criteria) => {
-        //checkStatus();
         const lowercasedCriteria = criteria.toLowerCase().trim();
         if (lowercasedCriteria === '') updateData(value);
         else {
-            const filteredListing = data.filter((filterList) => {
-                return Object.keys(filterList).some((key) =>
-                    filterList[key].toString().toLowerCase().includes(lowercasedCriteria)
-                )
+            const filteredListing = data.filter((order) => {
+                return order[type].toString().toLowerCase().includes(lowercasedCriteria)
             })
-            setData(filteredListing)
+            setData(filteredListing);
         }
     };
 
@@ -97,11 +100,24 @@ export const MyListings = () => {
                         New Listing
                     </Button>
                 </Stack>
-
-                <Searchbar
-                    placeholder="Search Listing..."
-                    onChange={(event) => handleSearch(event.target.value)}
-                />
+                <Stack direction="row" >
+                    <TextField
+                        id="outlined-select-search-type"
+                        select
+                        value={type}
+                        onChange={handleSearchDropdown}
+                    >
+                        {searchType.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        placeholder="Search Listing..."
+                        onChange={(event) => handleSearch(event.target.value)}
+                    />
+                </Stack>
                 <Card style={{ overflow: 'visible' }}>
                     <Tabs
                         value={value}
@@ -113,14 +129,17 @@ export const MyListings = () => {
                         <Tab label="Violation" />
                         <Tab label="Delisted" />
                     </Tabs>
-                    <Grid container sx={{padding: "12px"}}>
+                    <Grid container sx={{ padding: "12px" }}>
                         <Grid item xs={3}>
                             Product Details
+                        </Grid>
+                        <Grid item xs={1}>
+                            SKU
                         </Grid>
                         <Grid item xs={2}>
                             Price
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={1}>
                             Status
                         </Grid>
                         <Grid item xs={1}>
@@ -140,7 +159,7 @@ export const MyListings = () => {
                                         marginBottom: '10px',
                                         border: 1,
                                     }}>
-                                    <Grid container sx={{padding: "4px"}}>
+                                    <Grid container sx={{ padding: "4px" }}>
                                         <Grid item xs={3}>
                                             <img
                                                 src={`${item.img}?w=124&fit=crop&auto=format`}
@@ -151,10 +170,13 @@ export const MyListings = () => {
                                             <div>{item.productName}</div>
                                             <div>Variation: {item.variation}</div>
                                         </Grid>
+                                        <Grid item xs={1}>
+                                            {item.id}
+                                        </Grid>
                                         <Grid item xs={2}>
                                             S${item.price}
                                         </Grid>
-                                        <Grid item xs={2}>
+                                        <Grid item xs={1}>
                                             {item.status}
                                         </Grid>
                                         <Grid item xs={1}>

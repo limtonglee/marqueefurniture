@@ -54,7 +54,7 @@ export const ShopCategories = () => {
                 </Typography>
                 <AddCategoryModal></AddCategoryModal>
             </Stack>
-            <Grid container spacing={2}>
+            <Grid container>
                 <Grid item xs={4}>
                     Category Display Name
                 </Grid>
@@ -72,23 +72,29 @@ export const ShopCategories = () => {
                 </Grid>
                 <Grid item xs={12}>
                     {data.map((category) => (
-                        <Card key={category.id}
+                        <Card 
                             sx={{
                                 marginTop: '10px',
                                 marginBottom: '10px',
                                 border: 1,
+                                paddingTop: "24px",
+                                paddingBottom: "24px",
                             }}>
-                            <Grid container spacing={2}>
+                            <Grid container sx={{paddingLeft:"12px"}}>
                                 {!editActivated && (
                                     <Grid item xs={4}>
                                         {category.name}
                                         <Button
                                             variant="outlined"
                                             startIcon={<EditIcon />}
+                                            sx={{
+                                                width:"16px",
+                                                height:"16px",
+                                                marginLeft: "10px",
+                                            }}
                                             onClick={event => {
                                                 openEdit(event, category)
                                             }}
-                                            sx={{ width: "16px", height: "16px", marginLeft: "10px" }}
                                         />
                                     </Grid>
                                 )}
@@ -106,6 +112,7 @@ export const ShopCategories = () => {
                                                 required
                                                 id="outlined-basic"
                                                 defaultValue={category.name}
+                                                sx={{ height: "16px" }}
                                                 onChange={handleEdit}
                                             />
 
@@ -113,6 +120,9 @@ export const ShopCategories = () => {
                                                 <Button
                                                     endIcon={<CheckIcon />}
                                                     variant="outlined"
+                                                    sx={{
+                                                        height: "16px",
+                                                    }}
                                                     onClick={sendEdit}
                                                 >
                                                 </Button>

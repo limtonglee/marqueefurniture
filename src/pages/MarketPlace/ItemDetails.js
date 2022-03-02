@@ -133,7 +133,7 @@ export const ItemDetails = () => {
               <CardContent>
                 <CardHeader
                 avatar={
-                  <Link to={`/sellerProfile`} style={{ textDecoration: 'none' }}>
+                  <Link to={`/SellerProfile`} style={{ textDecoration: 'none' }}>
                     <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
                       R
                     </Avatar>

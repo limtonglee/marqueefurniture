@@ -4,7 +4,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import {
   Alert, Avatar, Card, CardContent,
-  CardHeader, Fab, Modal, Snackbar, Typography, CardMedia, Stack
+  CardHeader, Fab, Modal, Snackbar, Typography, CardMedia, Stack, Divider, ListItem, ListItemAvatar, ListItemText
 } from "@mui/material";
 import * as React from "react";
 import {
@@ -98,7 +98,6 @@ export const ItemDetails = () => {
   };
 
   const handleAddCart = (item, newState) => {
-    console.log(userStore);
     cartStore.addItems(item);
     console.log("Add to cart handle has fired")
     setCartState({ cartOpen: true, ...newState });
@@ -156,12 +155,16 @@ export const ItemDetails = () => {
                 </Typography>
                 <br />
 
-
-
-                <Typography variant="h3" color="text.secondary" fontWeight="bold">
-                  <LocalShippingIcon margin />
-                  Shipping Provider: {item.shippingProvider}
-                </Typography>
+                <Divider>
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar>
+                        <LocalShippingIcon sx={{color: "primary"}}/>
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Shipping Provider" secondary= {item.shippingProvider} />
+                  </ListItem>
+                </Divider>
 
                 <Typography variant="h3" color="text.secondary">
                   {item.variation}

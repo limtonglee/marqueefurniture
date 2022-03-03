@@ -382,7 +382,7 @@ const MoodboardModal = ({
 												</ListItemAvatar>
 												<ListItemText
 													id={moodboardId}
-													// primary={moodboardName}
+													primary={moodboardName}
 												/>
 											</ListItemButton>
 										</ListItem>
@@ -496,7 +496,7 @@ const MoodboardModal = ({
 												</ListItemAvatar>
 												<ListItemText
 													id={moodboardId}
-													// primary={moodboardName}
+													primary={moodboardName}
 												/>
 											</ListItemButton>
 										</ListItem>

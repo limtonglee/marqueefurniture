@@ -28,7 +28,7 @@ const PreLogin = ({checked, setChecked, handleChange}) => {
         <Route path="/new-idea" element={<CreateNewPost />} />
         <Route path="/ideas/:postId" element={<Post />} />
         <Route path="/moodboard/:username/:moodboardId" element={<ViewMoodboard />} />
-        <Route path="/marketplace" element={<MarketPlace />}>
+        <Route path="/marketplace" element={<MarketPlace setChecked={setChecked}/>}>
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>

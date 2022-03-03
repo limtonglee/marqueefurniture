@@ -9,11 +9,28 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import signup from "../../services/Signup";
+import { useState } from "react";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
 
 
 
 export default function SignUp() {
+
+  let navigate = useNavigate();
+
+  const [start, setStart] = useState(false);
+
+  const handleStart = () => {
+    setStart(true);
+  };
+
+  const handleStop = () => {
+    setStart(false);
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -141,10 +158,58 @@ export default function SignUp() {
             type="submit"
             fullWidth
             variant="contained"
+            onClick={handleStart}
             sx={{ mt: 3, mb: 2 }}
           >
             Sign Up
           </Button>
+          
+           <Dialog open={start} onClose={handleStop}>
+       
+        <DialogContent>
+          <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          {/* <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar> */}
+          <Typography component="h1" variant="h5">
+            Profile Created 
+          </Typography>
+          <Typography component="h1" variant="subtitle1" sx={{ mt: 4 }}>
+            Welcome to Marquee Furniture! 
+          </Typography>
+          
+          <Box
+            component="form"
+            noValidate
+            // onSubmit={handleSubmits}
+            sx={{ mt: 2 }}
+          >
+            
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 1, mb: 1 }}
+              onClick={()=> navigate("/login")}
+            >
+              Ok
+            </Button>
+          </Box>
+        </Box>
+      </Container>
+         
+        </DialogContent>
+      </Dialog>
+
           <Grid
             container
             justifyContent="flex-end"

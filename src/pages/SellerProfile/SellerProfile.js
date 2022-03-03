@@ -19,6 +19,7 @@ import MessageIcon from "@mui/icons-material/Message";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import mark from "../../assets/images/mark.jpeg";
+import jack from "../../assets/images/jack.jpg";
 
 
 const SellerProfile = () => {
@@ -35,7 +36,7 @@ const SellerProfile = () => {
             <Grid sx={{p: "16px"}}>
                 <Grid item xs = {4}>
                     <Avatar
-                    src={mark}
+                    src={jack}
                     alt="profile-image"
                     variant="rounded"
                     shadow="sm"
@@ -45,7 +46,7 @@ const SellerProfile = () => {
                 <br/>
                 <Grid item xs = {4}>       
                     <Typography variant="h2" color="text" fontWeight="bold">
-                        Mark Zuckerburg
+                        Ali Mama
                     </Typography> 
                 </Grid>
             </Grid>
@@ -165,7 +166,7 @@ const SellerProfile = () => {
 
                                             <Box mb={2} lineHeight={1}>
                                                 <Typography variant= "body1" color="text" fontWeight="regular">
-                                                    Hi, I am Mark Zuckerburg and I created an app that you might be familiar with? Facebook!
+                                                    Hi, I am Jack Ma and I created an app that you might be familiar with? Alibaba!
                                                 </Typography>  
                                             </Box>
                                             <Typography variant="h3" fontWeight="medium" textTransform="capitalize">
@@ -173,7 +174,7 @@ const SellerProfile = () => {
                                             </Typography>
                                             <Box mb={2} lineHeight={1}>  
                                                 <Typography variant="button" color="text" fontWeight="regular">
-                                                    <a href= "https://facebook.com" target="_blank">
+                                                    <a href= "https://alibaba.com" target="_blank">
                                                        <b>
                                                             My Website
                                                         </b>

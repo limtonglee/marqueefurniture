@@ -22,6 +22,7 @@ import { Grid } from "@mui/material";
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import mark from "../../assets/images/mark.jpeg";
+import jack from "../../assets/images/jack.jpg";
 
 //This is the listing page
 /* 
@@ -153,7 +154,7 @@ export const ItemDetails = () => {
                 <CardHeader
                 avatar={
                   <Link to={`/SellerProfile`} style={{ textDecoration: 'none' }}>
-                    <Avatar src={mark}
+                    <Avatar src={jack}
                     alt="profile-image"
                     variant="rounded"
                     shadow="sm" 

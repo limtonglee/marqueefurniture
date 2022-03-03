@@ -1,11 +1,16 @@
 import { Container } from "@mui/material";
 import { Outlet } from "react-router-dom";
+import { useStores } from "../../stores/RootStore";
+import { useEffect } from "react";
 
-const MarketPlace = () => {
+const MarketPlace = ({ setChecked }) => {
+  useEffect(() => {
+    setChecked(false);
+  }, []);
+
   return (
     <Container maxWidth="xl">
-      <h1>Marketplace</h1>
-      <Outlet/>
+      <Outlet />
     </Container>
   );
 };

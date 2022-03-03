@@ -7,10 +7,11 @@ import Container from "@mui/material/Container";
 import { postData } from "../../data/postData";
 import AddIcon from "@mui/icons-material/Add";
 import Stack from "@mui/material/Stack";
+import { Link, useNavigate } from "react-router-dom";
 
 const Ideas = () => {
-	let selectedTags = [];
-	let tagBin = new Map();
+	const [selectedTags, setSelectedTags] = useState([]);
+	const [tagBin, setTagBin] = useState(new Map());
 	let currentSort = "popular";
 
 	const pageStyles = {
@@ -30,7 +31,10 @@ const Ideas = () => {
 	const handleTag = (tag) => {
 		if (selectedTags.includes(tag)) {
 			// remove tag from selectedTags
-			selectedTags = selectedTags.filter((item) => item !== tag);
+			const newSelectedTags = [...selectedTags].filter(
+				(item) => item !== tag
+			);
+			setSelectedTags(newSelectedTags);
 
 			// update posts lists
 			let newPosts = [...posts];
@@ -42,7 +46,9 @@ const Ideas = () => {
 			tagBin.delete(tag);
 		} else {
 			// add tag to selectedTags
-			selectedTags.push(tag);
+			const newSelectedTags = [...selectedTags];
+			newSelectedTags.push(tag);
+			setSelectedTags(newSelectedTags);
 
 			// create bin for tag
 			tagBin.set(tag, []);
@@ -95,8 +101,8 @@ const Ideas = () => {
 
 	const resetDisplay = () => {
 		setPosts(postData);
-		selectedTags = [];
-		tagBin = new Map();
+		setSelectedTags([]);
+		setTagBin(new Map());
 	};
 
 	const addToMoodboardButtonStyles = {
@@ -110,9 +116,11 @@ const Ideas = () => {
 		},
 	};
 
+	let navigate = useNavigate();
+
 	const handleCreatePost = () => {
 		console.log("handleCreatePost");
-		window.location.replace(`new-idea`);
+		navigate("/new-idea");
 	};
 
 	return (

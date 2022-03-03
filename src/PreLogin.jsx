@@ -6,34 +6,29 @@ import Login from "./pages/Login";
 import MarketPlace from "./pages/MarketPlace";
 import { ItemDetails } from "./pages/MarketPlace/ItemDetails";
 import { Listings } from "./pages/MarketPlace/Listings";
+import Profile from "./pages/Profile/";
 import SignUp from "./pages/Signup";
 import Ideas from "./pages/SocialMedia/Ideas";
 import Post from "./pages/SocialMedia/Posts/Post";
 import CreateNewPost from "./pages/SocialMedia/Posts/CreateNewPost";
 import ViewMoodboard from "./pages/SocialMedia/Moodboard/ViewMoodboard";
-import CreateMoodboard from "./pages/SocialMedia/Moodboard/CreateMoodboard";
 
-// below to remove later
-import Users from "./pages/Users";
-import {UserDetails} from "./pages/Users/UserDetails";
-import { UserIndex } from "./pages/Users/UserIndex";
-import StartSelling from "./pages/Profile/About/StartSelling";
-import Profile from "./pages/Profile/";
+import { Box } from "@mui/material";
 
 
-const PreLogin = () => {
+const PreLogin = ({checked, setChecked, handleChange}) => {
   return (
     <>
-      <NavBar />
+      <NavBar checked={checked} handleChange={handleChange}/>
+      <Box sx={{ mt: 15 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/marketplace" />} />
         <Route path="/socialmedia" element={<Login />} />
         <Route path="/ideas" element={<Ideas />} />
         <Route path="/new-idea" element={<CreateNewPost />} />
         <Route path="/ideas/:postId" element={<Post />} />
-        <Route path="/view-moodboard" element={<ViewMoodboard />} />
-        <Route path="/create-moodboard" element={<CreateMoodboard />} />
-        <Route path="/marketplace" element={<MarketPlace />}>
+        <Route path="/moodboard/:username/:moodboardId" element={<ViewMoodboard />} />
+        <Route path="/marketplace" element={<MarketPlace setChecked={setChecked}/>}>
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
@@ -42,14 +37,8 @@ const PreLogin = () => {
         <Route path="/forgetpassword" element={<ForgetPassword />} />
         <Route path="/signup" element={<SignUp />} />
         
-
-      {/* below to remove later */}
-      <Route path="/profile/sell" element={<StartSelling />} />
       <Route path="/profile/" element={<Profile />} />
-      <Route path="users" element={<Users />}>
-           <Route path="" element={<UserIndex />} />
-           <Route path=":userId" element={<UserDetails />} />
-         </Route>
+    
 
 
 

@@ -24,27 +24,29 @@ import Ideas from "./pages/SocialMedia/Ideas";
 import Post from "./pages/SocialMedia/Posts/Post";
 import CreateNewPost from "./pages/SocialMedia/Posts/CreateNewPost";
 import ViewMoodboard from "./pages/SocialMedia/Moodboard/ViewMoodboard";
-import CreateMoodboard from "./pages/SocialMedia/Moodboard/CreateMoodboard";
-import EditProfile from "./pages/Profile/About/EditProfile";
-import StartSelling from "./pages/Profile/About/StartSelling";
 import Chat from "./pages/Chat/ChatModule";
 
-const PostLogin = () => {
+import { Box } from "@mui/material";
+import SellerProfile from "./pages/SellerProfile/SellerProfile";
+
+const PostLogin = ({checked, setChecked, handleChange}) => {
   return (
     <>
-      <PostLoginNavBar />
+      <PostLoginNavBar checked={checked} setChecked={setChecked} handleChange={handleChange}/>
+      <Box sx={{ mt: 15 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/marketplace" />} />
-        <Route path="/marketplace" element={<MarketPlace />}>
+        <Route path="/marketplace" element={<MarketPlace setChecked={setChecked} />}>
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
         <Route path="/Chat" element={<Chat />} />
+        <Route path="/SellerProfile" element={<SellerProfile/>} />
+        <Route path="/Chat" element={<Chat/>} />
         <Route path="/ideas" element={<Ideas />} />
         <Route path="/new-idea" element={<CreateNewPost />} />
         <Route path="/ideas/:postId" element={<Post />} />
-        <Route path="/view-moodboard" element={<ViewMoodboard />} />
-        <Route path="/create-moodboard" element={<CreateMoodboard />} />
+        <Route path="/moodboard/:username/:moodboardId" element={<ViewMoodboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/sellercenter" element={<SellerCenter />}>
@@ -66,8 +68,6 @@ const PostLogin = () => {
         <Route path="/profile" element={<Profiles />}>
           <Route path="" element={<Profile />} />
           <Route path=":moodboardId" element={<MoodboardDetails />} />
-          <Route path="edit" element={<EditProfile />} />
-          <Route path="sell" element={<StartSelling />} />
         </Route>
       </Routes>
     </>

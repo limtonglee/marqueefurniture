@@ -5,13 +5,14 @@ import { Input } from '@mui/material';
 
 const Searchbar = ({placeholder, onChange}) => {
   return (
-        <div>
+        <>
             <SearchIcon />
             <Input
                 placeholder = {placeholder}
                 onChange = {onChange}
+                sx={{minWidth: 400}}
             />
-        </div>
+        </>
   )
 }
 

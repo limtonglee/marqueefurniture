@@ -1,8 +1,8 @@
 export const user = {
-	username: "alicetan",
-	email: "alicetan@gmail.com",
-	contactNum: "97662340",
-	password: "AliceTan123",
+	username: "cosyrosie",
+	email: "cosyroise@gmail.com",
+	contactNum: "92733401",
+	password: "CosyRosie123",
 	type: "Customer",
 	profilePic: "https://picsum.photos/200/200",
 	addresses: ["Address 1", "Address 2"],

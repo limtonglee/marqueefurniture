@@ -28,14 +28,14 @@ import Chat from "./pages/Chat/ChatModule";
 import { Box } from "@mui/material";
 import SellerProfile from "./pages/SellerProfile/SellerProfile";
 
-const PostLogin = () => {
+const PostLogin = ({checked, setChecked, handleChange}) => {
   return (
     <>
-      <PostLoginNavBar />
+      <PostLoginNavBar checked={checked} setChecked={setChecked} handleChange={handleChange}/>
       <Box sx={{ mt: 10 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/marketplace" />} />
-        <Route path="/marketplace" element={<MarketPlace />}>
+        <Route path="/marketplace" element={<MarketPlace setChecked={setChecked} />}>
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>

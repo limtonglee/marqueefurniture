@@ -12,10 +12,10 @@ import Ideas from "../SocialMedia/Ideas";
 import AdminHome from "./AdminHome";
 import { Box } from "@mui/material";
 
-const Admin = () => {
+const Admin = ({checked, setChecked, handleChange}) => {
   return (
     <Container maxWidth="xxl">
-      <PostLoginNavBar />
+      <PostLoginNavBar checked={checked} setChecked = {setChecked} handleChange={handleChange}/>
       <Box sx={{ mt: 10 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/admin" />} />

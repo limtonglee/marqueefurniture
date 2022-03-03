@@ -13,7 +13,7 @@ class switchStore {
     makeAutoObservable(this, {
         checked: observable
     });
-    makeLocalStorage(this, "userStore", [
+    makeLocalStorage(this, "switchStore", [
       "checked",
     ]);
   }

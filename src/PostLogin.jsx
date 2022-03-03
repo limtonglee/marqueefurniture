@@ -32,7 +32,7 @@ const PostLogin = ({checked, setChecked, handleChange}) => {
   return (
     <>
       <PostLoginNavBar checked={checked} setChecked={setChecked} handleChange={handleChange}/>
-      <Box sx={{ mt: 10 }}></Box>
+      <Box sx={{ mt: 15 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/marketplace" />} />
         <Route path="/marketplace" element={<MarketPlace setChecked={setChecked} />}>

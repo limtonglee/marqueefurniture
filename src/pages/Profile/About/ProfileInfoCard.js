@@ -101,13 +101,13 @@ function ProfileInfoCard({ title, description, website, info, social, action }) 
   //hardcoded values to return to default when clicking Cancel button
   const handleCancel = () => {
     if (username === '') {
-      setUsername("cosyrosie")
+      setUsername("Jack Mama")
     }
     if (bio === '') {
-      setBio("Hi, I’m Rosie. Decisions: If You Can’t Decide, The Answer Is No. If Two Equally Difficult Paths, Choose The One More Painful In The Short Term (Pain Avoidance Is Creating An Illusion Of Equality")
+      setBio("Hi, I’m Jack Mama. My mama used to say life is like a box of chocolates. But I like to see life like a piece of furniture. You never know what you're going to get. Unless you get it from Mama.")
     }
       if (link === '') {
-      setLink("Www.Example.Com")
+      setLink("www.jackmama.com")
     }
     setShowEdit(!showEdit)
         setShowUser(!showUser)

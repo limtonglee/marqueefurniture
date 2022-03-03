@@ -43,14 +43,6 @@ export const Orders = () => {
         }
         setData(tabData);
     };
-    const columns = [
-        { field: 'id', headerName: 'ID', width: 100 },
-        { field: 'productName', headerName: 'Product Name', width: 170 },
-        { field: 'status', headerName: 'Status', width: 130 },
-        { field: 'variation', headerName: 'Variation', width: 150 },
-        { field: 'price', headerName: 'Price', width: 70 },
-        { field: 'buyerName', headerName: 'Buyer Name', width: 170 },
-    ];
     const searchType = [
         {
             value: 'id',
@@ -90,7 +82,7 @@ export const Orders = () => {
             <Layout>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>
-                        Orders
+                        My Orders
                     </Typography>
                 </Stack>
                 <Stack direction="row" >
@@ -106,7 +98,7 @@ export const Orders = () => {
                             </MenuItem>
                         ))}
                     </TextField>
-                    <Searchbar
+                    <TextField
                         placeholder="Search Order..."
                         onChange={(event) => handleSearch(event.target.value)}
                     />

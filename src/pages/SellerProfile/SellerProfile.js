@@ -159,21 +159,25 @@ const SellerProfile = () => {
                                                 <Divider />
                                             </Box>
                                             
-                                            <Typography variant="h6" fontWeight="medium" textTransform="capitalize">
-                                            This is a description
+                                            <Typography variant="h3" fontWeight="medium" textTransform="capitalize">
+                                                Bio
                                             </Typography>
 
                                             <Box mb={2} lineHeight={1}>
-                                                <Typography variant="button" color="text" fontWeight="regular">
-                                                    Testing the bio
+                                                <Typography variant= "body1" color="text" fontWeight="regular">
+                                                    Hi, I am Mark Zuckerburg and I created an app that you might be familiar with? Facebook!
                                                 </Typography>  
                                             </Box>
-                                            <Typography variant="h6" fontWeight="medium" textTransform="capitalize">
-                                                This is a website
+                                            <Typography variant="h3" fontWeight="medium" textTransform="capitalize">
+                                                Website
                                             </Typography>
                                             <Box mb={2} lineHeight={1}>  
                                                 <Typography variant="button" color="text" fontWeight="regular">
-                                                    This is the link
+                                                    <a href= "https://facebook.com" target="_blank">
+                                                       <b>
+                                                            My Website
+                                                        </b>
+                                                    </a>
                                                 </Typography> 
                                             </Box>
                                         </Box>

@@ -18,6 +18,10 @@ const FeedGrid = ({ posts, refreshPosts, sourceMoodboardId }) => {
 		window.addEventListener("resize", handleResize);
 	});
 
+	useEffect(() => {
+		handleResize();
+	}, []);
+
 	return (
 		<Box sx={{ maxWidth: 1200 }}>
 			{isMobile ? (

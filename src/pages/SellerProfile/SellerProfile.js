@@ -18,6 +18,7 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import MessageIcon from "@mui/icons-material/Message";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Inventory2Icon from '@mui/icons-material/Inventory2';
+import mark from "../../assets/images/mark.jpeg";
 
 
 const SellerProfile = () => {
@@ -34,15 +35,17 @@ const SellerProfile = () => {
             <Grid sx={{p: "16px"}}>
                 <Grid item xs = {4}>
                     <Avatar
-                    src={tabitha}
+                    src={mark}
                     alt="profile-image"
                     variant="rounded"
                     shadow="sm"
+                    sx={{height: '70px', width:'70px'}}
                     />
                 </Grid>
+                <br/>
                 <Grid item xs = {4}>       
-                    <Typography color="text" fontWeight="bold">
-                        Cosyrosie
+                    <Typography variant="h2" color="text" fontWeight="bold">
+                        Mark Zuckerburg
                     </Typography> 
                 </Grid>
             </Grid>

@@ -21,6 +21,7 @@ import { useStores } from "../../stores/RootStore";
 import { Grid } from "@mui/material";
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import mark from "../../assets/images/mark.jpeg";
 
 //This is the listing page
 /* 
@@ -152,12 +153,14 @@ export const ItemDetails = () => {
                 <CardHeader
                 avatar={
                   <Link to={`/SellerProfile`} style={{ textDecoration: 'none' }}>
-                    <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
-                      R
-                    </Avatar>
+                    <Avatar src={mark}
+                    alt="profile-image"
+                    variant="rounded"
+                    shadow="sm" 
+                    sx={{height: '70px', width:'70px'}}/>
                   </Link>
                 }
-                title={item.author}
+                title={<b><h1>{item.author}</h1></b>}
                 sx = {{p: 0}}
                 />
                 <br/>

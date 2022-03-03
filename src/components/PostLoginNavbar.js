@@ -20,24 +20,26 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useStores } from "../stores/RootStore";
 import ControlledSwitches from "./SwitchNav";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 
 const pageLinks = [
-  { text: "Seller Center", link: "/sellercenter" },
-  { text: "Marketplace", link: "/marketplace" },
-  { text: "Ideas", link: "/ideas" },
+	{ text: "Seller Center", link: "/sellercenter" },
+	{ text: "Marketplace", link: "/marketplace" },
+	{ text: "Ideas", link: "/ideas" },
 ];
 
 const AdminPageLinks = [
-  { text: "Admin", link: "/admin" },
-  { text: "Marketplace", link: "/marketplace" },
-  { text: "Ideas", link: "/ideas" },
+	{ text: "Admin", link: "/admin" },
+	{ text: "Marketplace", link: "/marketplace" },
+	{ text: "Ideas", link: "/ideas" },
 ];
 
 const settings = [
-  { text: "Profile", link: "/profile" },
-  { text: "Cart", link: "/cart" },
-  { text: "Chat", link: "/chat" },
-  { text: "Seller Center", link: "/sellercenter" },
+	{ text: "Profile", link: "/profile" },
+	{ text: "Moodboards", link: "/moodboard/cosyrosie/0" },
+	{ text: "Cart", link: "/cart" },
+	{ text: "Chat", link: "/chat" },
+	{ text: "Seller Center", link: "/sellercenter" },
 ];
 
 const PostLoginNavBar = () => {

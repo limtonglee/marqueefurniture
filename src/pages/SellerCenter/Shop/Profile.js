@@ -16,16 +16,16 @@ import {
 } from '@mui/material';
 import PhotoCamera from "@mui/icons-material/PhotoCamera";;
 
+const shopData = {
+    shopName: "ABC Furniture Shop",
+    shopDescription: "This is the official online store of ABC Furniture Shop.",
+}
 
 const formReducer = (state, event) => {
     if (event.reset) {
         return {
-            productType: '',
-            productName: '',
-            productDescription: '',
-            variation: '',
-            price: 0,
-            stock: 0,
+            shopName: '',
+            shopDescription: '',
         }
     }
     return {
@@ -44,7 +44,7 @@ export const ShopProfile = () => {
         setFileUploaded("https://picsum.photos/200/300");
     };
 
-    const [formData, setFormData] = useReducer(formReducer, {});
+    const [formData, setFormData] = useReducer(formReducer, {shopData});
     const [submitting, setSubmitting] = useState(false);
     const handleChange = (event) => {
         setFormData({
@@ -53,13 +53,12 @@ export const ShopProfile = () => {
         });
     };
     const handleSubmit = event => {
+        shopData.shopName = formData.shopName;
+        shopData.shopDescription = formData.shopDescription;
         event.preventDefault();
         setSubmitting(true);
         setTimeout(() => {
             setSubmitting(false);
-            setFormData({
-                reset: true
-            })
         }, 3000);
     }
 
@@ -96,7 +95,7 @@ export const ShopProfile = () => {
                                 />
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="div">
-                                        ABC Furniture Shop
+                                        {shopData.shopName}
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
                                         Products: 10
@@ -118,7 +117,7 @@ export const ShopProfile = () => {
                             </Card>
                         </Grid>
                         <Grid item md={7} xs={12} sx={{ px: 2 }}>
-                            <form>
+                            <form onSubmit={handleSubmit}>
                                 <Box
                                     sx={{ mt: 3 }}
                                 >
@@ -131,7 +130,9 @@ export const ShopProfile = () => {
                                     </Typography>
                                     <TextField
                                         id="outlined-multiline-static"
-                                        value="ABC Furniture Shop"
+                                        name="shopName"
+                                        onChange={handleChange}
+                                        value={formData.shopName || shopData.shopName}
                                         sx={{ width: "100%" }}
                                     />
                                 </Box>
@@ -147,7 +148,9 @@ export const ShopProfile = () => {
                                         id="outlined-multiline-static"
                                         multiline
                                         rows={4}
-                                        value="This is the official online store of ABC Furniture Shop."
+                                        name="shopDescription"
+                                        onChange={handleChange}
+                                        value={formData.shopDescription || shopData.shopDescription}
                                         sx={{ width: "100%" }}
                                     />
                                 </Box>

@@ -183,6 +183,7 @@ const ViewMoodboard = () => {
 		console.log(
 			"to do: update state of current moodboard when params change"
 		);
+		setIsPostView(true);
 	}, [useParams()]);
 
 	return (

@@ -20,7 +20,7 @@ const PreLogin = ({checked, setChecked, handleChange}) => {
   return (
     <>
       <NavBar checked={checked} handleChange={handleChange}/>
-      <Box sx={{ mt: 10 }}></Box>
+      <Box sx={{ mt: 15 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/marketplace" />} />
         <Route path="/socialmedia" element={<Login />} />

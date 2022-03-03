@@ -3,6 +3,9 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import SvgIcon from "@mui/material/SvgIcon";
+import { Avatar } from "@mui/material";
+
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ControlledSwitches from "./SwitchNav";
@@ -19,9 +22,8 @@ const pageLinks = [
   { text: "Login", link: "/login" },
 ];
 
-const NavBar = ({checked, setChecked, handleChange}) => {
+const NavBar = ({ checked, setChecked, handleChange }) => {
   const { switchStore } = useStores();
-
 
   return (
     <>
@@ -34,9 +36,8 @@ const NavBar = ({checked, setChecked, handleChange}) => {
               style={{ textDecoration: "none", color: "white" }}
               onClick={() => setChecked(false)}
             >
-              <Typography variant="h6" noWrap component="div" sx={{ mr: 2 }}>
-                MF
-              </Typography>
+              <Avatar src="static/mf_fulllogo_white.svg"  sx={{ width: 100, height: 100 }}/>
+
             </Link>
 
             <Box

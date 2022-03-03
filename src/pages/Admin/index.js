@@ -16,7 +16,7 @@ const Admin = ({checked, setChecked, handleChange}) => {
   return (
     <Container maxWidth="xxl">
       <PostLoginNavBar checked={checked} setChecked = {setChecked} handleChange={handleChange}/>
-      <Box sx={{ mt: 10 }}></Box>
+      <Box sx={{ mt: 15 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/admin" />} />
         <Route path="/marketplace" element={<MarketPlace />}>

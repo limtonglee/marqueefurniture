@@ -4,7 +4,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import {
   Alert, Avatar, Card, CardContent,
-  CardHeader, Fab, Modal, Snackbar, Typography, CardMedia, Stack, Divider, ListItem, ListItemAvatar, ListItemText, Rating, Accordion, AccordionSummary
+  CardHeader, Fab, Modal, Snackbar, Typography, CardMedia, Stack, Divider, ListItem, ListItemAvatar, ListItemText, Rating, Accordion, AccordionSummary, ImageListItem, Box
 } from "@mui/material";
 import * as React from "react";
 import {
@@ -21,6 +21,8 @@ import { useStores } from "../../stores/RootStore";
 import { Grid } from "@mui/material";
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import mark from "../../assets/images/mark.jpeg";
+import jack from "../../assets/images/jack.jpg";
 
 //This is the listing page
 /* 
@@ -97,6 +99,13 @@ export const ItemDetails = () => {
     return true;
   };
 
+  const isService = (item) => {
+    if (item === "Service") {
+      return;
+    }
+    return true;
+  };
+
   const handleAddCart = (item, newState) => {
     cartStore.addItems(item);
     console.log("Add to cart handle has fired")
@@ -128,18 +137,31 @@ export const ItemDetails = () => {
                   title={item.title}
                 />
               </CardMedia>
+                <ImageListItem
+                  key={item.img}
+                  sx={{ boxShadow: 5, margin: 2, padding: 0, width: 75, height: 75 }}
+                  >
+                    <img
+                    src={`${item.img}?w=188&h=188&fit=crop&auto=format`}
+                    srcSet={`${item.img}?w=188&h=188&fit=crop&auto=format&dpr=2 2x`}
+                    alt={item.title} 
+                    height = 'auto'
+                    width = '50%'/>
+                </ImageListItem>
             </Grid>
             <Grid item md = {6} xs = {12} >
               <CardContent>
                 <CardHeader
                 avatar={
                   <Link to={`/SellerProfile`} style={{ textDecoration: 'none' }}>
-                    <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
-                      R
-                    </Avatar>
+                    <Avatar src={jack}
+                    alt="profile-image"
+                    variant="rounded"
+                    shadow="sm" 
+                    sx={{height: '70px', width:'70px'}}/>
                   </Link>
                 }
-                title={item.author}
+                title={<b><h1>{item.author}</h1></b>}
                 sx = {{p: 0}}
                 />
                 <br/>
@@ -150,7 +172,7 @@ export const ItemDetails = () => {
                 </Typography>
 
                 <Typography variant="h3" color="text.secondary" fontWeight="bold" >
-                  {isDesign(item.listingType) ? <>Price: ${item.price.toFixed(2)}</> : 'Chat with designer for more information.'}
+                  {isDesign(item.listingType) ? <>Price: ${item.price.toFixed(2)}</> : <></>}
                 </Typography>
                 <br/>
                 <Divider/>
@@ -172,14 +194,14 @@ export const ItemDetails = () => {
                 <br/>
                 <Divider />
                 <br/>
-                  <Typography variant="h3" color="text.secondary">
-                    Variation: {item.variation.toString().toUpperCase()}
+                  <Typography variant="h4" color={item.variation.toString()}>
+                    {isDesign(item.listingType) && isService(item.listingType) ? <>Variation: {item.variation.toString().toUpperCase()}</> : 'Chat for more information.'}                    
                   </Typography>
                 <br/>
                 <Divider />
                 <br/>
                 <Typography variant="h3" color="text.secondary">
-                  Product Details:
+                  Details:
                 </Typography>
 
                 <Grid container spacing={2} column={8}>
@@ -196,22 +218,24 @@ export const ItemDetails = () => {
                       Warranty:
                     </Typography>
                     <br/>
-                    <Typography variant="overline" color="text.secondary">
-                      Parcel Size:
-                    </Typography>
-                    <br/>
-                    <Typography variant="overline" color="text.secondary">
-                      Weight:
-                    </Typography>
-                    <br/>
-                    <Typography variant="overline" color="text.secondary">
-                      Stock Available:
-                    </Typography>
-                    <br/>
-                    <Typography variant="overline" color="text.secondary">
-                      Dimension:
-                    </Typography>
-                    <br/> 
+                    {isDesign(item.listingType) && isService(item.listingType) ? <>
+                      <Typography variant="overline" color="text.secondary">
+                        Parcel Size:
+                      </Typography>
+                      <br/>
+                      <Typography variant="overline" color="text.secondary">
+                        Weight:
+                      </Typography>
+                      <br/>
+                      <Typography variant="overline" color="text.secondary">
+                        Stock Available:
+                      </Typography>
+                      <br/>
+                      <Typography variant="overline" color="text.secondary">
+                        Dimension:
+                      </Typography>
+                      <br/>
+                      </> : <></>}  
                   </Grid>
                   <Grid item xs={4}>
                     <Typography variant="overline" color="text.secondary" >
@@ -226,29 +250,31 @@ export const ItemDetails = () => {
                       {item.warrantyInfo}
                     </Typography>
                     <br/>
-                    <Typography variant="overline" color="text.secondary" >
-                      {item.parcelSize}
-                    </Typography>
-                    <br/>
-                    <Typography variant="overline" color="text.secondary" >
-                      {item.weight}
-                    </Typography>
-                    <br/>
-                    <Typography variant="overline" color="text.secondary" >
-                      {item.stockAvailable}
-                    </Typography>
-                    <br/>
-                    <Typography variant="overline" color="text.secondary" >
-                      {item.dimension}
-                    </Typography>
-                    <br/>
+                    {isDesign(item.listingType) && isService(item.listingType) ? <>
+                      <Typography variant="overline" color="text.secondary" >
+                        {item.parcelSize}
+                      </Typography>
+                      <br/>
+                      <Typography variant="overline" color="text.secondary" >
+                        {item.weight}
+                      </Typography>
+                      <br/>
+                      <Typography variant="overline" color="text.secondary" >
+                        {item.stockAvailable}
+                      </Typography>
+                      <br/>
+                      <Typography variant="overline" color="text.secondary" >
+                        {item.dimension}
+                      </Typography>
+                      <br/>
+                      </> : <></>}
                   </Grid>
                 </Grid>
                 <br/>
                 <Typography variant="h3" color="text.secondary" fontWeight="bold">
                   Description
                 </Typography>
-                <Typography variant="overline" color="text.secondary">
+                <Typography variant="body1" color="text.secondary">
                   {item.description}
                 </Typography>
               </CardContent>

@@ -1,22 +1,16 @@
-import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import ButtonBase from "@mui/material/ButtonBase";
-import { Button, Container, ImageList } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-
-import { Observer } from "mobx-react";
-
-import { cartData } from "../../data/cartData";
+import { Button, Container, Divider, Grid, ImageList } from "@mui/material";
+import ButtonBase from "@mui/material/ButtonBase";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import { toJS } from "mobx";
+import * as React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useStores } from "../../stores/RootStore";
-import { toJS } from "mobx";
-
-import { useState } from "react";
-
-let cartItems = cartData;
+import { getTotalPrice } from "../../utils/getTotalPrice";
+import { getCartTotal } from "../../utils/getCartTotal";
 
 const Img = styled("img")({
   margin: "auto",
@@ -29,9 +23,6 @@ export default function Cart() {
   const { cartStore } = useStores();
   const [items, setItems] = useState(toJS(cartStore.getItems()));
 
-  console.log("cartstore items : " + items);
-  console.log(items);
-
   const handleDeleteAll = () => {
     cartStore.clearAllItems();
     setItems([]);
@@ -40,36 +31,53 @@ export default function Cart() {
   const handleDeleteOneItem = (itemId) => {
     console.log("removing itemID " + itemId);
 
+    cartStore.removeItems(itemId);
+    setItems(toJS(cartStore.getItems()));
+  };
+
+  const handleRemoveOneItem = (itemId) => {
     cartStore.clearOneItem(itemId);
     setItems(toJS(cartStore.getItems()));
   };
 
-  const handleDeleteAllItems = (itemId) => {};
+  const handleAddOneItem = (itemId) => {
+    cartStore.addItemCount(itemId);
+    setItems(toJS(cartStore.getItems()));
+  };
+
+  const isDesign = (item) => {
+    if (item === "Design") {
+      return;
+    }
+    return true;
+  };
 
   return (
-      <Container>
-        <Typography variant="h1" fontWeight="bold">
-          My Cart
-        </Typography>
-        <br />
-        <Paper
-          sx={{
-            p: 2,
-            margin: "auto",
-            flexGrow: 1,
-            backgroundColor: (theme) =>
-              theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-          }}
-        >
-          <Button
-            align="right"
-            onClick={handleDeleteAll}
-            endIcon={<DeleteOutlineIcon />}
-          >
-            Remove all
-          </Button>
-          <ImageList cols={1} gap={15}>
-            {items.map((cartItem) => (
+    <Container>
+      <Typography variant="h3" fontWeight="bold">
+        Shopping Cart
+      </Typography>
+
+      {/* <Button
+        align="right"
+        onClick={handleDeleteAll}
+        endIcon={<DeleteOutlineIcon />}
+      >
+        Remove all items
+      </Button> */}
+      <br />
+      <Paper
+        sx={{
+          p: 2,
+          margin: "auto",
+          flexGrow: 1,
+          backgroundColor: (theme) =>
+            theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+        }}
+      >
+        <ImageList cols={1} gap={15}>
+          {items.map((cartItem) => (
+            <>
               <Grid container spacing={2}>
                 <Grid item>
                   <Link to={`/marketplace/${cartItem.id}`}>
@@ -81,40 +89,99 @@ export default function Cart() {
                 <Grid item xs={12} sm container>
                   <Grid item xs container direction="column" spacing={2}>
                     <Grid item xs>
-                      <Typography
-                        gutterBottom
-                        variant="subtitle1"
-                        component="div"
-                      >
-                        {cartItem.author}
+                      <Typography gutterBottom variant="body1" component="div">
+                        Seller: {cartItem.author}
                       </Typography>
                       <Typography variant="body2" gutterBottom>
-                        Item: {cartItem.title}
+                        Item name: {cartItem.title}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         Brand: {cartItem.brand}
                       </Typography>
                     </Grid>
+                  </Grid>
+                  <Grid item>
+                    <Grid item>
+                      <Typography variant="body2" component="div">
+                        Unit Price:
+                      </Typography>
+                      <Typography
+                        align="center"
+                        variant="body2"
+                        component="div"
+                      >
+                        {isDesign(cartItem.listingType) ? (
+                          <>${cartItem.price.toFixed(2)}</>
+                        ) : (
+                          "Chat with designer for more information."
+                        )}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Grid item>
                     <Grid item>
                       <Button
-                        align="right"
-                        onClick={() => handleDeleteOneItem(cartItem.id)}
-                        endIcon={<DeleteOutlineIcon />}
+                        size="small"
+                        onClick={() => handleRemoveOneItem(cartItem.id)}
                       >
-                        Remove item
+                        -
+                      </Button>
+                      {cartItem.itemQuantity}
+                      <Button
+                        size="small"
+                        onClick={() => handleAddOneItem(cartItem.id)}
+                      >
+                        +
                       </Button>
                     </Grid>
                   </Grid>
                   <Grid item>
-                    <Typography variant="subtitle1" component="div">
-                      {cartItem.price}
-                    </Typography>
+                    <Grid item>
+                      <Typography variant="body2" component="div">
+                        Item Total:
+                      </Typography>
+                      <Typography
+                        variant="subtitle1"
+                        align="center"
+                        component="div"
+                      >
+                        {isDesign(cartItem.listingType) ? (
+                          <>
+                            $
+                            {getTotalPrice(
+                              cartItem.price,
+                              cartItem.itemQuantity
+                            )}
+                          </>
+                        ) : (
+                          "Chat with designer for more information."
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Button
+                      size="small"
+                      align="right"
+                      onClick={() => handleDeleteOneItem(cartItem.id)}
+                    >
+                      Delete
+                    </Button>
                   </Grid>
                 </Grid>
               </Grid>
-            ))}
-          </ImageList>
-        </Paper>
-      </Container>
+              <Divider variant="middle" />
+            </>
+          ))}
+        </ImageList>
+        <Grid container spacing={2} direction="row-reverse">
+          <Grid item xs={2}>
+            <Typography variant="body2" component="div">
+              Cart Total: ${getCartTotal(items)}
+            </Typography>
+            <Typography variant="subtitle1" component="div"></Typography>
+          </Grid>
+          
+        </Grid>
+      </Paper>
+    </Container>
   );
 }

@@ -10,6 +10,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import { user } from "../../../data/currentUserData";
+import { Link, useNavigate } from "react-router-dom";
 
 const MoodboardDetailsModal = ({
 	open,
@@ -48,6 +49,8 @@ const MoodboardDetailsModal = ({
 	const [boardDescription, setBoardDescription] = useState("");
 	const [filterRoomValues, setfilterRoomValues] = useState([]);
 	const [filterDesignValues, setfilterDesignValues] = useState([]);
+
+	let navigate = useNavigate();
 
 	const roomTags = [
 		{ id: 0, title: "Living Room" },
@@ -113,7 +116,8 @@ const MoodboardDetailsModal = ({
 		};
 
 		user.moodboards.push(newMoodboard);
-		window.location.replace(`/moodboard/${user.username}/${newId}`);
+		navigate(`/moodboard/${user.username}/${newId}`);
+		closeMoodboardModal();
 	};
 
 	const prepareToUpdate = () => {

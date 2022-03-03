@@ -11,12 +11,15 @@ import {
     Tab,
     Box,
     styled,
+    Grid,
+    TextField,
+    MenuItem
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router";
 import Searchbar from "../../../components/Searchbar";
 import EditListingModal from "./EditListingModal";
-import { InsertEmoticon } from '@mui/icons-material';
+import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 
 
 export const MyListings = () => {
@@ -45,41 +48,40 @@ export const MyListings = () => {
         }
         setData(tabData);
     };
-
-    const columns = [
-        { field: 'id', headerName: 'SKU', width: 100 },
-        { field: 'name', headerName: 'Product Name', width: 170 },
-        { field: 'status', headerName: 'Status', width: 130 },
-        { field: 'variation', headerName: 'Variation', width: 150 },
-        { field: 'price', headerName: 'Price', width: 70 },
-        { field: 'stock', headerName: 'Stock', width: 70 },
-        { field: 'sales', headerName: 'Sales', width: 70 },
+    const searchType = [
+        {
+            value: 'productName',
+            label: 'Product Name',
+        },
+        {
+            value: 'id',
+            label: 'SKU code',
+        },
     ];
-
-
+    let [type, setType] = React.useState('productName');
+    let handleSearchDropdown = (event) => {
+        setType(event.target.value);
+    };
 
     const handleSearch = (value) => {
         findListing(value);
     }
 
     const findListing = (criteria) => {
-        //checkStatus();
         const lowercasedCriteria = criteria.toLowerCase().trim();
         if (lowercasedCriteria === '') updateData(value);
         else {
-            const filteredListing = data.filter((filterList) => {
-                return Object.keys(filterList).some((key) =>
-                    filterList[key].toString().toLowerCase().includes(lowercasedCriteria)
-                )
+            const filteredListing = data.filter((order) => {
+                return order[type].toString().toLowerCase().includes(lowercasedCriteria)
             })
-            setData(filteredListing)
+            setData(filteredListing);
         }
     };
 
-    const CardStyle = styled('div')({
-        marginLeft: '10px',
-        marginRight: '20px',
-    });
+    const handleDelist = (event, item) => {
+        item.status = 'Delisted';
+        handleChange();
+    }
 
     return (
         <>
@@ -98,24 +100,58 @@ export const MyListings = () => {
                         New Listing
                     </Button>
                 </Stack>
-
-                <Searchbar
-                    placeholder="Search Listing..."
-                    onChange={(event) => handleSearch(event.target.value)}
-                />
-                <Card style={{ overflow: 'visible', height: 700 }}>
-                    <div className='page' style={{ height: '100%' }}>
-                        <Box sx={{ width: '100%' }}>
-                            <Tabs
-                                value={value}
-                                onChange={handleChange}
-                            >
-                                <Tab label="All" />
-                                <Tab label="Live" />
-                                <Tab label="Sold Out" />
-                                <Tab label="Violation" />
-                                <Tab label="Delisted" />
-                            </Tabs>
+                <Stack direction="row" >
+                    <TextField
+                        id="outlined-select-search-type"
+                        select
+                        value={type}
+                        onChange={handleSearchDropdown}
+                    >
+                        {searchType.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        placeholder="Search Listing..."
+                        onChange={(event) => handleSearch(event.target.value)}
+                    />
+                </Stack>
+                <Card style={{ overflow: 'visible' }}>
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                    >
+                        <Tab label="All" />
+                        <Tab label="Live" />
+                        <Tab label="Sold Out" />
+                        <Tab label="Violation" />
+                        <Tab label="Delisted" />
+                    </Tabs>
+                    <Grid container sx={{ padding: "12px" }}>
+                        <Grid item xs={3}>
+                            Product Details
+                        </Grid>
+                        <Grid item xs={1}>
+                            SKU
+                        </Grid>
+                        <Grid item xs={2}>
+                            Price
+                        </Grid>
+                        <Grid item xs={1}>
+                            Status
+                        </Grid>
+                        <Grid item xs={1}>
+                            Stock
+                        </Grid>
+                        <Grid item xs={1}>
+                            Sales
+                        </Grid>
+                        <Grid item xs={3}>
+                            Actions
+                        </Grid>
+                        <Grid item xs={12}>
                             {data.map((item) => (
                                 <Card key={item.id}
                                     sx={{
@@ -123,38 +159,53 @@ export const MyListings = () => {
                                         marginBottom: '10px',
                                         border: 1,
                                     }}>
-                                    <div className='item' style={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        padding: '10px',
-                                    }}>
-                                        <div className='image'>
+                                    <Grid container sx={{ padding: "4px" }}>
+                                        <Grid item xs={3}>
                                             <img
                                                 src={`${item.img}?w=124&fit=crop&auto=format`}
                                                 srcSet={`${item.img}?w=124&fit=crop&auto=format&dpr=2 2x`}
                                                 alt={item.title}
                                                 loading="lazy"
                                             />
-                                        </div>
-                                        <div className='itemDetails' style={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            marginLeft: '5px',
-                                            marginRight: '10px'
-                                        }}>
                                             <div>{item.productName}</div>
                                             <div>Variation: {item.variation}</div>
-                                        </div>
-                                        <CardStyle>Price: S${item.price}</CardStyle>
-                                        <CardStyle>Status: {item.status}</CardStyle>
-                                        <CardStyle>Stock: {item.stock}</CardStyle>
-                                        <CardStyle>Sales: {item.sales}</CardStyle>
-                                        <EditListingModal>{item}</EditListingModal>
-                                    </div>
+                                        </Grid>
+                                        <Grid item xs={1}>
+                                            {item.id}
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            S${item.price}
+                                        </Grid>
+                                        <Grid item xs={1}>
+                                            {item.status}
+                                        </Grid>
+                                        <Grid item xs={1}>
+                                            {item.stock}
+                                        </Grid>
+                                        <Grid item xs={1}>
+                                            {item.sales}
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            <EditListingModal>{item}</EditListingModal>
+                                            <Button
+                                                variant="contained"
+                                                startIcon={<PlaylistRemoveIcon />}
+                                                style={{
+                                                    width: '150px',
+                                                    marginTop: "12px"
+                                                }}
+                                                onClick={e => {
+                                                    handleDelist(e, item);
+                                                }}
+                                            >
+                                                Delist Listing
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
                                 </Card>
                             ))}
-                        </Box>
-                    </div>
+                        </Grid>
+                    </Grid>
                 </Card>
             </Layout>
         </>

@@ -24,7 +24,11 @@ const Login = () => {
     });
 
     //on success set login
-    setLogin();
+    if (data.get("email") === "admin") {
+      setAdminLogin();
+    } else {
+      setLogin(data.get("email"));
+    }
 
     //on failure to do
   };
@@ -33,18 +37,22 @@ const Login = () => {
 
   let navigate = useNavigate();
 
-  const setLogin = () => {
+  const setLogin = (email) => {
     userStore.setIsLoggedIn();
-    userStore.setUserName("Jack Mama")
-    userStore.setDescription("Hi, I’m Jack Mama. My mama used to say life is like a box of chocolates. But I like to see life like a piece of furniture. You never know what you're going to get. Unless you get it from Mama.")
-    userStore.setUserWebLink("www.jackmama.com")
-    
-    // userStore.setIsAdmin();
-    if (userStore.isAdmin) {
-      navigate("/admin");
-    } else {
-      navigate("/marketplace");
-    }
+    userStore.setUserName("Jack Mama");
+    userStore.setDescription(
+      "Hi, I’m Jack Mama. My mama used to say life is like a box of chocolates. But I like to see life like a piece of furniture. You never know what you're going to get. Unless you get it from Mama."
+    );
+    userStore.setUserWebLink("www.jackmama.com");
+
+    navigate("/marketplace");
+  };
+
+  const setAdminLogin = () => {
+    userStore.setIsLoggedIn();
+    userStore.setUserName("admin");
+    userStore.setIsAdmin();
+    navigate("/admin");
   };
 
   return (

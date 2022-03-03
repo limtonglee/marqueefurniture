@@ -10,14 +10,16 @@ import { MoodboardDetails } from "../Profile/Moodboard/MoodboardDetails";
 import Profiles from "../Profiles";
 import Ideas from "../SocialMedia/Ideas";
 import AdminHome from "./AdminHome";
+import { Box } from "@mui/material";
 
-const Admin = () => {
+const Admin = ({checked, setChecked, handleChange}) => {
   return (
-    <Container maxWidth="xl">
-      <PostLoginNavBar />
+    <Container maxWidth="xxl">
+      <PostLoginNavBar checked={checked} setChecked = {setChecked} handleChange={handleChange}/>
+      <Box sx={{ mt: 15 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/admin" />} />
-        <Route path="/marketplace" element={<MarketPlace />}>
+        <Route path="/marketplace" element={<MarketPlace setChecked = {setChecked}/>}>
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>

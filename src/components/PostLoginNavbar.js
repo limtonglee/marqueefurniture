@@ -2,7 +2,7 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
-import StorefrontIcon from '@mui/icons-material/Storefront';
+import StorefrontIcon from "@mui/icons-material/Storefront";
 import { Divider } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
@@ -20,32 +20,53 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useStores } from "../stores/RootStore";
 import ControlledSwitches from "./SwitchNav";
-
-
-
+import DashboardIcon from "@mui/icons-material/Dashboard";
 
 const pageLinks = [
-  { text: "Seller Center", link: "/sellercenter" },
-  { text: "Marketplace", link: "/marketplace" },
-  { text: "Ideas", link: "/ideas" },
+	{ text: "Seller Center", link: "/sellercenter" },
+	{ text: "Marketplace", link: "/marketplace" },
+	{ text: "Ideas", link: "/ideas" },
 ];
 
 const AdminPageLinks = [
-  { text: "Admin", link: "/admin" },
-  { text: "Marketplace", link: "/marketplace" },
-  { text: "Ideas", link: "/ideas" },
+	{ text: "Admin", link: "/admin" },
+	{ text: "Marketplace", link: "/marketplace" },
+	{ text: "Ideas", link: "/ideas" },
 ];
 
 const settings = [
-  { text: "Profile", link: "/profile" },
-  { text: "Cart", link: "/cart" },
-  { text: "Chat", link: "/chat" },
-  { text: "Seller Center", link: "/sellercenter" },
+	{ text: "Profile", link: "/profile" },
+	{ text: "Moodboards", link: "/moodboard/cosyrosie/0" },
+	{ text: "Cart", link: "/cart" },
+	{ text: "Chat", link: "/chat" },
+	{ text: "Seller Center", link: "/sellercenter" },
 ];
 
 const PostLoginNavBar = () => {
+  const { switchStore } = useStores();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const [checked, setChecked] = React.useState(switchStore.checked);
+
+  let navigate = useNavigate();
+
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+    switchStore.setCheck(event.target.checked);
+    if (event.target.checked === false) {
+      navigate("/marketplace");
+    }
+    if (event.target.checked === true) {
+      navigate("/ideas");
+    }
+  };
+
+  const setSwitch = () => {
+    setChecked(false);
+    switchStore.setCheck(false);
+  }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -66,8 +87,6 @@ const PostLoginNavBar = () => {
 
   const { cartStore } = useStores();
 
-  let navigate = useNavigate();
-
   const setLogout = (e) => {
     userStore.setIsLoggedOut();
     navigate("/marketplace");
@@ -82,13 +101,9 @@ const PostLoginNavBar = () => {
               key={"mf"}
               to={"/"}
               style={{ textDecoration: "none", color: "white" }}
+              onClick={setSwitch}
             >
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
-              >
+              <Typography variant="h6" noWrap component="div" sx={{ mr: 2 }}>
                 MF
               </Typography>
             </Link>
@@ -97,8 +112,10 @@ const PostLoginNavBar = () => {
                 flexGrow: 1,
               }}
             >
-              <ControlledSwitches />
-              
+              <ControlledSwitches
+                checked={checked}
+                handleChange={handleChange}
+              />
 
               {!!userStore.isAdmin &&
                 AdminPageLinks.map((page) => (
@@ -177,9 +194,7 @@ const PostLoginNavBar = () => {
                       )}
                       {setting.text === "Seller Center" && (
                         <Tooltip title="Seller Center" placement="right">
-                          <StorefrontIcon
-                            sx={{ color: "common.black" }}
-                          />
+                          <StorefrontIcon sx={{ color: "common.black" }} />
                         </Tooltip>
                       )}
                     </MenuItem>
@@ -202,5 +217,5 @@ const PostLoginNavBar = () => {
 export default PostLoginNavBar;
 
 const appbarStyle = {
-  opacity: 1
+  opacity: 1,
 };

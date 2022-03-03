@@ -167,7 +167,7 @@ export const ItemDetails = () => {
                 <br/>
                 <Divider/>
                 <br/>
-                <Typography variant="h1" color="text.secondary" fontWeight="bold">
+                <Typography variant="h3" color="text.secondary" fontWeight="bold">
                   {item.title}
                 </Typography>
 
@@ -177,7 +177,7 @@ export const ItemDetails = () => {
                 <br/>
                 <Divider/>
                 <br/>
-                <Typography variant="button" sx= {{color: "text.secondary", fontWeight: "bold", fontSize: 20}}  >
+                <Typography variant="h3" sx= {{color: "text.secondary", fontWeight: "bold", fontSize: 20}}  >
                   Rating:
                   <br/>
                   <Rating name="read-only" value="4.5" readOnly precision={0.5}/>
@@ -195,7 +195,10 @@ export const ItemDetails = () => {
                 <Divider />
                 <br/>
                   <Typography variant="h4" color={item.variation.toString()}>
-                    {isDesign(item.listingType) && isService(item.listingType) ? <>Variation: {item.variation.toString().toUpperCase()}</> : 'Chat for more information.'}                    
+                    <Typography variant="h3" color="text.secondary">
+                        {isDesign(item.listingType) && isService(item.listingType) ? <>Variation:</> : 'Chat for more information.'}
+                      </Typography> 
+                        {isDesign(item.listingType) && isService(item.listingType) ? <>{item.variation.toString().toUpperCase()}</> : ''}                   
                   </Typography>
                 <br/>
                 <Divider />

@@ -123,11 +123,6 @@ const ReusableMasonry = ({ moodboard }) => {
 		},
 	};
 
-	const handleCreatePost = () => {
-		console.log("handleCreatePost");
-		window.location.replace(`new-idea`);
-	};
-
 	return (
 		<>
 			{moodboard.moodboardItems.length == 0 ? (
@@ -137,14 +132,6 @@ const ReusableMasonry = ({ moodboard }) => {
 					<Box sx={pageStyles.sortFilter}>
 						<SortButton handleSort={handleSort} />
 						<Stack direction="row" spacing={2}>
-							{/* <Button
-							startIcon={<AddIcon />}
-							variant="outlined"
-							onClick={handleCreatePost}
-							sx={addToMoodboardButtonStyles}
-						>
-							New Post
-						</Button> */}
 							<FilterButton
 								handleTag={handleTag}
 								resetDisplay={resetDisplay}

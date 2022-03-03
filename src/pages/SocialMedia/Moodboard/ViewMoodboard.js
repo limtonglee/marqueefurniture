@@ -31,6 +31,7 @@ import BurstModeIcon from "@mui/icons-material/BurstMode";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import { useParams } from "react-router-dom";
 import ProductView from "./ProductView";
+import { Link, useNavigate } from "react-router-dom";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
 	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -67,11 +68,13 @@ const ViewMoodboard = () => {
 		getSelectedMoodboard()
 	);
 
+	let navigate = useNavigate();
+
 	const handleMoodboardChange = (event, value) => {
 		setSelectedMoodboard(value);
 		setCurrentMoodboard(moodboards[value.id]);
 
-		window.location.replace(`/moodboard/${username}/${value.id}`);
+		navigate(`/moodboard/${username}/${value.id}`);
 	};
 
 	const createMoodboardButtonStyles = {

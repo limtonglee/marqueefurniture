@@ -25,10 +25,13 @@ import CreateNewPost from "./pages/SocialMedia/Posts/CreateNewPost";
 import ViewMoodboard from "./pages/SocialMedia/Moodboard/ViewMoodboard";
 import Chat from "./pages/Chat/ChatModule";
 
+import { Box } from "@mui/material";
+
 const PostLogin = () => {
   return (
     <>
       <PostLoginNavBar />
+      <Box sx={{ mt: 10 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/marketplace" />} />
         <Route path="/marketplace" element={<MarketPlace />}>

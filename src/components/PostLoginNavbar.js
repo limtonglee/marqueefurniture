@@ -21,25 +21,22 @@ import { Link, useNavigate } from "react-router-dom";
 import { useStores } from "../stores/RootStore";
 import ControlledSwitches from "./SwitchNav";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import Grid from "@mui/material/Grid";
 
 const pageLinks = [
-	{ text: "Seller Center", link: "/sellercenter" },
-	{ text: "Marketplace", link: "/marketplace" },
-	{ text: "Ideas", link: "/ideas" },
+  { text: "Seller Center", link: "/sellercenter" },
+  { text: "Marketplace", link: "/marketplace" },
+  { text: "Ideas", link: "/ideas" },
 ];
 
-const AdminPageLinks = [
-	{ text: "Admin", link: "/admin" },
-	{ text: "Marketplace", link: "/marketplace" },
-	{ text: "Ideas", link: "/ideas" },
-];
+const AdminPageLinks = [{ text: "Admin Management", link: "/admin" }];
 
 const settings = [
-	{ text: "Profile", link: "/profile" },
-	{ text: "Moodboards", link: "/moodboard/cosyrosie/0" },
-	{ text: "Cart", link: "/cart" },
-	{ text: "Chat", link: "/chat" },
-	{ text: "Seller Center", link: "/sellercenter" },
+  { text: "Profile", link: "/profile" },
+  { text: "Moodboards", link: "/moodboard/cosyrosie/0" },
+  { text: "Cart", link: "/cart" },
+  { text: "Chat", link: "/chat" },
+  { text: "Seller Center", link: "/sellercenter" },
 ];
 
 const PostLoginNavBar = () => {
@@ -50,7 +47,6 @@ const PostLoginNavBar = () => {
   const [checked, setChecked] = React.useState(switchStore.checked);
 
   let navigate = useNavigate();
-
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
@@ -66,7 +62,7 @@ const PostLoginNavBar = () => {
   const setSwitch = () => {
     setChecked(false);
     switchStore.setCheck(false);
-  }
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -112,31 +108,45 @@ const PostLoginNavBar = () => {
                 flexGrow: 1,
               }}
             >
-              <ControlledSwitches
-                checked={checked}
-                handleChange={handleChange}
-              />
-
-              {!!userStore.isAdmin &&
-                AdminPageLinks.map((page) => (
-                  <Link
-                    key={page.link}
-                    to={page.link}
-                    style={{ textDecoration: "none" }}
-                  >
-                    <Button
-                      key={page.link}
-                      onClick={handleCloseNavMenu}
-                      sx={{
-                        my: 2,
-                        color: "white",
-                        display: "block",
-                      }}
-                    >
-                      {page.text}
-                    </Button>
-                  </Link>
-                ))}
+              {!userStore.isAdmin && (
+                <Grid item xs={4}>
+                  <ControlledSwitches
+                    checked={checked}
+                    handleChange={handleChange}
+                  />
+                </Grid>
+              )}
+              {!!userStore.isAdmin && (
+                <Grid container spacing={2}>
+                  <Grid item xs={4} sx={{ mt: 2 }}>
+                    <ControlledSwitches
+                      checked={checked}
+                      handleChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    {AdminPageLinks.map((page) => (
+                      <Link
+                        key={page.link}
+                        to={page.link}
+                        style={{ textDecoration: "none" }}
+                      >
+                        <Button
+                          key={page.link}
+                          onClick={handleCloseNavMenu}
+                          sx={{
+                            my: 2,
+                            color: "white",
+                            display: "block",
+                          }}
+                        >
+                          {page.text}
+                        </Button>
+                      </Link>
+                    ))}
+                  </Grid>
+                </Grid>
+              )}
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
@@ -168,6 +178,15 @@ const PostLoginNavBar = () => {
                         <Tooltip title="Profile" placement="right">
                           <AccountCircleOutlinedIcon
                             sx={{ color: "common.black" }}
+                          />
+                        </Tooltip>
+                      )}
+                      {setting.text === "Moodboards" && (
+                        <Tooltip title="Moodboards" placement="right">
+                          <DashboardIcon
+                            sx={{
+                              color: "common.black",
+                            }}
                           />
                         </Tooltip>
                       )}

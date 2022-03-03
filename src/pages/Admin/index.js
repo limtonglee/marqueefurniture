@@ -10,11 +10,13 @@ import { MoodboardDetails } from "../Profile/Moodboard/MoodboardDetails";
 import Profiles from "../Profiles";
 import Ideas from "../SocialMedia/Ideas";
 import AdminHome from "./AdminHome";
+import { Box } from "@mui/material";
 
 const Admin = () => {
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xxl">
       <PostLoginNavBar />
+      <Box sx={{ mt: 10 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/admin" />} />
         <Route path="/marketplace" element={<MarketPlace />}>

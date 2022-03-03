@@ -7,6 +7,7 @@ import Container from "@mui/material/Container";
 import { postData } from "../../data/postData";
 import AddIcon from "@mui/icons-material/Add";
 import Stack from "@mui/material/Stack";
+import { Link, useNavigate } from "react-router-dom";
 
 const Ideas = () => {
 	const [selectedTags, setSelectedTags] = useState([]);
@@ -115,9 +116,11 @@ const Ideas = () => {
 		},
 	};
 
+	let navigate = useNavigate();
+
 	const handleCreatePost = () => {
 		console.log("handleCreatePost");
-		window.location.replace(`new-idea`);
+		navigate("/new-idea");
 	};
 
 	return (

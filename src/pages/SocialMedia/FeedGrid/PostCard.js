@@ -9,6 +9,7 @@ import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import { user } from "../../../data/currentUserData";
 import MoodboardModal from "../Moodboard/MoodboardModal";
+import { Link } from "react-router-dom";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -94,10 +95,6 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
 		user.likedPosts = newLikePostsList;
 	};
 
-	const redirectToPost = () => {
-		window.location.replace(`ideas/${post.id}`);
-	};
-
 	const [open, setOpen] = React.useState(false);
 
 	const closeMoodboardModal = () => {
@@ -115,14 +112,19 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
 	return (
 		<>
 			<Card sx={{ width: 200, position: "relative" }}>
-				<CardMedia
-					component="img"
-					width="100%"
-					objectfit="scale-down"
-					image={post.image}
-					alt="post picture"
-					onClick={() => redirectToPost()}
-				/>
+				<Link
+					key={post.id}
+					to={`/ideas/${post.id}`}
+					style={{ textDecoration: "none" }}
+				>
+					<CardMedia
+						component="img"
+						width="100%"
+						objectfit="scale-down"
+						image={post.image}
+						alt="post picture"
+					/>
+				</Link>
 				<CardActions sx={postCardStyles.cardActions}>
 					<Checkbox
 						{...label}
@@ -143,6 +145,7 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
 					/>
 				</CardActions>
 			</Card>
+
 			<MoodboardModal
 				open={open}
 				closeMoodboardModal={closeMoodboardModal}

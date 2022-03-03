@@ -14,6 +14,7 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
+import { Link, useNavigate } from "react-router-dom";
 
 import { itemData } from "../../../data/itemData";
 
@@ -191,72 +192,78 @@ const TagProductsModal = ({
 						>
 							{selectedProductsValues.map((item, index) => (
 								<Grid item xs={6} md={6} key={item.id}>
-									<Card
-										sx={{
-											width: "100%",
-											position: "relative",
-										}}
+									<Link
+										to={`/marketplace/${item.id}`}
+										target="_blank"
+										style={{ textDecoration: "none" }}
 									>
-										<IconButton
-											aria-label="delete"
-											onClick={() =>
-												deselectItem(item.id)
-											}
+										<Card
 											sx={{
-												position: "absolute",
-												right: 0,
+												width: "100%",
+												position: "relative",
 											}}
 										>
-											<CloseIcon fontSize="small" />
-										</IconButton>
-										<Box
-											sx={{
-												flexGrow: 1,
-											}}
-										>
-											<CardMedia
-												component="img"
-												height="100"
-												image={item.img}
-												alt="green iguana"
-											/>
-											<Grid
-												container
-												spacing={2}
+											<IconButton
+												aria-label="delete"
+												onClick={() =>
+													deselectItem(item.id)
+												}
 												sx={{
-													display: "flex",
-													alignItems: "center",
+													position: "absolute",
+													right: 0,
 												}}
 											>
-												<Grid item xs={8}>
-													<Box
-														sx={{
-															p: 1,
-														}}
-													>
-														<Typography
-															variant="subtitle2"
-															component="div"
+												<CloseIcon fontSize="small" />
+											</IconButton>
+											<Box
+												sx={{
+													flexGrow: 1,
+												}}
+											>
+												<CardMedia
+													component="img"
+													height="100"
+													image={item.img}
+													alt="green iguana"
+												/>
+												<Grid
+													container
+													spacing={2}
+													sx={{
+														display: "flex",
+														alignItems: "center",
+													}}
+												>
+													<Grid item xs={8}>
+														<Box
+															sx={{
+																p: 1,
+															}}
 														>
-															{item.title}
-														</Typography>
-														<Typography
-															variant="caption"
-															display="block"
-														>
-															{item.author}
-														</Typography>
-														<Typography
-															variant="caption"
-															display="block"
-														>
-															{item.price}
-														</Typography>
-													</Box>
+															<Typography
+																variant="subtitle2"
+																component="div"
+															>
+																{item.title}
+															</Typography>
+															<Typography
+																variant="caption"
+																display="block"
+															>
+																{item.author}
+															</Typography>
+															<Typography
+																variant="caption"
+																display="block"
+															>
+																{item.price}
+															</Typography>
+														</Box>
+													</Grid>
 												</Grid>
-											</Grid>
-										</Box>
-									</Card>
+											</Box>
+										</Card>
+									</Link>
 								</Grid>
 							))}
 						</Grid>

@@ -16,17 +16,13 @@ import {
   OutlinedInput,
   Snackbar,
   Tab,
-  Tabs,
+  Tabs
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { user } from "../../data/currentUserData";
 import { itemData } from "../../data/itemData";
-
-import { getListings } from "../../services/Listings";
-
-import { useEffect } from "react";
 
 //This is the main marketplace page
 /*Things to do:
@@ -49,12 +45,12 @@ export const Listings = () => {
   // const [searchResults, setSearchResults] = React.useState(tabData);
   const [open, setOpen] = React.useState(false);
 
-  const [listings, setListings] = React.useState("");
-  useEffect(() => {
-    getListings().then(response => {
-      setListings(response.data)
-    });
-  }, []);
+  // const [listings, setListings] = React.useState("");
+  // useEffect(() => {
+  //   getListings().then(response => {
+  //     setListings(response.data)
+  //   });
+  // }, []);
 
   const handleSnack = () => {
     setOpen(true);

@@ -16,11 +16,11 @@ import ViewMoodboard from "./pages/SocialMedia/Moodboard/ViewMoodboard";
 import { Box } from "@mui/material";
 
 
-const PreLogin = () => {
+const PreLogin = ({checked, setChecked, handleChange}) => {
   return (
     <>
-      <NavBar />
-      <Box sx={{ mt: 10 }}></Box>
+      <NavBar checked={checked} handleChange={handleChange}/>
+      <Box sx={{ mt: 15 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/marketplace" />} />
         <Route path="/socialmedia" element={<Login />} />
@@ -28,7 +28,7 @@ const PreLogin = () => {
         <Route path="/new-idea" element={<CreateNewPost />} />
         <Route path="/ideas/:postId" element={<Post />} />
         <Route path="/moodboard/:username/:moodboardId" element={<ViewMoodboard />} />
-        <Route path="/marketplace" element={<MarketPlace />}>
+        <Route path="/marketplace" element={<MarketPlace setChecked={setChecked}/>}>
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>

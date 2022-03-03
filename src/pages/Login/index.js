@@ -24,7 +24,11 @@ const Login = () => {
     });
 
     //on success set login
-    setLogin();
+    if (data.get("email") === "admin") {
+      setAdminLogin();
+    } else {
+      setLogin(data.get("email"));
+    }
 
     //on failure to do
   };
@@ -33,18 +37,22 @@ const Login = () => {
 
   let navigate = useNavigate();
 
-  const setLogin = () => {
+  const setLogin = (email) => {
     userStore.setIsLoggedIn();
-    userStore.setUserName("cosyrosie")
-    userStore.setDescription("Hi, I’m Rosie. Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality")
-    userStore.setUserWebLink("www.example.com")
-    
-    // userStore.setIsAdmin();
-    if (userStore.isAdmin) {
-      navigate("/admin");
-    } else {
-      navigate("/marketplace");
-    }
+    userStore.setUserName(email);
+    userStore.setDescription(
+      "Hi, I’m Rosie. Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality"
+    );
+    userStore.setUserWebLink("www.example.com");
+
+    navigate("/marketplace");
+  };
+
+  const setAdminLogin = () => {
+    userStore.setIsLoggedIn();
+    userStore.setUserName("admin");
+    userStore.setIsAdmin();
+    navigate("/admin");
   };
 
   return (

@@ -23,6 +23,8 @@ import ControlledSwitches from "./SwitchNav";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import Grid from "@mui/material/Grid";
 
+import NotificationsPopover from "./NotificationsPopover";
+
 const pageLinks = [
   { text: "Seller Center", link: "/sellercenter" },
   { text: "Marketplace", link: "/marketplace" },
@@ -39,30 +41,12 @@ const settings = [
   { text: "Seller Center", link: "/sellercenter" },
 ];
 
-const PostLoginNavBar = () => {
+const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
   const { switchStore } = useStores();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const [checked, setChecked] = React.useState(switchStore.checked);
-
   let navigate = useNavigate();
-
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-    switchStore.setCheck(event.target.checked);
-    if (event.target.checked === false) {
-      navigate("/marketplace");
-    }
-    if (event.target.checked === true) {
-      navigate("/ideas");
-    }
-  };
-
-  const setSwitch = () => {
-    setChecked(false);
-    switchStore.setCheck(false);
-  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -97,11 +81,12 @@ const PostLoginNavBar = () => {
               key={"mf"}
               to={"/"}
               style={{ textDecoration: "none", color: "white" }}
-              onClick={setSwitch}
+              onClick={() => setChecked(false)}
             >
-              <Typography variant="h6" noWrap component="div" sx={{ mr: 2 }}>
-                MF
-              </Typography>
+              <Avatar
+                src="static/mf_fulllogo_white.svg"
+                sx={{ width: 100, height: 100 }}
+              />
             </Link>
             <Box
               sx={{
@@ -150,9 +135,12 @@ const PostLoginNavBar = () => {
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open notification">
+                <NotificationsPopover />
+              </Tooltip>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt="Remy Sharp" src="static/tabitha.jpg" />
                 </IconButton>
               </Tooltip>
               <Menu

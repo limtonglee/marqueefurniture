@@ -16,10 +16,10 @@ import ViewMoodboard from "./pages/SocialMedia/Moodboard/ViewMoodboard";
 import { Box } from "@mui/material";
 
 
-const PreLogin = () => {
+const PreLogin = ({checked, setChecked, handleChange}) => {
   return (
     <>
-      <NavBar />
+      <NavBar checked={checked} handleChange={handleChange}/>
       <Box sx={{ mt: 10 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/marketplace" />} />

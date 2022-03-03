@@ -39,30 +39,12 @@ const settings = [
   { text: "Seller Center", link: "/sellercenter" },
 ];
 
-const PostLoginNavBar = () => {
+const PostLoginNavBar = ({checked, setChecked, handleChange}) => {
   const { switchStore } = useStores();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const [checked, setChecked] = React.useState(switchStore.checked);
-
   let navigate = useNavigate();
-
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-    switchStore.setCheck(event.target.checked);
-    if (event.target.checked === false) {
-      navigate("/marketplace");
-    }
-    if (event.target.checked === true) {
-      navigate("/ideas");
-    }
-  };
-
-  const setSwitch = () => {
-    setChecked(false);
-    switchStore.setCheck(false);
-  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -97,7 +79,7 @@ const PostLoginNavBar = () => {
               key={"mf"}
               to={"/"}
               style={{ textDecoration: "none", color: "white" }}
-              onClick={setSwitch}
+              onClick={() => setChecked(false)}
             >
               <Typography variant="h6" noWrap component="div" sx={{ mr: 2 }}>
                 MF

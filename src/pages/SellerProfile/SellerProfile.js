@@ -14,6 +14,10 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import tabitha from "../../assets/images/tabitha.jpg";
 import { itemData } from "../../data/itemData";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import MessageIcon from "@mui/icons-material/Message";
+import SettingsIcon from "@mui/icons-material/Settings";
+import Inventory2Icon from '@mui/icons-material/Inventory2';
 
 
 const SellerProfile = () => {
@@ -49,10 +53,10 @@ const SellerProfile = () => {
                 centered
                 variant="fullWidth"
                 >
-                <Tab label="Listings" />
-                <Tab label="Mood Boards" />
-                <Tab label="Posts" />
-                <Tab label="About"/>
+                <Tab label="Listings" icon={<Inventory2Icon />} />
+                <Tab label="Mood Boards" icon={<AccountBoxIcon />} />
+                <Tab label="Posts" icon={<MessageIcon />} />
+                <Tab label="About" icon={<SettingsIcon />}/>
             </Tabs>
             </Box>
             {value === 0 ?  
@@ -62,65 +66,67 @@ const SellerProfile = () => {
                         <Divider />
                     </Box>
                     <Typography variant="h6" fontWeight="medium" textTransform="capitalize">
-                        This is listing
+                        Welcome to my Listing!
                     </Typography>
-                    <Box sx={{ maxWidth: 1500 }}>
-                    {data.map((item) => (
-                        <ImageListItem
-                            key={item.img}
-                            sx={{ boxShadow: 1, margin: 2.5, padding: 2 }}
-                        >
-                            <Link to={`/marketplace/${item.id}`}>
-                            <Button>
-                                <img
-                                src={`${item.img}?w=188&h=188&fit=crop&auto=format`}
-                                srcSet={`${item.img}?w=188&h=188&fit=crop&auto=format&dpr=2 2x`}
-                                alt={item.title}
-                                loading="lazy"
+                    <Grid container spacing ={0} direction="column" alignItems="center" justifyContent="center">
+                        <Box sx={{ maxWidth: 1500 }}  >
+                        {data.map((item) => (
+                            <ImageListItem
+                                key={item.img}
+                                sx={{ boxShadow: 1, margin: 2.5, padding: 2 }}
+                            >
+                                <Link to={`/marketplace/${item.id}`}>
+                                <Button>
+                                    <img
+                                    src={`${item.img}?w=188&h=188&fit=crop&auto=format`}
+                                    srcSet={`${item.img}?w=188&h=188&fit=crop&auto=format&dpr=2 2x`}
+                                    alt={item.title}
+                                    loading="lazy"
+                                    />
+                                </Button>
+                                </Link>
+                                <ImageListItemBar
+                                sx={{
+                                    backgroundColor: "primary",
+                                    fontWeight: "bold",
+                                    "& .MuiImageListItemBar-subtitle": {
+                                    overflow: "visible",
+                                    },
+                                }}
+                                title={item.title}
+                                subtitle={item.author}
+                                position="below"
                                 />
-                            </Button>
-                            </Link>
-                            <ImageListItemBar
-                            sx={{
-                                backgroundColor: "primary",
-                                fontWeight: "bold",
-                                "& .MuiImageListItemBar-subtitle": {
-                                overflow: "visible",
-                                },
-                            }}
-                            title={item.title}
-                            subtitle={item.author}
-                            position="below"
-                            />
-                            <Grid container spacing={2}>
-                            {item.price ? (
-                                <Grid
-                                item
-                                xs={4}
-                                sx={{
-                                    fontWeight: "bold",
-                                    fontSize: 12,
-                                    color: "primary.main",
-                                    mt: 2,
-                                }}
-                                >
-                                ${item.price.toFixed(2)}
+                                <Grid container spacing={2}>
+                                {item.price ? (
+                                    <Grid
+                                    item
+                                    xs={4}
+                                    sx={{
+                                        fontWeight: "bold",
+                                        fontSize: 12,
+                                        color: "primary.main",
+                                        mt: 2,
+                                    }}
+                                    >
+                                    ${item.price.toFixed(2)}
+                                    </Grid>
+                                ) : (
+                                    <Grid
+                                    item
+                                    xs={4}
+                                    sx={{
+                                        fontWeight: "bold",
+                                        fontSize: 12,
+                                        color: "primary.main",
+                                    }}
+                                    ></Grid>
+                                )}
                                 </Grid>
-                            ) : (
-                                <Grid
-                                item
-                                xs={4}
-                                sx={{
-                                    fontWeight: "bold",
-                                    fontSize: 12,
-                                    color: "primary.main",
-                                }}
-                                ></Grid>
-                            )}
-                            </Grid>
-                        </ImageListItem>
-                        ))}
-                    </Box>
+                            </ImageListItem>
+                            ))}
+                        </Box>
+                    </Grid>
                 </Box>
             </> : <>
                     {value === 1 ? 

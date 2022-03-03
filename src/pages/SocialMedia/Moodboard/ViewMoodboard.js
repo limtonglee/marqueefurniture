@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReusableMasonry from "./ReusableMasonry";
 import { user } from "../../../data/currentUserData";
 import Box from "@mui/material/Box";
@@ -29,17 +29,20 @@ import ShareIcon from "@mui/icons-material/Share";
 import IconButton from "@mui/material/IconButton";
 import BurstModeIcon from "@mui/icons-material/BurstMode";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import { useParams } from "react-router-dom";
 import ProductView from "./ProductView";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
 	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 const ViewMoodboard = () => {
-	const { username, moodboardId } = useParams();
+	// const { username, moodboardId } = useParams();
 
-	const [moodboards, setMoodboards] = useState(user.moodboards);
+	const [username, setUsername] = useState(useParams().username);
+	const [moodboardId, setMoodboardId] = useState(useParams().moodboardId);
+
+	const [moodboards, setMoodboards] = useState(user.moodboards); // need to change to get moodboards of the user when linking to BE
 
 	const [currentMoodboard, setCurrentMoodboard] = useState(
 		moodboards.filter(
@@ -174,6 +177,13 @@ const ViewMoodboard = () => {
 		setIsPostView(!isPostView);
 	};
 
+	useEffect(() => {
+		console.log("url parameters changes");
+		console.log(
+			"to do: update state of current moodboard when params change"
+		);
+	}, [useParams()]);
+
 	return (
 		<>
 			<MoodboardDetailsModal
@@ -279,7 +289,7 @@ const ViewMoodboard = () => {
 								</IconButton>
 								{isPostView ? (
 									<IconButton onClick={() => toggleView()}>
-										<BurstModeIcon />
+										<DashboardIcon />
 									</IconButton>
 								) : (
 									<IconButton onClick={() => toggleView()}>

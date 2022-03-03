@@ -125,7 +125,9 @@ const CreateNewPost = () => {
 					</Typography>
 					<Button
 						variant="contained"
-						sx={{ height: 40 }}
+						sx={{
+							height: 40,
+						}}
 						onClick={createPost}
 					>
 						Post
@@ -215,8 +217,11 @@ const CreateNewPost = () => {
 										variant="contained"
 										sx={{
 											width: "100%",
-											backgroundColor: "aliceblue",
-											color: "lightslategray",
+											backgroundColor: "primary.lighter",
+											color: "primary.darker",
+											"&:hover": {
+												color: "#fff",
+											},
 										}}
 										onClick={openProductsModal}
 									>

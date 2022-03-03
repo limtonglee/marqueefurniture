@@ -1,23 +1,10 @@
-import * as React from "react";
-import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
-import { Link, useNavigate } from "react-router-dom";
-import { Typography } from "@mui/material";
+import Switch from "@mui/material/Switch";
+import * as React from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function ControlledSwitches() {
-  const [checked, setChecked] = React.useState(false);
+export default function ControlledSwitches({checked, handleChange}) {
 
-  let navigate = useNavigate();
-
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-    if (event.target.checked === false) {
-      navigate("/marketplace");
-    }
-    if (event.target.checked === true) {
-      navigate("/ideas");
-    }
-  };
 
   const pageLinks = [
     { text: "Marketplace", link: "/marketplace" },
@@ -33,7 +20,6 @@ export default function ControlledSwitches() {
       />
       {!checked && "Marketplace"}
       {!!checked && "ideas"}
-
     </>
   );
 }

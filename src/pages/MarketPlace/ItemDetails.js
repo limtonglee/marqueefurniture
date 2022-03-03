@@ -4,7 +4,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import {
   Alert, Avatar, Card, CardContent,
-  CardHeader, Fab, Modal, Snackbar, Typography, CardMedia, Stack, Divider, ListItem, ListItemAvatar, ListItemText, Rating, Accordion, AccordionSummary
+  CardHeader, Fab, Modal, Snackbar, Typography, CardMedia, Stack, Divider, ListItem, ListItemAvatar, ListItemText, Rating, Accordion, AccordionSummary, ImageListItem, Box
 } from "@mui/material";
 import * as React from "react";
 import {
@@ -135,6 +135,17 @@ export const ItemDetails = () => {
                   title={item.title}
                 />
               </CardMedia>
+                <ImageListItem
+                  key={item.img}
+                  sx={{ boxShadow: 5, margin: 2, padding: 0, width: 75, height: 75 }}
+                  >
+                    <img
+                    src={`${item.img}?w=188&h=188&fit=crop&auto=format`}
+                    srcSet={`${item.img}?w=188&h=188&fit=crop&auto=format&dpr=2 2x`}
+                    alt={item.title} 
+                    height = 'auto'
+                    width = '50%'/>
+                </ImageListItem>
             </Grid>
             <Grid item md = {6} xs = {12} >
               <CardContent>

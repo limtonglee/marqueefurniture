@@ -9,7 +9,8 @@ import { Box,
         ImageList,
         ImageListItem,
         ImageListItemBar,
-        Button } from "@mui/material";
+        Button, 
+        Rating} from "@mui/material";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import tabitha from "../../assets/images/tabitha.jpg";
@@ -26,6 +27,7 @@ const SellerProfile = () => {
 
     const[value, setValue] = React.useState(0);
     const[data, setData] = React.useState(itemData);
+    const[rating, setRating] = React.useState(4.5);
 
     const handleChange = (event, newValue) => {
         console.log(newValue);
@@ -43,11 +45,16 @@ const SellerProfile = () => {
                     sx={{height: '70px', width:'70px'}}
                     />
                 </Grid>
-                <br/>
+                <br />
                 <Grid item xs = {4}>       
                     <Typography variant="h2" color="text" fontWeight="bold">
-                        Ali Mama
+                        Jack Ma
                     </Typography> 
+                </Grid>
+                <Grid item xs = {4}>
+                    <Typography variant="h3" color="text" fontWeight="bold">
+                        Rating: <Rating name="read-only" value={rating} readOnly />
+                    </Typography>
                 </Grid>
             </Grid>
             <Box sx={{ width: "auto", bgcolor: "background" }}>

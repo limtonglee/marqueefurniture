@@ -39,11 +39,11 @@ const Login = () => {
 
   const setLogin = (email) => {
     userStore.setIsLoggedIn();
-    userStore.setUserName("Jack Mama");
+    userStore.setUserName("Jack Ma");
     userStore.setDescription(
-      "Hi, I’m Jack Mama. My mama used to say life is like a box of chocolates. But I like to see life like a piece of furniture. You never know what you're going to get. Unless you get it from Mama."
+      "Hi, I’m Jack Ma. If you want good vintage furniture, come to Ali Mama."
     );
-    userStore.setUserWebLink("www.jackmama.com");
+    userStore.setUserWebLink("www.jackma.com");
 
     navigate("/marketplace");
   };

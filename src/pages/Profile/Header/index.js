@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 
 // Images
-import tabitha from "../../../assets/images/tabitha.jpg";
+import jack from "../../../assets/images/jack.jpg";
 
 import { useStores } from "../../../stores/RootStore";
 
@@ -27,7 +27,7 @@ function Header( ) {
         <Grid container spacing={3} alignItems="center">
           <Grid item mt={1} ml={1}>
             <Avatar
-              src={tabitha}
+              src={jack}
               alt="profile-image"
               variant="rounded"
               size="xl"

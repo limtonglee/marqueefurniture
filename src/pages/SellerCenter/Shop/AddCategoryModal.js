@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from "@mui/icons-material/Close";
+import { shopCategoriesData } from "../../../data/shopCategoriesData";
 
 const style = {
     wrapper: {
@@ -41,12 +42,7 @@ const style = {
 const formReducer = (state, event) => {
     if (event.reset) {
         return {
-            productType: '',
-            productName: '',
-            productDescription: '',
-            variation: '',
-            price: 0,
-            stock: 0,
+            categoryName: '',
         }
     }
     return {
@@ -55,7 +51,7 @@ const formReducer = (state, event) => {
     }
 }
 
-export default function BasicModal({ children }) {
+export default function BasicModal(props) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -73,14 +69,24 @@ export default function BasicModal({ children }) {
     const handleSubmit = event => {
         event.preventDefault();
         setSubmitting(true);
-
+        shopCategoriesData.push({
+            id: shopCategoriesData.length,
+            name: formData.categoryName,
+            createdBy: "Seller",
+            products: "0",
+            productIdList: [],
+            display: true,
+        });
+        props.onCloseModal();
+        handleClose();     
         setTimeout(() => {
             setSubmitting(false);
             setFormData({
                 reset: true
             })
-        }, 3000);
+        }, 1000);
     }
+
     return (
         <>
             <Button
@@ -118,15 +124,6 @@ export default function BasicModal({ children }) {
                             <CloseIcon />
                         </IconButton>
                     </Box>
-                    {submitting &&
-                        <div>You are submitting the following:
-                            <ul>
-                                {Object.entries(formData).map(([name, value]) => (
-                                    <li key={name}><strong>{name}</strong>:{value.toString()}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    }
                     <form onSubmit={handleSubmit}>
                         <Box sx={style.contents}>
                             Category Display Name
@@ -136,7 +133,7 @@ export default function BasicModal({ children }) {
                                 name="categoryName"
                                 placeholder='Enter a category name'
                                 onChange={handleChange}
-                                value={formData.categoryName}
+                                value={formData.categoryName || ""}
                             >
                             </TextField>
                         </Box>

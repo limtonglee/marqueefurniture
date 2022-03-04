@@ -11,7 +11,8 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Checkbox from "@mui/material/Checkbox";
 import Avatar from "@mui/material/Avatar";
-import { user } from "../../../data/currentUserData";
+// import { user } from "../../../data/currentUserData";
+import user from "../../../data/currentUserData2";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 

@@ -1,35 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { Layout } from '../Layout';
-import { user } from "../../../data/currentUserData";
+import { Layout } from "../Layout";
+// import { user } from "../../../data/currentUserData";
+import user from "../../../data/currentUserData2";
 // material
 import {
-    Card,
-    Stack,
-    Button,
-    Typography,
-    Tabs,
-    Tab,
-    Box,
-    styled,
-    Grid,
-    ButtonBase,
-    Avatar,
-    Link,
-    TextField,
-} from '@mui/material';
+	Card,
+	Stack,
+	Button,
+	Typography,
+	Tabs,
+	Tab,
+	Box,
+	styled,
+	Grid,
+	ButtonBase,
+	Avatar,
+	Link,
+	TextField,
+} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 
-const Img = styled('img')({
-    margin: 'auto',
-    display: 'block',
-    maxWidth: '100%',
-    maxHeight: '100%',
+const Img = styled("img")({
+	margin: "auto",
+	display: "block",
+	maxWidth: "100%",
+	maxHeight: "100%",
 });
 
 const commentButtonStyles = {
-    textTransform: "none",
-    color: "grey !important",
-    fontWeight: "normal",
+	textTransform: "none",
+	color: "grey !important",
+	fontWeight: "normal",
 };
 
 const addReplyStyles = {
@@ -39,37 +40,40 @@ const addReplyStyles = {
     borderColor: "#2E6B75",
     color: "#2E6B75",
     marginTop: "10px",
-    width: "100px",
+    width: "32px",
+    height: "32px",
     "&:hover": {
         borderColor: "#F2F2F2",
     },
 };
 
 export const ShopRating = () => {
-    const handleReply = () => {
-        console.log("add comment");
-        setCommentActivated(true);
-    };
-    const [commentActivated, setCommentActivated] = useState(false);
-    const [comment, setComment] = useState("");
-    const updateComment = (e) => {
-        setComment(e.target.value);
-    };
-    const sendComment = () => {
-        console.log("sendComment");
-        console.log(comment);
+	const handleReply = () => {
+		console.log("add comment");
+		setCommentActivated(true);
+	};
+	const [commentActivated, setCommentActivated] = useState(false);
+	const [comment, setComment] = useState("");
+	const updateComment = (e) => {
+		setComment(e.target.value);
+	};
+	const sendComment = () => {
+		console.log("sendComment");
+		console.log(comment);
 
-        const newId = Math.floor(Math.random() * 100 + 1);
+		const newId = Math.floor(Math.random() * 100 + 1);
 
-        const newComment = {
-            id: newId,
-            user: user,
-            comment: comment,
-            datetime: "",
-        };
+		const newComment = {
+			id: newId,
+			user: user,
+			comment: comment,
+			datetime: "",
+		};
 
-        setComment("");
-    };
+		setComment("");
+	};
+
+    const [noReply, setNoReply] = useState(true);
 
 
     return (
@@ -80,7 +84,7 @@ export const ShopRating = () => {
                     Shop Rating
                 </Typography>
                 <Typography variant="h4" gutterBottom>
-                    4.7/5
+                    4.5/5
                 </Typography>
             </Stack>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -100,7 +104,7 @@ export const ShopRating = () => {
                     <Tab label="1 Star" />
                 </Tabs>
             </Box>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} >
                 <Grid item xs={4}>
                     Product Information
                 </Grid>
@@ -114,7 +118,7 @@ export const ShopRating = () => {
             <Grid container spacing={2}>
                 <Grid item xs={4}>
                     <Card sx={{ height: '100%' }}>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={2} p={2}>
                             <Grid item>
                                 <ButtonBase sx={{ width: 128, height: 128 }}>
                                     <Img alt="complex" src="https://images.unsplash.com/photo-1540574163026-643ea20ade25" />
@@ -150,7 +154,7 @@ export const ShopRating = () => {
                 </Grid>
                 <Grid item xs={4}>
                     <Card sx={{ height: '100%' }}>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={2} p={2}>
                             <Grid item xs={12} sm container>
                                 <Grid item xs container direction="column" spacing={2}>
                                     <Grid item xs>
@@ -181,7 +185,7 @@ export const ShopRating = () => {
                 </Grid>
                 <Grid item xs={4}>
                     <Card sx={{ height: '100%' }}>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={2} p={2}>
                             <Grid item xs={12} sm container>
                                 <Grid item xs container direction="column" spacing={2}>
                                     <Grid item xs>
@@ -211,7 +215,7 @@ export const ShopRating = () => {
             <Grid container spacing={2} sx={{marginTop: "8px"}}>
                 <Grid item xs={4}>
                     <Card sx={{ height: '100%' }}>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={2} p={2}>
                             <Grid item>
                                 <ButtonBase sx={{ width: 128, height: 128 }}>
                                     <Img alt="complex" src="https://images.unsplash.com/photo-1540574163026-643ea20ade25" />
@@ -247,7 +251,7 @@ export const ShopRating = () => {
                 </Grid>
                 <Grid item xs={4}>
                     <Card sx={{ height: '100%' }}>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={2} p={2}>
                             <Grid item xs={12} sm container>
                                 <Grid item xs container direction="column" spacing={2}>
                                     <Grid item xs>
@@ -263,7 +267,7 @@ export const ShopRating = () => {
                                             Good item, fast delivery
                                         </Typography>
                                         <Typography variant="body2" gutterBottom>
-                                            Rating: 5/5
+                                            Rating: 4/5
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -278,7 +282,7 @@ export const ShopRating = () => {
                 </Grid>
                 <Grid item xs={4}>
                     <Card sx={{ height: '100%', display: 'flex', alignItems: "center", justifyContent: "center" }}>
-                        {!commentActivated && (
+                        {!commentActivated && noReply && (
                             <Button
 
 
@@ -300,7 +304,11 @@ export const ShopRating = () => {
                                     maxRows={4}
                                     value={comment}
                                     onChange={updateComment}
-                                />
+                                    sx={{
+                                        height: "100%",
+                                        width: "100%",
+                                    }}
+                                 />
                                 <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                                     {comment.length === 0 ? (
                                         <Button

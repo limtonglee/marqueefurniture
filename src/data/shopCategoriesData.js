@@ -4,7 +4,7 @@ export const shopCategoriesData = [
         name: "On Sale",
         createdBy: "System",
         products: "2",
-        productIdList: ["0","1"],
+        productIdList: ["0","1","2"],
         display: false,
     },
 

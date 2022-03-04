@@ -38,6 +38,10 @@ export const ShopCategoryDetails = () => {
     const category = shopCategoriesData[param.categoryId];
     var productList = getProductList(category.productIdList);
 
+    const handleRemove = (product) => {
+        console.log(productList.indexOf(product));
+        productList.splice(productList.indexOf(product));
+    }
 
     return (
         <>
@@ -115,7 +119,7 @@ export const ShopCategoryDetails = () => {
                                                     height: '36px',
                                                 }}
                                                 onClick={e => {
-
+                                                    handleRemove(product);
                                                 }}
                                             >
                                                 Remove

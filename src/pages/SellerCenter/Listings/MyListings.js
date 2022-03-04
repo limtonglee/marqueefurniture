@@ -20,6 +20,7 @@ import { useNavigate } from "react-router";
 import Searchbar from "../../../components/Searchbar";
 import EditListingModal from "./EditListingModal";
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
 
 export const MyListings = () => {
@@ -34,17 +35,18 @@ export const MyListings = () => {
     };
 
     const updateData = (value) => {
+        console.log(value);
         if (value === 1) {
             tabData = listingsData.filter((order) => order.status === "Live");
-        }
-        if (value === 2) {
+        } else if (value === 2) {
             tabData = listingsData.filter((order) => order.status === "Sold out");
-        }
-        if (value === 3) {
+        } else if (value === 3) {
             tabData = listingsData.filter((order) => order.status === "Violation");
-        }
-        if (value === 4) {
+        } else if (value === 4) {
             tabData = listingsData.filter((order) => order.status === "Delisted");
+        } else {
+            tabData = listingsData;
+            console.log("999999");
         }
         setData(tabData);
     };
@@ -78,8 +80,12 @@ export const MyListings = () => {
         }
     };
 
-    const handleDelist = (event, item) => {
-        item.status = 'Delisted';
+    const handleDelist = (event, item, value) => {
+        if (item.status !== 'Delisted') {
+            item.status = 'Delisted';
+        } else if (item.status === 'Delisted') {
+            item.status = 'Live';
+        }
         handleChange();
     }
 
@@ -158,6 +164,7 @@ export const MyListings = () => {
                                         marginTop: '10px',
                                         marginBottom: '10px',
                                         border: 1,
+                                        borderColor: '#C4CDD5',
                                     }}>
                                     <Grid container sx={{ padding: "4px" }}>
                                         <Grid item xs={3}>
@@ -187,19 +194,35 @@ export const MyListings = () => {
                                         </Grid>
                                         <Grid item xs={3}>
                                             <EditListingModal>{item}</EditListingModal>
-                                            <Button
-                                                variant="contained"
-                                                startIcon={<PlaylistRemoveIcon />}
-                                                style={{
-                                                    width: '150px',
-                                                    marginTop: "12px"
-                                                }}
-                                                onClick={e => {
-                                                    handleDelist(e, item);
-                                                }}
-                                            >
-                                                Delist Listing
-                                            </Button>
+                                            {item.status === "Delisted" ? (
+                                                <Button
+                                                    variant="contained"
+                                                    startIcon={<PlaylistAddIcon />}
+                                                    style={{
+                                                        width: '150px',
+                                                        marginTop: "12px"
+                                                    }}
+                                                    onClick={e => {
+                                                        handleDelist(e, item, value);
+                                                    }}
+                                                >
+                                                    Relist Listing
+                                                </Button>
+                                            ) : (
+                                                <Button
+                                                    variant="contained"
+                                                    startIcon={<PlaylistRemoveIcon />}
+                                                    style={{
+                                                        width: '150px',
+                                                        marginTop: "12px"
+                                                    }}
+                                                    onClick={e => {
+                                                        handleDelist(e, item, value);
+                                                    }}
+                                                >
+                                                    Delist Listing
+                                                </Button>
+                                            )}
                                         </Grid>
                                     </Grid>
                                 </Card>

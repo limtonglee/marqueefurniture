@@ -122,9 +122,9 @@ export const Orders = () => {
                                 <Card key={item.id}
                                     sx={{
                                         flexDirection: 'row',
-                                        marginTop: '10px',
-                                        marginBottom: '10px',
+                                        margin: '20px',
                                         border: 1,
+                                        borderColor: '#C4CDD5',
                                     }}>
 
                                     <div className='header' style={{
@@ -132,6 +132,7 @@ export const Orders = () => {
                                         flexDirection: 'row',
                                         justifyContent: 'space-between',
                                         borderBottom: '1px solid',
+                                        borderColor: '#C4CDD5',
                                         padding: '10px',
                                     }}>
                                         <div className='buyerName'>

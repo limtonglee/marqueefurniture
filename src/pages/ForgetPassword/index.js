@@ -65,7 +65,7 @@ const ForgetPassword = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Email Password To Me
+              Reset Password
             </Button>
           </Box>
         </Box>

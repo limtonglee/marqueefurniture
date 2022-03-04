@@ -125,6 +125,7 @@ export const Orders = () => {
                                         margin: '20px',
                                         border: 1,
                                         borderColor: '#C4CDD5',
+                                        padding : '5px'
                                     }}>
 
                                     <div className='header' style={{

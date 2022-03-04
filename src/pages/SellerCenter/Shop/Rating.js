@@ -104,7 +104,7 @@ export const ShopRating = () => {
                     <Tab label="1 Star" />
                 </Tabs>
             </Box>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} >
                 <Grid item xs={4}>
                     Product Information
                 </Grid>
@@ -118,7 +118,7 @@ export const ShopRating = () => {
             <Grid container spacing={2}>
                 <Grid item xs={4}>
                     <Card sx={{ height: '100%' }}>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={2} p={2}>
                             <Grid item>
                                 <ButtonBase sx={{ width: 128, height: 128 }}>
                                     <Img alt="complex" src="https://images.unsplash.com/photo-1540574163026-643ea20ade25" />
@@ -154,7 +154,7 @@ export const ShopRating = () => {
                 </Grid>
                 <Grid item xs={4}>
                     <Card sx={{ height: '100%' }}>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={2} p={2}>
                             <Grid item xs={12} sm container>
                                 <Grid item xs container direction="column" spacing={2}>
                                     <Grid item xs>
@@ -185,7 +185,7 @@ export const ShopRating = () => {
                 </Grid>
                 <Grid item xs={4}>
                     <Card sx={{ height: '100%' }}>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={2} p={2}>
                             <Grid item xs={12} sm container>
                                 <Grid item xs container direction="column" spacing={2}>
                                     <Grid item xs>
@@ -215,7 +215,7 @@ export const ShopRating = () => {
             <Grid container spacing={2} sx={{marginTop: "8px"}}>
                 <Grid item xs={4}>
                     <Card sx={{ height: '100%' }}>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={2} p={2}>
                             <Grid item>
                                 <ButtonBase sx={{ width: 128, height: 128 }}>
                                     <Img alt="complex" src="https://images.unsplash.com/photo-1540574163026-643ea20ade25" />
@@ -251,7 +251,7 @@ export const ShopRating = () => {
                 </Grid>
                 <Grid item xs={4}>
                     <Card sx={{ height: '100%' }}>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={2} p={2}>
                             <Grid item xs={12} sm container>
                                 <Grid item xs container direction="column" spacing={2}>
                                     <Grid item xs>

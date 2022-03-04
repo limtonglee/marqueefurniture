@@ -135,7 +135,7 @@ export const MyListings = () => {
                         <Tab label="Violation" />
                         <Tab label="Delisted" />
                     </Tabs>
-                    <Grid container sx={{ padding: "12px" }}>
+                    <Grid container p={2}>
                         <Grid item xs={3}>
                             Product Details
                         </Grid>
@@ -157,7 +157,7 @@ export const MyListings = () => {
                         <Grid item xs={3}>
                             Actions
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} >
                             {data.map((item) => (
                                 <Card key={item.id}
                                     sx={{
@@ -166,7 +166,7 @@ export const MyListings = () => {
                                         border: 1,
                                         borderColor: '#C4CDD5',
                                     }}>
-                                    <Grid container sx={{ padding: "4px" }}>
+                                    <Grid container p={2}>
                                         <Grid item xs={3}>
                                             <img
                                                 src={`${item.img}?w=124&fit=crop&auto=format`}
@@ -199,28 +199,28 @@ export const MyListings = () => {
                                                     variant="contained"
                                                     startIcon={<PlaylistAddIcon />}
                                                     style={{
-                                                        width: '150px',
+                                                        width: '100px',
                                                         marginTop: "12px"
                                                     }}
                                                     onClick={e => {
                                                         handleDelist(e, item, value);
                                                     }}
                                                 >
-                                                    Relist Listing
+                                                    Relist
                                                 </Button>
                                             ) : (
                                                 <Button
                                                     variant="contained"
                                                     startIcon={<PlaylistRemoveIcon />}
                                                     style={{
-                                                        width: '150px',
+                                                        width: '100px',
                                                         marginTop: "12px"
                                                     }}
                                                     onClick={e => {
                                                         handleDelist(e, item, value);
                                                     }}
                                                 >
-                                                    Delist Listing
+                                                    Delist
                                                 </Button>
                                             )}
                                         </Grid>

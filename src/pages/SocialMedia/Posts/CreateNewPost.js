@@ -18,6 +18,8 @@ import Autocomplete from "@mui/material/Autocomplete";
 
 import TagProductsModal from "./TagProductsModal";
 
+import { Link, useNavigate } from "react-router-dom";
+
 const Input = styled("input")({
 	display: "none",
 });
@@ -27,7 +29,10 @@ const CreateNewPost = () => {
 
 	const updateFile = (event) => {
 		console.log(event.target.value);
-		setFileUploaded(event.target.value);
+		// setFileUploaded(event.target.value);
+		setFileUploaded(
+			"https://d1hy6t2xeg0mdl.cloudfront.net/image/483605/dd9938c2cc/standard"
+		); // mock only; for demo purpose
 	};
 
 	const [selectedProductsValues, setSelectedProductsValues] = useState([]);
@@ -76,6 +81,8 @@ const CreateNewPost = () => {
 		setBoardDescription(event.target.value);
 	};
 
+	let navigate = useNavigate();
+
 	const createPost = () => {
 		console.log("createPost");
 		console.log(fileUploaded);
@@ -83,6 +90,8 @@ const CreateNewPost = () => {
 		console.log(filterRoomValues);
 		console.log(filterDesignValues);
 		console.log(boardDescription);
+
+		navigate("/ideas");
 	};
 
 	useEffect(() => {}, []);
@@ -116,7 +125,9 @@ const CreateNewPost = () => {
 					</Typography>
 					<Button
 						variant="contained"
-						sx={{ height: 40 }}
+						sx={{
+							height: 40,
+						}}
 						onClick={createPost}
 					>
 						Post
@@ -206,8 +217,11 @@ const CreateNewPost = () => {
 										variant="contained"
 										sx={{
 											width: "100%",
-											backgroundColor: "aliceblue",
-											color: "lightslategray",
+											backgroundColor: "primary.lighter",
+											color: "primary.darker",
+											"&:hover": {
+												color: "#fff",
+											},
 										}}
 										onClick={openProductsModal}
 									>

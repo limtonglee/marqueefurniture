@@ -15,58 +15,65 @@ import { useStores } from "../stores/RootStore";
 //const links = ["sellercenter", "marketplace", "socialmedia", "login"];
 
 const pageLinks = [
-  { text: "Market Place", link: "/marketplace" },
-  { text: "Seller Center", link: "/sellercenter" },
-  { text: "Ideas", link: "/ideas" },
-  { text: "Moodboard", link: "/moodboard/alicetan/0" },
-  { text: "Login", link: "/login" },
+	{ text: "Market Place", link: "/marketplace" },
+	{ text: "Seller Center", link: "/sellercenter" },
+	{ text: "Ideas", link: "/ideas" },
+	{ text: "Moodboard", link: "/moodboard/elon/0" },
+	{ text: "Login", link: "/login" },
 ];
 
 const NavBar = ({ checked, setChecked, handleChange }) => {
-  const { switchStore } = useStores();
+	const { switchStore } = useStores();
 
-  return (
-    <>
-      <AppBar position="fixed" sx={appbarStyle}>
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            <Link
-              key={"mf"}
-              to={"/"}
-              style={{ textDecoration: "none", color: "white" }}
-              onClick={() => setChecked(false)}
-            >
-              <Avatar src="static/mf_fulllogo_white.svg"  sx={{ width: 100, height: 100 }}/>
+	return (
+		<>
+			<AppBar position="fixed" sx={appbarStyle}>
+				<Container maxWidth="xl">
+					<Toolbar disableGutters>
+						<Link
+							key={"mf"}
+							to={"/"}
+							style={{ textDecoration: "none", color: "white" }}
+							onClick={() => setChecked(false)}
+						>
+							<Avatar
+								src="static/mf_fulllogo_white.svg"
+								sx={{ width: 100, height: 100 }}
+							/>
+						</Link>
 
-            </Link>
-
-            <Box
-              sx={{
-                flexGrow: 1,
-              }}
-            >
-              <ControlledSwitches
-                checked={checked}
-                handleChange={handleChange}
-              />
-            </Box>
-            <Link
-              key={"mf"}
-              to={"/login"}
-              style={{ textDecoration: "none", color: "white" }}
-            >
-              <Typography variant="h7" noWrap component="div" sx={{ mr: 2 }}>
-                Login
-              </Typography>
-            </Link>
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </>
-  );
+						<Box
+							sx={{
+								flexGrow: 1,
+							}}
+						>
+							<ControlledSwitches
+								checked={checked}
+								handleChange={handleChange}
+							/>
+						</Box>
+						<Link
+							key={"mf"}
+							to={"/login"}
+							style={{ textDecoration: "none", color: "white" }}
+						>
+							<Typography
+								variant="h7"
+								noWrap
+								component="div"
+								sx={{ mr: 2 }}
+							>
+								Login
+							</Typography>
+						</Link>
+					</Toolbar>
+				</Container>
+			</AppBar>
+		</>
+	);
 };
 export default NavBar;
 
 const appbarStyle = {
-  opacity: 1,
+	opacity: 1,
 };

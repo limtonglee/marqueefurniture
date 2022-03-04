@@ -1,35 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { Layout } from '../Layout';
-import { user } from "../../../data/currentUserData";
+import { Layout } from "../Layout";
+// import { user } from "../../../data/currentUserData";
+import user from "../../../data/currentUserData2";
 // material
 import {
-    Card,
-    Stack,
-    Button,
-    Typography,
-    Tabs,
-    Tab,
-    Box,
-    styled,
-    Grid,
-    ButtonBase,
-    Avatar,
-    Link,
-    TextField,
-} from '@mui/material';
+	Card,
+	Stack,
+	Button,
+	Typography,
+	Tabs,
+	Tab,
+	Box,
+	styled,
+	Grid,
+	ButtonBase,
+	Avatar,
+	Link,
+	TextField,
+} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 
-const Img = styled('img')({
-    margin: 'auto',
-    display: 'block',
-    maxWidth: '100%',
-    maxHeight: '100%',
+const Img = styled("img")({
+	margin: "auto",
+	display: "block",
+	maxWidth: "100%",
+	maxHeight: "100%",
 });
 
 const commentButtonStyles = {
-    textTransform: "none",
-    color: "grey !important",
-    fontWeight: "normal",
+	textTransform: "none",
+	color: "grey !important",
+	fontWeight: "normal",
 };
 
 const addReplyStyles = {
@@ -47,30 +48,30 @@ const addReplyStyles = {
 };
 
 export const ShopRating = () => {
-    const handleReply = () => {
-        console.log("add comment");
-        setCommentActivated(true);
-    };
-    const [commentActivated, setCommentActivated] = useState(false);
-    const [comment, setComment] = useState("");
-    const updateComment = (e) => {
-        setComment(e.target.value);
-    };
-    const sendComment = () => {
-        console.log("sendComment");
-        console.log(comment);
+	const handleReply = () => {
+		console.log("add comment");
+		setCommentActivated(true);
+	};
+	const [commentActivated, setCommentActivated] = useState(false);
+	const [comment, setComment] = useState("");
+	const updateComment = (e) => {
+		setComment(e.target.value);
+	};
+	const sendComment = () => {
+		console.log("sendComment");
+		console.log(comment);
 
-        const newId = Math.floor(Math.random() * 100 + 1);
+		const newId = Math.floor(Math.random() * 100 + 1);
 
-        const newComment = {
-            id: newId,
-            user: user,
-            comment: comment,
-            datetime: "",
-        };
+		const newComment = {
+			id: newId,
+			user: user,
+			comment: comment,
+			datetime: "",
+		};
 
-        setComment("");
-    };
+		setComment("");
+	};
 
     const [noReply, setNoReply] = useState(true);
 

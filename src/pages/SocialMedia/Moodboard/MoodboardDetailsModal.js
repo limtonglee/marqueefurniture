@@ -9,7 +9,8 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
-import { user } from "../../../data/currentUserData";
+// import { user } from "../../../data/currentUserData";
+import user from "../../../data/currentUserData2";
 import { Link, useNavigate } from "react-router-dom";
 
 const MoodboardDetailsModal = ({

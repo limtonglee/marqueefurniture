@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReusableMasonry from "./ReusableMasonry";
-import { user } from "../../../data/currentUserData";
+// import { user } from "../../../data/currentUserData";
+import user from "../../../data/currentUserData2";
 import Box from "@mui/material/Box";
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
@@ -182,6 +183,7 @@ const ViewMoodboard = () => {
 		console.log(
 			"to do: update state of current moodboard when params change"
 		);
+		setIsPostView(true);
 	}, [useParams()]);
 
 	return (

@@ -85,7 +85,7 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
 						>
 							<Avatar
 								src="static/mf_fulllogo_white.svg"
-								sx={{ width: 100, height: 100 }}
+								sx={{ width: 80, height: 80 }}
 							/>
 						</Link>
 						<Box

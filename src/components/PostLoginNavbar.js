@@ -24,6 +24,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import Grid from "@mui/material/Grid";
 
 import NotificationsPopover from "./NotificationsPopover";
+import jack from "../assets/images/jack.jpg"
 
 const pageLinks = [
   { text: "Seller Center", link: "/sellercenter" },
@@ -140,7 +141,7 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
               </Tooltip>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="static/tabitha.jpg" />
+                  <Avatar alt="Remy Sharp" src={jack} />
                 </IconButton>
               </Tooltip>
               <Menu

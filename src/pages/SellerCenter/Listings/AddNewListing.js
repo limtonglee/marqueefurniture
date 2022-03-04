@@ -80,7 +80,7 @@ export const AddNewListing = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         padding: 2,
-                        marginBottom: 3,
+                        marginBottom: 1,
                     }}
                     noValidate
                     autoComplete="off"
@@ -129,7 +129,7 @@ export const AddNewListing = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         padding: 2,
-                        marginBottom: 3,
+                        marginBottom: 1,
                     }}
                     noValidate
                     autoComplete="off"
@@ -164,6 +164,7 @@ export const AddNewListing = () => {
                     type="submit"
                     value="Submit"
                     variant="contained"
+                    sx={{m:2}}
                 >
                     Save and Publish
                 </Button>

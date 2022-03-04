@@ -4,7 +4,7 @@ import React from 'react';
 export const Layout = ({ children }) => {
     return (
         <>
-            <h1>Seller Center</h1>
+            <h2>Seller Center</h2>
             <div className='appContainer'
                 style={{
                     display: 'flex',

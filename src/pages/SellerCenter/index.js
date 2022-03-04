@@ -4,7 +4,6 @@ const SellerCenter = () => {
 
     return (
         <>
-            <h1>Seller Center</h1>
             <Outlet/>
         </>
     );

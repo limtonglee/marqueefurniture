@@ -121,15 +121,6 @@ export default function BasicModal({ children }) {
                             <CloseIcon />
                         </IconButton>
                     </Box>
-                    {submitting &&
-                        <div>You are submitting the following:
-                            <ul>
-                                {Object.entries(formData).map(([name, value]) => (
-                                    <li key={name}><strong>{name}</strong>:{value.toString()}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    }
                     <form onSubmit={handleSubmit}>
                         <Box sx={style.contents}>
                             <Grid container sx={{ padding: "12px" }}>

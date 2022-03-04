@@ -39,7 +39,8 @@ const addReplyStyles = {
     borderColor: "#2E6B75",
     color: "#2E6B75",
     marginTop: "10px",
-    width: "100px",
+    width: "32px",
+    height: "32px",
     "&:hover": {
         borderColor: "#F2F2F2",
     },
@@ -71,6 +72,8 @@ export const ShopRating = () => {
         setComment("");
     };
 
+    const [noReply, setNoReply] = useState(true);
+
 
     return (
 
@@ -80,7 +83,7 @@ export const ShopRating = () => {
                     Shop Rating
                 </Typography>
                 <Typography variant="h4" gutterBottom>
-                    4.7/5
+                    4.5/5
                 </Typography>
             </Stack>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -263,7 +266,7 @@ export const ShopRating = () => {
                                             Good item, fast delivery
                                         </Typography>
                                         <Typography variant="body2" gutterBottom>
-                                            Rating: 5/5
+                                            Rating: 4/5
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -278,7 +281,7 @@ export const ShopRating = () => {
                 </Grid>
                 <Grid item xs={4}>
                     <Card sx={{ height: '100%', display: 'flex', alignItems: "center", justifyContent: "center" }}>
-                        {!commentActivated && (
+                        {!commentActivated && noReply && (
                             <Button
 
 
@@ -300,7 +303,11 @@ export const ShopRating = () => {
                                     maxRows={4}
                                     value={comment}
                                     onChange={updateComment}
-                                />
+                                    sx={{
+                                        height: "100%",
+                                        width: "100%",
+                                    }}
+                                 />
                                 <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                                     {comment.length === 0 ? (
                                         <Button

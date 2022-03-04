@@ -10,7 +10,6 @@ import {
     Grid,
     Switch,
     TextField,
-    //Link
 } from '@mui/material';
 import { Link } from "react-router-dom";
 
@@ -19,16 +18,14 @@ import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import AddCategoryModal from './AddCategoryModal';
 import { shopCategoriesData } from "../../../data/shopCategoriesData";
-import { useNavigate } from "react-router";
 
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 let tempName = "On Sale";
 
-export const ShopCategories = () => {
-    const navigate = useNavigate();
-    const [value, setValue] = React.useState(0);
-    const [data, setData] = React.useState(shopCategoriesData);
+export const ShopCategories = (props) => {
+
+    const [data, setData] = useState(shopCategoriesData);
 
     const [editActivated, setEditActivated] = useState(false);
     const openEdit = () => {
@@ -40,51 +37,56 @@ export const ShopCategories = () => {
     const sendEdit = (event) => {
         setEditActivated(false);
     };
+    const handleCloseModal = (event) => {
+        console.log(shopCategoriesData[shopCategoriesData.length - 1]);
+        setData(shopCategoriesData);
 
-    // const handleClick = (route) => {
-    //     navigate(/sellercenter/shop/categories/${category.id})
-    // }
-
+    };
+    useEffect(() => {
+        setData(shopCategoriesData);
+        console.log('Categories Data', data);
+    }, [shopCategoriesData])
     return (
-
-        <Layout>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-                <Typography variant="h4" gutterBottom>
-                    My Shop Categories
-                </Typography>
-                <AddCategoryModal></AddCategoryModal>
-            </Stack>
-            <Grid container>
-                <Grid item xs={4}>
-                    Category Display Name
-                </Grid>
-                <Grid item xs={2}>
-                    Created By
-                </Grid>
-                <Grid item xs={2}>
-                    Product(s)
-                </Grid>
-                <Grid item xs={2}>
-                    Display On/Off
-                </Grid>
-                <Grid item xs={2}>
-                    Actions
-                </Grid>
-                <Grid item xs={12}>
-                    {data.map((category) => (
-                        <Card 
-                            sx={{
-                                marginTop: '10px',
-                                marginBottom: '10px',
-                                border: 1,
-                                paddingTop: "24px",
-                                paddingBottom: "24px",
-                            }}>
-                            <Grid container sx={{paddingLeft:"12px"}}>
-                                {!editActivated && (
-                                    <Grid item xs={4}>
-                                        {category.name}
-                                        <Button
+        <>
+            <Layout>
+                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                    <Typography variant="h4" gutterBottom>
+                        My Shop Categories
+                    </Typography>
+                    <AddCategoryModal onCloseModal={handleCloseModal}></AddCategoryModal>
+                </Stack>
+                <Grid container>
+                    <Grid item xs={4}>
+                        Category Display Name
+                    </Grid>
+                    <Grid item xs={2}>
+                        Created By
+                    </Grid>
+                    <Grid item xs={2}>
+                        Product(s)
+                    </Grid>
+                    <Grid item xs={2}>
+                        Display On/Off
+                    </Grid>
+                    <Grid item xs={2}>
+                        Actions
+                    </Grid>
+                    <Grid item xs={12}>
+                        {data.map((category) => (
+                            <Card key={category.id}
+                                sx={{
+                                    marginTop: '10px',
+                                    marginBottom: '10px',
+                                    border: 1,
+                                    borderColor: '#C4CDD5',
+                                    paddingTop: "24px",
+                                    paddingBottom: "24px",
+                                }}>
+                                <Grid container sx={{ paddingLeft: "12px" }}>
+                                    {!editActivated && (
+                                        <Grid item xs={4}>
+                                            {category.name}
+                                            {/* <Button
                                             variant="outlined"
                                             startIcon={<EditIcon />}
                                             sx={{
@@ -95,66 +97,66 @@ export const ShopCategories = () => {
                                             onClick={event => {
                                                 openEdit(event, category)
                                             }}
-                                        />
-                                    </Grid>
-                                )}
-                                {editActivated && (
-                                    <Grid item xs={4}>
-                                        <Box
-                                            component="form"
-                                            sx={{
-                                                display: "flex",
-                                                flexDirection: "row",
-                                            }}
-                                        >
+                                        /> */}
+                                        </Grid>
+                                    )}
+                                    {editActivated && (
+                                        <Grid item xs={4}>
+                                            <Box
+                                                component="form"
+                                                sx={{
+                                                    display: "flex",
+                                                    flexDirection: "row",
+                                                }}
+                                            >
 
-                                            <TextField
-                                                required
-                                                id="outlined-basic"
-                                                defaultValue={category.name}
-                                                sx={{ height: "16px" }}
-                                                onChange={handleEdit}
-                                            />
+                                                <TextField
+                                                    required
+                                                    id="outlined-basic"
+                                                    defaultValue={category.name}
+                                                    sx={{ height: "16px" }}
+                                                    onChange={handleEdit}
+                                                />
 
-                                            <Box sx={{ width: "16px", height: "16px", marginLeft: "10px" }}>
-                                                <Button
-                                                    endIcon={<CheckIcon />}
-                                                    variant="outlined"
-                                                    sx={{
-                                                        height: "16px",
-                                                    }}
-                                                    onClick={sendEdit}
-                                                >
-                                                </Button>
+                                                <Box sx={{ width: "16px", height: "16px", marginLeft: "10px" }}>
+                                                    <Button
+                                                        endIcon={<CheckIcon />}
+                                                        variant="outlined"
+                                                        sx={{
+                                                            height: "16px",
+                                                        }}
+                                                        onClick={sendEdit}
+                                                    >
+                                                    </Button>
+                                                </Box>
                                             </Box>
+                                        </Grid>
+                                    )}
+                                    <Grid item xs={2}>
+                                        {category.createdBy}
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        {category.products}
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        <Switch {...label} defaultChecked />
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                            <Link to={`/sellercenter/shop/categories/${category.id}`}>
+                                                <Button>
+                                                    Add Products
+                                                </Button>
+                                            </Link>
                                         </Box>
                                     </Grid>
-                                )}
-                                <Grid item xs={2}>
-                                    {category.createdBy}
                                 </Grid>
-                                <Grid item xs={2}>
-                                    {category.products}
-                                </Grid>
-                                <Grid item xs={2}>
-                                    <Switch {...label} defaultChecked />
-                                </Grid>
-                                <Grid item xs={2}>
-                                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                        <Link to = {`/sellercenter/shop/categories/${category.id}`}>
-                                        <Button>
-                                            Add Products
-                                        </Button>
-                                        </Link>
-                                    </Box>
-                                </Grid>
-                            </Grid>
-                        </Card>
-                    ))}
+                            </Card>
+                        ))}
+                    </Grid>
                 </Grid>
-            </Grid>
 
-        </Layout>
-
+            </Layout>
+        </>
     );
 }

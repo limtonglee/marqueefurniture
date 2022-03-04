@@ -164,6 +164,7 @@ export const MyListings = () => {
                                         marginTop: '10px',
                                         marginBottom: '10px',
                                         border: 1,
+                                        borderColor: '#C4CDD5',
                                     }}>
                                     <Grid container sx={{ padding: "4px" }}>
                                         <Grid item xs={3}>

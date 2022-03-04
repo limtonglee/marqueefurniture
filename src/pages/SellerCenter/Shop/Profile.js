@@ -107,7 +107,7 @@ export const ShopProfile = () => {
                                         Response Time: Within hours
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
-                                        Shop Rating: 4.7
+                                        Shop Rating: 4.5
                                     </Typography>
                                 </CardContent>
                                 <CardActions>

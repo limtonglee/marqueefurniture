@@ -16,7 +16,7 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
-import Tooltip from "@mui/material/Tooltip";
+import {Tooltip} from "@mui/material";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import jack from "../assets/images/jack.jpg";

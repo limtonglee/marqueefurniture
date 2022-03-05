@@ -1,33 +1,23 @@
 
+import CircleNotificationsOutlinedIcon from '@mui/icons-material/CircleNotificationsOutlined';
+import MarkChatReadIcon from '@mui/icons-material/MarkChatRead';
+import {
+  Badge, Box, Button, Divider,
+  IconButton, List, ListItemAvatar,
+  ListItemButton, ListItemText,
+  ListSubheader, Tooltip, Typography
+} from '@mui/material';
+// material
+import { alpha } from '@mui/material/styles';
+import { formatDistanceToNow } from 'date-fns';
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { formatDistanceToNow } from 'date-fns';
-// material
-import { alpha } from '@mui/material/styles';
-import {
-  Box,
-  List,
-  Badge,
-  Button,
-  Avatar,
-  Tooltip,
-  Divider,
-  IconButton,
-  Typography,
-  ListItemText,
-  ListSubheader,
-  ListItemAvatar,
-  ListItemButton
-} from '@mui/material';
+import { NOTIFICATIONS } from '../data/notificationData';
+import MenuPopover from './MenuPopover';
 // utils
 // components
 import Scrollbar from './Scrollbar';
-import MenuPopover from './MenuPopover';
-import SearchIcon from '@mui/icons-material/Search';
-import {NOTIFICATIONS} from '../data/notificationData'
-import CircleNotificationsOutlinedIcon from '@mui/icons-material/CircleNotificationsOutlined';
-import MarkChatReadIcon from '@mui/icons-material/MarkChatRead';
 
 // ----------------------------------------------------------------------
 

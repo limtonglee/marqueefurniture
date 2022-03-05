@@ -1,4 +1,3 @@
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Button, Container, Divider, Grid, ImageList } from "@mui/material";
 import ButtonBase from "@mui/material/ButtonBase";
 import Paper from "@mui/material/Paper";
@@ -9,8 +8,8 @@ import * as React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useStores } from "../../stores/RootStore";
-import { getTotalPrice } from "../../utils/getTotalPrice";
 import { getCartTotal } from "../../utils/getCartTotal";
+import { getTotalPrice } from "../../utils/getTotalPrice";
 
 const Img = styled("img")({
   margin: "auto",
@@ -22,11 +21,6 @@ const Img = styled("img")({
 export default function Cart() {
   const { cartStore } = useStores();
   const [items, setItems] = useState(toJS(cartStore.getItems()));
-
-  const handleDeleteAll = () => {
-    cartStore.clearAllItems();
-    setItems([]);
-  };
 
   const handleDeleteOneItem = (itemId) => {
     console.log("removing itemID " + itemId);

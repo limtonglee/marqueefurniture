@@ -1,13 +1,11 @@
 import { Container } from "@mui/material";
 import { Observer } from "mobx-react";
-import React, { useEffect } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import Admin from "./pages/Admin";
 import PostLogin from "./PostLogin";
 import PreLogin from "./PreLogin";
 import { useStores } from "./stores/RootStore";
-import { Link, useNavigate } from "react-router-dom";
-
-
 // theme
 import ThemeConfig from "./theme";
 

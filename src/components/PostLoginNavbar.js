@@ -1,5 +1,6 @@
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import StorefrontIcon from "@mui/icons-material/Storefront";
@@ -10,27 +11,25 @@ import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import jack from "../assets/images/jack.jpg";
 import { useStores } from "../stores/RootStore";
-import ControlledSwitches from "./SwitchNav";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import Grid from "@mui/material/Grid";
-
 import NotificationsPopover from "./NotificationsPopover";
-import jack from "../assets/images/jack.jpg"
+import ControlledSwitches from "./SwitchNav";
 
-const pageLinks = [
-	{ text: "Seller Center", link: "/sellercenter" },
-	{ text: "Marketplace", link: "/marketplace" },
-	{ text: "Ideas", link: "/ideas" },
-];
+
+// const pageLinks = [
+// 	{ text: "Seller Center", link: "/sellercenter" },
+// 	{ text: "Marketplace", link: "/marketplace" },
+// 	{ text: "Ideas", link: "/ideas" },
+// ];
 
 const AdminPageLinks = [{ text: "Admin Management", link: "/admin" }];
 
@@ -43,22 +42,14 @@ const settings = [
 ];
 
 const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
-	const { switchStore } = useStores();
-	const [anchorElNav, setAnchorElNav] = React.useState(null);
 	const [anchorElUser, setAnchorElUser] = React.useState(null);
 
 	let navigate = useNavigate();
 
-	const handleOpenNavMenu = (event) => {
-		setAnchorElNav(event.currentTarget);
-	};
 	const handleOpenUserMenu = (event) => {
 		setAnchorElUser(event.currentTarget);
 	};
 
-	const handleCloseNavMenu = () => {
-		setAnchorElNav(null);
-	};
 
 	const handleCloseUserMenu = () => {
 		setAnchorElUser(null);
@@ -121,7 +112,6 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
 											>
 												<Button
 													key={page.link}
-													onClick={handleCloseNavMenu}
 													sx={{
 														my: 2,
 														color: "white",

@@ -1,7 +1,6 @@
 //store user logged in information
 
 import { makeAutoObservable, observable } from "mobx";
-import { autorun } from "mobx";
 import { makeLocalStorage } from "./makeLocalStorage.tsx";
 
 //to be edited

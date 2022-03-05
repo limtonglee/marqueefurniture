@@ -10,8 +10,22 @@ const instance = axios.create({
 
 const request = (options) => instance.request(options);
 
-export const get = (url,params={}, headers={}) => request({
+export const get = (url,params, headers={}) => request({
     method: 'GET',
+    url,
+    params,
+    headers
+});
+
+export const remove = (url, params, headers={}) => request({
+    method: 'DELETE',
+    url,
+    params,
+    headers
+});
+
+export const update = (url, params, headers={}) => request({
+    method: 'PUT',
     url,
     params,
     headers

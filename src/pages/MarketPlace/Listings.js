@@ -19,12 +19,11 @@ import {
   Tabs,
 } from "@mui/material";
 import Button from "@mui/material/Button";
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // import { user } from "../../data/currentUserData";
 import user from "../../data/currentUserData2";
 import { getListings } from "../../services/Listings";
-import { useEffect } from "react";
 
 //This is the main marketplace page
 /*Things to do:
@@ -40,17 +39,20 @@ Formatting of the listings
 */
 export const Listings = () => {
   const { username, likedPosts, moodboards } = user;
-  const [value, setValue] = React.useState(0);
-  const [data, setData] = React.useState([]);
-  const [open, setOpen] = React.useState(false);
-
-  const [listings, setListings] = React.useState([]);
+  const [value, setValue] = useState(0);
+  const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [listings, setListings] = useState([]);
 
   //first use effect only called once
   useEffect(() => {
-    getListings().then((response) => {
-      setListings(JSON.parse(JSON.stringify(response.data)));
-    });
+    getListings()
+      .then((response) => {
+        setListings(JSON.parse(JSON.stringify(response.data)));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   //use effect to check if the listings are updated

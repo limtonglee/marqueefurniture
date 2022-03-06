@@ -31,7 +31,7 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
       backgroundColor: "white",
       borderRadius: "50%",
       "&.MuiCheckbox-root:hover": {
-        backgroundColor: "#F2F2F2",
+        backgroundColor: "grey.200",
         borderRadius: "50%",
       },
     },
@@ -108,6 +108,7 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
 
   useEffect(() => {
     setPostPinned(postInUserMoodboards() ? true : false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moodboards]);
 
   return (

@@ -28,10 +28,9 @@ import MuiAlert from "@mui/material/Alert";
 import MoodboardDetailsModal from "./MoodboardDetailsModal";
 import ShareIcon from "@mui/icons-material/Share";
 import IconButton from "@mui/material/IconButton";
-import BurstModeIcon from "@mui/icons-material/BurstMode";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import ProductView from "./ProductView";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -40,8 +39,8 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const ViewMoodboard = () => {
   // const { username, moodboardId } = useParams();
 
-  const [username, setUsername] = useState(useParams().username);
-  const [moodboardId, setMoodboardId] = useState(useParams().moodboardId);
+  const [username, setUsername] = useState(useParams().username); // eslint-disable-line no-unused-vars
+  const [moodboardId, setMoodboardId] = useState(useParams().moodboardId); // eslint-disable-line no-unused-vars
 
   const [moodboards, setMoodboards] = useState(user.moodboards); // need to change to get moodboards of the user when linking to BE
 
@@ -180,6 +179,7 @@ const ViewMoodboard = () => {
     console.log("url parameters changes");
     console.log("to do: update state of current moodboard when params change");
     setIsPostView(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [useParams()]);
 
   return (
@@ -357,9 +357,6 @@ const ViewMoodboard = () => {
               </Grid>
             </AccordionDetails>
           </Accordion>
-          {/* <IconButton onClick={() => toggleView()}>
-						<ShareIcon />
-					</IconButton> */}
         </Box>
         {isPostView && <ReusableMasonry moodboard={currentMoodboard} />}
         {!isPostView && <ProductView moodboard={currentMoodboard} />}

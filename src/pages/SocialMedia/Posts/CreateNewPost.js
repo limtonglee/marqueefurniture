@@ -6,19 +6,13 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
-
 import { styled } from "@mui/material/styles";
-import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
-import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import Autocomplete from "@mui/material/Autocomplete";
-
 import TagProductsModal from "./TagProductsModal";
-
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Input = styled("input")({
   display: "none",

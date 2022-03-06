@@ -151,20 +151,13 @@ const Post = () => {
 
   useEffect(() => {
     setPostPinned(postInUserMoodboards() ? true : false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moodboards]);
 
   const [comment, setComment] = useState("");
 
   const updateComment = (e) => {
     setComment(e.target.value);
-  };
-
-  const handleKeyDown = (e) => {
-    //it triggers by pressing the enter key
-    console.log(e);
-    if (e.keyCode === 13) {
-      console.log("pressed enter");
-    }
   };
 
   const sendComment = () => {
@@ -308,7 +301,7 @@ const Post = () => {
                         onChange={updateComment}
                         value={comment}
                       />
-                      {comment.length == 0 ? (
+                      {comment.length === 0 ? (
                         <Button
                           endIcon={<SendIcon />}
                           variant="outlined"

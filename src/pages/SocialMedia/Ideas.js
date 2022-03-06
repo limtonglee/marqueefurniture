@@ -8,7 +8,7 @@ import Container from "@mui/material/Container";
 import postData from "../../data/postData2";
 import AddIcon from "@mui/icons-material/Add";
 import Stack from "@mui/material/Stack";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Ideas = () => {
   const [selectedTags, setSelectedTags] = useState([]);
@@ -72,6 +72,7 @@ const Ideas = () => {
 
   useEffect(() => {
     sortFeed();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSort = (sortType) => {

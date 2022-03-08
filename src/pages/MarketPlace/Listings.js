@@ -49,6 +49,7 @@ export const Listings = () => {
     getListings()
       .then((response) => {
         setListings(JSON.parse(JSON.stringify(response.data)));
+        console.log(response);
       })
       .catch((error) => {
         console.log(error);

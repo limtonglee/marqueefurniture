@@ -29,6 +29,8 @@ import jack from "../../assets/images/jack.jpg";
 import { getListingDetails } from "../../services/Listings";
 import { useStores } from "../../stores/RootStore";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 //This is the listing page
 /* 
 Expansion of item details for this Done
@@ -47,6 +49,8 @@ export const ItemDetails = () => {
   const param = useParams();
   const [item, setItems] = useState([]);
 
+  const notify = () => toast("adding to cart!");
+
   useEffect(() => {
     getListingDetails(param.itemId)
       .then((response) => {
@@ -56,7 +60,7 @@ export const ItemDetails = () => {
         console.log(error);
       });
 
-    //eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [state, setState] = useState({
@@ -110,6 +114,7 @@ export const ItemDetails = () => {
   };
 
   const handleAddCart = (item, newState) => {
+    notify();
     cartStore.addItems(item);
     console.log("Add to cart handle has fired");
     setCartState({ cartOpen: true, ...newState });
@@ -378,6 +383,7 @@ export const ItemDetails = () => {
                         <Button
                           variant="outlined"
                           onClick={() => {
+                            
                             handleAddCart(item, {
                               vertical: "top",
                               horizontal: "center",
@@ -403,6 +409,7 @@ export const ItemDetails = () => {
                             Added to Cart!
                           </Alert>
                         </Snackbar>
+                        <ToastContainer />
                         <Button
                           variant="outlined"
                           startIcon={<ChatIcon />}
@@ -506,6 +513,7 @@ export const ItemDetails = () => {
                             })}
                             color="primary"
                           />
+                          <ToastContainer />
                           <Snackbar
                             anchorOrigin={{ vertical, horizontal }}
                             open={open}

@@ -1,51 +1,30 @@
 // @mui icons
-import FacebookIcon from "@mui/icons-material/Facebook";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import TwitterIcon from "@mui/icons-material/Twitter";
-// Soft UI Dashboard React components
-import { Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import spacejoy from "../../assets/images/spacejoy.jpg";
-import ProfileInfoCard from "./About/ProfileInfoCard";
-
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import MessageIcon from "@mui/icons-material/Message";
 import SettingsIcon from "@mui/icons-material/Settings";
-import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-
-import breakpoints from "../../theme/breakpoints";
-
+import { useState } from "react";
+import { moodboardData } from "../../data/moodboardData";
+import { useStores } from "../../stores/RootStore";
+import ProfileInfoCard from "./About/ProfileInfoCard";
 // Overview page components
 import Header from "./Header";
 import Moodboard from "./Moodboard/Moodboard";
-
-import { useEffect, useState } from "react";
-
-import { moodboardData } from "../../data/moodboardData";
-
-import Box from "@mui/material/Box";
-
-import { useStores } from "../../stores/RootStore";
-
-
 
 function Profile() {
   const [tabValue, setTabValue] = useState(0);
 
   const { userStore } = useStores();
 
-  //still not working
   //username in header component does not update
-  const [username, setUsername] = useState(userStore.name);
+  const [userName, setUserName] = useState(userStore.name);
+  const [shopName, setShopName] = useState(userStore.shop);
 
-  useEffect(()=> {
-    setUsername(userStore.name)
-  }, [username])
 
   const handleSetTabValue = (event, newValue) => {
     setTabValue(newValue);
@@ -53,24 +32,21 @@ function Profile() {
 
   return (
     <Container maxWidth="xl">
-      <Header />
-      {/* <Header name={userStore.name} /> */}
+      <Header name={userName} shopName={shopName}/>
       <Grid item xs={12} md={12} lg={12} sx={{ ml: "auto" }}>
-        <AppBar position="static">
+        <Box sx={{ width: "auto", bgcolor: "background" }}>
           <Tabs
             value={tabValue}
             onChange={handleSetTabValue}
             centered
             variant="fullWidth"
             sx={{ background: "white" }}
-            centered
-           variant="fullWidth"
           >
             <Tab label="Moodboard" icon={<AccountBoxIcon />} />
             <Tab label="Posts" icon={<MessageIcon />} />
             <Tab label="About" icon={<SettingsIcon />} />
           </Tabs>
-        </AppBar>
+        </Box>
       </Grid>
       {tabValue === 2 ? (
         <Grid>
@@ -79,74 +55,21 @@ function Profile() {
               title="username"
               description="Bio"
               website="Website"
-              info={{
-                // username: "Alec M. Thompson",
-                // contact: "(44) 123 1234 123",
-                // email: "alecthompson@mail.com",
-                // location: "USA",
-                // link: "https://www.facebook.com/",
-                
-              }}
-              social={[
-                {
-                  link: "https://www.facebook.com/",
-                  icon: <FacebookIcon />,
-                  color: "facebook",
-                },
-                {
-                  link: "https://twitter.com/",
-                  icon: <TwitterIcon />,
-                  color: "twitter",
-                },
-                {
-                  link: "https://www.instagram.com/",
-                  icon: <InstagramIcon />,
-                  color: "instagram",
-                },
-              ]}
-              action={{ 
-                route: "/profile/edit", tooltip: "Edit Profile",
-              }}
+              userName={userName}
+              setUserName={setUserName}
+              setShopName={setShopName}
             />
-             {/* <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Button
-              type="submit"
-              // fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              href="/profile/sell"
-            >
-              Start Selling
-            </Button>
-
-        </Box> */}
           </Grid>
         </Grid>
-        
       ) : (
         <></>
       )}
       {tabValue === 0 ? (
         <Grid>
-          <Card>
-            <Button pt={2} px={2}>
-              <Button mb={0.5}>
-                <Typography variant="h6" fontWeight="medium">
-                  Mood Board
-                </Typography>
-              </Button>
-            </Button>
-            <Button p={2}>
-              <Grid container spacing={3}>
-                {moodboardData.map((moodboard) => 
-              <Grid item xs={12} md={6} xl={3}>
+          <Button p={2}>
+            <Grid container spacing={3}>
+              {moodboardData.map((moodboard) => (
+                <Grid item xs={12} md={6} xl={3}>
                   <Moodboard
                     image={moodboard.img}
                     label={moodboard.label}
@@ -160,12 +83,9 @@ function Profile() {
                     }}
                   />
                 </Grid>
-                )}
-
-
-              </Grid>
-            </Button>
-          </Card>
+              ))}
+            </Grid>
+          </Button>
         </Grid>
       ) : (
         <></>
@@ -174,6 +94,10 @@ function Profile() {
   );
 }
 
+// Typechecking props for the Profile
+Profile.propTypes = {
+  // title: PropTypes.string.isRequired,
+  // description: PropTypes.string.isRequired,
+};
+
 export default Profile;
-
-

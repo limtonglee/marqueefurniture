@@ -9,6 +9,7 @@ import postData from "../../data/postData2";
 import AddIcon from "@mui/icons-material/Add";
 import Stack from "@mui/material/Stack";
 import { useNavigate } from "react-router-dom";
+import { getAllPosts } from "../../services/SocialMedia";
 
 const Ideas = () => {
   const [selectedTags, setSelectedTags] = useState([]);
@@ -73,6 +74,17 @@ const Ideas = () => {
   useEffect(() => {
     sortFeed();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    getAllPosts()
+      .then((response) => {
+        // setListings(JSON.parse(JSON.stringify(response.data)));
+        console.log(JSON.parse(JSON.stringify(response.data)));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   const handleSort = (sortType) => {

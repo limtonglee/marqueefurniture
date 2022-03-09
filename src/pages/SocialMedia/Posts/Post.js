@@ -21,6 +21,8 @@ import { useParams } from "react-router-dom";
 import MoodboardModal from "../Moodboard/MoodboardModal";
 import TextField from "@mui/material/TextField";
 
+import * as socialMediaAPI from "../../../services/SocialMedia";
+
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const { username } = user;
@@ -32,9 +34,112 @@ const Post = () => {
   const [moodboards, setMoodboards] = useState(user.moodboards);
 
   // const post = postData.filter((post) => post.id === parseInt(postId))[0];
+  // const [post, setPost] = useState(
+  //   postData.filter((post) => post.id === parseInt(postId))[0]
+  // );
   const [post, setPost] = useState(
     postData.filter((post) => post.id === parseInt(postId))[0]
   );
+
+  const getPostDetails = async (postId) => {
+    try {
+      const res = await socialMediaAPI.getPostDetails(postId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getPostLikes = async (postId) => {
+    try {
+      const res = await socialMediaAPI.getPostLikes(postId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      const likes = [];
+      for (let user in data) {
+        likes.push(data[user].username);
+      }
+      return likes;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getPostProducts = async (postId) => {
+    try {
+      const res = await socialMediaAPI.getPostListings(postId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getPostTags = async (postId) => {
+    try {
+      const res = await socialMediaAPI.getPostTags(postId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getPostComments = async (postId) => {
+    try {
+      const res = await socialMediaAPI.getPostComments(postId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getCompletePost = async () => {
+    let postDetails = await getPostDetails(postId);
+    postDetails = { ...postDetails[0] };
+    // console.log(postDetails);
+
+    // const postDetails = await getPostDetails(postId);
+    const postLikes = await getPostLikes(postId);
+    const postProducts = await getPostProducts(postId);
+    const postTags = await getPostTags(postId);
+    const postComments = await getPostComments(postId);
+    const completePost = {
+      ...postDetails,
+      comments: postComments,
+      likes: postLikes,
+      products: postProducts,
+      tags: postTags,
+    };
+    // console.log("postdetails", post);
+    console.log("completePost", completePost);
+    setPost(completePost);
+    return completePost;
+  };
+
+  // const [post, setPost] = useState(getCompletePost());
+
+  // const [post, setPost] = useState({});
+
+  // const [likesChecked, setLikesChecked] = useState(
+  //   post.likes.includes(username)
+  // );
+
+  // const [postLikesCount, setPostLikesCount] = useState(post.likes.length);
+
+  useEffect(() => {
+    getCompletePost();
+  }, []);
+
+  useEffect(() => {
+    setLikesChecked(post.likes.includes(username));
+    setPostLikesCount(post.likes.length);
+  }, [post]);
+
+  const [likesChecked, setLikesChecked] = useState(false);
+
+  const [postLikesCount, setPostLikesCount] = useState(0);
 
   const postCardStyles = {
     cardActions: {
@@ -82,12 +187,6 @@ const Post = () => {
     color: "grey !important",
     fontWeight: "normal",
   };
-
-  const [likesChecked, setLikesChecked] = useState(
-    post.likes.includes(username)
-  );
-
-  const [postLikesCount, setPostLikesCount] = useState(post.likes.length);
 
   const [commentActivated, setCommentActivated] = useState(false);
 
@@ -151,20 +250,13 @@ const Post = () => {
 
   useEffect(() => {
     setPostPinned(postInUserMoodboards() ? true : false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moodboards]);
 
   const [comment, setComment] = useState("");
 
   const updateComment = (e) => {
     setComment(e.target.value);
-  };
-
-  const handleKeyDown = (e) => {
-    //it triggers by pressing the enter key
-    console.log(e);
-    if (e.keyCode === 13) {
-      console.log("pressed enter");
-    }
   };
 
   const sendComment = () => {
@@ -184,6 +276,15 @@ const Post = () => {
     newPost.comments = [...newPost.comments, newComment];
     setPost(newPost);
     setComment("");
+  };
+
+  const commentStyles = {
+    username: {
+      fontWeight: "bold",
+    },
+    comment: {
+      color: "black",
+    },
   };
 
   return (
@@ -259,12 +360,17 @@ const Post = () => {
                 postPinned={postPinned}
               />
               <Box sx={{ pt: 1 }}>
+                <Stack direction="row" spacing={0.5}>
+                  <Box sx={commentStyles.username}>{post.userid}</Box>
+                  <Box sx={commentStyles.comment}>{post.description}</Box>
+                </Stack>
                 {post.comments.map((comment) => (
                   <Comment
                     key={comment.id}
                     comment={comment}
                     post={post}
                     setPost={setPost}
+                    getCompletePost={getCompletePost}
                   />
                 ))}
               </Box>
@@ -308,7 +414,7 @@ const Post = () => {
                         onChange={updateComment}
                         value={comment}
                       />
-                      {comment.length == 0 ? (
+                      {comment.length === 0 ? (
                         <Button
                           endIcon={<SendIcon />}
                           variant="outlined"

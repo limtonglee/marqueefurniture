@@ -21,6 +21,30 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
 
   const [moodboards, setMoodboards] = useState(user.moodboards);
 
+  // uncomment the below comment block once yc is done w the API
+  /*
+  const [moodboards, setMoodboards] = useState([]);
+
+  // need another api here to get posts in moodboard
+
+  // need to chain with above API (similar to ideas page) before updating final state
+  const getCurrentUserMoodboards = async (post) => {
+    try {
+      const res = await socialMediaAPI.getUserMoodboards(1);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log(data);
+      setMoodboards(data);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getCurrentUserMoodboards();
+  }, []);
+  */
+
   const postCardStyles = {
     cardActions: {
       position: "absolute",
@@ -31,7 +55,7 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
       backgroundColor: "white",
       borderRadius: "50%",
       "&.MuiCheckbox-root:hover": {
-        backgroundColor: "#F2F2F2",
+        backgroundColor: "grey.200",
         borderRadius: "50%",
       },
     },
@@ -108,6 +132,7 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
 
   useEffect(() => {
     setPostPinned(postInUserMoodboards() ? true : false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moodboards]);
 
   return (

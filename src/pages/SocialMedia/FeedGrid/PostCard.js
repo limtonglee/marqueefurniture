@@ -11,6 +11,7 @@ import PushPinIcon from "@mui/icons-material/PushPin";
 import user from "../../../data/currentUserData2";
 import MoodboardModal from "../Moodboard/MoodboardModal";
 import { Link } from "react-router-dom";
+import * as socialMediaAPI from "../../../services/SocialMedia";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 

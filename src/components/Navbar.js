@@ -17,7 +17,7 @@ const NavBar = ({ checked, setChecked, handleChange }) => {
 				<Container maxWidth="xl">
 					<Toolbar disableGutters>
 						<Link
-							key={"mf"}
+							key={"mf-prelogin"}
 							to={"/"}
 							style={{ textDecoration: "none", color: "white" }}
 							onClick={() => setChecked(false)}
@@ -39,7 +39,7 @@ const NavBar = ({ checked, setChecked, handleChange }) => {
 							/>
 						</Box>
 						<Link
-							key={"mf"}
+							key={"mf-login"}
 							to={"/login"}
 							style={{ textDecoration: "none", color: "white" }}
 						>

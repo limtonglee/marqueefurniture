@@ -196,16 +196,28 @@ const Post = () => {
     setOpen(false);
   };
 
+  const unlikePost = async (postId, userId) => {
+    try {
+      const res = await socialMediaAPI.unlikePost(postId, userId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log(data);
+      getCompletePost();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleChangeForLike = (event) => {
     console.log("clicked like");
     console.log("no. of likes before clicking:", post.likes.length);
     console.log("liked by before clicking:", post.likes);
     if (post.likes.includes(username)) {
-      // unlike
-      // remove user from likes array
-      post.likes = post.likes.filter((user) => user !== username);
+      unlikePost(post.id, user.id);
+      // // unlike
+      // // remove user from likes array
+      // post.likes = post.likes.filter((user) => user !== username);
 
-      // TODO: remove this post from the user's likes
+      // // TODO: remove this post from the user's likes
     } else {
       // like
       // add user to likes array

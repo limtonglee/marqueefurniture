@@ -126,10 +126,10 @@ export const deletePostFromMoodboard = (postId, moodboardId) => {
 };
 
 export const getUserMoodboards = (userId) => {
-  const body = {
+  const params = {
     userId: userId,
   };
-  return postAsFormInput(URL_GET_USER_MOODBOARDS, body);
+  return get(URL_GET_USER_MOODBOARDS, params);
 };
 
 export const createMoodboard = (boardName, description, userId) => {

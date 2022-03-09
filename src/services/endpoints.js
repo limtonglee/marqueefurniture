@@ -17,7 +17,7 @@ export const URL_GET_POST_LIKES = "/api/post/likes"; // get likes for indiv post
 
 export const URL_GET_POST_COMMENTS = "/api/post/comments"; // get comments for indiv post
 export const URL_CREATE_POST_COMMENTS = "/api/post/createComment"; // create comments for indiv post
-export const URL_DELETE_POST_COMMENT = "/api/post/comments"; // delete comments for indiv post
+export const URL_DELETE_POST_COMMENT = "/api/post/deleteComment"; // delete comments for indiv post
 
 export const URL_GET_POST_LISTINGS = "/api/post/listings"; // get listings for indiv post
 

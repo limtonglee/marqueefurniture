@@ -9,7 +9,8 @@ import postData from "../../data/postData2";
 import AddIcon from "@mui/icons-material/Add";
 import Stack from "@mui/material/Stack";
 import { useNavigate } from "react-router-dom";
-import { getAllPosts } from "../../services/SocialMedia";
+// import { getAllPosts } from "../../services/SocialMedia";
+import * as socialMediaAPI from "../../services/SocialMedia";
 
 const Ideas = () => {
   const [selectedTags, setSelectedTags] = useState([]);
@@ -70,21 +71,112 @@ const Ideas = () => {
   };
 
   const [posts, setPosts] = useState(postData);
+  // const [posts, setPosts] = useState(null);
 
   useEffect(() => {
     sortFeed();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // useEffect(() => {
+  //   socialMediaAPI
+  //     .getAllPosts()
+  //     .then((response) => {
+  //       // setListings(JSON.parse(JSON.stringify(response.data)));
+  //       console.log(posts);
+  //       // console.log(JSON.parse(JSON.stringify(response.data)));
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
+
+  const getAllPosts = async (post) => {
+    try {
+      const res = await socialMediaAPI.getAllPosts();
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getPostLikes = async (post) => {
+    try {
+      const res = await socialMediaAPI.getPostLikes(post.id);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getPostProducts = async (post) => {
+    try {
+      const res = await socialMediaAPI.getPostListings(post.id);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getPostTags = async (post) => {
+    try {
+      const res = await socialMediaAPI.getPostTags(post.id);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getPostComments = async (post) => {
+    try {
+      const res = await socialMediaAPI.getPostComments(post.id);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getCompletePostData = async () => {
+    const allPosts = await getAllPosts();
+
+    var promises = allPosts.map(async (post) => {
+      const postLikes = await getPostLikes(post);
+      const postProducts = await getPostProducts(post);
+      const postTags = await getPostTags(post);
+      const postComments = await getPostComments(post);
+      const completePost = {
+        ...post,
+        comments: postComments,
+        likes: postLikes,
+        products: postProducts,
+        tags: postTags,
+      };
+
+      // console.log("completePost", completePost); // works
+      return completePost;
+    });
+
+    await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
+
+    Promise.all(promises).then((values) => {
+      console.log("cleaned post data", values); // works
+      setPosts(values); // doesnt work
+      // console.log("but posts states still not updated", posts);
+      return values;
+    });
+  };
+
+  // useEffect(() => {
+  //   console.log(posts);
+  // }, [posts]);
+
   useEffect(() => {
-    getAllPosts()
-      .then((response) => {
-        // setListings(JSON.parse(JSON.stringify(response.data)));
-        console.log(JSON.parse(JSON.stringify(response.data)));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    getCompletePostData();
   }, []);
 
   const handleSort = (sortType) => {
@@ -112,7 +204,8 @@ const Ideas = () => {
   };
 
   const resetDisplay = () => {
-    setPosts(postData);
+    // setPosts(postData);
+    getCompletePostData();
     setSelectedTags([]);
     setTagBin(new Map());
   };
@@ -137,6 +230,7 @@ const Ideas = () => {
 
   return (
     <>
+      <Button onClick={() => getCompletePostData()}>Reveal cleaned data</Button>
       <Container sx={{ pt: 2 }}>
         <Box sx={pageStyles.sortFilter}>
           <SortButton handleSort={handleSort} />

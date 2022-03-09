@@ -14,7 +14,7 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { itemData } from "../../../data/itemData";
 
@@ -60,7 +60,7 @@ const TagProductsModal = ({
 
   const deselectItem = (itemId) => {
     const newSelectedProducts = [...selectedProductsValues].filter(
-      (item) => item.id != itemId
+      (item) => item.id !== itemId
     );
     setSelectedProductsValues(newSelectedProducts);
   };

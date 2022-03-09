@@ -49,7 +49,7 @@ export const Listings = () => {
     getListings()
       .then((response) => {
         setListings(JSON.parse(JSON.stringify(response.data)));
-        console.log(response);
+        // console.log(response);
       })
       .catch((error) => {
         console.log(error);
@@ -124,7 +124,7 @@ export const Listings = () => {
   };
 
   return (
-    <Container>
+    <>
       <Box sx={{ maxWidth: 400 }}>
         <OutlinedInput
           onChange={(event) => handleSearch(event.target.value)}
@@ -181,29 +181,19 @@ export const Listings = () => {
               position="below"
             />
             <Grid container spacing={2}>
-              {item.listingprice ? (
+              {item.listingprice && (
                 <Grid
                   item
                   xs={4}
                   sx={{
                     fontWeight: "bold",
-                    fontSize: 12,
+                    fontSize: 18,
                     color: "primary.main",
                     mt: 2,
                   }}
                 >
                   ${item.listingprice.toFixed(2)}
                 </Grid>
-              ) : (
-                <Grid
-                  item
-                  xs={4}
-                  sx={{
-                    fontWeight: "bold",
-                    fontSize: 12,
-                    color: "primary.main",
-                  }}
-                ></Grid>
               )}
 
               <Grid item xs={8}>
@@ -238,6 +228,6 @@ export const Listings = () => {
           </ImageListItem>
         ))}
       </Box>
-    </Container>
+    </>
   );
 };

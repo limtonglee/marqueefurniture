@@ -299,12 +299,13 @@ export const ItemDetails = () => {
                         open={open}
                         onClose={handleClose} 
                         autoHideDuration={1500} 
-                        key={vertical + horizontal}>
+                        key={vertical + horizontal}
+                        >
                         <Alert 
                           onClose={handleClose}
                           variant= "filled"
-                          severity="success"
-                          sx={{ width: 'auto' }}
+                          severity= "success"
+                          sx={{ width: 'auto'}}
                         >
                           Copied to Clipboard!
                         </Alert>

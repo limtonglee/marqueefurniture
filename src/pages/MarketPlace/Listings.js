@@ -124,7 +124,7 @@ export const Listings = () => {
   };
 
   return (
-    <Container>
+    <>
       <Box sx={{ maxWidth: 400 }}>
         <OutlinedInput
           onChange={(event) => handleSearch(event.target.value)}
@@ -228,6 +228,6 @@ export const Listings = () => {
           </ImageListItem>
         ))}
       </Box>
-    </Container>
+    </>
   );
 };

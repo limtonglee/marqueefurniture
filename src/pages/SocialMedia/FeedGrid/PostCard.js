@@ -17,148 +17,173 @@ const label = { inputProps: { "aria-label": "Checkbox demo" } };
 const { username } = user;
 
 const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
-	// const post = props.post;
+  // const post = props.post;
 
-	const [moodboards, setMoodboards] = useState(user.moodboards);
+  const [moodboards, setMoodboards] = useState(user.moodboards);
 
-	const postCardStyles = {
-		cardActions: {
-			position: "absolute",
-			bottom: 0,
-			right: 0,
-		},
-		checkboxes: {
-			backgroundColor: "white",
-			borderRadius: "50%",
-			"&.MuiCheckbox-root:hover": {
-				backgroundColor: "#F2F2F2",
-				borderRadius: "50%",
-			},
-		},
-	};
+  // uncomment the below comment block once yc is done w the API
+  /*
+  const [moodboards, setMoodboards] = useState([]);
 
-	const postInUserMoodboards = () => {
-		const moodboardsWithThisPost = moodboards.filter((moodboard) => {
-			for (let moodboardItem of moodboard.moodboardItems) {
-				if (moodboardItem.id === post.id) {
-					return true;
-				}
-			}
-			return false;
-		});
-		return moodboardsWithThisPost.length > 0;
-	};
+  // need another api here to get posts in moodboard
 
-	const [postPinned, setPostPinned] = useState(
-		postInUserMoodboards() ? true : false
-	);
+  // need to chain with above API (similar to ideas page) before updating final state
+  const getCurrentUserMoodboards = async (post) => {
+    try {
+      const res = await socialMediaAPI.getUserMoodboards(1);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log(data);
+      setMoodboards(data);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-	const [likesChecked, setLikesChecked] = useState(
-		post.likes.includes(username)
-	);
+  useEffect(() => {
+    getCurrentUserMoodboards();
+  }, []);
+  */
 
-	const handleChangeForLike = (event) => {
-		console.log("clicked like");
-		console.log("no. of likes before clicking:", post.likes.length);
-		console.log("liked by before clicking:", post.likes);
-		if (post.likes.includes(username)) {
-			// unlike
-			// remove user from likes array
-			post.likes = post.likes.filter((user) => user !== username);
+  const postCardStyles = {
+    cardActions: {
+      position: "absolute",
+      bottom: 0,
+      right: 0,
+    },
+    checkboxes: {
+      backgroundColor: "white",
+      borderRadius: "50%",
+      "&.MuiCheckbox-root:hover": {
+        backgroundColor: "grey.200",
+        borderRadius: "50%",
+      },
+    },
+  };
 
-			// remove this post from the user's likes
-			removePostFromUserLikes();
-		} else {
-			// like
-			// add user to likes array
-			post.likes.push(username);
+  const postInUserMoodboards = () => {
+    const moodboardsWithThisPost = moodboards.filter((moodboard) => {
+      for (let moodboardItem of moodboard.moodboardItems) {
+        if (moodboardItem.id === post.id) {
+          return true;
+        }
+      }
+      return false;
+    });
+    return moodboardsWithThisPost.length > 0;
+  };
 
-			// add this post to user's likes
-			addPostFromUserLikes();
-		}
+  const [postPinned, setPostPinned] = useState(
+    postInUserMoodboards() ? true : false
+  );
 
-		console.log("no. of likes after clicking:", post.likes.length);
-		console.log("liked by after clicking:", post.likes);
+  const [likesChecked, setLikesChecked] = useState(
+    post.likes.includes(username)
+  );
 
-		// update icon colour on front end
-		setLikesChecked(!likesChecked);
-	};
+  const handleChangeForLike = (event) => {
+    console.log("clicked like");
+    console.log("no. of likes before clicking:", post.likes.length);
+    console.log("liked by before clicking:", post.likes);
+    if (post.likes.includes(username)) {
+      // unlike
+      // remove user from likes array
+      post.likes = post.likes.filter((user) => user !== username);
 
-	const removePostFromUserLikes = () => {
-		const newLikePostsList = [...user.likedPosts].filter(
-			(item) => item.id !== post.id
-		);
-		user.likedPosts = newLikePostsList;
-	};
+      // remove this post from the user's likes
+      removePostFromUserLikes();
+    } else {
+      // like
+      // add user to likes array
+      post.likes.push(username);
 
-	const addPostFromUserLikes = () => {
-		const newLikePostsList = [...user.likedPosts, post];
-		user.likedPosts = newLikePostsList;
-	};
+      // add this post to user's likes
+      addPostFromUserLikes();
+    }
 
-	const [open, setOpen] = React.useState(false);
+    console.log("no. of likes after clicking:", post.likes.length);
+    console.log("liked by after clicking:", post.likes);
 
-	const closeMoodboardModal = () => {
-		setOpen(false);
-	};
+    // update icon colour on front end
+    setLikesChecked(!likesChecked);
+  };
 
-	const handleClick = (event) => {
-		setOpen(true);
-	};
+  const removePostFromUserLikes = () => {
+    const newLikePostsList = [...user.likedPosts].filter(
+      (item) => item.id !== post.id
+    );
+    user.likedPosts = newLikePostsList;
+  };
 
-	useEffect(() => {
-		setPostPinned(postInUserMoodboards() ? true : false);
-	}, [moodboards]);
+  const addPostFromUserLikes = () => {
+    const newLikePostsList = [...user.likedPosts, post];
+    user.likedPosts = newLikePostsList;
+  };
 
-	return (
-		<>
-			<Card sx={{ width: 200, position: "relative" }}>
-				<Link
-					key={post.id}
-					to={`/ideas/${post.id}`}
-					style={{ textDecoration: "none" }}
-				>
-					<CardMedia
-						component="img"
-						width="100%"
-						objectfit="scale-down"
-						image={post.image}
-						alt="post picture"
-					/>
-				</Link>
-				<CardActions sx={postCardStyles.cardActions}>
-					<Checkbox
-						{...label}
-						icon={<PushPinOutlinedIcon fontSize="small" />}
-						checkedIcon={<PushPinIcon fontSize="small" />}
-						sx={postCardStyles.checkboxes}
-						// onChange={handleChangeForPin}
-						onClick={handleClick}
-						checked={postPinned}
-					/>
-					<Checkbox
-						{...label}
-						icon={<FavoriteBorder fontSize="small" />}
-						checkedIcon={<Favorite fontSize="small" />}
-						sx={postCardStyles.checkboxes}
-						onChange={handleChangeForLike}
-						checked={likesChecked}
-					/>
-				</CardActions>
-			</Card>
+  const [open, setOpen] = React.useState(false);
 
-			<MoodboardModal
-				open={open}
-				closeMoodboardModal={closeMoodboardModal}
-				post={post}
-				moodboards={moodboards}
-				setMoodboards={setMoodboards}
-				postPinned={postPinned}
-				refreshPosts={refreshPosts}
-				sourceMoodboardId={sourceMoodboardId}
-			/>
-		</>
-	);
+  const closeMoodboardModal = () => {
+    setOpen(false);
+  };
+
+  const handleClick = (event) => {
+    setOpen(true);
+  };
+
+  useEffect(() => {
+    setPostPinned(postInUserMoodboards() ? true : false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [moodboards]);
+
+  return (
+    <>
+      <Card sx={{ width: 200, position: "relative" }}>
+        <Link
+          key={post.id}
+          to={`/ideas/${post.id}`}
+          style={{ textDecoration: "none" }}
+        >
+          <CardMedia
+            component="img"
+            width="100%"
+            objectfit="scale-down"
+            image={post.image}
+            alt="post picture"
+          />
+        </Link>
+        <CardActions sx={postCardStyles.cardActions}>
+          <Checkbox
+            {...label}
+            icon={<PushPinOutlinedIcon fontSize="small" />}
+            checkedIcon={<PushPinIcon fontSize="small" />}
+            sx={postCardStyles.checkboxes}
+            // onChange={handleChangeForPin}
+            onClick={handleClick}
+            checked={postPinned}
+          />
+          <Checkbox
+            {...label}
+            icon={<FavoriteBorder fontSize="small" />}
+            checkedIcon={<Favorite fontSize="small" />}
+            sx={postCardStyles.checkboxes}
+            onChange={handleChangeForLike}
+            checked={likesChecked}
+          />
+        </CardActions>
+      </Card>
+
+      <MoodboardModal
+        open={open}
+        closeMoodboardModal={closeMoodboardModal}
+        post={post}
+        moodboards={moodboards}
+        setMoodboards={setMoodboards}
+        postPinned={postPinned}
+        refreshPosts={refreshPosts}
+        sourceMoodboardId={sourceMoodboardId}
+      />
+    </>
+  );
 };
 
 export default PostCard;

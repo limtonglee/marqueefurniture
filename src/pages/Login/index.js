@@ -33,6 +33,67 @@ const Login = () => {
     //on failure to do
   };
 
+
+  /*
+    const onSubmitForm = async e => {
+    e.preventDefault();
+    try {
+      const body = { email, password };
+      const response = await fetch(
+        "http://localhost:5000/authentication/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json"
+          },
+          body: JSON.stringify(body)
+        }
+      );
+
+      const parseRes = await response.json();
+
+      if (parseRes.jwtToken) {
+        localStorage.setItem("token", parseRes.jwtToken);
+        setAuth(true);
+        toast.success("Logged in Successfully");
+      } else {
+        setAuth(false);
+        toast.error(parseRes);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+
+    const checkAuthenticated = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/authentication/verify", {
+        method: "POST",
+        headers: { jwt_token: localStorage.token }
+      });
+
+      const parseRes = await res.json();
+
+      parseRes === true ? setIsAuthenticated(true) : setIsAuthenticated(false);
+    } catch (err) {
+      console.error('checkAuthenticated error: ', err.message);
+    }
+  };
+
+  useEffect(() => {
+    checkAuthenticated();
+  }, []);
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const setAuth = boolean => {
+    setIsAuthenticated(boolean);
+  };
+
+  */
+
+
   const { userStore } = useStores();
 
   let navigate = useNavigate();

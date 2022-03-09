@@ -1,35 +1,53 @@
-import axios from 'axios';
+import axios from "axios";
 
-//get post delete methods 
+//get post delete methods
 
 const instance = axios.create({
-    withCredentials:true,
-    baseURL: '',
-    timeout: 30000
-  });
+  withCredentials: true,
+  baseURL: "",
+  timeout: 30000,
+});
 
 const request = (options) => instance.request(options);
 
-export const get = (url,params={}, headers={}) => request({
-    method: 'GET',
+export const get = (url, params, headers = {}) =>
+  request({
+    method: "GET",
     url,
     params,
-    headers
-});
+    headers,
+  });
 
-export const postAsJson = (url, data, headers = {}) => instance.request({
-    method:'POST',
+export const remove = (url, params, headers = {}) =>
+  request({
+    method: "DELETE",
+    url,
+    params,
+    headers,
+  });
+
+export const update = (url, params, headers = {}) =>
+  request({
+    method: "PUT",
+    url,
+    params,
+    headers,
+  });
+
+export const postAsJson = (url, data, headers = {}) =>
+  instance.request({
+    method: "POST",
     url,
     data,
     headers,
-    responseType: 'json'
-})
+    responseType: "json",
+  });
 
-
-export const postAsFormInput = (url, data, headers = {}) => instance.request({
-    method:'POST',
+export const postAsFormInput = (url, data, headers = {}) =>
+  instance.request({
+    method: "POST",
     url,
     data,
     headers,
-    responseType: 'json'
-})
+    responseType: "json",
+  });

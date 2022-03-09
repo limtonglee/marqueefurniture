@@ -1,17 +1,11 @@
+import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
-// import * as React from "react";
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Stack from "@mui/material/Stack";
+// import * as React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function ControlledSwitches({ checked, handleChange }) {
-	const pageLinks = [
-		{ text: "Marketplace", link: "/marketplace" },
-		{ text: "Ideas", link: "/ideas" },
-	];
 
 	const [isMobile, setIsMobile] = useState(false);
 

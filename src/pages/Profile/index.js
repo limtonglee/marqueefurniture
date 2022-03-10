@@ -15,6 +15,8 @@ import ProfileInfoCard from "./About/ProfileInfoCard";
 // Overview page components
 import Header from "./Header";
 import Moodboard from "./Moodboard/Moodboard";
+import AddIcon from "@mui/icons-material/Add";
+import MoodboardViewInProfile from "./Moodboard/MoodboardViewInProfile";
 
 function Profile() {
   const [tabValue, setTabValue] = useState(0);
@@ -25,14 +27,13 @@ function Profile() {
   const [userName, setUserName] = useState(userStore.name);
   const [shopName, setShopName] = useState(userStore.shop);
 
-
   const handleSetTabValue = (event, newValue) => {
     setTabValue(newValue);
   };
 
   return (
     <Container maxWidth="xl">
-      <Header name={userName} shopName={shopName}/>
+      <Header name={userName} shopName={shopName} />
       <Grid item xs={12} md={12} lg={12} sx={{ ml: "auto" }}>
         <Box sx={{ width: "auto", bgcolor: "background" }}>
           <Tabs
@@ -65,29 +66,30 @@ function Profile() {
         <></>
       )}
       {tabValue === 0 ? (
-        <Grid>
-          <Button p={2}>
-            <Grid container spacing={3}>
-              {moodboardData.map((moodboard) => (
-                <Grid item xs={12} md={6} xl={3}>
-                  <Moodboard
-                    image={moodboard.img}
-                    label={moodboard.label}
-                    title={moodboard.title}
-                    description={moodboard.description}
-                    action={{
-                      type: "internal",
-                      route: `/profile/${moodboard.id}`,
-                      color: "info",
-                      label: "view board",
-                    }}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-          </Button>
-        </Grid>
+        <MoodboardViewInProfile />
       ) : (
+        // <Grid>
+        //   <Button p={2}>
+        //     <Grid container spacing={3}>
+        //       {moodboardData.map((moodboard) => (
+        //         <Grid item xs={12} md={6} xl={3}>
+        //           <Moodboard
+        //             image={moodboard.img}
+        //             label={moodboard.label}
+        //             title={moodboard.title}
+        //             description={moodboard.description}
+        //             action={{
+        //               type: "internal",
+        //               route: `/profile/${moodboard.id}`,
+        //               color: "info",
+        //               label: "view board",
+        //             }}
+        //           />
+        //         </Grid>
+        //       ))}
+        //     </Grid>
+        //   </Button>
+        // </Grid>
         <></>
       )}
     </Container>

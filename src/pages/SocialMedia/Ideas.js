@@ -177,6 +177,7 @@ const Ideas = () => {
 
   useEffect(() => {
     getCompletePostData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSort = (sortType) => {
@@ -230,7 +231,6 @@ const Ideas = () => {
 
   return (
     <>
-      <Button onClick={() => getCompletePostData()}>Reveal cleaned data</Button>
       <Container sx={{ pt: 2 }}>
         <Box sx={pageStyles.sortFilter}>
           <SortButton handleSort={handleSort} />

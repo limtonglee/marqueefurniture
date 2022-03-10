@@ -43,9 +43,12 @@ function Profile() {
             variant="fullWidth"
             sx={{ background: "white" }}
           >
-            <Tab label="Moodboard" icon={<AccountBoxIcon />} />
+            {/* <Tab label="Moodboard" icon={<AccountBoxIcon />} />
             <Tab label="Posts" icon={<MessageIcon />} />
-            <Tab label="About" icon={<SettingsIcon />} />
+            <Tab label="About" icon={<SettingsIcon />} /> */}
+            <Tab label="Moodboard" />
+            <Tab label="Posts" />
+            <Tab label="About" />
           </Tabs>
         </Box>
       </Grid>

@@ -20,6 +20,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import * as socialMediaAPI from "../../../services/SocialMedia";
+import user from "../../../data/currentUserData2";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -78,24 +79,6 @@ const MoodboardModal = ({
     }
 
     setChecked(newChecked);
-  };
-
-  const forceToggle = (value) => {
-    console.log("FORCE TOGGLEEE");
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-      console.log("a");
-    } else {
-      newChecked.splice(currentIndex, 1);
-      console.log("b");
-    }
-
-    setChecked([...newChecked]);
-    console.log("supposed newChecked", newChecked);
-    console.log("but it's not updated into the state leh", checked);
   };
 
   const addPostToMoodboardAPI = async (postId, moodboardId) => {
@@ -161,8 +144,6 @@ const MoodboardModal = ({
     console.log("addPostToNewMoodboard");
     console.log("original moodboards", moodboards);
     const newId = Math.floor(Math.random() * 100 + 1);
-
-    forceToggle(newId);
 
     const newMoodboard = {
       id: newId,
@@ -394,7 +375,7 @@ const MoodboardModal = ({
             <Box sx={modalStyles.contents}>
               <List dense>
                 {moodboards.map((moodboard, index) => {
-                  const moodboardName = moodboard.boardName;
+                  const moodboardName = moodboard.boardname;
                   const moodboardId = moodboard.id;
                   const labelId = `checkbox-list-secondary-label-${moodboardName}`;
                   return (
@@ -415,8 +396,8 @@ const MoodboardModal = ({
                       <ListItemButton sx={{ pl: 0 }}>
                         <ListItemAvatar>
                           <Avatar
-                            alt={`Avatar n°${index + 1}`}
-                            src={`https://picsum.photos/200`}
+                            alt={`${moodboardName} Moodboard`}
+                            src={moodboard.moodboardItems[0].image}
                             sx={{
                               borderRadius: "10%",
                             }}
@@ -489,7 +470,7 @@ const MoodboardModal = ({
             <Box sx={modalStyles.contents}>
               <List dense>
                 {moodboards.map((moodboard, index) => {
-                  const moodboardName = moodboard.boardName;
+                  const moodboardName = moodboard.boardname;
                   const moodboardId = moodboard.id;
                   const labelId = `checkbox-list-secondary-label-${moodboardName}`;
                   return (
@@ -510,8 +491,8 @@ const MoodboardModal = ({
                       <ListItemButton sx={{ pl: 0 }}>
                         <ListItemAvatar>
                           <Avatar
-                            alt={`Avatar n°${index + 1}`}
-                            src={`https://picsum.photos/200`}
+                            alt={`${moodboardName} Moodboard`}
+                            src={moodboard.moodboardItems[0].image}
                             sx={{
                               borderRadius: "10%",
                             }}

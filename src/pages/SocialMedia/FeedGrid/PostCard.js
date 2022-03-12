@@ -22,29 +22,51 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
 
   const [moodboards, setMoodboards] = useState(user.moodboards);
 
-  // uncomment the below comment block once yc is done w the API
-  /*
-  const [moodboards, setMoodboards] = useState([]);
-
-  // need another api here to get posts in moodboard
-
-  // need to chain with above API (similar to ideas page) before updating final state
-  const getCurrentUserMoodboards = async (post) => {
+  const getUserMoodboards = async () => {
     try {
-      const res = await socialMediaAPI.getUserMoodboards(1);
+      const res = await socialMediaAPI.getUserMoodboards(user.id);
       const data = JSON.parse(JSON.stringify(res)).data;
-      console.log(data);
-      setMoodboards(data);
       return data;
     } catch (error) {
       console.error(error);
     }
   };
 
+  const getMoodboardPosts = async (moodboardId) => {
+    try {
+      const res = await socialMediaAPI.getMoodboardPosts(moodboardId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getCompleteMoodboardData = async () => {
+    const allUserMoodboards = await getUserMoodboards();
+
+    var promises = allUserMoodboards.map(async (moodboard) => {
+      const moodboardPosts = await getMoodboardPosts(moodboard.id);
+      const completeMoodboard = {
+        ...moodboard,
+        moodboardItems: moodboardPosts,
+      };
+
+      // console.log("completeMoodboard", completeMoodboard); // works
+      return completeMoodboard;
+    });
+
+    await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
+
+    Promise.all(promises).then((values) => {
+      setMoodboards(values);
+      return values;
+    });
+  };
+
   useEffect(() => {
-    getCurrentUserMoodboards();
+    getCompleteMoodboardData();
   }, []);
-  */
 
   const postCardStyles = {
     cardActions: {

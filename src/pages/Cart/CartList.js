@@ -41,9 +41,9 @@ export default function Cart() {
 
   const isDesign = (item) => {
     if (item === "Design") {
-      return;
+      return true;
     }
-    return true;
+    return false;
   };
 
   return (
@@ -76,18 +76,18 @@ export default function Cart() {
                 <Grid item>
                   <Link to={`/marketplace/${cartItem.id}`}>
                     <ButtonBase sx={{ width: 128, height: 128 }}>
-                      <Img src={cartItem.img} alt={cartItem.title} />
+                      <Img src={cartItem.image} alt={cartItem.name} />
                     </ButtonBase>
                   </Link>
                 </Grid>
                 <Grid item xs={12} sm container>
                   <Grid item xs container direction="column" spacing={2}>
                     <Grid item xs>
-                      <Typography gutterBottom variant="body1" component="div">
+                      {/* <Typography gutterBottom variant="body1" component="div">
                         Seller: {cartItem.author}
-                      </Typography>
+                      </Typography> */}
                       <Typography variant="body2" gutterBottom>
-                        Item name: {cartItem.title}
+                        Item name: {cartItem.name}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         Brand: {cartItem.brand}
@@ -104,8 +104,8 @@ export default function Cart() {
                         variant="body2"
                         component="div"
                       >
-                        {isDesign(cartItem.listingType) ? (
-                          <>${cartItem.price.toFixed(2)}</>
+                        {!isDesign(cartItem.type) ? (
+                          <>${cartItem.listingprice.toFixed(2)}</>
                         ) : (
                           "Chat with designer for more information."
                         )}
@@ -139,11 +139,11 @@ export default function Cart() {
                         align="center"
                         component="div"
                       >
-                        {isDesign(cartItem.listingType) ? (
+                        {!isDesign(cartItem.type) ? (
                           <>
                             $
                             {getTotalPrice(
-                              cartItem.price,
+                              cartItem.listingprice,
                               cartItem.itemQuantity
                             )}
                           </>

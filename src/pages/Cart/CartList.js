@@ -104,10 +104,8 @@ export default function Cart() {
                         variant="body2"
                         component="div"
                       >
-                        {!isDesign(cartItem.type) ? (
+                        {!isDesign(cartItem.type) && (
                           <>${cartItem.listingprice.toFixed(2)}</>
-                        ) : (
-                          "Chat with designer for more information."
                         )}
                       </Typography>
                     </Grid>
@@ -173,7 +171,6 @@ export default function Cart() {
             </Typography>
             <Typography variant="subtitle1" component="div"></Typography>
           </Grid>
-          
         </Grid>
       </Paper>
     </Container>

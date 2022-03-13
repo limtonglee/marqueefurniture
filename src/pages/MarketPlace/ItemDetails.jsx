@@ -17,7 +17,7 @@ import {
   ListItemText,
   Rating,
   Stack,
-  Typography
+  Typography,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
@@ -129,11 +129,17 @@ export const ItemDetails = () => {
               {item.name}
             </Typography>
             <Divider />
-            {item.type !== "Design" && item.type !== "Service" && (
+            {item.type !== "Design" && (
               <>
-                <Typography variant="h3" color="primary.main" fontWeight="bold">
-                  ${item.listingprice.toFixed(2)}
-                </Typography>
+                {item.listingprice && (
+                  <Typography
+                    variant="h3"
+                    color="primary.main"
+                    fontWeight="bold"
+                  >
+                    ${item.listingprice.toFixed(2)}
+                  </Typography>
+                )}
 
                 <Typography variant="h3" sx={HeadingTypoStyle}>
                   Rating:
@@ -286,7 +292,7 @@ export const ItemDetails = () => {
                   Add to cart
                 </Button>
               )}
-              <Fab size="small" color="secondary"  >
+              <Fab size="small" color="secondary">
                 <ShareIcon
                   onClick={handleClick({
                     vertical: "top",

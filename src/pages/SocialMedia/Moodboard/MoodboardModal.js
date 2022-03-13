@@ -30,8 +30,6 @@ const MoodboardModal = ({
   open,
   closeMoodboardModal,
   post,
-  moodboards,
-  setMoodboards,
   postPinned,
   refreshPosts,
   sourceMoodboardId,
@@ -61,10 +59,74 @@ const MoodboardModal = ({
     },
   };
 
-  // const { moodboards } = user;
+  const [moodboards, setMoodboards] = useState([]);
+
+  const getUserMoodboards = async () => {
+    try {
+      const res = await socialMediaAPI.getUserMoodboards(user.id);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getMoodboardPosts = async (moodboardId) => {
+    try {
+      const res = await socialMediaAPI.getMoodboardPosts(moodboardId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getCompleteMoodboardData = async () => {
+    const allUserMoodboards = await getUserMoodboards();
+
+    var promises = allUserMoodboards.map(async (moodboard) => {
+      const moodboardPosts = await getMoodboardPosts(moodboard.id);
+      const completeMoodboard = {
+        ...moodboard,
+        moodboardItems: moodboardPosts,
+      };
+
+      // console.log("completeMoodboard", completeMoodboard); // works
+      return completeMoodboard;
+    });
+
+    await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
+
+    Promise.all(promises).then((values) => {
+      setMoodboards(values);
+      return values;
+    });
+  };
+
+  useEffect(() => {
+    getCompleteMoodboardData();
+  }, []);
+
+  useEffect(() => {
+    getCompleteMoodboardData();
+  }, [moodboards]);
 
   const [checked, setChecked] = useState([]);
   const [prevChecked, setPrevChecked] = useState([]);
+
+  useEffect(() => {
+    if (postPinned && checked.length === 0) {
+      moodboards.forEach((moodboard) => {
+        for (let moodboardItem of moodboard.moodboardItems) {
+          if (moodboardItem.id === post.id) {
+            checked.push(moodboard.id);
+          }
+        }
+      });
+      setPrevChecked(checked);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [moodboards]);
 
   const onMoodboardPage = refreshPosts ? true : false;
 
@@ -85,7 +147,7 @@ const MoodboardModal = ({
     try {
       const res = await socialMediaAPI.addPostToMoodboard(postId, moodboardId);
       const data = JSON.parse(JSON.stringify(res)).data;
-      // add function to refresh moodboard list
+      getCompleteMoodboardData(); // add function to refresh moodboard list
       return data;
     } catch (error) {
       console.error(error);
@@ -99,7 +161,7 @@ const MoodboardModal = ({
         moodboardId
       );
       const data = JSON.parse(JSON.stringify(res)).data;
-      // add function to refresh moodboard list
+      getCompleteMoodboardData(); // add function to refresh moodboard list
       return data;
     } catch (error) {
       console.error(error);
@@ -116,21 +178,30 @@ const MoodboardModal = ({
     handleClickSnackbar();
   };
 
-  // const addPostToMoodboard = () => {
-  //   const newMoodboardList = [...moodboards].filter(
-  //     (moodboard) => !checked.includes(moodboard.id)
-  //   );
+  const addPostToNewMoodboard = () => {
+    console.log("addPostToNewMoodboard");
+    console.log("not done");
+  };
 
-  //   // add the post to each of these moodboards
-  //   for (let moodboardId of checked) {
-  //     const moodboard = moodboards.filter(
-  //       (moodboard) => moodboard.id === moodboardId
-  //     )[0];
-  //     moodboard.moodboardItems.push(post);
-  //     newMoodboardList.push(moodboard);
-  //   }
+  // const addPostToNewMoodboard = () => {
+  //   console.log("addPostToNewMoodboard");
+  //   console.log("original moodboards", moodboards);
+  //   const newId = Math.floor(Math.random() * 100 + 1);
 
-  //   // refresh moodboard list
+  //   const newMoodboard = {
+  //     id: newId,
+  //     boardName: "New board",
+  //     description: "",
+  //     tags: [[], []],
+  //     isPrivate: false,
+  //     moodboardItems: [],
+  //   };
+
+  //   newMoodboard.moodboardItems.push(post);
+
+  //   const newMoodboardList = [...moodboards, newMoodboard];
+
+  //   // update moodboard state
   //   setMoodboards(newMoodboardList);
   //   closeMoodboardModal();
   //   console.log(moodboards);
@@ -139,34 +210,6 @@ const MoodboardModal = ({
 
   //   handleClickSnackbar();
   // };
-
-  const addPostToNewMoodboard = () => {
-    console.log("addPostToNewMoodboard");
-    console.log("original moodboards", moodboards);
-    const newId = Math.floor(Math.random() * 100 + 1);
-
-    const newMoodboard = {
-      id: newId,
-      boardName: "New board",
-      description: "",
-      tags: [[], []],
-      isPrivate: false,
-      moodboardItems: [],
-    };
-
-    newMoodboard.moodboardItems.push(post);
-
-    const newMoodboardList = [...moodboards, newMoodboard];
-
-    // update moodboard state
-    setMoodboards(newMoodboardList);
-    closeMoodboardModal();
-    console.log(moodboards);
-
-    setPrevChecked(checked);
-
-    handleClickSnackbar();
-  };
 
   const updatePostPinnedLocations = () => {
     const toRemovePostFrom = prevChecked.filter((x) => !checked.includes(x));
@@ -193,29 +236,37 @@ const MoodboardModal = ({
     }
   };
 
-  // const updatePostPinnedLocations = () => {
-  //   if (checked.length === 0) {
-  //     console.log("no board selected");
-  //   }
-  //   console.log("updatePostPinnedLocations");
-  //   const unchanged = prevChecked.filter((x) => checked.includes(x));
-  //   const toRemovePostFrom = prevChecked.filter((x) => !checked.includes(x));
-  //   const toAddPostTo = checked.filter((x) => !prevChecked.includes(x));
+  const deletePostFromThisMoodboard = () => {
+    console.log("deletePostFromThisMoodboard");
+    console.log("sourceMoodboardId", sourceMoodboardId);
 
-  //   console.log("unchanged", unchanged);
-  //   console.log("toRemovePostFrom", toRemovePostFrom);
-  //   console.log("toAddPostTo", toAddPostTo);
+    console.log(
+      `removing post.id ${post.id} from moodboardId ${sourceMoodboardId}`
+    );
+    deletePostFromMoodboardAPI(post.id, sourceMoodboardId);
+
+    // update moodboard state
+    getCompleteMoodboardData();
+
+    closeMoodboardModal();
+    handleClickSnackbar();
+
+    if (refreshPosts) {
+      refreshPosts();
+    }
+  };
+
+  // const deletePostFromThisMoodboard = () => {
+  //   console.log("deletePostFromThisMoodboard");
+  //   console.log("sourceMoodboardId", sourceMoodboardId);
 
   //   const newMoodboardList = [...moodboards];
   //   for (let moodboard of newMoodboardList) {
-  //     if (toRemovePostFrom.includes(moodboard.id)) {
+  //     if (moodboard.id === sourceMoodboardId) {
   //       const newMbPosts = [...moodboard.moodboardItems].filter(
   //         (item) => item.id !== post.id
   //       );
   //       moodboard.moodboardItems = newMbPosts;
-  //     }
-  //     if (toAddPostTo.includes(moodboard.id)) {
-  //       moodboard.moodboardItems = [...moodboard.moodboardItems, post];
   //     }
   //   }
 
@@ -224,40 +275,12 @@ const MoodboardModal = ({
   //   closeMoodboardModal();
   //   console.log(moodboards);
 
-  //   setPrevChecked(checked);
-
   //   handleClickSnackbar();
 
   //   if (refreshPosts) {
   //     refreshPosts();
   //   }
   // };
-
-  const deletePostFromThisMoodboard = () => {
-    console.log("deletePostFromThisMoodboard");
-    console.log("sourceMoodboardId", sourceMoodboardId);
-
-    const newMoodboardList = [...moodboards];
-    for (let moodboard of newMoodboardList) {
-      if (moodboard.id === sourceMoodboardId) {
-        const newMbPosts = [...moodboard.moodboardItems].filter(
-          (item) => item.id !== post.id
-        );
-        moodboard.moodboardItems = newMbPosts;
-      }
-    }
-
-    // update moodboard state
-    setMoodboards(newMoodboardList);
-    closeMoodboardModal();
-    console.log(moodboards);
-
-    handleClickSnackbar();
-
-    if (refreshPosts) {
-      refreshPosts();
-    }
-  };
 
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
 
@@ -272,24 +295,6 @@ const MoodboardModal = ({
 
     setOpenSnackbar(false);
   };
-
-  useEffect(() => {
-    if (postPinned && checked.length === 0) {
-      moodboards.forEach((moodboard) => {
-        for (let moodboardItem of moodboard.moodboardItems) {
-          if (moodboardItem.id === post.id) {
-            checked.push(moodboard.id);
-          }
-        }
-      });
-      setPrevChecked(checked);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // useEffect(() => {
-  // 	console.log(moodboards);
-  // }, [moodboards]);
 
   const noChangeMade = () => {
     return (

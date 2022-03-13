@@ -12,6 +12,7 @@ import user from "../../../data/currentUserData2";
 import MoodboardModal from "../Moodboard/MoodboardModal";
 import { Link } from "react-router-dom";
 import * as socialMediaAPI from "../../../services/SocialMedia";
+import { createNumericLiteral } from "typescript";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -20,7 +21,7 @@ const { username } = user;
 const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
   // const post = props.post;
 
-  const [moodboards, setMoodboards] = useState(user.moodboards);
+  const [moodboards, setMoodboards] = useState([]);
 
   const getUserMoodboards = async () => {
     try {
@@ -64,9 +65,51 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
     });
   };
 
+  const updateIfPostIsLikedByUser = async () => {
+    try {
+      const res = await socialMediaAPI.getPostLikes(post.id);
+      let data = JSON.parse(JSON.stringify(res)).data;
+      data = data.map((item) => item.username); // clean likes data
+
+      // console.log(
+      //   `postId ${post.id} is liked by user? ${data.includes(username)}`
+      // );
+      setLikesChecked(data.includes(username) ? true : false);
+      // return data.includes(username);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getCompleteMoodboardData();
+    setPostPinned(postInUserMoodboards() ? true : false);
+    // setLikesChecked(postIsLikedByUser()); // new
+    updateIfPostIsLikedByUser();
   }, []);
+
+  const postInUserMoodboards = () => {
+    const moodboardsWithThisPost = moodboards.filter((moodboard) => {
+      for (let moodboardItem of moodboard.moodboardItems) {
+        if (moodboardItem.id === post.id) {
+          return true;
+        }
+      }
+      return false;
+    });
+    return moodboardsWithThisPost.length > 0;
+  };
+
+  const [postPinned, setPostPinned] = useState(false);
+
+  const [likesChecked, setLikesChecked] = useState(false);
+
+  useEffect(() => {
+    setPostPinned(postInUserMoodboards() ? true : false);
+    // setLikesChecked(postIsLikedByUser()); // new
+    updateIfPostIsLikedByUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [moodboards]);
 
   const postCardStyles = {
     cardActions: {
@@ -84,79 +127,57 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
     },
   };
 
-  const postInUserMoodboards = () => {
-    const moodboardsWithThisPost = moodboards.filter((moodboard) => {
-      for (let moodboardItem of moodboard.moodboardItems) {
-        if (moodboardItem.id === post.id) {
-          return true;
-        }
-      }
-      return false;
-    });
-    return moodboardsWithThisPost.length > 0;
+  const likePost = async (postId, userId) => {
+    try {
+      const res = await socialMediaAPI.likePost(postId, userId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log(data);
+      updateIfPostIsLikedByUser();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const [postPinned, setPostPinned] = useState(
-    postInUserMoodboards() ? true : false
-  );
-
-  const [likesChecked, setLikesChecked] = useState(
-    post.likes.includes(username)
-  );
+  const unlikePost = async (postId, userId) => {
+    try {
+      const res = await socialMediaAPI.unlikePost(postId, userId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log(data);
+      updateIfPostIsLikedByUser();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleChangeForLike = (event) => {
     console.log("clicked like");
     console.log("no. of likes before clicking:", post.likes.length);
     console.log("liked by before clicking:", post.likes);
-    if (post.likes.includes(username)) {
-      // unlike
-      // remove user from likes array
-      post.likes = post.likes.filter((user) => user !== username);
+    console.log("post.id", post.id);
+    console.log("user.id", user.id);
 
-      // remove this post from the user's likes
-      removePostFromUserLikes();
+    if (likesChecked) {
+      console.log("unlike");
+      unlikePost(post.id, user.id);
     } else {
-      // like
-      // add user to likes array
-      post.likes.push(username);
-
-      // add this post to user's likes
-      addPostFromUserLikes();
+      console.log("like");
+      likePost(post.id, user.id);
     }
 
     console.log("no. of likes after clicking:", post.likes.length);
     console.log("liked by after clicking:", post.likes);
-
-    // update icon colour on front end
-    setLikesChecked(!likesChecked);
-  };
-
-  const removePostFromUserLikes = () => {
-    const newLikePostsList = [...user.likedPosts].filter(
-      (item) => item.id !== post.id
-    );
-    user.likedPosts = newLikePostsList;
-  };
-
-  const addPostFromUserLikes = () => {
-    const newLikePostsList = [...user.likedPosts, post];
-    user.likedPosts = newLikePostsList;
   };
 
   const [open, setOpen] = React.useState(false);
 
   const closeMoodboardModal = () => {
+    getCompleteMoodboardData();
     setOpen(false);
   };
 
   const handleClick = (event) => {
     setOpen(true);
   };
-
-  useEffect(() => {
-    setPostPinned(postInUserMoodboards() ? true : false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [moodboards]);
 
   return (
     <>

@@ -30,11 +30,69 @@ const { username } = user;
 const Post = () => {
   const { postId } = useParams();
 
-  const [moodboards, setMoodboards] = useState(user.moodboards);
+  const [moodboards, setMoodboards] = useState([]);
 
-  const [post, setPost] = useState(
-    postData.filter((post) => post.id === parseInt(postId))[0]
-  );
+  const getUserMoodboards = async () => {
+    try {
+      const res = await socialMediaAPI.getUserMoodboards(user.id);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getMoodboardPosts = async (moodboardId) => {
+    try {
+      const res = await socialMediaAPI.getMoodboardPosts(moodboardId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getCompleteMoodboardData = async () => {
+    const allUserMoodboards = await getUserMoodboards();
+
+    var promises = allUserMoodboards.map(async (moodboard) => {
+      const moodboardPosts = await getMoodboardPosts(moodboard.id);
+      const completeMoodboard = {
+        ...moodboard,
+        moodboardItems: moodboardPosts,
+      };
+
+      // console.log("completeMoodboard", completeMoodboard); // works
+      return completeMoodboard;
+    });
+
+    await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
+
+    Promise.all(promises).then((values) => {
+      setMoodboards(values);
+      return values;
+    });
+  };
+
+  useEffect(() => {
+    getCompleteMoodboardData();
+  }, []);
+
+  useEffect(() => {
+    getCompleteMoodboardData();
+  }, [moodboards]);
+
+  // help idk what to initialise this to
+  const [post, setPost] = useState({
+    id: postId,
+    description: "",
+    comments: [],
+    image: "",
+    likes: [],
+    products: [],
+    tags: [],
+    userid: 0,
+  });
 
   const getPostDetails = async (postId) => {
     try {
@@ -113,6 +171,7 @@ const Post = () => {
 
   useEffect(() => {
     getCompletePost();
+    getAuthorUsername();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -299,6 +358,19 @@ const Post = () => {
     },
   };
 
+  const [authorUsername, setAuthorUsername] = useState("");
+
+  const getAuthorUsername = async () => {
+    try {
+      const res = await socialMediaAPI.getUsernamById(post.id);
+      let data = JSON.parse(JSON.stringify(res)).data[0].username;
+      setAuthorUsername(data);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <Container sx={{ pt: 2 }}>
@@ -367,24 +439,25 @@ const Post = () => {
                 open={open}
                 closeMoodboardModal={closeMoodboardModal}
                 post={post}
-                moodboards={moodboards}
-                setMoodboards={setMoodboards}
                 postPinned={postPinned}
               />
               <Box sx={{ pt: 1 }}>
                 <Stack direction="row" spacing={0.5}>
-                  <Box sx={commentStyles.username}>{post.userid}</Box>
+                  <Box sx={commentStyles.username}>{authorUsername}</Box>
                   <Box sx={commentStyles.comment}>{post.description}</Box>
                 </Stack>
-                {post.comments.map((comment) => (
-                  <Comment
-                    key={comment.id}
-                    comment={comment}
-                    post={post}
-                    setPost={setPost}
-                    getCompletePost={getCompletePost}
-                  />
-                ))}
+                {post.comments
+                  .slice(0)
+                  .reverse()
+                  .map((comment) => (
+                    <Comment
+                      key={comment.id}
+                      comment={comment}
+                      post={post}
+                      setPost={setPost}
+                      getCompletePost={getCompletePost}
+                    />
+                  ))}
               </Box>
               <Box sx={{ pt: 1, width: "100%" }}>
                 <Stack

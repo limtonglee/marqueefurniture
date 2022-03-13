@@ -70,7 +70,8 @@ const Ideas = () => {
     }
   };
 
-  const [posts, setPosts] = useState(postData);
+  const [posts, setPosts] = useState([]);
+  // const [posts, setPosts] = useState(postData);
   // const [posts, setPosts] = useState(null);
 
   useEffect(() => {
@@ -104,7 +105,8 @@ const Ideas = () => {
   const getPostLikes = async (post) => {
     try {
       const res = await socialMediaAPI.getPostLikes(post.id);
-      const data = JSON.parse(JSON.stringify(res)).data;
+      let data = JSON.parse(JSON.stringify(res)).data;
+      data = data.map((item) => item.username); // clean likes data
       return data;
     } catch (error) {
       console.error(error);

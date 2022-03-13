@@ -215,7 +215,7 @@ const Ideas = () => {
     <>
       <Container sx={{ pt: 2 }}>
         <Box sx={pageStyles.sortFilter}>
-          <SortButton handleSort={handleSort} />
+          <SortButton handleSort={handleSort} variant="ideas" />
           <Stack direction="row" spacing={2}>
             <Button
               startIcon={<AddIcon />}

@@ -174,7 +174,7 @@ const Login = () => {
             </Button>
             <Grid container>
               <Grid item xs sx={{ mt: 3, mb: 5 }}>
-                <Link to="/forgetpassword">Forgot password?</Link>
+                <Link to="/forgetpassword" >Forgot password?</Link>
               </Grid>
               <Grid item sx={{ mt: 3, mb: 5 }}>
                 <Link to="/signup">{"Don't have an account? Sign Up"}</Link>

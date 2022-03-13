@@ -8,6 +8,7 @@ import PreLogin from "./PreLogin";
 import { useStores } from "./stores/RootStore";
 // theme
 import ThemeConfig from "./theme";
+import GlobalStyles from "./theme/globalStyles";
 
 const App = () => {
   //const previousLocation = useRef(location);
@@ -29,35 +30,36 @@ const App = () => {
     }
   };
 
-  
-
   return (
     <Observer>
       {() => (
         <ThemeConfig>
           <>
+            <GlobalStyles />
             <Container maxWidth="xxl">
               <>
                 {userStore.isLoggedIn ? (
-                  !userStore.isAdmin && <PostLogin 
-                  
-                  checked={checked}
-                  setChecked={setChecked}
-                  handleChange={handleChange}
-                  />
+                  !userStore.isAdmin && (
+                    <PostLogin
+                      checked={checked}
+                      setChecked={setChecked}
+                      handleChange={handleChange}
+                    />
+                  )
                 ) : (
-                  <PreLogin 
-                  
-                  checked={checked}
-                  setChecked={setChecked}
-                  handleChange={handleChange}/>
+                  <PreLogin
+                    checked={checked}
+                    setChecked={setChecked}
+                    handleChange={handleChange}
+                  />
                 )}
-                {userStore.isLoggedIn && userStore.isAdmin && <Admin
-                
-                checked={checked}
-                setChecked={setChecked}
-                handleChange={handleChange}
-                />}
+                {userStore.isLoggedIn && userStore.isAdmin && (
+                  <Admin
+                    checked={checked}
+                    setChecked={setChecked}
+                    handleChange={handleChange}
+                  />
+                )}
               </>
             </Container>
           </>

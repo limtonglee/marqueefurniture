@@ -31,53 +31,134 @@ const Ideas = () => {
     },
   };
 
-  const handleTag = (tag) => {
+  // const handleTag = (tag) => {
+  //   if (selectedTags.includes(tag)) {
+  //     // remove tag from selectedTags
+  //     const newSelectedTags = [...selectedTags].filter((item) => item !== tag);
+  //     setSelectedTags(newSelectedTags);
+
+  //     // update posts lists
+  //     let newPosts = [...posts];
+  //     newPosts.push(...tagBin.get(tag));
+  //     setPosts(newPosts);
+  //     // console.log("after adding back", posts);
+
+  //     // delete bin for tag
+  //     tagBin.delete(tag);
+  //   } else {
+  //     // add tag to selectedTags
+  //     const newSelectedTags = [...selectedTags];
+  //     newSelectedTags.push(tag);
+  //     setSelectedTags(newSelectedTags);
+
+  //     // create bin for tag
+  //     tagBin.set(tag, []);
+
+  //     // update posts lists
+  //     setPosts((oldPosts) => {
+  //       let newPosts = oldPosts.filter((post) => {
+  //         if (post.tags.flat().includes(tag)) {
+  //           return true;
+  //         } else {
+  //           tagBin.get(tag).push(post); // add to bin for restoration later
+  //           return false;
+  //         }
+  //       });
+  //       // console.log("after removing", newPosts);
+  //       return newPosts;
+  //     });
+  //   }
+  // };
+
+  const handleTag = async (tag) => {
+    console.log("handleTag", tag);
     if (selectedTags.includes(tag)) {
       // remove tag from selectedTags
       const newSelectedTags = [...selectedTags].filter((item) => item !== tag);
       setSelectedTags(newSelectedTags);
-
-      // update posts lists
-      let newPosts = [...posts];
-      newPosts.push(...tagBin.get(tag));
-      setPosts(newPosts);
-      // console.log("after adding back", posts);
-
-      // delete bin for tag
-      tagBin.delete(tag);
     } else {
       // add tag to selectedTags
+      console.log("else");
       const newSelectedTags = [...selectedTags];
       newSelectedTags.push(tag);
+      console.log("newSelectedTags", newSelectedTags);
       setSelectedTags(newSelectedTags);
+    }
 
-      // create bin for tag
-      tagBin.set(tag, []);
+    console.log(selectedTags);
+  };
 
-      // update posts lists
-      setPosts((oldPosts) => {
-        let newPosts = oldPosts.filter((post) => {
-          if (post.tags.flat().includes(tag)) {
-            return true;
-          } else {
-            tagBin.get(tag).push(post); // add to bin for restoration later
-            return false;
-          }
-        });
-        // console.log("after removing", newPosts);
-        return newPosts;
-      });
+  const filterPosts = async () => {
+    if (selectedTags.length === 0) {
+      getCompletePostData();
+    } else {
+      setPosts(
+        postsStore
+          .filter(
+            (post) =>
+              post.tags.filter((x) => selectedTags.includes(x)).length > 0
+          )
+          .sort((a, b) => b.likes.length - a.likes.length)
+      );
+
+      // const allPosts = await getAllPosts();
+
+      // var promises = allPosts.map(async (post) => {
+      //   const postLikes = await getPostLikes(post);
+      //   const postProducts = await getPostProducts(post);
+      //   const postTags = await getPostTags(post);
+      //   const postComments = await getPostComments(post);
+      //   const completePost = {
+      //     ...post,
+      //     comments: postComments,
+      //     likes: postLikes,
+      //     products: postProducts,
+      //     tags: postTags,
+      //   };
+
+      //   // console.log("completePost", completePost); // works
+      //   return completePost;
+      // });
+
+      // await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
+
+      // Promise.all(promises).then((values) => {
+      //   console.log("cleaned post data", values); // works
+      //   // setPosts(values); // doesnt work
+
+      //   // sort posts before updating state
+      //   if (currentSort === "popular") {
+      //     // sorting by descending amount of likes
+      //     setPosts(
+      //       values
+      //         .filter(
+      //           (post) =>
+      //             post.tags.filter((x) => selectedTags.includes(x)).length > 0
+      //         )
+      //         .sort((a, b) => b.likes.length - a.likes.length)
+      //     );
+      //   }
+      //   if (currentSort === "recent") {
+      //     // descending postId
+      //     setPosts(values.sort((a, b) => b.id - a.id));
+      //   }
+      // });
     }
   };
 
+  useEffect(() => {
+    filterPosts();
+  }, [selectedTags]);
+
   const [posts, setPosts] = useState([]);
+  const [postsStore, setPostsStore] = useState([]);
   // const [posts, setPosts] = useState(postData);
   // const [posts, setPosts] = useState(null);
 
-  useEffect(() => {
-    sortFeed();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   sortFeed();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   // useEffect(() => {
   //   socialMediaAPI
@@ -126,7 +207,8 @@ const Ideas = () => {
   const getPostTags = async (post) => {
     try {
       const res = await socialMediaAPI.getPostTags(post.id);
-      const data = JSON.parse(JSON.stringify(res)).data;
+      let data = JSON.parse(JSON.stringify(res)).data;
+      data = data.map((item) => item.tagname); // clean tags data
       return data;
     } catch (error) {
       console.error(error);
@@ -167,8 +249,20 @@ const Ideas = () => {
 
     Promise.all(promises).then((values) => {
       console.log("cleaned post data", values); // works
-      setPosts(values); // doesnt work
-      // console.log("but posts states still not updated", posts);
+      // setPosts(values); // doesnt work
+
+      // sort posts before updating state
+      if (currentSort === "popular") {
+        // sorting by descending amount of likes
+        setPosts(values.sort((a, b) => b.likes.length - a.likes.length));
+        setPostsStore(values.sort((a, b) => b.likes.length - a.likes.length)); //new
+      }
+      if (currentSort === "recent") {
+        // descending postId
+        setPosts(values.sort((a, b) => b.id - a.id));
+        setPostsStore(values.sort((a, b) => b.id - a.id));
+      }
+
       return values;
     });
   };
@@ -195,9 +289,9 @@ const Ideas = () => {
       setPosts(newPosts.sort((a, b) => b.likes.length - a.likes.length));
     }
     if (currentSort === "recent") {
-      // fake sort (bec dk how datetime looks like in json): ascending amount of likes
+      // descending postId
       let newPosts = [...posts];
-      setPosts(newPosts.sort((a, b) => a.id - b.id));
+      setPosts(newPosts.sort((a, b) => b.id - a.id));
     }
     // if (currentSort === "for you") {
     // 	// fake sort (bec dk the "for you" logic yet): ascending amount of likes
@@ -208,9 +302,9 @@ const Ideas = () => {
 
   const resetDisplay = () => {
     // setPosts(postData);
-    getCompletePostData();
+    // getCompletePostData();
     setSelectedTags([]);
-    setTagBin(new Map());
+    // setTagBin(new Map());
   };
 
   const addToMoodboardButtonStyles = {

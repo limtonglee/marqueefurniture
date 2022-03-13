@@ -4,9 +4,7 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import ShareIcon from "@mui/icons-material/Share";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import {
-  Alert,
   Avatar,
-  Card,
   CardContent,
   CardHeader,
   CardMedia,
@@ -18,19 +16,18 @@ import {
   ListItemAvatar,
   ListItemText,
   Rating,
-  Snackbar,
   Stack,
   Typography,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import jack from "../../assets/images/jack.jpg";
 import { getListingDetails } from "../../services/Listings";
 import { useStores } from "../../stores/RootStore";
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 //This is the listing page
 /* 
 Expansion of item details for this Done
@@ -49,7 +46,16 @@ export const ItemDetails = () => {
   const param = useParams();
   const [item, setItems] = useState([]);
 
-  const notify = () => toast("adding to cart!");
+  const notifyCart = () =>
+    toast("Item added to cart!", {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 1500,
+    });
+  const notifyLink = () =>
+    toast("Copied link to clipboard", {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 1500,
+    });
 
   useEffect(() => {
     getListingDetails(param.itemId)
@@ -63,167 +69,79 @@ export const ItemDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [state, setState] = useState({
-    open: false,
-    vertical: "top",
-    horizontal: "center",
-  });
-
-  const [cartState, setCartState] = useState({
-    cartOpen: false,
-    vertical: "top",
-    horizontal: "center",
-  });
-
-  const { vertical, horizontal, open } = state;
-  const { cartOpen } = cartState;
   const navigate = useNavigate();
 
   const handleClick = (newState) => () => {
-    console.log("Share URL link has fired");
+    notifyLink();
     navigator.clipboard.writeText(window.location.toString());
-    setState({ open: true, ...newState });
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setState({ ...state, open: false });
-  };
-
-  const handleCartClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setCartState({ ...cartState, cartOpen: false });
-  };
-
-  const isDesign = (item) => {
-    if (item === "Design") {
-      return false;
-    }
-    return true;
-  };
-
-  const isService = (item) => {
-    if (item === "Service") {
-      return;
-    }
-    return true;
   };
 
   const handleAddCart = (item, newState) => {
-    notify();
+    notifyCart();
     cartStore.addItems(item);
-    console.log("Add to cart handle has fired");
-    setCartState({ cartOpen: true, ...newState });
   };
 
-  const isLogin = (user) => {
-    if (user.isLoggedIn === true) {
-      return true;
-    }
-    return false;
+  const HeadingTypoStyle = {
+    color: "text.secondary",
+    fontWeight: "500",
+    fontSize: 20,
   };
 
   return (
     <>
-      <Card>
-        <CardContent key={item.id}>
-          <ArrowCircleLeftIcon
-            fontSize="large"
-            onClick={() => navigate(-1)}
-            color="primary"
-          />
-          <Grid container spacing={2}>
-            <Grid item md={6} xs={12}>
-              <CardMedia width="auto" align="center">
-                <img
-                  height="auto"
-                  width="100%"
-                  src={item.image}
-                  srcSet={item.image}
-                  alt={item.name}
-                  title={item.name}
-                />
-              </CardMedia>
-              <ImageListItem
-                key={item.image}
-                sx={{
-                  boxShadow: 5,
-                  margin: 2,
-                  padding: 0,
-                  width: 75,
-                  height: 75,
-                }}
-              >
-                <img
-                  src={`${item.image}?w=188&h=188&fit=crop&auto=format`}
-                  srcSet={`${item.image}?w=188&h=188&fit=crop&auto=format&dpr=2 2x`}
-                  alt={item.name}
-                  height="auto"
-                  width="50%"
-                />
-              </ImageListItem>
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <CardContent>
-                <CardHeader
-                  avatar={
-                    <Link
-                      to={`/SellerProfile`}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <Avatar
-                        src={jack}
-                        alt="profile-image"
-                        variant="rounded"
-                        shadow="sm"
-                        sx={{ height: "70px", width: "70px" }}
-                      />
-                    </Link>
-                  }
-                  title={
-                    <b>
-                      <h1>{item.author}</h1>
-                    </b>
-                  }
-                  sx={{ p: 0 }}
-                />
-                <br />
-                <Divider />
-                <br />
-                <Typography
-                  variant="h3"
-                  color="text.secondary"
-                  fontWeight="bold"
-                >
-                  {item.name}
-                </Typography>
+      <ArrowCircleLeftIcon
+        fontSize="large"
+        onClick={() => navigate(-1)}
+        color="primary"
+      />
+      <Grid container spacing={2}>
+        <Grid item md={6} xs={12}>
+          <CardMedia width="auto" align="center">
+            <img
+              height="auto"
+              width="100%"
+              src={item.image}
+              alt={item.name}
+              title={item.name}
+            />
+          </CardMedia>
+          <ImageListItem
+            key={item.image}
+            sx={{
+              boxShadow: 5,
+              margin: 2,
+              padding: 0,
+              width: 75,
+              height: 75,
+            }}
+          >
+            <img
+              src={`${item.image}?w=188&h=188&fit=crop&auto=format`}
+              alt={item.name}
+              height="auto"
+              width="50%"
+            />
+          </ImageListItem>
+        </Grid>
+        <Grid item md={6} xs={12}>
+          <CardContent>
+            <Typography variant="h4" fontWeight="bold">
+              {item.name}
+            </Typography>
+            <Divider />
+            {item.type !== "Design" && (
+              <>
+                {item.listingprice && (
+                  <Typography
+                    variant="h3"
+                    color="primary.main"
+                    fontWeight="bold"
+                  >
+                    ${item.listingprice.toFixed(2)}
+                  </Typography>
+                )}
 
-                <Typography
-                  variant="h3"
-                  color="text.secondary"
-                  fontWeight="bold"
-                >
-                  {/* {isDesign(item.type) ? (
-                    <>listingprice: ${item.listingprice.toFixed(2)}</>
-                  ) : (
-                    <></>
-                  )} */}
-                </Typography>
-                <br />
-                <Divider />
-                <br />
-                <Typography
-                  variant="h3"
-                  sx={{
-                    color: "text.secondary",
-                    fontWeight: "bold",
-                    fontSize: 20,
-                  }}
-                >
+                <Typography variant="h3" sx={HeadingTypoStyle}>
                   Rating:
                   <br />
                 </Typography>
@@ -240,315 +158,168 @@ export const ItemDetails = () => {
                     secondary={item.shippingprovider}
                   />
                 </ListItem>
-                <br />
                 <Divider />
-                <br />
                 <Typography variant="h3" color={item.variations}>
-                  <Typography variant="h3" color="text.secondary">
-                    {isDesign(item.type) && isService(item.type) ? (
-                      <>Variation:</>
-                    ) : (
-                      "Chat for more information."
-                    )}
+                  <Typography variant="h3" sx={HeadingTypoStyle}>
+                    Variation:
                   </Typography>
-                  {isDesign(item.type) && isService(item.type) ? (
-                    <>{item.variations}</>
-                  ) : (
-                    ""
-                  )}
+                  {item.variations}
                 </Typography>
-                <br />
                 <Divider />
-                <br />
-                <Typography variant="h3" color="text.secondary">
-                  Details:
-                </Typography>
+              </>
+            )}
+            <Typography variant="h3" sx={HeadingTypoStyle}>
+              Product Specifications:
+            </Typography>
 
-                <Grid container spacing={2} column={8}>
-                  <Grid item xs={4}>
-                    <Typography variant="overline" color="text.secondary">
-                      Categories:
-                    </Typography>
-                    <br />
-                    <Typography variant="overline" color="text.secondary">
-                      Brand:
-                    </Typography>
-                    <br />
-                    <Typography variant="overline" color="text.secondary">
-                      Warranty:
-                    </Typography>
-                    <br />
-                    {isDesign(item.type) && isService(item.type) ? (
-                      <>
-                        <Typography variant="overline" color="text.secondary">
-                          Parcel Size:
-                        </Typography>
-                        <br />
-                        <Typography variant="overline" color="text.secondary">
-                          Weight:
-                        </Typography>
-                        <br />
-                        <Typography variant="overline" color="text.secondary">
-                          Stock Available:
-                        </Typography>
-                        <br />
-                        <Typography variant="overline" color="text.secondary">
-                          Dimension:
-                        </Typography>
-                        <br />
-                      </>
-                    ) : (
-                      <></>
-                    )}
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Typography variant="overline" color="text.secondary">
-                      {item.category}
-                    </Typography>
-                    <br />
-                    <Typography variant="overline" color="text.secondary">
-                      {item.brand}
-                    </Typography>
-                    <br />
-                    <Typography variant="overline" color="text.secondary">
-                      {item.warrantyinfo}
-                    </Typography>
-                    <br />
-                    {isDesign(item.type) && isService(item.type) ? (
-                      <>
-                        <Typography variant="overline" color="text.secondary">
-                          {item.parcelsize}
-                        </Typography>
-                        <br />
-                        <Typography variant="overline" color="text.secondary">
-                          {item.weight}
-                        </Typography>
-                        <br />
-                        <Typography variant="overline" color="text.secondary">
-                          {item.stockavailable}
-                        </Typography>
-                        <br />
-                        <Typography variant="overline" color="text.secondary">
-                          {item.dimensions}
-                        </Typography>
-                        <br />
-                      </>
-                    ) : (
-                      <></>
-                    )}
-                  </Grid>
-                </Grid>
+            <Grid container spacing={2} column={8}>
+              <Grid item xs={4}>
+                <Typography variant="overline" color="text.secondary">
+                  Categories:
+                </Typography>
                 <br />
-                <Typography
-                  variant="h3"
-                  color="text.secondary"
-                  fontWeight="bold"
-                >
-                  Description
+                <Typography variant="overline" color="text.secondary">
+                  Brand:
                 </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  {item.description}
+                <br />
+                <Typography variant="overline" color="text.secondary">
+                  Warranty:
                 </Typography>
-              </CardContent>
-              <Stack direction="row" spacing={2}>
-                {isLogin(userStore) ? (
+                <br />
+                {item.type !== "Design" && item.type !== "Service" && (
                   <>
-                    {isDesign(item.type) ? (
-                      <>
-                        <Fab size="small" color="secondary">
-                          <ShareIcon
-                            onClick={handleClick({
-                              vertical: "top",
-                              horizontal: "center",
-                            })}
-                            color="primary"
-                          />
-                          <Snackbar
-                            anchorOrigin={{ vertical, horizontal }}
-                            open={open}
-                            onClose={handleClose}
-                            autoHideDuration={1500}
-                            key={vertical + horizontal}
-                          >
-                            <Alert
-                              onClose={handleClose}
-                              variant="filled"
-                              severity="success"
-                              sx={{ width: "auto" }}
-                            >
-                              Copied to Clipboard!
-                            </Alert>
-                          </Snackbar>
-                        </Fab>
-                        <Button
-                          variant="outlined"
-                          onClick={() => {
-                            
-                            handleAddCart(item, {
-                              vertical: "top",
-                              horizontal: "center",
-                            });
-                          }}
-                          startIcon={<ShoppingCartIcon />}
-                        >
-                          Add to cart
-                        </Button>
-                        <Snackbar
-                          anchorOrigin={{ vertical, horizontal }}
-                          open={cartOpen}
-                          onClose={handleCartClose}
-                          autoHideDuration={1500}
-                          key={vertical + horizontal}
-                        >
-                          <Alert
-                            onClose={handleCartClose}
-                            variant="filled"
-                            severity="success"
-                            sx={{ width: "auto" }}
-                          >
-                            Added to Cart!
-                          </Alert>
-                        </Snackbar>
-                        <ToastContainer />
-                        <Button
-                          variant="outlined"
-                          startIcon={<ChatIcon />}
-                          disableElevation
-                          href="http://localhost:3000/chat"
-                        >
-                          Chat
-                        </Button>
-                      </>
-                    ) : (
-                      <>
-                        <Fab size="small" color="secondary">
-                          <ShareIcon
-                            onClick={handleClick({
-                              vertical: "top",
-                              horizontal: "center",
-                            })}
-                            color="primary"
-                          />
-                          <Snackbar
-                            anchorOrigin={{ vertical, horizontal }}
-                            open={open}
-                            onClose={handleClose}
-                            autoHideDuration={1500}
-                            key={vertical + horizontal}
-                          >
-                            <Alert
-                              onClose={handleClose}
-                              variant="filled"
-                              severity="success"
-                              sx={{ width: "auto" }}
-                            >
-                              Copied to Clipboard!
-                            </Alert>
-                          </Snackbar>
-                        </Fab>
-                        <Button
-                          variant="outlined"
-                          startIcon={<ChatIcon />}
-                          disableElevation
-                          href="http://localhost:3000/chat"
-                        >
-                          Chat
-                        </Button>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    {isDesign(item.type) ? (
-                      <>
-                        <Fab size="small" color="secondary">
-                          <ShareIcon
-                            onClick={handleClick({
-                              vertical: "top",
-                              horizontal: "center",
-                            })}
-                            color="primary"
-                          />
-                          <Snackbar
-                            anchorOrigin={{ vertical, horizontal }}
-                            open={open}
-                            onClose={handleClose}
-                            autoHideDuration={1500}
-                            key={vertical + horizontal}
-                          >
-                            <Alert
-                              onClose={handleClose}
-                              variant="filled"
-                              severity="success"
-                              sx={{ width: "auto" }}
-                            >
-                              Copied to Clipboard!
-                            </Alert>
-                          </Snackbar>
-                        </Fab>
-                        <Button
-                          variant="outlined"
-                          disabled
-                          startIcon={<ShoppingCartIcon />}
-                        >
-                          Add to cart
-                        </Button>
-                        <Button
-                          variant="outlined"
-                          startIcon={<ChatIcon />}
-                          disabled
-                          disableElevation
-                          href="http://localhost:3000/chat"
-                        >
-                          Chat
-                        </Button>
-                      </>
-                    ) : (
-                      <>
-                        <Fab size="small" color="secondary">
-                          <ShareIcon
-                            onClick={handleClick({
-                              vertical: "top",
-                              horizontal: "center",
-                            })}
-                            color="primary"
-                          />
-                          <ToastContainer />
-                          <Snackbar
-                            anchorOrigin={{ vertical, horizontal }}
-                            open={open}
-                            onClose={handleClose}
-                            autoHideDuration={1500}
-                            key={vertical + horizontal}
-                          >
-                            <Alert
-                              onClose={handleClose}
-                              variant="filled"
-                              severity="success"
-                              sx={{ width: "auto" }}
-                            >
-                              Copied to Clipboard!
-                            </Alert>
-                          </Snackbar>
-                        </Fab>
-                        <Button
-                          variant="outlined"
-                          disabled
-                          startIcon={<ChatIcon />}
-                          disableElevation
-                          href="http://localhost:3000/chat"
-                        >
-                          Chat
-                        </Button>
-                      </>
-                    )}
+                    <Typography variant="overline" color="text.secondary">
+                      Parcel Size:
+                    </Typography>
+                    <br />
+                    <Typography variant="overline" color="text.secondary">
+                      Weight:
+                    </Typography>
+                    <br />
+                    <Typography variant="overline" color="text.secondary">
+                      Stock Available:
+                    </Typography>
+                    <br />
+                    <Typography variant="overline" color="text.secondary">
+                      Dimension:
+                    </Typography>
+                    <br />
                   </>
                 )}
-              </Stack>
+              </Grid>
+              <Grid item xs={4}>
+                <Typography variant="overline" color="text.secondary">
+                  {item.category}
+                </Typography>
+                <br />
+                <Typography variant="overline" color="text.secondary">
+                  {item.brand}
+                </Typography>
+                <br />
+                <Typography variant="overline" color="text.secondary">
+                  {item.warrantyinfo}
+                </Typography>
+                <br />
+                {item.type !== "Design" && item.type !== "Service" && (
+                  <>
+                    <Typography variant="overline" color="text.secondary">
+                      {item.parcelsize}
+                    </Typography>
+                    <br />
+                    <Typography variant="overline" color="text.secondary">
+                      {item.weight}
+                    </Typography>
+                    <br />
+                    <Typography variant="overline" color="text.secondary">
+                      {item.stockavailable}
+                    </Typography>
+                    <br />
+                    <Typography variant="overline" color="text.secondary">
+                      {item.dimensions}
+                    </Typography>
+                    <br />
+                  </>
+                )}
+              </Grid>
             </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
+            <br />
+            <Divider />
+            <Typography variant="h3" sx={HeadingTypoStyle}>
+              Description
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              {item.description}
+            </Typography>
+            <Divider />
+
+            <Stack direction="row" spacing={1} mt={2}>
+              {!!userStore.isLoggedIn ? (
+                <>
+                  <Button
+                    variant="outlined"
+                    onClick={() => {
+                      handleAddCart(item, {
+                        vertical: "top",
+                        horizontal: "center",
+                      });
+                    }}
+                    startIcon={<ShoppingCartIcon />}
+                  >
+                    Add to cart
+                  </Button>
+                  <ToastContainer />
+                  <Button
+                    variant="outlined"
+                    startIcon={<ChatIcon />}
+                    disableElevation
+                    href="http://localhost:3000/chat"
+                  >
+                    Chat
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  variant="outlined"
+                  disabled
+                  onClick={() => {
+                    handleAddCart(item, {
+                      vertical: "top",
+                      horizontal: "center",
+                    });
+                  }}
+                  startIcon={<ShoppingCartIcon />}
+                >
+                  Add to cart
+                </Button>
+              )}
+              <Fab size="small" color="secondary">
+                <ShareIcon
+                  onClick={handleClick({
+                    vertical: "top",
+                    horizontal: "center",
+                  })}
+                  color="primary"
+                />
+              </Fab>
+            </Stack>
+          </CardContent>
+        </Grid>
+      </Grid>
+      <Divider></Divider>
+      <CardHeader
+        avatar={
+          <Link to={`/SellerProfile`} style={{ textDecoration: "none" }}>
+            <Avatar
+              src={jack}
+              alt="profile-image"
+              variant="rounded"
+              shadow="sm"
+              sx={{ height: "70px", width: "70px" }}
+            />
+          </Link>
+        }
+        sx={{ p: 0 }}
+      />
     </>
   );
 };

@@ -1,13 +1,13 @@
 //store user logged in information
 
 import { makeAutoObservable, observable } from "mobx";
-import { autorun } from "mobx";
 import { makeLocalStorage } from "./makeLocalStorage.tsx";
 
 //to be edited
 
 class userStore {
   name = "";
+  id = "";
   isLoggedIn = false;
   isSeller = false;
   isAdmin = false;
@@ -20,6 +20,7 @@ class userStore {
   constructor() {
     makeAutoObservable(this, {
       name: observable,
+      id: observable,
       isLoggedIn: observable,
       isSeller: observable,
       isAdmin: observable,
@@ -29,6 +30,7 @@ class userStore {
     });
     makeLocalStorage(this, "userStore", [
       "name",
+      "id",
       "isLoggedIn",
       "isSeller",
       "isAdmin",
@@ -42,12 +44,17 @@ class userStore {
     this.name = name;
   };
 
+  setId = (id) => {
+    this.id = id;
+  };
+
   setIsLoggedIn = () => {
     this.isLoggedIn = true;
   };
   setIsLoggedOut = () => {
     this.isLoggedIn = false;
-    this.name = "";
+    this.id = null;
+    this.name = null;
     this.isSeller = false;
     this.isAdmin = false;
     this.userWebLink = null;

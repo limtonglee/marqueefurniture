@@ -4,6 +4,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import StorefrontIcon from "@mui/icons-material/Storefront";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Divider } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
@@ -38,6 +39,7 @@ const settings = [
 	{ text: "Moodboards", link: "/moodboard/elon/0" },
 	{ text: "Cart", link: "/cart" },
 	{ text: "Chat", link: "/chat" },
+  { text: "Liked Listing", link: "/profile/likedListing"},
 	{ text: "Seller Center", link: "/sellercenter" },
 ];
 
@@ -188,6 +190,13 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
                       {setting.text === "Chat" && (
                         <Tooltip title="Chat" placement="right">
                           <ChatBubbleOutlineIcon
+                            sx={{ color: "common.black" }}
+                          />
+                        </Tooltip>
+                      )}
+                      {setting.text === "Liked Listing" && (
+                        <Tooltip title="Liked Listing" placement="right">
+                          <FavoriteBorderIcon
                             sx={{ color: "common.black" }}
                           />
                         </Tooltip>

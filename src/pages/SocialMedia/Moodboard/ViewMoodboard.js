@@ -192,7 +192,7 @@ const ViewMoodboard = () => {
   };
 
   const handleEditMoodboard = () => {
-    console.log("handleEditMoodboard");
+    // console.log("handleEditMoodboard");
     setOpen(true);
   };
 
@@ -289,12 +289,12 @@ const ViewMoodboard = () => {
     setIsPostView(!isPostView);
   };
 
-  useEffect(() => {
-    console.log("url parameters changes");
-    console.log("to do: update state of current moodboard when params change");
-    setIsPostView(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [useParams()]);
+  // useEffect(() => {
+  //   console.log("url parameters changes");
+  //   console.log("to do: update state of current moodboard when params change");
+  //   setIsPostView(true);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [useParams()]);
 
   // ------ new ---------
 

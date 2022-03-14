@@ -142,8 +142,8 @@ const MoodboardDetailsModal = ({
     console.log("createMoodboard");
     // console.log(filterRoomValues);
     // console.log(filterDesignValues);
-    console.log(boardDescription);
-    console.log(boardName);
+    // console.log(boardDescription);
+    // console.log(boardName);
 
     if (boardName.length === 0) {
       displayBoardnameError();
@@ -161,8 +161,8 @@ const MoodboardDetailsModal = ({
   };
 
   const prepareToUpdate = () => {
-    console.log("preparetoupdate");
-    console.log("moodboardToEdit", moodboardToEdit);
+    // console.log("preparetoupdate");
+    // console.log("moodboardToEdit", moodboardToEdit);
     setBoardName(moodboardToEdit.boardname);
     setBoardDescription(moodboardToEdit.description);
 
@@ -191,7 +191,7 @@ const MoodboardDetailsModal = ({
   };
 
   const prepareTextFields = () => {
-    console.log("prepareTextFields");
+    // console.log("prepareTextFields");
     isEditing ? prepareToUpdate() : prepareToCreate();
     setBoardNameError(false);
     setBoardNameHelperText("");
@@ -211,7 +211,7 @@ const MoodboardDetailsModal = ({
 
   const updateMoodboard = () => {
     // moodboardToEdit
-    console.log("update moodboard");
+    // console.log("update moodboard");
 
     // const newMoodboard = {
     //   ...moodboardToEdit,

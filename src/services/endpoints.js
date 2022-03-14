@@ -43,3 +43,6 @@ export const URL_CREATE_MOODBOARD = "/api/user/moodboard/create";
 export const URL_CREATE_MOODBOARD_WITH_POST =
   "/api/user/moodboard/createWithPost";
 export const URL_DELETE_MOODBOARD = "/api/user/moodboard/delete";
+
+// sellercenter
+export const URL_GET_MERCHANT_ORDER = "/api/merchant/orders";

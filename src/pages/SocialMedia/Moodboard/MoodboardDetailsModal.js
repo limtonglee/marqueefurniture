@@ -17,6 +17,7 @@ import * as socialMediaAPI from "../../../services/SocialMedia";
 const MoodboardDetailsModal = ({
   open,
   closeMoodboardModal,
+  handleClosePopover,
   moodboardToEdit,
   isEditing,
   // setIsEditing,
@@ -126,7 +127,7 @@ const MoodboardDetailsModal = ({
       );
       const data = JSON.parse(JSON.stringify(res)).data;
       console.log(data);
-      // function to refresh data?
+      refreshData(); // function to refresh data?
     } catch (error) {
       console.error(error);
     }
@@ -160,7 +161,9 @@ const MoodboardDetailsModal = ({
   };
 
   const prepareToUpdate = () => {
-    setBoardName(moodboardToEdit.boardName);
+    console.log("preparetoupdate");
+    console.log("moodboardToEdit", moodboardToEdit);
+    setBoardName(moodboardToEdit.boardname);
     setBoardDescription(moodboardToEdit.description);
 
     // const newFilterRoomValues = [];
@@ -188,6 +191,7 @@ const MoodboardDetailsModal = ({
   };
 
   const prepareTextFields = () => {
+    console.log("prepareTextFields");
     isEditing ? prepareToUpdate() : prepareToCreate();
     setBoardNameError(false);
     setBoardNameHelperText("");
@@ -200,6 +204,10 @@ const MoodboardDetailsModal = ({
     prepareTextFields();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    prepareTextFields();
+  }, [moodboardToEdit]);
 
   const updateMoodboard = () => {
     // moodboardToEdit
@@ -222,11 +230,22 @@ const MoodboardDetailsModal = ({
     // console.log("updated moodboard", newMoodboard);
     // setIsEditing(false);
 
-    updateMoodboardAPI(moodboardToEdit.id, boardName, boardDescription);
+    if (boardName.length === 0) {
+      displayBoardnameError();
+    } else {
+      updateMoodboardAPI(moodboardToEdit.id, boardName, boardDescription);
 
-    prepareTextFields();
-    closeMoodboardModal();
-    handleClickSnackbar("Updated successfully");
+      prepareTextFields();
+      closeMoodboardModal();
+      handleClosePopover();
+      handleClickSnackbar("Updated successfully");
+    }
+
+    // updateMoodboardAPI(moodboardToEdit.id, boardName, boardDescription);
+
+    // prepareTextFields();
+    // closeMoodboardModal();
+    // handleClickSnackbar("Updated successfully");
   };
 
   return (

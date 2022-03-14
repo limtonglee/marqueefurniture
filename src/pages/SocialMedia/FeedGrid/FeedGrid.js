@@ -35,15 +35,29 @@ const FeedGrid = ({ posts, sourceMoodboardId }) => {
           ))}
         </Masonry>
       ) : (
-        <Masonry columns={4} spacing={2}>
-          {posts.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              sourceMoodboardId={sourceMoodboardId}
-            />
-          ))}
-        </Masonry>
+        <>
+          {posts.length < 4 ? (
+            <Masonry columns={3} spacing={2}>
+              {posts.map((post) => (
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  sourceMoodboardId={sourceMoodboardId}
+                />
+              ))}
+            </Masonry>
+          ) : (
+            <Masonry columns={4} spacing={2}>
+              {posts.map((post) => (
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  sourceMoodboardId={sourceMoodboardId}
+                />
+              ))}
+            </Masonry>
+          )}
+        </>
       )}
     </Box>
   );

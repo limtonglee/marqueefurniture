@@ -175,6 +175,10 @@ const ViewMoodboard = () => {
     getCompleteMoodboardData();
   }, []);
 
+  const refreshData = () => {
+    getCompleteMoodboardData();
+  };
+
   const createMoodboardButtonStyles = {
     "&.MuiButton-root": {
       borderRadius: 1.5,
@@ -276,6 +280,7 @@ const ViewMoodboard = () => {
 
   const closeMoodboardModal = () => {
     setOpen(false);
+    handleClosePopover();
   };
 
   const [isPostView, setIsPostView] = React.useState(true);
@@ -311,9 +316,11 @@ const ViewMoodboard = () => {
       <MoodboardDetailsModal
         open={open}
         closeMoodboardModal={closeMoodboardModal}
+        handleClosePopover={handleClosePopover}
         moodboardToEdit={currentMoodboard}
         isEditing={true}
         handleClickSnackbar={handleClickSnackbar}
+        refreshData={refreshData}
       />
       <Snackbar
         open={openSnackbar}

@@ -18,8 +18,6 @@ const label = { inputProps: { "aria-label": "Checkbox demo" } };
 const { username } = user;
 
 const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
-  // const post = props.post;
-
   const [moodboards, setMoodboards] = useState([]);
 
   const getUserMoodboards = async () => {
@@ -74,7 +72,6 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
       //   `postId ${post.id} is liked by user? ${data.includes(username)}`
       // );
       setLikesChecked(data.includes(username) ? true : false);
-      // return data.includes(username);
     } catch (error) {
       console.error(error);
     }
@@ -83,8 +80,8 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
   useEffect(() => {
     getCompleteMoodboardData();
     setPostPinned(postInUserMoodboards() ? true : false);
-    // setLikesChecked(postIsLikedByUser()); // new
     updateIfPostIsLikedByUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const postInUserMoodboards = () => {
@@ -105,7 +102,6 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
 
   useEffect(() => {
     setPostPinned(postInUserMoodboards() ? true : false);
-    // setLikesChecked(postIsLikedByUser()); // new
     updateIfPostIsLikedByUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moodboards]);

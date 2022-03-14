@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Masonry from "@mui/lab/Masonry";
 import PostCard from "./PostCard";
 
-const FeedGrid = ({ posts, sourceMoodboardId }) => {
+const FeedGrid = ({ posts, refreshPosts, sourceMoodboardId }) => {
   const [isMobile, setIsMobile] = useState(false);
 
   //choose the screen size
@@ -30,6 +30,7 @@ const FeedGrid = ({ posts, sourceMoodboardId }) => {
             <PostCard
               key={post.id}
               post={post}
+              refreshPosts={refreshPosts}
               sourceMoodboardId={sourceMoodboardId}
             />
           ))}
@@ -42,6 +43,7 @@ const FeedGrid = ({ posts, sourceMoodboardId }) => {
                 <PostCard
                   key={post.id}
                   post={post}
+                  refreshPosts={refreshPosts}
                   sourceMoodboardId={sourceMoodboardId}
                 />
               ))}
@@ -52,6 +54,7 @@ const FeedGrid = ({ posts, sourceMoodboardId }) => {
                 <PostCard
                   key={post.id}
                   post={post}
+                  refreshPosts={refreshPosts}
                   sourceMoodboardId={sourceMoodboardId}
                 />
               ))}

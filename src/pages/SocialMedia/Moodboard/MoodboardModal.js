@@ -105,10 +105,12 @@ const MoodboardModal = ({
 
   useEffect(() => {
     getCompleteMoodboardData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     getCompleteMoodboardData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moodboards]);
 
   const [checked, setChecked] = useState([]);
@@ -127,8 +129,6 @@ const MoodboardModal = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moodboards]);
-
-  const onMoodboardPage = refreshPosts ? true : false;
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -183,34 +183,6 @@ const MoodboardModal = ({
     console.log("not done");
   };
 
-  // const addPostToNewMoodboard = () => {
-  //   console.log("addPostToNewMoodboard");
-  //   console.log("original moodboards", moodboards);
-  //   const newId = Math.floor(Math.random() * 100 + 1);
-
-  //   const newMoodboard = {
-  //     id: newId,
-  //     boardName: "New board",
-  //     description: "",
-  //     tags: [[], []],
-  //     isPrivate: false,
-  //     moodboardItems: [],
-  //   };
-
-  //   newMoodboard.moodboardItems.push(post);
-
-  //   const newMoodboardList = [...moodboards, newMoodboard];
-
-  //   // update moodboard state
-  //   setMoodboards(newMoodboardList);
-  //   closeMoodboardModal();
-  //   console.log(moodboards);
-
-  //   setPrevChecked(checked);
-
-  //   handleClickSnackbar();
-  // };
-
   const updatePostPinnedLocations = () => {
     const toRemovePostFrom = prevChecked.filter((x) => !checked.includes(x));
     const toAddPostTo = checked.filter((x) => !prevChecked.includes(x));
@@ -249,38 +221,13 @@ const MoodboardModal = ({
     getCompleteMoodboardData();
 
     closeMoodboardModal();
+    handleCloseDialog();
     handleClickSnackbar();
 
     if (refreshPosts) {
       refreshPosts();
     }
   };
-
-  // const deletePostFromThisMoodboard = () => {
-  //   console.log("deletePostFromThisMoodboard");
-  //   console.log("sourceMoodboardId", sourceMoodboardId);
-
-  //   const newMoodboardList = [...moodboards];
-  //   for (let moodboard of newMoodboardList) {
-  //     if (moodboard.id === sourceMoodboardId) {
-  //       const newMbPosts = [...moodboard.moodboardItems].filter(
-  //         (item) => item.id !== post.id
-  //       );
-  //       moodboard.moodboardItems = newMbPosts;
-  //     }
-  //   }
-
-  //   // update moodboard state
-  //   setMoodboards(newMoodboardList);
-  //   closeMoodboardModal();
-  //   console.log(moodboards);
-
-  //   handleClickSnackbar();
-
-  //   if (refreshPosts) {
-  //     refreshPosts();
-  //   }
-  // };
 
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
 
@@ -320,7 +267,6 @@ const MoodboardModal = ({
         autoHideDuration={2500}
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        // key={"top" + "center"}
       >
         <Alert
           onClose={handleCloseSnackbar}
@@ -423,50 +369,6 @@ const MoodboardModal = ({
                   })}
                 </List>
               </Box>
-              {/* <List dense sx={{ height: "20 !important" }}>
-                {moodboards.map((moodboard, index) => {
-                  console.log("here", moodboard);
-                  const moodboardName = moodboard.boardname;
-                  const moodboardId = moodboard.id;
-                  const labelId = `checkbox-list-secondary-label-${moodboardName}`;
-                  return (
-                    <ListItem
-                      key={moodboardId}
-                      secondaryAction={
-                        <Checkbox
-                          edge="end"
-                          onChange={handleToggle(moodboardId)}
-                          checked={checked.indexOf(moodboardId) !== -1}
-                          inputProps={{
-                            "aria-labelledby": labelId,
-                          }}
-                        />
-                      }
-                      disablePadding
-                    >
-                      <ListItemButton sx={{ pl: 0 }}>
-                        <ListItemAvatar>
-                          <Avatar
-                            alt={`${moodboardName} Moodboard`}
-                            src={
-                              moodboard.moodboardItems[0]
-                                ? moodboard.moodboardItems[0].image
-                                : null
-                            }
-                            sx={{
-                              borderRadius: "10%",
-                            }}
-                          />
-                        </ListItemAvatar>
-                        <ListItemText
-                          id={moodboardId}
-                          primary={moodboardName}
-                        />
-                      </ListItemButton>
-                    </ListItem>
-                  );
-                })}
-              </List> */}
             </Box>
             <Box>
               <Button size="small" onClick={addPostToNewMoodboard}>
@@ -573,7 +475,7 @@ const MoodboardModal = ({
               <Button size="small" onClick={addPostToNewMoodboard}>
                 Add to new moodboard
               </Button>
-              {onMoodboardPage && (
+              {sourceMoodboardId && (
                 <Button
                   size="small"
                   color="error"

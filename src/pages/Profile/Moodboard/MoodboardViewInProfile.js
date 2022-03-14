@@ -5,7 +5,6 @@ import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
 import user from "../../../data/currentUserData2";
 import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import MoodboardPreview from "./MoodboardPreview";
 import { Link } from "react-router-dom";
@@ -23,9 +22,6 @@ const MoodboardViewInProfile = () => {
   let currentSort = "popular";
 
   const [username, setUsername] = useState(useParams().username); // eslint-disable-line no-unused-vars
-
-  // const [moodboards, setMoodboards] = useState(user.moodboards); // need to change to get moodboards of the user when linking to BE
-  // console.log(moodboards);
 
   const [moodboards, setMoodboards] = useState([]);
 
@@ -74,23 +70,18 @@ const MoodboardViewInProfile = () => {
 
   useEffect(() => {
     getCompleteMoodboardData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const refreshData = () => {
     getCompleteMoodboardData();
   };
 
-  // useEffect(() => {
-  //   getCompleteMoodboardData();
-  // }, [moodboards]);
-
   const sortFeed = () => {
     if (currentSort === "ascending") {
       console.log("ascending");
       // sorting by ascending boardname
       let newMoodboards = [...moodboards];
-      // setMoodboards(newMoodboards.sort((a, b) => a.boardname - b.boardname));
-
       setMoodboards(
         newMoodboards.sort((a, b) =>
           ("" + a.boardname).localeCompare(b.boardname)

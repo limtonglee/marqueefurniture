@@ -1,19 +1,10 @@
 import React, { useState, useEffect } from "react";
-import ReusableMasonry from "./ReusableMasonry";
 // import { user } from "../../../data/currentUserData";
 import user from "../../../data/currentUserData2";
 import Box from "@mui/material/Box";
-import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
 import Container from "@mui/material/Container";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -34,7 +25,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import * as socialMediaAPI from "../../../services/SocialMedia";
 import FeedGrid from "../FeedGrid/FeedGrid";
-import { grey } from "@mui/material/colors";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Popover from "@mui/material/Popover";
 
@@ -42,20 +32,9 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 const ViewMoodboard = () => {
-  // const { username, moodboardId } = useParams();
-
-  const username = useParams().username;
+  const username = useParams().username; // eslint-disable-line no-unused-vars
   const moodboardId = parseInt(useParams().moodboardId);
   const [currentMoodboard, setCurrentMoodboard] = useState([]);
-
-  // const [username, setUsername] = useState(useParams().username); // eslint-disable-line no-unused-vars
-  // const [moodboardId, setMoodboardId] = useState(useParams().moodboardId); // eslint-disable-line no-unused-vars
-
-  // const [moodboards, setMoodboards] = useState(user.moodboards); // need to change to get moodboards of the user when linking to BE
-
-  // const [currentMoodboard, setCurrentMoodboard] = useState(
-  //   moodboards.filter((moodboard) => moodboard.id === parseInt(moodboardId))[0]
-  // );
 
   const getUserMoodboards = async () => {
     try {
@@ -160,51 +139,21 @@ const ViewMoodboard = () => {
 
       setCurrentMoodboard(completeCurrentMoodboard);
     });
-
-    // const completeCurrentMoodboard = {
-    //   ...currentMoodboardDetails,
-    //   moodboardItems: currentMoodboardPosts,
-    // };
-
-    // console.log("completeCurrentMoodboard", completeCurrentMoodboard);
-
-    // setCurrentMoodboard(completeCurrentMoodboard);
   };
 
   useEffect(() => {
     getCompleteMoodboardData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const refreshData = () => {
     getCompleteMoodboardData();
   };
 
-  const createMoodboardButtonStyles = {
-    "&.MuiButton-root": {
-      borderRadius: 1.5,
-    },
-    borderColor: "#2E6B75",
-    color: "#2E6B75",
-    "&:hover": {
-      borderColor: "#F2F2F2",
-    },
-    width: "100%",
-  };
-
   const handleEditMoodboard = () => {
     // console.log("handleEditMoodboard");
     setOpen(true);
   };
-
-  // const deleteMoodboardAPI = async (moodboardId) => {
-  //   try {
-  //     const res = await socialMediaAPI.deleteMoodboard(moodboardId);
-  //     const data = JSON.parse(JSON.stringify(res)).data;
-  //     console.log(data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   let navigate = useNavigate();
 
@@ -222,31 +171,6 @@ const ViewMoodboard = () => {
       console.error(error);
     }
   };
-
-  // const handleDeleteMoodboard = () => {
-  //   console.log("handleDeleteMoodboard");
-  //   deleteMoodboardAPI(currentMoodboard.id);
-
-  //   // // delete from selected
-  //   // const newMoodboardOptions = [...moodboardOptions].filter(
-  //   //   (item) => item.id !== currentMoodboard.id
-  //   // );
-  //   // setSelectedMoodboard(newMoodboardOptions[0]);
-  //   // setMoodboardOptions(newMoodboardOptions);
-
-  //   // // delete from moodboards
-
-  //   // const newMoodboards = [...moodboards].filter(
-  //   //   (moodboard) => moodboard.id !== currentMoodboard.id
-  //   // );
-  //   // setCurrentMoodboard(newMoodboards[0]);
-  //   // setMoodboards(newMoodboards);
-
-  //   handleCloseDialog();
-  //   handleClickSnackbar("Deleted successfully");
-
-  //   navigate("/profile");
-  // };
 
   const [openDialog, setOpenDialog] = React.useState(false);
 
@@ -288,15 +212,6 @@ const ViewMoodboard = () => {
   const toggleView = () => {
     setIsPostView(!isPostView);
   };
-
-  // useEffect(() => {
-  //   console.log("url parameters changes");
-  //   console.log("to do: update state of current moodboard when params change");
-  //   setIsPostView(true);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [useParams()]);
-
-  // ------ new ---------
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -462,19 +377,13 @@ const ViewMoodboard = () => {
                 {isPostView && (
                   <FeedGrid
                     posts={currentMoodboard.moodboardItems}
+                    refreshPosts={refreshData}
                     sourceMoodboardId={currentMoodboard.id}
                   />
                 )}
                 {!isPostView && <ProductView moodboard={currentMoodboard} />}
               </>
             )}
-            {/* {isPostView && (
-              <FeedGrid
-                posts={currentMoodboard.moodboardItems}
-                sourceMoodboardId={currentMoodboard.id}
-              />
-            )}
-            {!isPostView && <ProductView moodboard={currentMoodboard} />} */}
           </>
         ) : (
           <h1>Loading...</h1>

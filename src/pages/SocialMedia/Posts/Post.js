@@ -16,7 +16,7 @@ import Comment from "./Comment";
 import Avatar from "@mui/material/Avatar";
 import SendIcon from "@mui/icons-material/Send";
 // import { postData } from "../../../data/postData";
-import postData from "../../../data/postData2";
+// import postData from "../../../data/postData2";
 import { useParams } from "react-router-dom";
 import MoodboardModal from "../Moodboard/MoodboardModal";
 import TextField from "@mui/material/TextField";
@@ -76,10 +76,12 @@ const Post = () => {
 
   useEffect(() => {
     getCompleteMoodboardData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     getCompleteMoodboardData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moodboards]);
 
   // help idk what to initialise this to
@@ -329,25 +331,6 @@ const Post = () => {
       console.error(error);
     }
   };
-
-  // const sendComment = () => {
-  //   console.log("sendComment");
-  //   console.log(comment);
-
-  //   const newId = Math.floor(Math.random() * 100 + 1);
-
-  //   const newComment = {
-  //     id: newId,
-  //     user: user,
-  //     comment: comment,
-  //     datetime: "",
-  //   };
-
-  //   const newPost = { ...post };
-  //   newPost.comments = [...newPost.comments, newComment];
-  //   setPost(newPost);
-  //   setComment("");
-  // };
 
   const commentStyles = {
     username: {

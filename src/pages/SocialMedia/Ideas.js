@@ -57,6 +57,7 @@ const Ideas = () => {
 
   useEffect(() => {
     filterPosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTags]);
 
   const [posts, setPosts] = useState([]);
@@ -155,10 +156,6 @@ const Ideas = () => {
       return values;
     });
   };
-
-  // useEffect(() => {
-  //   console.log(posts);
-  // }, [posts]);
 
   useEffect(() => {
     getCompletePostData();

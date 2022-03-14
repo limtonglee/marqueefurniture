@@ -31,10 +31,9 @@ const ProductView = ({ moodboard }) => {
       for (let product of postProducts) {
         if (!uniqueProductId.includes(product.id)) {
           allProducts.push(product);
-          uniqueProductId.push(product);
+          uniqueProductId.push(product.id);
         }
       }
-      // allProducts.push(...postProducts);
     }
 
     console.log("all products tagged", allProducts);

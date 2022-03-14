@@ -24,6 +24,8 @@ import { Link } from "react-router-dom";
 // import { user } from "../../data/currentUserData";
 import user from "../../data/currentUserData2";
 import { getListings } from "../../services/Listings";
+import { likedListing } from "../../services/Listings";
+import { unlikeListing } from "../../services/Listings";
 
 //This is the main marketplace page
 /*Things to do:
@@ -81,7 +83,6 @@ export const Listings = () => {
 
   const handleLikeChange = (event, likedItem) => {
     console.log("Like has been clicked");
-    console.log(likedItem.likes);
     if (likedItem.likes.includes(username)) {
       likedItem.likes = likedItem.likes.filter((user) => user !== username);
     } else {

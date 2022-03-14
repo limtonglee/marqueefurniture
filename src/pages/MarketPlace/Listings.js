@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // import { user } from "../../data/currentUserData";
 import user from "../../data/currentUserData2";
+import { useStores } from "../../stores/RootStore";
 import { getListings } from "../../services/Listings";
 import { likedListing } from "../../services/Listings";
 import { unlikeListing } from "../../services/Listings";
@@ -45,6 +46,7 @@ export const Listings = () => {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [listings, setListings] = useState([]);
+  const { userStore } = useStores();
 
   //first use effect only called once
   useEffect(() => {
@@ -83,6 +85,7 @@ export const Listings = () => {
 
   const handleLikeChange = (event, likedItem) => {
     console.log("Like has been clicked");
+    console.log(userStore.id);
     if (likedItem.likes.includes(username)) {
       likedItem.likes = likedItem.likes.filter((user) => user !== username);
     } else {

@@ -19,7 +19,7 @@ import { ShopCategories } from "./pages/SellerCenter/Shop/Categories";
 import { ShopCategoryDetails } from "./pages/SellerCenter/Shop/CategoryDetails";
 import { ShopProfile } from "./pages/SellerCenter/Shop/Profile";
 import { ShopRating } from "./pages/SellerCenter/Shop/Rating";
-import { Voucher } from "./pages/SellerCenter/Voucher";
+import { Voucher } from "./pages/SellerCenter/Voucher/Voucher";
 import Ideas from "./pages/SocialMedia/Ideas";
 import Post from "./pages/SocialMedia/Posts/Post";
 import CreateNewPost from "./pages/SocialMedia/Posts/CreateNewPost";

@@ -11,6 +11,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { login } from "../../services/Login";
 import { useStores } from "../../stores/RootStore";
 
 const Login = () => {
@@ -23,16 +24,30 @@ const Login = () => {
       password: data.get("password"),
     });
 
-    //on success set login
-    if (data.get("email") === "admin") {
-      setAdminLogin();
-    } else {
-      setLogin(data.get("email"));
-    }
+    login(data.get("email"), data.get("password"))
+      .then((response) => {
+        if (response.status === 200) {
+          const user = response.data[0];
+          setLogin(
+            user.id,
+            user.username,
+            user.email,
+            user.type,
+            user.profilepic,
+            user.address
+          );
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
-    //on failure to do
+    // // on success set login
+    // if (data.get("email") === "admin") {
+    //   setAdminLogin();
+    // } else {
+    //   setLogin(data.get("email"));
   };
-
 
   /*
     const onSubmitForm = async e => {
@@ -93,18 +108,20 @@ const Login = () => {
 
   */
 
-
   const { userStore } = useStores();
 
   let navigate = useNavigate();
 
-  const setLogin = (email) => {
+  const setLogin = (id, username, email, type, profilepic, address) => {
     userStore.setIsLoggedIn();
-    userStore.setUserName("Jack Ma");
-    userStore.setDescription(
-      "Hi, I’m Jack Ma. If you want good vintage furniture, come to Ali Mama."
-    );
-    userStore.setUserWebLink("www.jackma.com");
+    userStore.setUserName(username);
+    userStore.setId(id);
+    userStore.setDescription("to do desc");
+    //to change set to seller
+    if (type === "Customer") {
+      userStore.setIsSeller();
+    }
+    userStore.setUserWebLink("to do link");
 
     navigate("/marketplace");
   };

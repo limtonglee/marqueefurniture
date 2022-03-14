@@ -1,6 +1,6 @@
 // for social media - ideas, moodboards
 
-import { get, remove, postAsFormInput } from "./api";
+import { get, remove, update, postAsFormInput } from "./api";
 import {
   URL_GET_POSTS,
   URL_GET_POST_DETAILS,
@@ -11,16 +11,18 @@ import {
   URL_DELETE_POST_COMMENT,
   URL_GET_POST_LISTINGS,
   URL_CREATE_POST,
+  URL_GET_USERNAME_BY_ID,
   URL_LIKE_POST,
   URL_UNLIKE_POST,
   URL_GET_TAGS,
   URL_ADD_POST_TO_MOODBOARD,
   URL_DELETE_POST_FROM_MOODBOARD,
   URL_GET_USER_MOODBOARDS,
-  // URL_GET_MOODBOARD_DETAILS,
-  // URL_UPDATE_MOODBOARD_DETAILS,
+  URL_GET_MOODBOARD_DETAILS,
+  URL_GET_MOODBOARD_POSTS,
   URL_CREATE_MOODBOARD,
   // URL_CREATE_MOODBOARD_WITH_POST,
+  URL_EDIT_MOODBOARD,
   URL_DELETE_MOODBOARD,
 } from "../services/endpoints";
 
@@ -89,6 +91,13 @@ export const createPost = (image, description, tags, products) => {
   return postAsFormInput(URL_CREATE_POST, body);
 };
 
+export const getUsernamById = (userId) => {
+  const params = {
+    userId: userId,
+  };
+  return get(URL_GET_USERNAME_BY_ID, params);
+};
+
 export const likePost = (postId, userId) => {
   const body = {
     postId: postId,
@@ -98,11 +107,11 @@ export const likePost = (postId, userId) => {
 };
 
 export const unlikePost = (postId, userId) => {
-  const body = {
+  const params = {
     postId: postId,
     userId: userId,
   };
-  return remove(URL_UNLIKE_POST, body);
+  return remove(URL_UNLIKE_POST, params);
 };
 
 export const getAllTags = () => {
@@ -118,11 +127,11 @@ export const addPostToMoodboard = (postId, moodboardId) => {
 };
 
 export const deletePostFromMoodboard = (postId, moodboardId) => {
-  const body = {
+  const params = {
     postId: postId,
     moodBoardId: moodboardId,
   };
-  return remove(URL_DELETE_POST_FROM_MOODBOARD, body);
+  return remove(URL_DELETE_POST_FROM_MOODBOARD, params);
 };
 
 export const getUserMoodboards = (userId) => {
@@ -130,6 +139,13 @@ export const getUserMoodboards = (userId) => {
     userId: userId,
   };
   return get(URL_GET_USER_MOODBOARDS, params);
+};
+
+export const getMoodboardPosts = (moodboardId) => {
+  const params = {
+    moodBoardId: moodboardId,
+  };
+  return get(URL_GET_MOODBOARD_POSTS, params);
 };
 
 export const createMoodboard = (boardName, description, userId) => {
@@ -142,9 +158,18 @@ export const createMoodboard = (boardName, description, userId) => {
   return postAsFormInput(URL_CREATE_MOODBOARD, body);
 };
 
-export const deleteMoodboard = (moodboardId) => {
+export const editMoodboard = (moodBoardId, boardName, description) => {
   const body = {
+    moodBoardId: moodBoardId,
+    boardName: boardName,
+    description: description,
+  };
+  return update(URL_EDIT_MOODBOARD, body);
+};
+
+export const deleteMoodboard = (moodboardId) => {
+  const params = {
     moodBoardId: moodboardId,
   };
-  return remove(URL_DELETE_MOODBOARD, body);
+  return remove(URL_DELETE_MOODBOARD, params);
 };

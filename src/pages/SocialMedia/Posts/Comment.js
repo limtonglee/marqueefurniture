@@ -19,16 +19,6 @@ const Comment = ({ comment, post, setPost, getCompletePost }) => {
     },
   };
 
-  // const deleteComment = () => {
-  //   console.log("delete comment");
-
-  //   const newPost = { ...post };
-  //   newPost.comments = [...newPost.comments].filter(
-  //     (postComment) => postComment.id !== comment.id
-  //   );
-  //   setPost(newPost);
-  // };
-
   const deleteComment = async (commentId) => {
     try {
       const res = await socialMediaAPI.deletePostComment(commentId);

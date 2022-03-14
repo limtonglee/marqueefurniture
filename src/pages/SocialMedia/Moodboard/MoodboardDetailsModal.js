@@ -50,6 +50,8 @@ const MoodboardDetailsModal = ({
 
   const [boardName, setBoardName] = useState("");
   const [boardDescription, setBoardDescription] = useState("");
+  const [boardNameError, setBoardNameError] = useState(false);
+  const [boardNameHelperText, setBoardNameHelperText] = useState("");
   // const [filterRoomValues, setfilterRoomValues] = useState([]);
   // const [filterDesignValues, setfilterDesignValues] = useState([]);
 
@@ -130,6 +132,11 @@ const MoodboardDetailsModal = ({
     }
   };
 
+  const displayBoardnameError = () => {
+    setBoardNameError(true);
+    setBoardNameHelperText("Please fill in the board name");
+  };
+
   const createMoodboard = () => {
     console.log("createMoodboard");
     // console.log(filterRoomValues);
@@ -137,11 +144,19 @@ const MoodboardDetailsModal = ({
     console.log(boardDescription);
     console.log(boardName);
 
-    createMoodboardAPI(boardName, boardDescription);
+    if (boardName.length === 0) {
+      displayBoardnameError();
+    } else {
+      createMoodboardAPI(boardName, boardDescription);
 
-    // navigate(`/moodboard/${user.username}/${newId}`);
-    closeMoodboardModal();
-    handleClickSnackbar("Created new moodboard");
+      setBoardName("");
+      setBoardDescription("");
+
+      // navigate(`/moodboard/${user.username}/${newId}`);
+      prepareTextFields();
+      closeMoodboardModal();
+      handleClickSnackbar("Created new moodboard");
+    }
   };
 
   const prepareToUpdate = () => {
@@ -172,10 +187,19 @@ const MoodboardDetailsModal = ({
     // setfilterDesignValues([]);
   };
 
-  useEffect(() => {
+  const prepareTextFields = () => {
     isEditing ? prepareToUpdate() : prepareToCreate();
+    setBoardNameError(false);
+    setBoardNameHelperText("");
+  };
+
+  useEffect(() => {
+    // isEditing ? prepareToUpdate() : prepareToCreate();
+    // setBoardNameError(false);
+    // setBoardNameHelperText("");
+    prepareTextFields();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEditing]);
+  }, []);
 
   const updateMoodboard = () => {
     // moodboardToEdit
@@ -200,6 +224,7 @@ const MoodboardDetailsModal = ({
 
     updateMoodboardAPI(moodboardToEdit.id, boardName, boardDescription);
 
+    prepareTextFields();
     closeMoodboardModal();
     handleClickSnackbar("Updated successfully");
   };
@@ -209,6 +234,7 @@ const MoodboardDetailsModal = ({
       <Modal
         open={open}
         onClose={() => {
+          prepareTextFields();
           closeMoodboardModal();
         }}
         aria-labelledby="modal-modal-title"
@@ -248,6 +274,9 @@ const MoodboardDetailsModal = ({
                 onChange={handleBoardName}
                 sx={{ width: "100%" }}
                 size="small"
+                required
+                error={boardNameError}
+                helperText={boardNameHelperText}
               />
             </Box>
             <Box>

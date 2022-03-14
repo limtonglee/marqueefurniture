@@ -378,8 +378,54 @@ const MoodboardModal = ({
             </Box>
 
             <Box sx={modalStyles.contents}>
-              <List dense>
+              <Box sx={{ maxHeight: 250, overflow: "scroll" }}>
+                <List dense sx={{ height: "20 !important" }}>
+                  {moodboards.map((moodboard, index) => {
+                    const moodboardName = moodboard.boardname;
+                    const moodboardId = moodboard.id;
+                    const labelId = `checkbox-list-secondary-label-${moodboardName}`;
+                    return (
+                      <ListItem
+                        key={moodboardId}
+                        secondaryAction={
+                          <Checkbox
+                            edge="end"
+                            onChange={handleToggle(moodboardId)}
+                            checked={checked.indexOf(moodboardId) !== -1}
+                            inputProps={{
+                              "aria-labelledby": labelId,
+                            }}
+                          />
+                        }
+                        disablePadding
+                      >
+                        <ListItemButton sx={{ pl: 0 }}>
+                          <ListItemAvatar>
+                            <Avatar
+                              alt={`${moodboardName} Moodboard`}
+                              src={
+                                moodboard.moodboardItems.length > 0
+                                  ? moodboard.moodboardItems[0].image
+                                  : null
+                              }
+                              sx={{
+                                borderRadius: "10%",
+                              }}
+                            />
+                          </ListItemAvatar>
+                          <ListItemText
+                            id={moodboardId}
+                            primary={moodboardName}
+                          />
+                        </ListItemButton>
+                      </ListItem>
+                    );
+                  })}
+                </List>
+              </Box>
+              {/* <List dense sx={{ height: "20 !important" }}>
                 {moodboards.map((moodboard, index) => {
+                  console.log("here", moodboard);
                   const moodboardName = moodboard.boardname;
                   const moodboardId = moodboard.id;
                   const labelId = `checkbox-list-secondary-label-${moodboardName}`;
@@ -402,7 +448,11 @@ const MoodboardModal = ({
                         <ListItemAvatar>
                           <Avatar
                             alt={`${moodboardName} Moodboard`}
-                            src={moodboard.moodboardItems[0].image}
+                            src={
+                              moodboard.moodboardItems[0]
+                                ? moodboard.moodboardItems[0].image
+                                : null
+                            }
                             sx={{
                               borderRadius: "10%",
                             }}
@@ -416,7 +466,7 @@ const MoodboardModal = ({
                     </ListItem>
                   );
                 })}
-              </List>
+              </List> */}
             </Box>
             <Box>
               <Button size="small" onClick={addPostToNewMoodboard}>
@@ -473,45 +523,51 @@ const MoodboardModal = ({
             </Box>
 
             <Box sx={modalStyles.contents}>
-              <List dense>
-                {moodboards.map((moodboard, index) => {
-                  const moodboardName = moodboard.boardname;
-                  const moodboardId = moodboard.id;
-                  const labelId = `checkbox-list-secondary-label-${moodboardName}`;
-                  return (
-                    <ListItem
-                      key={moodboardId}
-                      secondaryAction={
-                        <Checkbox
-                          edge="end"
-                          onChange={handleToggle(moodboardId)}
-                          checked={checked.indexOf(moodboardId) !== -1}
-                          inputProps={{
-                            "aria-labelledby": labelId,
-                          }}
-                        />
-                      }
-                      disablePadding
-                    >
-                      <ListItemButton sx={{ pl: 0 }}>
-                        <ListItemAvatar>
-                          <Avatar
-                            alt={`${moodboardName} Moodboard`}
-                            src={moodboard.moodboardItems[0].image}
-                            sx={{
-                              borderRadius: "10%",
+              <Box sx={{ maxHeight: 250, overflow: "scroll" }}>
+                <List dense>
+                  {moodboards.map((moodboard, index) => {
+                    const moodboardName = moodboard.boardname;
+                    const moodboardId = moodboard.id;
+                    const labelId = `checkbox-list-secondary-label-${moodboardName}`;
+                    return (
+                      <ListItem
+                        key={moodboardId}
+                        secondaryAction={
+                          <Checkbox
+                            edge="end"
+                            onChange={handleToggle(moodboardId)}
+                            checked={checked.indexOf(moodboardId) !== -1}
+                            inputProps={{
+                              "aria-labelledby": labelId,
                             }}
                           />
-                        </ListItemAvatar>
-                        <ListItemText
-                          id={moodboardId}
-                          primary={moodboardName}
-                        />
-                      </ListItemButton>
-                    </ListItem>
-                  );
-                })}
-              </List>
+                        }
+                        disablePadding
+                      >
+                        <ListItemButton sx={{ pl: 0 }}>
+                          <ListItemAvatar>
+                            <Avatar
+                              alt={`${moodboardName} Moodboard`}
+                              src={
+                                moodboard.moodboardItems.length > 0
+                                  ? moodboard.moodboardItems[0].image
+                                  : null
+                              }
+                              sx={{
+                                borderRadius: "10%",
+                              }}
+                            />
+                          </ListItemAvatar>
+                          <ListItemText
+                            id={moodboardId}
+                            primary={moodboardName}
+                          />
+                        </ListItemButton>
+                      </ListItem>
+                    );
+                  })}
+                </List>
+              </Box>
             </Box>
             <Box>
               <Button size="small" onClick={addPostToNewMoodboard}>

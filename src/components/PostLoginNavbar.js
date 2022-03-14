@@ -4,7 +4,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import StorefrontIcon from "@mui/icons-material/Storefront";
-import { Divider } from "@mui/material";
+import { Divider, Tooltip } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Badge from "@mui/material/Badge";
@@ -16,14 +16,12 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
-import {Tooltip} from "@mui/material";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import jack from "../assets/images/jack.jpg";
 import { useStores } from "../stores/RootStore";
 import NotificationsPopover from "./NotificationsPopover";
 import ControlledSwitches from "./SwitchNav";
-
 
 // const pageLinks = [
 // 	{ text: "Seller Center", link: "/sellercenter" },
@@ -34,102 +32,103 @@ import ControlledSwitches from "./SwitchNav";
 const AdminPageLinks = [{ text: "Admin Management", link: "/admin" }];
 
 const settings = [
-	{ text: "Profile", link: "/profile" },
-	{ text: "Moodboards", link: "/moodboard/elon/0" },
-	{ text: "Cart", link: "/cart" },
-	{ text: "Chat", link: "/chat" },
-	{ text: "Seller Center", link: "/sellercenter" },
+  { text: "Profile", link: "/profile" },
+  { text: "Moodboards", link: "/moodboard/elon/0" },
+  { text: "Cart", link: "/cart" },
+  { text: "Chat", link: "/chat" },
+  { text: "Seller Center", link: "/sellercenter" },
 ];
 
 const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
-	const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-	let navigate = useNavigate();
+  let navigate = useNavigate();
 
-	const handleOpenUserMenu = (event) => {
-		setAnchorElUser(event.currentTarget);
-	};
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
 
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
-	const handleCloseUserMenu = () => {
-		setAnchorElUser(null);
-	};
+  const { userStore } = useStores();
 
-	const { userStore } = useStores();
+  const { cartStore } = useStores();
 
-	const { cartStore } = useStores();
+  const setLogout = (e) => {
+    userStore.setIsLoggedOut();
+    navigate("/marketplace");
+  };
 
-	const setLogout = (e) => {
-		userStore.setIsLoggedOut();
-		navigate("/marketplace");
-	};
-
-	return (
-		<>
-			<AppBar position="fixed" sx={appbarStyle}>
-				<Container maxWidth="xl">
-					<Toolbar disableGutters>
-						<Link
-							key={"mf"}
-							to={"/"}
-							style={{ textDecoration: "none", color: "white" }}
-							onClick={() => setChecked(false)}
-						>
-							<Avatar
-								src="static/mf_fulllogo_white.svg"
-								sx={{ width: 80, height: 80 }}
-							/>
-						</Link>
-						<Box
-							sx={{
-								flexGrow: 1,
-							}}
-						>
-							{!userStore.isAdmin && (
-								<Grid item xs={4}>
-									<ControlledSwitches
-										checked={checked}
-										handleChange={handleChange}
-									/>
-								</Grid>
-							)}
-							{!!userStore.isAdmin && (
-								<Grid container spacing={2}>
-									<Grid item xs={4} sx={{ mt: 2 }}>
-										<ControlledSwitches
-											checked={checked}
-											handleChange={handleChange}
-										/>
-									</Grid>
-									<Grid item xs={6}>
-										{AdminPageLinks.map((page) => (
-											<Link
-												key={page.link}
-												to={page.link}
-												style={{
-													textDecoration: "none",
-												}}
-											>
-												<Button
-													key={page.link}
-													sx={{
-														my: 2,
-														color: "white",
-														display: "block",
-													}}
-												>
-													{page.text}
-												</Button>
-											</Link>
-										))}
-									</Grid>
-								</Grid>
-							)}
-						</Box>
+  return (
+    <>
+      <AppBar position="fixed" sx={appbarStyle}>
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Link
+              key={"mf"}
+              to={"/"}
+              style={{ textDecoration: "none", color: "white" }}
+              onClick={() => setChecked(false)}
+            >
+              <Avatar
+                src="static/mf_fulllogo_white.svg"
+                sx={{ width: 80, height: 80 }}
+              />
+            </Link>
+            <Box
+              sx={{
+                flexGrow: 1,
+              }}
+            >
+              {!userStore.isAdmin && (
+                <Grid item xs={4}>
+                  <ControlledSwitches
+                    checked={checked}
+                    handleChange={handleChange}
+                  />
+                </Grid>
+              )}
+              {!!userStore.isAdmin && (
+                <Grid container spacing={2}>
+                  <Grid item xs={4} sx={{ mt: 2 }}>
+                    <ControlledSwitches
+                      checked={checked}
+                      handleChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    {AdminPageLinks.map((page) => (
+                      <Link
+                        key={page.link}
+                        to={page.link}
+                        style={{
+                          textDecoration: "none",
+                        }}
+                      >
+                        <Button
+                          key={page.link}
+                          sx={{
+                            my: 2,
+                            color: "white",
+                            display: "block",
+                          }}
+                        >
+                          {page.text}
+                        </Button>
+                      </Link>
+                    ))}
+                  </Grid>
+                </Grid>
+              )}
+            </Box>
 
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open notification">
-                <NotificationsPopover />
+                <>
+                  <NotificationsPopover />
+                </>
               </Tooltip>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -217,5 +216,5 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
 export default PostLoginNavBar;
 
 const appbarStyle = {
-	opacity: 1,
+  opacity: 1,
 };

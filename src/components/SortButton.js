@@ -141,10 +141,9 @@ export default function UnstyledSelectSimple(props) {
     <>
       {props.variant === "moodboard" && (
         <CustomSelect defaultValue={"ascending"} onChange={props.handleSort}>
-          <StyledOption value={"ascending"}>Ascending</StyledOption>
-          <StyledOption value={"descending"}>Descending</StyledOption>
-          <StyledOption value={"recent"}>Recent</StyledOption>
-          {/* <StyledOption value={"for you"}>For You</StyledOption> */}
+          <StyledOption value={"ascending"}>A &#8594; Z</StyledOption>
+          <StyledOption value={"descending"}>Z &#8594; A</StyledOption>
+          {/* <StyledOption value={"recent"}>Recent</StyledOption> */}
         </CustomSelect>
       )}
       {props.variant === "ideas" && (

@@ -4,11 +4,12 @@ import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 const MoodboardPreview = ({ moodboard }) => {
   return (
     <>
-      <Card>
+      <Card sx={{ boxShadow: 0 }}>
         {moodboard.moodboardItems.length > 0 ? (
           <Grid container spacing={0.5}>
             <Grid item xs={6}>
@@ -64,7 +65,27 @@ const MoodboardPreview = ({ moodboard }) => {
             </Grid>
           </Grid>
         ) : (
-          <h1>no pins yet</h1>
+          <Box
+            sx={{
+              height: 130,
+              backgroundColor: "primary.lighter",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{
+                // fontWeight: "normal",
+                // fontStyle: "italic",
+                color: "primary.light",
+              }}
+              component="div"
+            >
+              No pins
+            </Typography>
+          </Box>
         )}
       </Card>
     </>

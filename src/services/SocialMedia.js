@@ -107,11 +107,11 @@ export const likePost = (postId, userId) => {
 };
 
 export const unlikePost = (postId, userId) => {
-  const body = {
+  const params = {
     postId: postId,
     userId: userId,
   };
-  return remove(URL_UNLIKE_POST, body);
+  return remove(URL_UNLIKE_POST, params);
 };
 
 export const getAllTags = () => {
@@ -127,11 +127,11 @@ export const addPostToMoodboard = (postId, moodboardId) => {
 };
 
 export const deletePostFromMoodboard = (postId, moodboardId) => {
-  const body = {
+  const params = {
     postId: postId,
     moodBoardId: moodboardId,
   };
-  return remove(URL_DELETE_POST_FROM_MOODBOARD, body);
+  return remove(URL_DELETE_POST_FROM_MOODBOARD, params);
 };
 
 export const getUserMoodboards = (userId) => {
@@ -168,8 +168,8 @@ export const editMoodboard = (moodBoardId, boardName, description) => {
 };
 
 export const deleteMoodboard = (moodboardId) => {
-  const body = {
+  const params = {
     moodBoardId: moodboardId,
   };
-  return remove(URL_DELETE_MOODBOARD, body);
+  return remove(URL_DELETE_MOODBOARD, params);
 };

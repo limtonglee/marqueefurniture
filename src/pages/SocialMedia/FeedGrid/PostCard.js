@@ -158,9 +158,11 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
 
     if (likesChecked) {
       console.log("unlike");
+      setLikesChecked(false);
       unlikePost(post.id, user.id);
     } else {
       console.log("like");
+      setLikesChecked(true);
       likePost(post.id, user.id);
     }
 

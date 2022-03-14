@@ -11,6 +11,13 @@ import MoodboardPreview from "./MoodboardPreview";
 import { Link } from "react-router-dom";
 import SortButton from "../../../components/SortButton";
 import * as socialMediaAPI from "../../../services/SocialMedia";
+import MoodboardDetailsModal from "../../SocialMedia/Moodboard/MoodboardDetailsModal";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const MoodboardViewInProfile = () => {
   let currentSort = "popular";
@@ -69,6 +76,10 @@ const MoodboardViewInProfile = () => {
     getCompleteMoodboardData();
   }, []);
 
+  const refreshData = () => {
+    getCompleteMoodboardData();
+  };
+
   // useEffect(() => {
   //   getCompleteMoodboardData();
   // }, [moodboards]);
@@ -115,11 +126,66 @@ const MoodboardViewInProfile = () => {
     sortFeed();
   };
 
+  const [open, setOpen] = React.useState(false);
+
+  const closeMoodboardModal = () => {
+    setOpen(false);
+  };
+
+  const [snackbarMessage, setSnackbarMessage] = React.useState("");
+
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+
+  const handleClickSnackbar = (message) => {
+    setSnackbarMessage(message);
+    setOpenSnackbar(true);
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackbar(false);
+    setSnackbarMessage("");
+  };
+
+  const handleCreateMoodboard = () => {
+    console.log("handleCreateMoodboard");
+    setOpen(true);
+  };
+
   return (
     <>
+      <MoodboardDetailsModal
+        open={open}
+        closeMoodboardModal={closeMoodboardModal}
+        isEditing={false}
+        handleClickSnackbar={handleClickSnackbar}
+        refreshData={refreshData}
+      />
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={2500}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
       <Box sx={{ my: 3, display: "flex", justifyContent: "space-between" }}>
         <SortButton handleSort={handleSort} variant="moodboard" />
-        <Button startIcon={<AddIcon />} variant="outlined" size="large">
+        <Button
+          startIcon={<AddIcon />}
+          variant="outlined"
+          size="large"
+          onClick={handleCreateMoodboard}
+        >
           New Moodboard
         </Button>
       </Box>
@@ -141,7 +207,7 @@ const MoodboardViewInProfile = () => {
                 </Typography>
                 <Typography variant="body1" gutterBottom>
                   {`${moodboard.moodboardItems.length} pin${
-                    moodboard.moodboardItems.length > 1 ? "s" : ""
+                    moodboard.moodboardItems.length !== 1 ? "s" : ""
                   }`}
                 </Typography>
                 <MoodboardPreview moodboard={moodboard} />

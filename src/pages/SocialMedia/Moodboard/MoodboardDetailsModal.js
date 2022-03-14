@@ -12,13 +12,15 @@ import Grid from "@mui/material/Grid";
 // import { user } from "../../../data/currentUserData";
 import user from "../../../data/currentUserData2";
 import { useNavigate } from "react-router-dom";
+import * as socialMediaAPI from "../../../services/SocialMedia";
 
 const MoodboardDetailsModal = ({
   open,
   closeMoodboardModal,
   moodboardToEdit,
   isEditing,
-  setIsEditing,
+  // setIsEditing,
+  refreshData,
   handleClickSnackbar,
 }) => {
   const modalStyles = {
@@ -48,47 +50,47 @@ const MoodboardDetailsModal = ({
 
   const [boardName, setBoardName] = useState("");
   const [boardDescription, setBoardDescription] = useState("");
-  const [filterRoomValues, setfilterRoomValues] = useState([]);
-  const [filterDesignValues, setfilterDesignValues] = useState([]);
+  // const [filterRoomValues, setfilterRoomValues] = useState([]);
+  // const [filterDesignValues, setfilterDesignValues] = useState([]);
 
   let navigate = useNavigate();
 
-  const roomTags = [
-    { id: 0, title: "Living Room" },
-    { id: 1, title: "Kitchen" },
-    { id: 2, title: "Balcony" },
-    { id: 3, title: "Bedroom" },
-    { id: 4, title: "Study Room" },
-    { id: 5, title: "Service Yard" },
-  ];
+  // const roomTags = [
+  //   { id: 0, title: "Living Room" },
+  //   { id: 1, title: "Kitchen" },
+  //   { id: 2, title: "Balcony" },
+  //   { id: 3, title: "Bedroom" },
+  //   { id: 4, title: "Study Room" },
+  //   { id: 5, title: "Service Yard" },
+  // ];
 
-  const designTags = [
-    { id: 0, title: "Art Deco" },
-    { id: 1, title: "Asian Zen" },
-    { id: 2, title: "Bohemian" },
-    { id: 3, title: "Coastal" },
-    { id: 4, title: "Contemporary" },
-    { id: 5, title: "Eclectic" },
-    { id: 6, title: "French Country" },
-    { id: 7, title: "Industrial" },
-    { id: 8, title: "Meditarranean" },
-    { id: 9, title: "Minimalist" },
-    { id: 10, title: "Modern" },
-    { id: 11, title: "Modern Farmhouse" },
-    { id: 12, title: "Rustic" },
-    { id: 13, title: "Scandinavian" },
-    { id: 14, title: "Shabby Chic" },
-    { id: 15, title: "Traditional" },
-    { id: 16, title: "Transitional" },
-  ];
+  // const designTags = [
+  //   { id: 0, title: "Art Deco" },
+  //   { id: 1, title: "Asian Zen" },
+  //   { id: 2, title: "Bohemian" },
+  //   { id: 3, title: "Coastal" },
+  //   { id: 4, title: "Contemporary" },
+  //   { id: 5, title: "Eclectic" },
+  //   { id: 6, title: "French Country" },
+  //   { id: 7, title: "Industrial" },
+  //   { id: 8, title: "Meditarranean" },
+  //   { id: 9, title: "Minimalist" },
+  //   { id: 10, title: "Modern" },
+  //   { id: 11, title: "Modern Farmhouse" },
+  //   { id: 12, title: "Rustic" },
+  //   { id: 13, title: "Scandinavian" },
+  //   { id: 14, title: "Shabby Chic" },
+  //   { id: 15, title: "Traditional" },
+  //   { id: 16, title: "Transitional" },
+  // ];
 
-  const handleChangeForFilterRoom = (event, value) => {
-    setfilterRoomValues(value);
-  };
+  // const handleChangeForFilterRoom = (event, value) => {
+  //   setfilterRoomValues(value);
+  // };
 
-  const handleChangeForFilterDesign = (event, value) => {
-    setfilterDesignValues(value);
-  };
+  // const handleChangeForFilterDesign = (event, value) => {
+  //   setfilterDesignValues(value);
+  // };
 
   const handleBoardDescription = (event) => {
     setBoardDescription(event.target.value);
@@ -98,55 +100,76 @@ const MoodboardDetailsModal = ({
     setBoardName(event.target.value);
   };
 
+  const createMoodboardAPI = async (boardName, description) => {
+    try {
+      const res = await socialMediaAPI.createMoodboard(
+        boardName,
+        description,
+        user.id
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log(data);
+      refreshData(); // function to refresh data?
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateMoodboardAPI = async (moodBoardId, boardName, description) => {
+    try {
+      const res = await socialMediaAPI.editMoodboard(
+        moodBoardId,
+        boardName,
+        description
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log(data);
+      // function to refresh data?
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const createMoodboard = () => {
     console.log("createMoodboard");
-    console.log(filterRoomValues);
-    console.log(filterDesignValues);
+    // console.log(filterRoomValues);
+    // console.log(filterDesignValues);
     console.log(boardDescription);
     console.log(boardName);
 
-    const newId = Math.floor(Math.random() * 100 + 1);
+    createMoodboardAPI(boardName, boardDescription);
 
-    const newMoodboard = {
-      id: { newId },
-      boardName: { boardName },
-      description: { boardDescription },
-      tags: [{ filterRoomValues }, { filterDesignValues }],
-      isPrivate: false,
-      moodboardItems: [],
-    };
-
-    user.moodboards.push(newMoodboard);
-    navigate(`/moodboard/${user.username}/${newId}`);
+    // navigate(`/moodboard/${user.username}/${newId}`);
     closeMoodboardModal();
+    handleClickSnackbar("Created new moodboard");
   };
 
   const prepareToUpdate = () => {
     setBoardName(moodboardToEdit.boardName);
     setBoardDescription(moodboardToEdit.description);
 
-    const newFilterRoomValues = [];
-    for (let tag of roomTags) {
-      if (moodboardToEdit.tags[0].includes(tag.title)) {
-        newFilterRoomValues.push(tag);
-      }
-    }
-    setfilterRoomValues(newFilterRoomValues);
+    // const newFilterRoomValues = [];
+    // for (let tag of roomTags) {
+    //   if (moodboardToEdit.tags[0].includes(tag.title)) {
+    //     newFilterRoomValues.push(tag);
+    //   }
+    // }
+    // setfilterRoomValues(newFilterRoomValues);
 
-    const newFilterDesignValues = [];
-    for (let tag of designTags) {
-      if (moodboardToEdit.tags[1].includes(tag.title)) {
-        newFilterDesignValues.push(tag);
-      }
-    }
-    setfilterDesignValues(newFilterDesignValues);
+    // const newFilterDesignValues = [];
+    // for (let tag of designTags) {
+    //   if (moodboardToEdit.tags[1].includes(tag.title)) {
+    //     newFilterDesignValues.push(tag);
+    //   }
+    // }
+    // setfilterDesignValues(newFilterDesignValues);
   };
 
   const prepareToCreate = () => {
     setBoardName("");
     setBoardDescription("");
-    setfilterRoomValues([]);
-    setfilterDesignValues([]);
+    // setfilterRoomValues([]);
+    // setfilterDesignValues([]);
   };
 
   useEffect(() => {
@@ -155,24 +178,28 @@ const MoodboardDetailsModal = ({
   }, [isEditing]);
 
   const updateMoodboard = () => {
+    // moodboardToEdit
     console.log("update moodboard");
 
-    const newMoodboard = {
-      ...moodboardToEdit,
-      boardName: { boardName },
-      boardDescription: { boardDescription },
-      tags: [filterRoomValues, filterDesignValues],
-    };
+    // const newMoodboard = {
+    //   ...moodboardToEdit,
+    //   boardName: { boardName },
+    //   boardDescription: { boardDescription },
+    //   tags: [filterRoomValues, filterDesignValues],
+    // };
 
-    //TODO: update new moodboard
-    for (let moodboard in user.moodboards) {
-      if (moodboard.id === moodboardToEdit.id) {
-        moodboard = newMoodboard;
-      }
-    }
+    // //TODO: update new moodboard
+    // for (let moodboard in user.moodboards) {
+    //   if (moodboard.id === moodboardToEdit.id) {
+    //     moodboard = newMoodboard;
+    //   }
+    // }
 
-    console.log("updated moodboard", newMoodboard);
-    setIsEditing(false);
+    // console.log("updated moodboard", newMoodboard);
+    // setIsEditing(false);
+
+    updateMoodboardAPI(moodboardToEdit.id, boardName, boardDescription);
+
     closeMoodboardModal();
     handleClickSnackbar("Updated successfully");
   };
@@ -210,7 +237,36 @@ const MoodboardDetailsModal = ({
             </IconButton>
           </Box>
           <Stack spacing={2} sx={{ mt: 2 }}>
-            <Grid container spacing={2}>
+            <Box>
+              <Typography variant="subtitle1" gutterBottom component="div">
+                Board name
+              </Typography>
+              <TextField
+                id="outlined--static"
+                placeholder="Enter board name..."
+                value={boardName}
+                onChange={handleBoardName}
+                sx={{ width: "100%" }}
+                size="small"
+              />
+            </Box>
+            <Box>
+              <Typography variant="subtitle1" gutterBottom component="div">
+                Board description
+              </Typography>
+              <TextField
+                id="outlined-multiline-static"
+                multiline
+                rows={3}
+                placeholder="Enter description..."
+                value={boardDescription}
+                onChange={handleBoardDescription}
+                sx={{ width: "100%" }}
+                size="small"
+              />
+            </Box>
+
+            {/* <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
                 <Box>
                   <Typography variant="subtitle1" gutterBottom component="div">
@@ -301,7 +357,7 @@ const MoodboardDetailsModal = ({
                   />
                 </Box>
               </Grid>
-            </Grid>
+            </Grid> */}
           </Stack>
           <Box>
             {isEditing ? (

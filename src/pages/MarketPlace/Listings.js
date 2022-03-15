@@ -25,7 +25,7 @@ import { Link } from "react-router-dom";
 import user from "../../data/currentUserData2";
 import { getListings } from "../../services/Listings";
 import { likedListing } from "../../services/Listings";
-import { unlikeListing } from "../../services/Listings";
+import { unlikedListing } from "../../services/Listings";
 import { useStores } from "../../stores/RootStore";
 
 //This is the main marketplace page
@@ -97,7 +97,7 @@ export const Listings = () => {
 
   const unlikeListing = async (listingId, userId) => {
     try {
-      const res = await unlikeListing(listingId, userId);
+      const res = await unlikedListing(listingId, userId);
       const data = JSON.parse(JSON.stringify(res)).data;
       console.log(data);
     } catch (error) {

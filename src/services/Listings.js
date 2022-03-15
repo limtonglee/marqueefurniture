@@ -29,7 +29,7 @@ export const likedListing = (listingId, userId) => {
   return postAsFormInput(URL_LISTING_LIKE, body);
 }
 
-export const unlikeListing = (listingId, userId) => {
+export const unlikedListing = (listingId, userId) => {
   const body = {
     listingId: listingId,
     userId: userId,

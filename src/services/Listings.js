@@ -25,6 +25,7 @@ export const likedListing = (listingId, userId) => {
     listingId: listingId,
     userId: userId,
   };
+  console.log(listingId, userId);
   return postAsFormInput(URL_LISTING_LIKE, body);
 }
 

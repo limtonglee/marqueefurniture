@@ -23,10 +23,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // import { user } from "../../data/currentUserData";
 import user from "../../data/currentUserData2";
-import { useStores } from "../../stores/RootStore";
 import { getListings } from "../../services/Listings";
 import { likedListing } from "../../services/Listings";
 import { unlikeListing } from "../../services/Listings";
+import { useStores } from "../../stores/RootStore";
 
 //This is the main marketplace page
 /*Things to do:
@@ -83,14 +83,32 @@ export const Listings = () => {
     updateData(newValue);
   };
 
+  const likeListing = async (listingId, userId) => {
+    try {
+      console.log("testing here");
+      const res = await likedListing(listingId, userId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }; 
+
+  const unlikeListing = async (listingId, userId) => {
+    try {
+      const res = await unlikeListing(listingId, userId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
   const handleLikeChange = (event, likedItem) => {
     console.log("Like has been clicked");
     console.log(userStore.id);
-    if (likedItem.likes.includes(username)) {
-      likedItem.likes = likedItem.likes.filter((user) => user !== username);
-    } else {
-      likedItem.likes.push(username);
-    }
+    console.log(likedItem.id);
+    likeListing(likedItem.id, userStore.id);
   };
 
   const handleSearch = (value) => {

@@ -46,7 +46,7 @@ export const Listings = () => {
   const [open, setOpen] = useState(false);
   const [listings, setListings] = useState([]);
   const { userStore } = useStores();
-  const [likesChecked, setLikesChecked] = useState(false);
+  const [likesChecked, setLikesChecked] = useState(() => getLikedListing(userStore.id));
 
   //first use effect only called once
   useEffect(() => {
@@ -87,9 +87,14 @@ export const Listings = () => {
     try {
       const res = await getLikedListing(userId);
       let data = JSON.parse(JSON.stringify(res)).data;
-      data= data.map((id) => id.listingid);
       console.log(data);
-      setLikesChecked(data.includes(listingId) ? true : false);
+      for(let i in data) {
+        if (listingId === i) {
+          return true;
+        } else {
+          return false;
+        }
+      }
     } catch (error) {
       console.error(error);
     }
@@ -100,9 +105,10 @@ export const Listings = () => {
       console.log("testing here");
       const res = await likedListing(listingId, userId);
       const data = JSON.parse(JSON.stringify(res)).data;
-      await checkInitialLike(userId, listingId);
+      let i = checkInitialLike(userId, listingId);
+      console.log(i);
       console.log(data);
-      console.log(likesChecked);
+      //console.log(likesChecked);
     } catch (error) {
       console.error(error);
     }
@@ -123,15 +129,17 @@ export const Listings = () => {
     console.log(userStore.id);
     console.log(likedItem.id);
     console.log(likesChecked);
-    if(likesChecked) {
-      console.log("This will be unliked");
-      unlikeListing(likedItem.id, userStore.id);
-      setLikesChecked(false);
-    } else {
+    console.log(checkInitialLike(userStore.id, likedItem.id));
+    //console.log(likesChecked);
+    //if(checkInitialLike(userStore.id, likedItem.id)) {
+      //console.log("This will be unliked");
+      //unlikeListing(likedItem.id, userStore.id);
+      //setLikesChecked(false);
+    //} else {
       console.log("This will be liked");
       likeListing(likedItem.id, userStore.id);
-      setLikesChecked(true);
-    }
+      //setLikesChecked(true);
+    //}
   };
 
   const handleSearch = (value) => {
@@ -249,7 +257,10 @@ export const Listings = () => {
                     icon={<FavoriteBorder fontSize="small" />}
                     checkedIcon={<Favorite fontSize="small" />}
                     value={item}
-                    checked={likesChecked}
+                    checked={(i) => {
+                      i = checkInitialLike(userStore.id, item.id);
+                      return i;
+                    }}
                     onChange={(e) => {
                       handleSnack();
                       handleLikeChange(e, item);

@@ -46,7 +46,7 @@ export const Listings = () => {
   const [open, setOpen] = useState(false);
   const [listings, setListings] = useState([]);
   const { userStore } = useStores();
-  const [likesChecked, setLikesChecked] = useState(() => getLikedListing(userStore.id));
+  const [likedList, setLikedList] = useState([]);
 
   //first use effect only called once
   useEffect(() => {
@@ -60,12 +60,30 @@ export const Listings = () => {
       });
   }, []);
 
+  useEffect(() => {
+    getLikedListing(userStore.id)
+      .then((response) => {
+        setLikedList(JSON.parse(JSON.stringify(response.data)));
+        // console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   //use effect to check if the listings are updated
   useEffect(() => {
     // console.log("updating data effect: " + value);
     updateData(value);
   }, [listings]);
 
+  const getLikedList = () => {
+    getLikedListing(userStore.id).then((response) => {
+      setLikedList(JSON.parse(JSON.stringify(response.data)));
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
   const handleSnack = () => {
     setOpen(true);
   };
@@ -83,31 +101,24 @@ export const Listings = () => {
     updateData(newValue);
   };
 
-  const checkInitialLike = async(userId, listingId) => {
-    try {
-      const res = await getLikedListing(userId);
-      let data = JSON.parse(JSON.stringify(res)).data;
-      console.log(data);
-      for(let i in data) {
-        if (listingId === i) {
-          return true;
-        } else {
-          return false;
-        }
+  const checkInitialLike = (listingId) => {
+    //console.log(likedList);
+    for (let i in likedList){
+      //console.log(likedList[i].listingid);
+      if(likedList[i].listingid == listingId){
+        return true;
       }
-    } catch (error) {
-      console.error(error);
     }
+    return false;
   }
 
   const likeListing = async (listingId, userId) => {
-    try {
-      console.log("testing here");
+    try {      
       const res = await likedListing(listingId, userId);
       const data = JSON.parse(JSON.stringify(res)).data;
-      let i = checkInitialLike(userId, listingId);
-      console.log(i);
-      console.log(data);
+      //console.log(data);
+      //console.log(likedList);
+      //checkInitialLike(listingId, userId);
       //console.log(likesChecked);
     } catch (error) {
       console.error(error);
@@ -118,28 +129,26 @@ export const Listings = () => {
     try {
       const res = await unlikedListing(listingId, userId);
       const data = JSON.parse(JSON.stringify(res)).data;
-      console.log(data);
-      checkInitialLike(userId, listingId);
+      //console.log(data);
+      //console.log(likedList);
+      //checkInitialLike(userId, listingId);
     } catch (error) {
       console.error(error);
     }
   }
   const handleLikeChange = (event, likedItem) => {
     console.log("Like has been clicked");
-    console.log(userStore.id);
-    console.log(likedItem.id);
-    console.log(likesChecked);
-    console.log(checkInitialLike(userStore.id, likedItem.id));
-    //console.log(likesChecked);
-    //if(checkInitialLike(userStore.id, likedItem.id)) {
-      //console.log("This will be unliked");
-      //unlikeListing(likedItem.id, userStore.id);
-      //setLikesChecked(false);
-    //} else {
+    //console.log(userStore.id);
+    //console.log(likedItem.id);
+    //console.log(checkInitialLike(likedItem.id));
+    if(checkInitialLike(likedItem.id)) {
+      console.log("This will be unliked");
+      unlikeListing(likedItem.id, userStore.id);
+    } else {
       console.log("This will be liked");
       likeListing(likedItem.id, userStore.id);
-      //setLikesChecked(true);
-    //}
+    }
+    //getLikedList();
   };
 
   const handleSearch = (value) => {
@@ -251,19 +260,18 @@ export const Listings = () => {
 
               <Grid item xs={8}>
                 <Box display="flex" justifyContent="flex-end">
+                  
                   <Checkbox
                     size="small"
                     sx={{ color: "secondary" }}
                     icon={<FavoriteBorder fontSize="small" />}
                     checkedIcon={<Favorite fontSize="small" />}
                     value={item}
-                    checked={(i) => {
-                      i = checkInitialLike(userStore.id, item.id);
-                      return i;
-                    }}
+                    checked={checkInitialLike(item.id)}
                     onChange={(e) => {
                       handleSnack();
                       handleLikeChange(e, item);
+                      getLikedList();
                     }}
                   />
                 </Box>

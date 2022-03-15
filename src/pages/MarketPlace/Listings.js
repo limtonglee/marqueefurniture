@@ -29,17 +29,7 @@ import { unlikedListing } from "../../services/Listings";
 import { useStores } from "../../stores/RootStore";
 
 //This is the main marketplace page
-/*Things to do:
-Inclusion of the bar to separate the different listings: "Furniture / Design / Services" Done
-Linking bar up with the difference in the listings Done
-Sharing of URL to the exact listing Done
-Add search bar Done
-Updating of the page to show only furniture, initial loading shows all the listing Done
-Liking and unliking a post Done
-Showcasing that the item has been liked before
-Add filtering 
-Formatting of the listings
-*/
+
 export const Listings = () => {
   const [value, setValue] = useState(0);
   const [data, setData] = useState([]);
@@ -102,9 +92,7 @@ export const Listings = () => {
   };
 
   const checkInitialLike = (listingId) => {
-    //console.log(likedList);
     for (let i in likedList){
-      //console.log(likedList[i].listingid);
       if(likedList[i].listingid == listingId){
         return true;
       }
@@ -116,10 +104,6 @@ export const Listings = () => {
     try {      
       const res = await likedListing(listingId, userId);
       const data = JSON.parse(JSON.stringify(res)).data;
-      //console.log(data);
-      //console.log(likedList);
-      //checkInitialLike(listingId, userId);
-      //console.log(likesChecked);
     } catch (error) {
       console.error(error);
     }
@@ -129,18 +113,12 @@ export const Listings = () => {
     try {
       const res = await unlikedListing(listingId, userId);
       const data = JSON.parse(JSON.stringify(res)).data;
-      //console.log(data);
-      //console.log(likedList);
-      //checkInitialLike(userId, listingId);
     } catch (error) {
       console.error(error);
     }
   }
   const handleLikeChange = (event, likedItem) => {
     console.log("Like has been clicked");
-    //console.log(userStore.id);
-    //console.log(likedItem.id);
-    //console.log(checkInitialLike(likedItem.id));
     if(checkInitialLike(likedItem.id)) {
       console.log("This will be unliked");
       unlikeListing(likedItem.id, userStore.id);
@@ -148,7 +126,6 @@ export const Listings = () => {
       console.log("This will be liked");
       likeListing(likedItem.id, userStore.id);
     }
-    //getLikedList();
   };
 
   const handleSearch = (value) => {

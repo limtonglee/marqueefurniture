@@ -23,7 +23,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // import { user } from "../../data/currentUserData";
 import user from "../../data/currentUserData2";
-import { getListings } from "../../services/Listings";
+import { getLikedListing, getListings } from "../../services/Listings";
 import { likedListing } from "../../services/Listings";
 import { unlikedListing } from "../../services/Listings";
 import { useStores } from "../../stores/RootStore";
@@ -46,6 +46,7 @@ export const Listings = () => {
   const [open, setOpen] = useState(false);
   const [listings, setListings] = useState([]);
   const { userStore } = useStores();
+  const [likesChecked, setLikesChecked] = useState(false);
 
   //first use effect only called once
   useEffect(() => {
@@ -82,13 +83,26 @@ export const Listings = () => {
     updateData(newValue);
   };
 
+  const checkInitialLike = async(userId, listingId) => {
+    try {
+      const res = await getLikedListing(userId);
+      let data = JSON.parse(JSON.stringify(res)).data;
+      data= data.map((id) => id.listingid);
+      console.log(data);
+      setLikesChecked(data.includes(listingId) ? true : false);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const likeListing = async (listingId, userId) => {
     try {
       console.log("testing here");
       const res = await likedListing(listingId, userId);
       const data = JSON.parse(JSON.stringify(res)).data;
-      
+      await checkInitialLike(userId, listingId);
       console.log(data);
+      console.log(likesChecked);
     } catch (error) {
       console.error(error);
     }
@@ -99,6 +113,7 @@ export const Listings = () => {
       const res = await unlikedListing(listingId, userId);
       const data = JSON.parse(JSON.stringify(res)).data;
       console.log(data);
+      checkInitialLike(userId, listingId);
     } catch (error) {
       console.error(error);
     }
@@ -107,7 +122,16 @@ export const Listings = () => {
     console.log("Like has been clicked");
     console.log(userStore.id);
     console.log(likedItem.id);
-    likeListing(likedItem.id, userStore.id);
+    console.log(likesChecked);
+    if(likesChecked) {
+      console.log("This will be unliked");
+      unlikeListing(likedItem.id, userStore.id);
+      setLikesChecked(false);
+    } else {
+      console.log("This will be liked");
+      likeListing(likedItem.id, userStore.id);
+      setLikesChecked(true);
+    }
   };
 
   const handleSearch = (value) => {
@@ -225,6 +249,7 @@ export const Listings = () => {
                     icon={<FavoriteBorder fontSize="small" />}
                     checkedIcon={<Favorite fontSize="small" />}
                     value={item}
+                    checked={likesChecked}
                     onChange={(e) => {
                       handleSnack();
                       handleLikeChange(e, item);

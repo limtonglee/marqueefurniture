@@ -41,7 +41,6 @@ Add filtering
 Formatting of the listings
 */
 export const Listings = () => {
-  const { username, likedPosts, moodboards } = user;
   const [value, setValue] = useState(0);
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);

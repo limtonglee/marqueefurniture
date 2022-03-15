@@ -6,7 +6,7 @@ import { URL_GET_LISTINGS } from "../services/endpoints";
 import { URL_GET_LISTING_DETAILS } from "../services/endpoints";
 import { URL_LISTING_LIKE } from "../services/endpoints";
 import { URL_LISTING_UNLIKE } from "../services/endpoints";
-
+import { URL_GET_LISTING_LIKE_USER } from "../services/endpoints";
 export const getListings = () => {
   return get(URL_GET_LISTINGS);
 };
@@ -35,4 +35,12 @@ export const unlikedListing = (listingId, userId) => {
     userId: userId,
   };
   return remove(URL_LISTING_UNLIKE, body);
+}
+
+export const getLikedListing = (id) => {
+  const params = {
+    userId: id
+  };
+  
+  return get(URL_GET_LISTING_LIKE_USER, params);
 }

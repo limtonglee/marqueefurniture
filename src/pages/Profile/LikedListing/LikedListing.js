@@ -7,12 +7,10 @@ import { Link } from "react-router-dom";
 import { useStores } from '../../../stores/RootStore';
 import { getLikedListing, getListings } from "../../../services/Listings";
 import { getListingDetails } from "../../../services/Listings";
-import { likedListing } from "../../../services/Listings";
 import { unlikedListing } from "../../../services/Listings";
-import { update } from '../../../services/api';
 
 const LikedListing = () => {
-
+  const[testValue, setTestValue] = useState(0);
   const [value, setValue] = useState(0);
   const {userStore} = useStores();
   const [likedList, setLikedList] = useState([]);
@@ -25,7 +23,6 @@ const LikedListing = () => {
       likedIdList = JSON.parse(JSON.stringify(response.data));
       let updateList = [];
       for(let i in likedIdList){
-        console.log("hh");
         getListingDetails(likedIdList[i].listingid).then((response) => {
         let temp = JSON.parse(JSON.stringify(response.data));
         updateList.push(temp[0]);
@@ -41,13 +38,13 @@ const LikedListing = () => {
     }); 
   };
 
-  const refreshPage = () => {
-    window.location.reload(false);
-  }
 
   useEffect(() => {
     testing();
-  }, []);
+    setTestValue(0);
+  }, [testValue]);
+
+
 
   /*useEffect(() => {
     let likedIdList = [];
@@ -94,7 +91,6 @@ const LikedListing = () => {
   const checkInitialLike = (listingId) => {
     for (let i in likedList){
       if(likedList[i].id == listingId){
-        console.log("Came here");
         return true;
       }
     }
@@ -197,8 +193,7 @@ const LikedListing = () => {
                     onChange={(e) => {
                       handleSnack();
                       handleLikeChange(e, item);
-                      refreshPage();
-                      //getLikedList();
+                      setTestValue(1);
                     }}
                   />
                 </Box>

@@ -54,7 +54,6 @@ export const Listings = () => {
     getLikedListing(userStore.id)
       .then((response) => {
         setLikedList(JSON.parse(JSON.stringify(response.data)));
-        // console.log(response);
       })
       .catch((error) => {
         console.log(error);
@@ -67,6 +66,8 @@ export const Listings = () => {
     updateData(value);
   }, [listings]);
 
+
+  //To get the list of Liked List after every update
   const getLikedList = () => {
     getLikedListing(userStore.id).then((response) => {
       setLikedList(JSON.parse(JSON.stringify(response.data)));
@@ -74,10 +75,13 @@ export const Listings = () => {
       console.log(error);
     });
   };
+
+  //Handling of snackbar to appear
   const handleSnack = () => {
     setOpen(true);
   };
 
+  //When snackbar closes
   const handleSnackClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -86,11 +90,13 @@ export const Listings = () => {
     setOpen(false);
   };
 
+  //When user decides to change filter (Furniture, Service & Design)
   const handleChange = (event, newValue) => {
     setValue(newValue);
     updateData(newValue);
   };
 
+  //This method will be called to check whether users has initially liked the listing
   const checkInitialLike = (listingId) => {
     for (let i in likedList){
       if(likedList[i].listingid == listingId){
@@ -100,6 +106,7 @@ export const Listings = () => {
     return false;
   }
 
+  //API call to BE to update database for user liking a listing
   const likeListing = async (listingId, userId) => {
     try {      
       const res = await likedListing(listingId, userId);
@@ -109,6 +116,7 @@ export const Listings = () => {
     }
   }; 
 
+  //API call to BE to update database for user unliking a listing
   const unlikeListing = async (listingId, userId) => {
     try {
       const res = await unlikedListing(listingId, userId);
@@ -117,6 +125,8 @@ export const Listings = () => {
       console.error(error);
     }
   }
+
+  //Method call when user wants to like or unlike a listing
   const handleLikeChange = (event, likedItem) => {
     console.log("Like has been clicked");
     if(checkInitialLike(likedItem.id)) {
@@ -128,6 +138,7 @@ export const Listings = () => {
     }
   };
 
+  //Handling of search
   const handleSearch = (value) => {
     findListing(value);
   };
@@ -147,6 +158,7 @@ export const Listings = () => {
     }
   };
 
+  //Update the tabData when user filter through the different categories
   const updateData = (value) => {
     // console.log("updating data: " + value);
     let tabData = [];
@@ -262,7 +274,7 @@ export const Listings = () => {
                     severity="success"
                     sx={{ width: "auto" }}
                   >
-                    Liked!
+                    Updated Successfully!
                   </Alert>
                 </Snackbar>
               </Grid>

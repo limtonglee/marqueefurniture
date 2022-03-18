@@ -48,4 +48,7 @@ export const URL_EDIT_MOODBOARD = "/api/user/moodboard/edit"; // new
 export const URL_DELETE_MOODBOARD = "/api/user/moodboard/delete";
 
 // sellercenter
-export const URL_GET_MERCHANT_ORDER = "/api/merchant/orders";
+export const URL_GET_SHOP_ORDERS = "/api/merchant/orders";
+export const URL_GET_SHOP_LISTINGS = "/api/merchant/listings";
+export const URL_GET_SHOP_CATEGORIES = "/api/merchant/shopCategories";
+export const URL_CREATE_SHOP_CATEGORY = "/api/merchant/shopCategories/add";

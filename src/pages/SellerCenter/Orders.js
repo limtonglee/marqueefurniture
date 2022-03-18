@@ -18,20 +18,20 @@ import { getOrders } from "../../services/SellerCenter";
 export const Orders = () => {
     const [value, setValue] = useState(0);
     const [data, setData] = useState([]);
-
+    const [order, setOrder] = useState([]);
     //first use effect only called once
     useEffect(() => {
         getOrders(1)
             .then((response) => {
-                setData(JSON.parse(JSON.stringify(response.data)));
+                setOrder(JSON.parse(JSON.stringify(response.data)));
                 console.log('ZZZ ', response);
             })
             .catch((error) => {
                 console.log(error);
             });
     }, []);
-    
-    let tabData = data;
+
+    let tabData = order;
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -39,22 +39,22 @@ export const Orders = () => {
     };
     const updateData = (value) => {
         if (value === 1) {
-            tabData = data.filter((order) => order.status === "UNPAID");
+            tabData = order.filter((order) => order.order_status === "UNPAID");
         }
         if (value === 2) {
-            tabData = data.filter((order) => order.status === "PAID");
+            tabData = order.filter((order) => order.order_status === "PAID");
         }
         if (value === 3) {
-            tabData = data.filter((order) => order.status === "SHIPPING");
+            tabData = order.filter((order) => order.order_status === "SHIPPING");
         }
         if (value === 4) {
-            tabData = data.filter((order) => order.status === "Completed");
+            tabData = order.filter((order) => order.order_status === "DELIVERED");
         }
         if (value === 5) {
-            tabData = data.filter((order) => order.status === "Cancellation");
+            tabData = order.filter((order) => order.order_status === "CANCELLED");
         }
         if (value === 6) {
-            tabData = data.filter((order) => order.status === "Return/Refund");
+            tabData = order.filter((order) => order.order_status === "RETURN/REFUND");
         }
         setData(tabData);
     };
@@ -127,7 +127,7 @@ export const Orders = () => {
                             >
                                 <Tab label="All" />
                                 <Tab label="Unpaid" />
-                                <Tab label="To ship" />
+                                <Tab label="Paid" />
                                 <Tab label="Shipping" />
                                 <Tab label="Completed" />
                                 <Tab label="Cancellation" />
@@ -165,8 +165,8 @@ export const Orders = () => {
                                     }}>
                                         <div className='image'>
                                             <img
-                                                src={`${item.img}?w=124&fit=crop&auto=format`}
-                                                srcSet={`${item.img}?w=124&fit=crop&auto=format&dpr=2 2x`}
+                                                src={`${item.image}?w=124&fit=crop&auto=format`}
+                                                srcSet={`${item.image}?w=124&fit=crop&auto=format&dpr=2 2x`}
                                                 alt={item.title}
                                                 loading="lazy"
                                             />
@@ -187,7 +187,6 @@ export const Orders = () => {
                                             marginRight: '20px',
                                         }}>
                                             <div>S${item.price}</div>
-                                            <div>Credit/Debit Card</div>
                                         </div>
                                         <div>{item.status}</div>
                                     </div>

@@ -17,15 +17,36 @@ import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import AddCategoryModal from './AddCategoryModal';
-import { shopCategoriesData } from "../../../data/shopCategoriesData";
-
+// import { shopCategoriesData } from "../../../data/shopCategoriesData";
+import * as SellerCenterAPI from "../../../services/SellerCenter";
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 let tempName = "On Sale";
 
 export const ShopCategories = (props) => {
 
-    const [data, setData] = useState(shopCategoriesData);
+    // const [data, setData] = useState(shopCategoriesData);
+    const [data, setData] = useState([]);
+    //first use effect only called once
+    useEffect(() => {
+        SellerCenterAPI.getShopCategories(1)
+            .then((response) => {
+                setData(JSON.parse(JSON.stringify(response.data)));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
+    const getShopCategories = async () => {
+        try {
+            const res = await SellerCenterAPI.getShopCategories(1);
+            setData(JSON.parse(JSON.stringify(res.data)));
+            console.log('ZZZ', 2121212);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const [editActivated, setEditActivated] = useState(false);
     const openEdit = () => {
@@ -37,15 +58,15 @@ export const ShopCategories = (props) => {
     const sendEdit = (event) => {
         setEditActivated(false);
     };
-    const handleCloseModal = (event) => {
-        console.log(shopCategoriesData[shopCategoriesData.length - 1]);
-        setData(shopCategoriesData);
 
-    };
     useEffect(() => {
-        setData(shopCategoriesData);
-        console.log('Categories Data', data);
-    }, [shopCategoriesData])
+        getShopCategories();
+    }, []);
+
+    const refreshData = () => {
+        getShopCategories();
+    };
+
     return (
         <>
             <Layout>
@@ -53,7 +74,7 @@ export const ShopCategories = (props) => {
                     <Typography variant="h4" gutterBottom>
                         My Shop Categories
                     </Typography>
-                    <AddCategoryModal onCloseModal={handleCloseModal}></AddCategoryModal>
+                    <AddCategoryModal refreshData={refreshData}></AddCategoryModal>
                 </Stack>
                 <Grid container>
                     <Grid item xs={4}>
@@ -133,7 +154,7 @@ export const ShopCategories = (props) => {
                                         </Grid>
                                     )}
                                     <Grid item xs={2}>
-                                        {category.createdBy}
+                                        Seller
                                     </Grid>
                                     <Grid item xs={2}>
                                         {category.products}

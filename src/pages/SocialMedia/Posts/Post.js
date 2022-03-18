@@ -345,7 +345,7 @@ const Post = () => {
 
   const getAuthorUsername = async () => {
     try {
-      const res = await socialMediaAPI.getUsernamById(post.id);
+      const res = await socialMediaAPI.getUsernameById(post.id);
       let data = JSON.parse(JSON.stringify(res)).data[0].username;
       setAuthorUsername(data);
       return data;

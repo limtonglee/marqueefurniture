@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
@@ -14,7 +14,15 @@ import Divider from "@mui/material/Divider";
 import ChatMessage from "./ChatMessage";
 import ChatAnnouncement from "./ChatAnnouncement";
 
-const Chatbox = () => {
+import * as chatAPI from "../../services/Chat";
+import * as socialMediaAPI from "../../services/SocialMedia";
+
+import { useStores } from "../../stores/RootStore";
+
+const Chatbox = ({ currentChat }) => {
+  console.log("currentChat", currentChat);
+  const { userStore } = useStores();
+
   const [message, setMessage] = useState("");
 
   const updateMessage = (e) => {
@@ -46,11 +54,14 @@ const Chatbox = () => {
             <Stack direction="row" spacing={2}>
               <Avatar
                 alt="User"
-                src="https://images.generated.photos/nSW_I6izlbs1PZri0EwntItqrnybtGrDKTz9RNnnDHk/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LmNvbmQvMzlkNTg3/MjMtODFhYi00Y2Zh/LTlkMjQtNTU0Njdl/NjU1MmU2LmpwZw.jpg"
+                // src="https://images.generated.photos/nSW_I6izlbs1PZri0EwntItqrnybtGrDKTz9RNnnDHk/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LmNvbmQvMzlkNTg3/MjMtODFhYi00Y2Zh/LTlkMjQtNTU0Njdl/NjU1MmU2LmpwZw.jpg"
+                src={currentChat.recipientProfilePic}
                 sx={{ height: 60, width: 60 }}
               />
               <Box>
-                <Typography variant="h4">Orange Furniture Only</Typography>
+                <Typography variant="h4">
+                  {currentChat.recipientUsername}
+                </Typography>
                 <Typography variant="subtitle1" sx={{ fontWeight: "normal" }}>
                   Designer
                 </Typography>
@@ -78,16 +89,43 @@ const Chatbox = () => {
             overflowY: "scroll",
           }}
         >
-          {/* messages area */}
-          <ChatMessage own={false} />
-          <ChatMessage own={true} />
-          <ChatMessage own={true} />
-          <ChatMessage own={false} />
-          <ChatMessage own={false} />
-          <ChatAnnouncement hasButton={false} />
-          <ChatMessage own={true} />
-          <ChatMessage own={false} />
-          <ChatAnnouncement hasButton={true} />
+          {currentChat.chatMessages.length === 0 ? (
+            <>
+              <Box
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  component="div"
+                  sx={{ fontWeight: "normal", fontStyle: "italic" }}
+                >
+                  No messages yet
+                </Typography>
+              </Box>
+            </>
+          ) : (
+            currentChat.chatMessages.map((message) => {
+              if (message.type === "Message") {
+                return (
+                  <ChatMessage
+                    message={message}
+                    recipientProfilePic={currentChat.recipientProfilePic}
+                    own={message.userid === userStore.id}
+                  />
+                );
+              } else if (message.type === "Announcement") {
+                return <ChatAnnouncement message={message} hasButton={false} />;
+              } else {
+                return <ChatAnnouncement message={message} hasButton={true} />;
+              }
+            })
+          )}
         </Box>
         <Divider />
         <Box sx={{ p: 3, backgroundColor: "white" }}>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from "react";
-import { Layout } from './Layout';
-// import { orderData } from "../../data/orderData";
+import { Layout } from '../Layout';
 import {
     Card,
     Stack,
@@ -12,48 +11,46 @@ import {
     TextField,
     MenuItem,
 } from '@mui/material';
-import Searchbar from "../../components/Searchbar";
-import { getOrders } from "../../services/SellerCenter";
+import * as SellerCenterAPI from "../../../services/SellerCenter";
 
 export const Orders = () => {
     const [value, setValue] = useState(0);
     const [data, setData] = useState([]);
     const [order, setOrder] = useState([]);
-    //first use effect only called once
+
+    const getOrders = async () => {
+        try {
+            const res = await SellerCenterAPI.getOrders(1);
+            setData(JSON.parse(JSON.stringify(res.data)));
+            setOrder(JSON.parse(JSON.stringify(res.data)));
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     useEffect(() => {
-        getOrders(1)
-            .then((response) => {
-                setOrder(JSON.parse(JSON.stringify(response.data)));
-                console.log('ZZZ ', response);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        getOrders();
     }, []);
 
     let tabData = order;
-
     const handleChange = (event, newValue) => {
         setValue(newValue);
         updateData(newValue);
     };
+    
     const updateData = (value) => {
         if (value === 1) {
             tabData = order.filter((order) => order.order_status === "UNPAID");
-        }
-        if (value === 2) {
+        }else if (value === 2) {
             tabData = order.filter((order) => order.order_status === "PAID");
-        }
-        if (value === 3) {
+        }else if (value === 3) {
             tabData = order.filter((order) => order.order_status === "SHIPPING");
-        }
-        if (value === 4) {
+        }else if (value === 4) {
             tabData = order.filter((order) => order.order_status === "DELIVERED");
-        }
-        if (value === 5) {
+        }else if (value === 5) {
             tabData = order.filter((order) => order.order_status === "CANCELLED");
-        }
-        if (value === 6) {
+        }else if (value === 6) {
             tabData = order.filter((order) => order.order_status === "RETURN/REFUND");
         }
         setData(tabData);

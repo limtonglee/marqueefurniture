@@ -22,7 +22,7 @@ import Searchbar from "../../../components/Searchbar";
 import EditListingModal from "./EditListingModal";
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
-import { getListings } from "../../../services/SellerCenter";
+import * as SellerCenterAPI from "../../../services/SellerCenter";
 
 export const MyListings = () => {
     const navigate = useNavigate();
@@ -31,26 +31,27 @@ export const MyListings = () => {
     const [data, setData] = useState([]);
     const [listings, setListings] = useState([]);
 
-    //first use effect only called once
-    useEffect(() => {
-        getListings(1)
-            .then((response) => {
-                setListings(JSON.parse(JSON.stringify(response.data)));
-                console.log('ZZZ ', response);
-                
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, []);
+    const getListings = async () => {
+        try {
+            const res = await SellerCenterAPI.getListings(1);
+            setData(JSON.parse(JSON.stringify(res.data)));
+            setListings(JSON.parse(JSON.stringify(res.data)));
+            console.log('ZZZ', listings);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-    let tabData = listings;
+    useEffect(() => {
+        getListings();
+    }, []);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
         updateData(newValue);
     };
 
+    let tabData = listings;
     const updateData = (value) => {
         if (value === 1) {
             tabData = listings.filter((listings) => listings.status === "LIVE");

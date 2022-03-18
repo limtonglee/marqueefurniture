@@ -14,7 +14,7 @@ import { Balance } from "./pages/SellerCenter/Finance/Balance";
 import { Income } from "./pages/SellerCenter/Finance/Income";
 import { AddNewListing } from "./pages/SellerCenter/Listings/AddNewListing";
 import { MyListings } from "./pages/SellerCenter/Listings/MyListings";
-import { Orders } from "./pages/SellerCenter/Orders";
+import { Orders } from "./pages/SellerCenter/Orders/Orders";
 import { ShopCategories } from "./pages/SellerCenter/Shop/Categories";
 import { ShopCategoryDetails } from "./pages/SellerCenter/Shop/CategoryDetails";
 import { ShopProfile } from "./pages/SellerCenter/Shop/Profile";

@@ -15,10 +15,10 @@ export const getOrders = (id) => {
   return get(URL_GET_SHOP_ORDERS, params);
 };
 
-export const getListings = (id) => {
+export const getListings = (userId) => {
 
   const params = {
-    userId: id
+    userId: userId
   };
 
   return get(URL_GET_SHOP_LISTINGS, params);

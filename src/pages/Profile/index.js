@@ -18,6 +18,8 @@ import Moodboard from "./Moodboard/Moodboard";
 import AddIcon from "@mui/icons-material/Add";
 import MoodboardViewInProfile from "./Moodboard/MoodboardViewInProfile";
 
+import axios from 'axios'
+
 function Profile() {
   const [tabValue, setTabValue] = useState(0);
 

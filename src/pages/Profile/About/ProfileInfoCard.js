@@ -9,9 +9,24 @@ import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
 // prop-types is library for typechecking of props
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useStores } from "../../../stores/RootStore";
 import { StartSellingDialog } from "./StartSellingDialog";
+
+import axios from "axios";
+import editProfile, { getImage } from "../../../services/Profile";
+
+async function postImage({ image, desc }) {
+  const formData = new FormData();
+  formData.append("image", image);
+  formData.append("desc", desc);
+  const result = await axios.post(
+    "http://localhost:8080/api/images",
+    formData,
+    { headers: { "Content-Type": "multipart/form-data" } }
+  );
+  return result.data;
+}
 
 function ProfileInfoCard({
   title,
@@ -30,14 +45,27 @@ function ProfileInfoCard({
 
   const [start, setStart] = useState(false);
 
+  const [file, setFile] = useState();
+  const [desc, setDesc] = useState("");
+  const [images, setImages] = useState([]);
+
+  const fileSelected = (event) => {
+    const file = event.target.files[0];
+    setFile(file);
+  };
+
   const handleStart = () => {
     setStart(true);
   };
 
   //handleSubmit not being called
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+
+    const result = await postImage({ image: file, desc });
+
+    setImages([result.imagePath, ...images]);
 
     userStore.setUserName(data.get("username"));
     setUserName(data.get("username"));
@@ -47,6 +75,13 @@ function ProfileInfoCard({
     setLink(data.get("link"));
     setShowEdit(!showEdit);
   };
+
+  useEffect(() => {
+    getImage().then((response) => {
+      console.log("response");
+      console.log(response.data);
+    });
+  }, []);
 
   return (
     <>
@@ -68,6 +103,14 @@ function ProfileInfoCard({
                 {title}
               </Typography>
             </Box>
+
+            <input onChange={fileSelected} type="file" accept="image/*"></input>
+            <input
+              value={desc}
+              name="image"
+              onChange={(e) => setDesc(e.target.value)}
+              type="text"
+            ></input>
 
             <Box p={2}>
               <Box mb={2} lineHeight={1}>
@@ -149,6 +192,11 @@ function ProfileInfoCard({
       {!showEdit && (
         <Box component="form" noValidate sx={{ mt: 3 }}>
           <Card sx={{ height: "100%" }}>
+            {/* {images.map((image) => (
+              <div key={image}>
+                <img src={image}></img>
+              </div>
+            ))} */}
             <Box
               display="flex"
               justifyContent="space-between"

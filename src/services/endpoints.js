@@ -26,6 +26,9 @@ export const URL_CREATE_POST = "/api/post/create"; // create post
 // get username by id
 export const URL_GET_USERNAME_BY_ID = "/api/user"; // new
 
+// get profilepic by id
+export const URL_GET_PROFILEPIC_BY_ID = "/api/user/profilepic"; // new
+
 // like/unlike posts
 export const URL_LIKE_POST = "/api/post/like"; // like post
 export const URL_UNLIKE_POST = "/api/post/unlike"; // unlike post
@@ -49,3 +52,9 @@ export const URL_DELETE_MOODBOARD = "/api/user/moodboard/delete";
 
 // sellercenter
 export const URL_GET_MERCHANT_ORDER = "/api/merchant/orders";
+
+// chat
+export const URL_CREATE_CHAT = "/api/chat/create";
+export const URL_GET_USER_CHATS = "/api/user/chats";
+export const URL_CREATE_MESSAGE = "/api/chat/message/create";
+export const URL_GET_CHAT_MESSAGES = "/api/chat/message";

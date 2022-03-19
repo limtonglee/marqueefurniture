@@ -12,6 +12,7 @@ import {
   URL_GET_POST_LISTINGS,
   URL_CREATE_POST,
   URL_GET_USERNAME_BY_ID,
+  URL_GET_PROFILEPIC_BY_ID,
   URL_LIKE_POST,
   URL_UNLIKE_POST,
   URL_GET_TAGS,
@@ -91,11 +92,18 @@ export const createPost = (image, description, tags, products) => {
   return postAsFormInput(URL_CREATE_POST, body);
 };
 
-export const getUsernamById = (userId) => {
+export const getUsernameById = (userId) => {
   const params = {
     userId: userId,
   };
   return get(URL_GET_USERNAME_BY_ID, params);
+};
+
+export const getProfilePicById = (userId) => {
+  const params = {
+    userId: userId,
+  };
+  return get(URL_GET_PROFILEPIC_BY_ID, params);
 };
 
 export const likePost = (postId, userId) => {

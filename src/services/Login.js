@@ -3,10 +3,10 @@
 import { postAsFormInput } from "./api";
 import { URL_LOGIN } from "./endpoints";
 
-const encryptPassword = (password) => {
-  //todo
-  return password;
-};
+// const encryptPassword = (password) => {
+//   //todo
+//   return password;
+// };
 
 export const login = (email, password) => {
   return postAsFormInput(URL_LOGIN, {

@@ -1,4 +1,5 @@
 const user = {
+  id: 1,
   username: "alicetan",
   email: "elon@gmail.com",
   contactNum: "82537729",
@@ -298,6 +299,8 @@ const user = {
     {
       id: 0,
       boardName: "Angmoh living room",
+      displayPic:
+        "https://hgtvhome.sndimg.com/content/dam/images/hgtv/fullset/2011/7/13/0/Original_Dustylu-Interiors-full-living-room-shot-shabby-chic_s4x3.jpg.rend.hgtvcom.966.725.suffix/1400963927399.jpeg",
       description: "Very western style, still considering",
       tags: [["Living Room"], ["Shabby Chic", "Contemporary", "Rustic"]],
       isPrivate: false,
@@ -583,6 +586,7 @@ const user = {
     {
       id: 1,
       boardName: "Dream minimalist room",
+      displayPic: "https://roohome.com/wp-content/uploads/2016/12/E-space.jpg",
       description: "Still not sure how minimal to go",
       tags: [["Bedroom"], ["Minimalist"]],
       isPrivate: false,
@@ -818,6 +822,8 @@ const user = {
     {
       id: 2,
       boardName: "WFH setup",
+      displayPic:
+        "https://cdn.homedit.com/wp-content/uploads/2010/11/minimalist-desk-design-white.jpg",
       description: "Need a clean, motivating environment",
       tags: [["Study Room"], ["Asian Zen", "Scandinavian"]],
       isPrivate: false,
@@ -1011,6 +1017,8 @@ const user = {
     {
       id: 3,
       boardName: "Open kitchen??",
+      displayPic:
+        "https://st.hzcdn.com/simgs/pictures/kitchens/industrial-bachelor-pad-nina-williams-interiors-img~3d8150570cd34905_14-2945-1-8bfbf66.jpg",
       description: "Not sure if practical",
       tags: [["Kitchen"], ["Contemporary", "Modern"]],
       isPrivate: false,

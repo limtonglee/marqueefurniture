@@ -1,36 +1,36 @@
 import * as React from "react";
 import SelectUnstyled, {
-	selectUnstyledClasses,
+  selectUnstyledClasses,
 } from "@mui/base/SelectUnstyled";
 import OptionUnstyled, {
-	optionUnstyledClasses,
+  optionUnstyledClasses,
 } from "@mui/base/OptionUnstyled";
 import PopperUnstyled from "@mui/base/PopperUnstyled";
 import { styled } from "@mui/system";
 
 const blue = {
-	100: "#DAECFF",
-	200: "#99CCF3",
-	400: "#3399FF",
-	500: "#007FFF",
-	600: "#0072E5",
-	900: "#003A75",
+  100: "#DAECFF",
+  200: "#99CCF3",
+  400: "#3399FF",
+  500: "#007FFF",
+  600: "#0072E5",
+  900: "#003A75",
 };
 
 const grey = {
-	100: "#E7EBF0",
-	200: "#E0E3E7",
-	300: "#CDD2D7",
-	400: "#B2BAC2",
-	500: "#A0AAB4",
-	600: "#6F7E8C",
-	700: "#3E5060",
-	800: "#2D3843",
-	900: "#1A2027",
+  100: "#E7EBF0",
+  200: "#E0E3E7",
+  300: "#CDD2D7",
+  400: "#B2BAC2",
+  500: "#A0AAB4",
+  600: "#6F7E8C",
+  700: "#3E5060",
+  800: "#2D3843",
+  900: "#1A2027",
 };
 
 const StyledButton = styled("button")(
-	({ theme }) => `
+  ({ theme }) => `
   font-family: IBM Plex Sans, sans-serif;
   font-size: 0.875rem;
   box-sizing: border-box;
@@ -68,7 +68,7 @@ const StyledButton = styled("button")(
 );
 
 const StyledListbox = styled("ul")(
-	({ theme }) => `
+  ({ theme }) => `
   font-family: IBM Plex Sans, sans-serif;
   font-size: 0.875rem;
   box-sizing: border-box;
@@ -85,7 +85,7 @@ const StyledListbox = styled("ul")(
 );
 
 const StyledOption = styled(OptionUnstyled)(
-	({ theme }) => `
+  ({ theme }) => `
   list-style: none;
   padding: 8px;
   border-radius: 0.45em;
@@ -122,26 +122,37 @@ const StyledOption = styled(OptionUnstyled)(
 );
 
 const StyledPopper = styled(PopperUnstyled)`
-	z-index: 1;
+  z-index: 1;
 `;
 
 const CustomSelect = React.forwardRef(function CustomSelect(props, ref) {
-	const components = {
-		Root: StyledButton,
-		Listbox: StyledListbox,
-		Popper: StyledPopper,
-		...props.components,
-	};
+  const components = {
+    Root: StyledButton,
+    Listbox: StyledListbox,
+    Popper: StyledPopper,
+    ...props.components,
+  };
 
-	return <SelectUnstyled {...props} ref={ref} components={components} />;
+  return <SelectUnstyled {...props} ref={ref} components={components} />;
 });
 
 export default function UnstyledSelectSimple(props) {
-	return (
-		<CustomSelect defaultValue={"popular"} onChange={props.handleSort}>
-			<StyledOption value={"popular"}>Popular</StyledOption>
-			<StyledOption value={"recent"}>Recent</StyledOption>
-			{/* <StyledOption value={"for you"}>For You</StyledOption> */}
-		</CustomSelect>
-	);
+  return (
+    <>
+      {props.variant === "moodboard" && (
+        <CustomSelect defaultValue={"ascending"} onChange={props.handleSort}>
+          <StyledOption value={"ascending"}>A &#8594; Z</StyledOption>
+          <StyledOption value={"descending"}>Z &#8594; A</StyledOption>
+          {/* <StyledOption value={"recent"}>Recent</StyledOption> */}
+        </CustomSelect>
+      )}
+      {props.variant === "ideas" && (
+        <CustomSelect defaultValue={"popular"} onChange={props.handleSort}>
+          <StyledOption value={"popular"}>Popular</StyledOption>
+          <StyledOption value={"recent"}>Recent</StyledOption>
+          {/* <StyledOption value={"for you"}>For You</StyledOption> */}
+        </CustomSelect>
+      )}
+    </>
+  );
 }

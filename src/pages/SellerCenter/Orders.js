@@ -1,6 +1,7 @@
 import React from 'react';
+import { useEffect, useState } from "react";
 import { Layout } from './Layout';
-import { orderData } from "../../data/orderData";
+// import { orderData } from "../../data/orderData";
 import {
     Card,
     Stack,
@@ -12,11 +13,25 @@ import {
     MenuItem,
 } from '@mui/material';
 import Searchbar from "../../components/Searchbar";
+import { getOrders } from "../../services/SellerCenter";
 
 export const Orders = () => {
-    const [value, setValue] = React.useState(0);
-    const [data, setData] = React.useState(orderData);
-    let tabData = orderData;
+    const [value, setValue] = useState(0);
+    const [data, setData] = useState([]);
+
+    //first use effect only called once
+    useEffect(() => {
+        getOrders(1)
+            .then((response) => {
+                setData(JSON.parse(JSON.stringify(response.data)));
+                console.log('ZZZ ', response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+    
+    let tabData = data;
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -24,22 +39,22 @@ export const Orders = () => {
     };
     const updateData = (value) => {
         if (value === 1) {
-            tabData = orderData.filter((order) => order.status === "Unpaid");
+            tabData = data.filter((order) => order.status === "UNPAID");
         }
         if (value === 2) {
-            tabData = orderData.filter((order) => order.status === "To ship");
+            tabData = data.filter((order) => order.status === "PAID");
         }
         if (value === 3) {
-            tabData = orderData.filter((order) => order.status === "Shipping");
+            tabData = data.filter((order) => order.status === "SHIPPING");
         }
         if (value === 4) {
-            tabData = orderData.filter((order) => order.status === "Completed");
+            tabData = data.filter((order) => order.status === "Completed");
         }
         if (value === 5) {
-            tabData = orderData.filter((order) => order.status === "Cancellation");
+            tabData = data.filter((order) => order.status === "Cancellation");
         }
         if (value === 6) {
-            tabData = orderData.filter((order) => order.status === "Return/Refund");
+            tabData = data.filter((order) => order.status === "Return/Refund");
         }
         setData(tabData);
     };
@@ -125,7 +140,7 @@ export const Orders = () => {
                                         margin: '20px',
                                         border: 1,
                                         borderColor: '#C4CDD5',
-                                        padding : '5px'
+                                        padding: '5px'
                                     }}>
 
                                     <div className='header' style={{
@@ -157,7 +172,7 @@ export const Orders = () => {
                                             />
                                         </div>
                                         <div className='itemDetails' style={{
-                                            display: 'flex', 
+                                            display: 'flex',
                                             flexDirection: 'column',
                                             marginLeft: '5px',
                                             marginRight: '10px'

@@ -29,6 +29,9 @@ export const URL_GET_POST_LISTINGS = "/api/post/listings"; // get listings for i
 
 export const URL_CREATE_POST = "/api/post/create"; // create post
 
+// get username by id
+export const URL_GET_USERNAME_BY_ID = "/api/user"; // new
+
 // like/unlike posts
 export const URL_LIKE_POST = "/api/post/like"; // like post
 export const URL_UNLIKE_POST = "/api/post/unlike"; // unlike post
@@ -43,9 +46,12 @@ export const URL_DELETE_POST_FROM_MOODBOARD =
 
 // moodboards
 export const URL_GET_USER_MOODBOARDS = "/api/user/moodboards";
-export const URL_GET_MOODBOARD_DETAILS = "/api/user/moodboard/details";
-export const URL_UPDATE_MOODBOARD_DETAILS = "/api/user/moodboard/details";
+export const URL_GET_MOODBOARD_POSTS = "/api/user/moodboards/post"; // new
 export const URL_CREATE_MOODBOARD = "/api/user/moodboard/create";
 export const URL_CREATE_MOODBOARD_WITH_POST =
   "/api/user/moodboard/createWithPost";
+export const URL_EDIT_MOODBOARD = "/api/user/moodboard/edit"; // new
 export const URL_DELETE_MOODBOARD = "/api/user/moodboard/delete";
+
+// sellercenter
+export const URL_GET_MERCHANT_ORDER = "/api/merchant/orders";

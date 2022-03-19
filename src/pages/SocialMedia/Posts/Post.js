@@ -16,7 +16,7 @@ import Comment from "./Comment";
 import Avatar from "@mui/material/Avatar";
 import SendIcon from "@mui/icons-material/Send";
 // import { postData } from "../../../data/postData";
-import postData from "../../../data/postData2";
+// import postData from "../../../data/postData2";
 import { useParams } from "react-router-dom";
 import MoodboardModal from "../Moodboard/MoodboardModal";
 import TextField from "@mui/material/TextField";
@@ -30,16 +30,71 @@ const { username } = user;
 const Post = () => {
   const { postId } = useParams();
 
-  // const { moodboards } = user;
-  const [moodboards, setMoodboards] = useState(user.moodboards);
+  const [moodboards, setMoodboards] = useState([]);
 
-  // const post = postData.filter((post) => post.id === parseInt(postId))[0];
-  // const [post, setPost] = useState(
-  //   postData.filter((post) => post.id === parseInt(postId))[0]
-  // );
-  const [post, setPost] = useState(
-    postData.filter((post) => post.id === parseInt(postId))[0]
-  );
+  const getUserMoodboards = async () => {
+    try {
+      const res = await socialMediaAPI.getUserMoodboards(user.id);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getMoodboardPosts = async (moodboardId) => {
+    try {
+      const res = await socialMediaAPI.getMoodboardPosts(moodboardId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getCompleteMoodboardData = async () => {
+    const allUserMoodboards = await getUserMoodboards();
+
+    var promises = allUserMoodboards.map(async (moodboard) => {
+      const moodboardPosts = await getMoodboardPosts(moodboard.id);
+      const completeMoodboard = {
+        ...moodboard,
+        moodboardItems: moodboardPosts,
+      };
+
+      // console.log("completeMoodboard", completeMoodboard); // works
+      return completeMoodboard;
+    });
+
+    await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
+
+    Promise.all(promises).then((values) => {
+      setMoodboards(values);
+      return values;
+    });
+  };
+
+  useEffect(() => {
+    getCompleteMoodboardData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    getCompleteMoodboardData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [moodboards]);
+
+  // help idk what to initialise this to
+  const [post, setPost] = useState({
+    id: postId,
+    description: "",
+    comments: [],
+    image: "",
+    likes: [],
+    products: [],
+    tags: [],
+    userid: 0,
+  });
 
   const getPostDetails = async (postId) => {
     try {
@@ -98,9 +153,7 @@ const Post = () => {
   const getCompletePost = async () => {
     let postDetails = await getPostDetails(postId);
     postDetails = { ...postDetails[0] };
-    // console.log(postDetails);
 
-    // const postDetails = await getPostDetails(postId);
     const postLikes = await getPostLikes(postId);
     const postProducts = await getPostProducts(postId);
     const postTags = await getPostTags(postId);
@@ -112,34 +165,26 @@ const Post = () => {
       products: postProducts,
       tags: postTags,
     };
-    // console.log("postdetails", post);
+
     console.log("completePost", completePost);
     setPost(completePost);
     return completePost;
   };
 
-  // const [post, setPost] = useState(getCompletePost());
-
-  // const [post, setPost] = useState({});
-
-  // const [likesChecked, setLikesChecked] = useState(
-  //   post.likes.includes(username)
-  // );
-
-  // const [postLikesCount, setPostLikesCount] = useState(post.likes.length);
-
   useEffect(() => {
     getCompletePost();
+    getAuthorUsername();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const [likesChecked, setLikesChecked] = useState(false);
+
+  const [postLikesCount, setPostLikesCount] = useState(0);
 
   useEffect(() => {
     setLikesChecked(post.likes.includes(username));
     setPostLikesCount(post.likes.length);
   }, [post]);
-
-  const [likesChecked, setLikesChecked] = useState(false);
-
-  const [postLikesCount, setPostLikesCount] = useState(0);
 
   const postCardStyles = {
     cardActions: {
@@ -196,31 +241,43 @@ const Post = () => {
     setOpen(false);
   };
 
+  const likePost = async (postId, userId) => {
+    try {
+      const res = await socialMediaAPI.likePost(postId, userId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log(data);
+      getCompletePost();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const unlikePost = async (postId, userId) => {
+    try {
+      const res = await socialMediaAPI.unlikePost(postId, userId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log(data);
+      getCompletePost();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleChangeForLike = (event) => {
     console.log("clicked like");
     console.log("no. of likes before clicking:", post.likes.length);
     console.log("liked by before clicking:", post.likes);
+    console.log("post.id", post.id);
+    console.log("user.id", user.id);
+
     if (post.likes.includes(username)) {
-      // unlike
-      // remove user from likes array
-      post.likes = post.likes.filter((user) => user !== username);
-
-      // TODO: remove this post from the user's likes
+      unlikePost(post.id, user.id);
     } else {
-      // like
-      // add user to likes array
-      post.likes.push(username);
-
-      // TODO: add this post to user's likes
+      likePost(post.id, user.id);
     }
 
     console.log("no. of likes after clicking:", post.likes.length);
     console.log("liked by after clicking:", post.likes);
-
-    setPostLikesCount(post.likes.length);
-
-    // update icon colour on front end
-    setLikesChecked(!likesChecked);
   };
 
   const handleClick = (event) => {
@@ -259,23 +316,20 @@ const Post = () => {
     setComment(e.target.value);
   };
 
-  const sendComment = () => {
-    console.log("sendComment");
-    console.log(comment);
-
-    const newId = Math.floor(Math.random() * 100 + 1);
-
-    const newComment = {
-      id: newId,
-      user: user,
-      comment: comment,
-      datetime: "",
-    };
-
-    const newPost = { ...post };
-    newPost.comments = [...newPost.comments, newComment];
-    setPost(newPost);
-    setComment("");
+  const sendComment = async () => {
+    try {
+      const res = await socialMediaAPI.createPostComment(
+        comment,
+        user.id,
+        postId
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log(data);
+      getCompletePost();
+      setComment("");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const commentStyles = {
@@ -285,6 +339,19 @@ const Post = () => {
     comment: {
       color: "black",
     },
+  };
+
+  const [authorUsername, setAuthorUsername] = useState("");
+
+  const getAuthorUsername = async () => {
+    try {
+      const res = await socialMediaAPI.getUsernamById(post.id);
+      let data = JSON.parse(JSON.stringify(res)).data[0].username;
+      setAuthorUsername(data);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -355,24 +422,25 @@ const Post = () => {
                 open={open}
                 closeMoodboardModal={closeMoodboardModal}
                 post={post}
-                moodboards={moodboards}
-                setMoodboards={setMoodboards}
                 postPinned={postPinned}
               />
               <Box sx={{ pt: 1 }}>
                 <Stack direction="row" spacing={0.5}>
-                  <Box sx={commentStyles.username}>{post.userid}</Box>
+                  <Box sx={commentStyles.username}>{authorUsername}</Box>
                   <Box sx={commentStyles.comment}>{post.description}</Box>
                 </Stack>
-                {post.comments.map((comment) => (
-                  <Comment
-                    key={comment.id}
-                    comment={comment}
-                    post={post}
-                    setPost={setPost}
-                    getCompletePost={getCompletePost}
-                  />
-                ))}
+                {post.comments
+                  .slice(0)
+                  .reverse()
+                  .map((comment) => (
+                    <Comment
+                      key={comment.id}
+                      comment={comment}
+                      post={post}
+                      setPost={setPost}
+                      getCompletePost={getCompletePost}
+                    />
+                  ))}
               </Box>
               <Box sx={{ pt: 1, width: "100%" }}>
                 <Stack

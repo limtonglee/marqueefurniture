@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 
-import { TextField, IconButton } from "@material-ui/core";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+
 import SearchIcon from "@mui/icons-material/Search";
 
 import List from "@mui/material/List";

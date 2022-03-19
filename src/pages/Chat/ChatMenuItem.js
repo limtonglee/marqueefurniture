@@ -26,7 +26,12 @@ const ChatMenuItem = ({ chat, isCurrent, setCurrentChat }) => {
     backgroundColor: "primary.lighter",
   };
 
-  const notCurrentChatStyles = {};
+  const notCurrentChatStyles = {
+    "&:hover": {
+      backgroundColor: "grey.200",
+      cursor: "pointer",
+    },
+  };
 
   const handleSelectChat = () => {
     setCurrentChat(chat);

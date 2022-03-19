@@ -3,13 +3,15 @@ import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import IconButton from "@material-ui/core/IconButton";
+import IconButton from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import TextField from "@mui/material/TextField";
 import SendIcon from "@mui/icons-material/Send";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
+import Popover from "@mui/material/Popover";
+import ReportIcon from "@mui/icons-material/Report";
 
 import ChatMessage from "./ChatMessage";
 import ChatAnnouncement from "./ChatAnnouncement";
@@ -28,6 +30,20 @@ const Chatbox = ({ currentChat }) => {
   const updateMessage = (e) => {
     setMessage(e.target.value);
   };
+
+  const [openMoreMenu, setOpenMoreMenu] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClickPopover = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClosePopover = () => {
+    setAnchorEl(null);
+  };
+
+  const openPopover = Boolean(anchorEl);
+  const popoverId = openMoreMenu ? "simple-popover" : undefined;
 
   return (
     <>
@@ -68,16 +84,63 @@ const Chatbox = ({ currentChat }) => {
               </Box>
             </Stack>
             <Box>
-              <IconButton>
+              <IconButton onClick={handleClickPopover}>
                 <MoreHorizIcon />
               </IconButton>
+              <Popover
+                id={popoverId}
+                open={openPopover}
+                anchorEl={anchorEl}
+                onClose={handleClosePopover}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+              >
+                <Box sx={{ p: 2 }}>
+                  <Button
+                    variant="contained"
+                    sx={{ width: "100%" }}
+                    startIcon={<ReportIcon />}
+                    color="error"
+                  >
+                    Report Seller
+                  </Button>
+                </Box>
+              </Popover>
             </Box>
           </Box>
           <Divider />
           <Box sx={{ px: 3, py: 3, backgroundColor: "grey.100" }}>
             <Stack direction="row" spacing={3}>
-              <Button variant="outlined">Request for consultation</Button>
-              <Button variant="outlined">Update my requirements</Button>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "white",
+                  color: "primary.main",
+                  "&:hover": {
+                    backgroundColor: "grey.200",
+                  },
+                }}
+              >
+                Request for consultation
+              </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "white",
+                  color: "primary.main",
+                  "&:hover": {
+                    backgroundColor: "grey.200",
+                  },
+                }}
+              >
+                Update my requirements
+              </Button>
             </Stack>
           </Box>
           <Divider />

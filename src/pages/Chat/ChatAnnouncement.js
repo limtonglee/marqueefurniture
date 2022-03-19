@@ -37,7 +37,21 @@ const ChatAnnouncement = ({ message, hasButton }) => {
             >
               {message.text}
             </Typography>
-            {hasButton && <Button variant="outlined">Add to Cart</Button>}
+            {hasButton && (
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "white",
+                  color: "primary.main",
+                  "&:hover": {
+                    backgroundColor: "grey.200",
+                    color: "primary.light",
+                  },
+                }}
+              >
+                Add to Cart
+              </Button>
+            )}
           </Box>
           <Typography
             variant="body2"

@@ -31,6 +31,12 @@ const Messenger = () => {
     setSocket(io("ws://localhost:8900"));
   }, []);
 
+  useEffect(() => {
+    socket?.on("welcome", (message) => {
+      console.log(message);
+    });
+  }, [socket]);
+
   //choose the screen size
   const handleResize = () => {
     if (window.innerWidth < 720) {

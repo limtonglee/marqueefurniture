@@ -213,7 +213,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
             // })
 
             currentChat.chatMessages.map((message) => (
-              <div ref={scrollRef}>
+              <div ref={scrollRef} key={message.id}>
                 {message.type === "Message" && (
                   <ChatMessage
                     message={message}
@@ -233,7 +233,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
         </Box>
         <Divider />
         <Box sx={{ p: 3, backgroundColor: "white" }}>
-          <form autocomplete="off">
+          <form autoComplete="off">
             <Stack direction="row" spacing={2}>
               <Box>
                 <IconButton>

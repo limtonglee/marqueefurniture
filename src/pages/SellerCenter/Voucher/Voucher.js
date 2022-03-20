@@ -51,6 +51,15 @@ export const Voucher = () => {
         setData(tabData);
     };
 
+    const handleDelete = async (voucherId) => {
+        try {
+            const res = await SellerCenterAPI.deleteVoucher(voucherId);
+            getVouchers();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         
             <Layout>
@@ -118,7 +127,7 @@ export const Voucher = () => {
                                                     marginTop: "12px"
                                                 }}
                                                 onClick={e => {
-                                                    
+                                                    handleDelete(item.id);
                                                 }}
                                             >
                                                 Delete

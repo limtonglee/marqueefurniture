@@ -13,7 +13,7 @@ import { URL_DELETE_SHOP_VOUCHER } from "../services/endpoints";
 import { URL_GET_SHOP_CATEGORIES } from "../services/endpoints";
 import { URL_CREATE_SHOP_CATEGORY } from "../services/endpoints";
 
-
+// orders
 export const getOrders = (id) => {
 
   const params = {
@@ -23,6 +23,7 @@ export const getOrders = (id) => {
   return get(URL_GET_SHOP_ORDERS, params);
 };
 
+// listings
 export const getListings = (userId) => {
 
   const params = {
@@ -32,6 +33,7 @@ export const getListings = (userId) => {
   return get(URL_GET_SHOP_LISTINGS, params);
 };
 
+// vouchers
 export const getVouchers = (id) => {
 
   const params = {
@@ -40,7 +42,14 @@ export const getVouchers = (id) => {
 
   return get(URL_GET_SHOP_VOUCHERS, params);
 };
+export const deleteVoucher = (voucherId) => {
+  const body = {
+    voucherId: voucherId,
+  };
+  return remove(URL_DELETE_SHOP_VOUCHER, body);
+};
 
+// categories
 export const getShopCategories = (id) => {
 
   const params = {
@@ -49,7 +58,6 @@ export const getShopCategories = (id) => {
 
   return get(URL_GET_SHOP_CATEGORIES, params);
 };
-
 export const createShopCategory = (name, shopId) => {
   const body = {
     name: name,

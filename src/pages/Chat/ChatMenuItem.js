@@ -6,6 +6,9 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 
+import * as chatAPI from "../../services/Chat";
+import * as socialMediaAPI from "../../services/SocialMedia";
+
 const ChatMenuItem = ({ chat, isCurrent, setCurrentChat }) => {
   // console.log("chat at chatmenuitem", chat);
 
@@ -33,8 +36,27 @@ const ChatMenuItem = ({ chat, isCurrent, setCurrentChat }) => {
     },
   };
 
-  const handleSelectChat = () => {
-    setCurrentChat(chat);
+  const getChatMessages = async (chatId) => {
+    try {
+      const res = await chatAPI.getChatMessages(chatId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSelectChat = async () => {
+    // setCurrentChat(chat);
+
+    const updatedChatMessages = await getChatMessages(chat.id);
+
+    const updatedChat = {
+      ...chat,
+      chatMessages: updatedChatMessages,
+    };
+
+    setCurrentChat(updatedChat);
   };
 
   return (

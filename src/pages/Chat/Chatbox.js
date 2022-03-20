@@ -21,7 +21,7 @@ import * as socialMediaAPI from "../../services/SocialMedia";
 
 import { useStores } from "../../stores/RootStore";
 
-const Chatbox = ({ currentChat, refreshCurrentChat }) => {
+const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
   console.log("currentChat", currentChat);
   const { userStore } = useStores();
 
@@ -32,6 +32,21 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
   };
 
   const sendMessage = async () => {
+    const receiverId =
+      currentChat.firstuserid === userStore.id
+        ? currentChat.seconduserid
+        : currentChat.firstuserid;
+
+    const timestamp = new Date();
+
+    socket.current.emit("sendMessage", {
+      senderId: userStore.id,
+      receiverId: receiverId,
+      text: message,
+      type: "Message",
+      timestamp: timestamp,
+    });
+
     try {
       const res = await chatAPI.createMessage(
         currentChat.id,

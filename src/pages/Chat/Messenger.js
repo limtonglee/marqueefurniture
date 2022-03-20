@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -25,14 +25,40 @@ const Messenger = () => {
     recipientProfilePic: "",
     chatMessages: [],
   });
-  const [socket, setSocket] = useState(null);
+  const socket = useRef();
+  const [arrivalMessage, setArrivalMessage] = useState(null);
 
   useEffect(() => {
-    setSocket(io("ws://localhost:8900"));
+    socket.current = io("ws://localhost:8900");
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        userid: data.senderId,
+        text: data.text,
+        type: data.type,
+        timestamp: data.timestamp,
+      });
+    });
   }, []);
 
   useEffect(() => {
-    socket?.on("welcome", (message) => {
+    arrivalMessage &&
+      (currentChat.firstuserid === arrivalMessage.userid ||
+        currentChat.seconduserid === arrivalMessage.userid) &&
+      setCurrentChat((prev) => {
+        const newChatMessages = [...currentChat.chatMessages, arrivalMessage];
+        return { ...prev, chatMessages: newChatMessages };
+      });
+  }, [arrivalMessage]);
+
+  useEffect(() => {
+    socket.current.emit("addUser", userStore.id);
+    socket.current.on("getUsers", (users) => {
+      console.log("getUsers", users);
+    });
+  }, [userStore]);
+
+  useEffect(() => {
+    socket.current.on("welcome", (message) => {
       console.log(message);
     });
   }, [socket]);
@@ -192,6 +218,7 @@ const Messenger = () => {
                   <Chatbox
                     currentChat={currentChat}
                     refreshCurrentChat={refreshCurrentChat}
+                    socket={socket}
                   />
                 ) : (
                   <Box

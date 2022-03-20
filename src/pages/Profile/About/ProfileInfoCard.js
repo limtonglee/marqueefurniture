@@ -16,10 +16,9 @@ import { StartSellingDialog } from "./StartSellingDialog";
 import axios from "axios";
 import editProfile, { getImage } from "../../../services/Profile";
 
-async function postImage({ image, desc }) {
+async function postImage({ image }) {
   const formData = new FormData();
   formData.append("image", image);
-  formData.append("desc", desc);
   const result = await axios.post(
     "http://localhost:8080/api/images",
     formData,
@@ -76,12 +75,12 @@ function ProfileInfoCard({
     setShowEdit(!showEdit);
   };
 
-  useEffect(() => {
-    getImage().then((response) => {
-      console.log("response");
-      console.log(response.data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   getImage().then((response) => {
+  //     console.log("response");
+  //     console.log(response.data);
+  //   });
+  // }, []);
 
   return (
     <>
@@ -105,12 +104,8 @@ function ProfileInfoCard({
             </Box>
 
             <input onChange={fileSelected} type="file" accept="image/*"></input>
-            <input
-              value={desc}
-              name="image"
-              onChange={(e) => setDesc(e.target.value)}
-              type="text"
-            ></input>
+
+            <img src="/api/image/ff29f9f65398635e6f31926dc72cf3de"></img>
 
             <Box p={2}>
               <Box mb={2} lineHeight={1}>
@@ -192,11 +187,6 @@ function ProfileInfoCard({
       {!showEdit && (
         <Box component="form" noValidate sx={{ mt: 3 }}>
           <Card sx={{ height: "100%" }}>
-            {/* {images.map((image) => (
-              <div key={image}>
-                <img src={image}></img>
-              </div>
-            ))} */}
             <Box
               display="flex"
               justifyContent="space-between"

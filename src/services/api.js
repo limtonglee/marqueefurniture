@@ -51,3 +51,16 @@ export const postAsFormInput = (url, data, headers = {}) =>
     headers,
     responseType: "json",
   });
+
+export const postAsImage = (
+  url,
+  data,
+  headers = {}
+) =>
+  instance.request({
+    method: "POST",
+    url,
+    data,
+    headers,
+    responseType: "json",
+  });

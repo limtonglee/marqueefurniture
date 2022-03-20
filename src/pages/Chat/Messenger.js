@@ -135,6 +135,17 @@ const Messenger = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const refreshCurrentChat = async () => {
+    const updatedChatMessages = await getChatMessages(currentChat.id);
+
+    const updatedChatWithRecipientUsername = {
+      ...currentChat,
+      chatMessages: updatedChatMessages,
+    };
+
+    setCurrentChat(updatedChatWithRecipientUsername);
+  };
+
   return (
     <>
       {isMobile ? (
@@ -159,7 +170,10 @@ const Messenger = () => {
             </Grid>
             <Grid item xs={8} md={8}>
               <Box sx={{ height: "80vh" }}>
-                <Chatbox currentChat={currentChat} />
+                <Chatbox
+                  currentChat={currentChat}
+                  refreshCurrentChat={refreshCurrentChat}
+                />
               </Box>
             </Grid>
           </Grid>

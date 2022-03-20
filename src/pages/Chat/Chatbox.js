@@ -21,7 +21,7 @@ import * as socialMediaAPI from "../../services/SocialMedia";
 
 import { useStores } from "../../stores/RootStore";
 
-const Chatbox = ({ currentChat }) => {
+const Chatbox = ({ currentChat, refreshCurrentChat }) => {
   console.log("currentChat", currentChat);
   const { userStore } = useStores();
 
@@ -29,6 +29,23 @@ const Chatbox = ({ currentChat }) => {
 
   const updateMessage = (e) => {
     setMessage(e.target.value);
+  };
+
+  const sendMessage = async () => {
+    try {
+      const res = await chatAPI.createMessage(
+        currentChat.id,
+        userStore.id,
+        "Message",
+        message
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log(data);
+      setMessage("");
+      refreshCurrentChat();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const [openMoreMenu, setOpenMoreMenu] = React.useState(false);
@@ -209,11 +226,19 @@ const Chatbox = ({ currentChat }) => {
                 value={message}
                 autoComplete="off"
               />
-              <Box>
-                <IconButton>
-                  <SendIcon />
-                </IconButton>
-              </Box>
+              {message.length === 0 ? (
+                <Box>
+                  <IconButton disabled>
+                    <SendIcon />
+                  </IconButton>
+                </Box>
+              ) : (
+                <Box>
+                  <IconButton onClick={sendMessage}>
+                    <SendIcon />
+                  </IconButton>
+                </Box>
+              )}
             </Stack>
           </form>
         </Box>

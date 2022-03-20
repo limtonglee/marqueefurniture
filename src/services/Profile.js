@@ -2,8 +2,8 @@
 
 //for signup services
 
-import { postAsImage, get } from "./api";
-import { URL_EDIT_PFP, URL_GET_IMAGE } from "../services/endpoints";
+import { URL_EDIT_PFP } from "../services/endpoints";
+import { postAsImage } from "./api";
 
 const editProfile = (formData, headers) => {
   console.log(formData.get("image"));
@@ -14,11 +14,6 @@ const editProfile = (formData, headers) => {
     },
     headers
   );
-};
-
-export const getImage = () => {
-
-  return get(URL_GET_IMAGE);
 };
 
 export default editProfile;

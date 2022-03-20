@@ -23,7 +23,6 @@ export const Orders = () => {
             const res = await SellerCenterAPI.getOrders(1);
             setData(JSON.parse(JSON.stringify(res.data)));
             setOrder(JSON.parse(JSON.stringify(res.data)));
-
         } catch (error) {
             console.error(error);
         }
@@ -115,7 +114,7 @@ export const Orders = () => {
                         onChange={(event) => handleSearch(event.target.value)}
                     />
                 </Stack>
-                <Card style={{ overflow: 'visible', height: 700 }}>
+                <Card style={{ overflow: 'visible', padding: '12px'}}>
                     <div className='page' style={{ height: '100%' }}>
                         <Box sx={{ width: '100%' }}>
                             <Tabs
@@ -134,10 +133,10 @@ export const Orders = () => {
                                 <Card key={item.id}
                                     sx={{
                                         flexDirection: 'row',
-                                        margin: '20px',
+                                        margin: '12px',
                                         border: 1,
                                         borderColor: '#C4CDD5',
-                                        padding: '5px'
+                                        padding: '5px',
                                     }}>
 
                                     <div className='header' style={{
@@ -148,10 +147,10 @@ export const Orders = () => {
                                         borderColor: '#C4CDD5',
                                         padding: '10px',
                                     }}>
-                                        <div className='buyerName'>
-                                            {item.buyerName}
+                                        <div>
+                                            {item.username}
                                         </div>
-                                        <div className='orderID'>
+                                        <div>
                                             Order ID {item.id}
                                         </div>
                                     </div>
@@ -174,8 +173,8 @@ export const Orders = () => {
                                             marginLeft: '5px',
                                             marginRight: '10px'
                                         }}>
-                                            <div>{item.productName}</div>
-                                            <div>Variation: {item.variation}</div>
+                                            <div>{item.name}</div>
+                                            <div>Variation: {item.variations}</div>
                                         </div>
                                         <div className='price' style={{
                                             display: 'flex',
@@ -185,7 +184,7 @@ export const Orders = () => {
                                         }}>
                                             <div>S${item.price}</div>
                                         </div>
-                                        <div>{item.status}</div>
+                                        <div>{item.order_status}</div>
                                     </div>
                                 </Card>
                             ))}

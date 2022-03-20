@@ -36,7 +36,6 @@ export const MyListings = () => {
             const res = await SellerCenterAPI.getListings(1);
             setData(JSON.parse(JSON.stringify(res.data)));
             setListings(JSON.parse(JSON.stringify(res.data)));
-            console.log('ZZZ', listings);
         } catch (error) {
             console.error(error);
         }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 
 import Chatbox from "./Chatbox";
 import ChatMenu from "./ChatMenu";
@@ -10,6 +11,8 @@ import * as chatAPI from "../../services/Chat";
 import * as socialMediaAPI from "../../services/SocialMedia";
 
 import { useStores } from "../../stores/RootStore";
+
+import { io } from "socket.io-client";
 
 const Messenger = () => {
   const { userStore } = useStores();
@@ -22,6 +25,11 @@ const Messenger = () => {
     recipientProfilePic: "",
     chatMessages: [],
   });
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    setSocket(io("ws://localhost:8900"));
+  }, []);
 
   //choose the screen size
   const handleResize = () => {
@@ -124,7 +132,11 @@ const Messenger = () => {
       console.log("cleaned data", values);
       setUserChats(values);
 
-      setCurrentChat(values[values.length - 1]);
+      // setCurrentChat(values[values.length - 1]);
+
+      if (values.length > 0) {
+        setCurrentChat(values[values.length - 1]);
+      }
 
       return values;
     });
@@ -170,10 +182,38 @@ const Messenger = () => {
             </Grid>
             <Grid item xs={8} md={8} sx={{ height: "100%" }}>
               <Box sx={{ height: "100%" }}>
-                <Chatbox
+                {userChats.length > 0 ? (
+                  <Chatbox
+                    currentChat={currentChat}
+                    refreshCurrentChat={refreshCurrentChat}
+                  />
+                ) : (
+                  <Box
+                    sx={{
+                      bgcolor: "#f2f2f2",
+                      height: "100%",
+                      border: "1px solid lightgrey",
+                      borderRadius: 1,
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      variant="h5"
+                      gutterBottom
+                      component="div"
+                      sx={{ fontWeight: "normal", fontStyle: "italic" }}
+                    >
+                      No messages yet
+                    </Typography>
+                  </Box>
+                )}
+                {/* <Chatbox
                   currentChat={currentChat}
                   refreshCurrentChat={refreshCurrentChat}
-                />
+                /> */}
               </Box>
             </Grid>
           </Grid>

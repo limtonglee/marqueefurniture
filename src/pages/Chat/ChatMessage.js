@@ -8,7 +8,7 @@ import { useStores } from "../../stores/RootStore";
 
 const ChatMessage = ({ message, recipientProfilePic, own }) => {
   const { userStore } = useStores(); // need to get current user dp from user store
-  console.log(message);
+
   return (
     <>
       {own ? (

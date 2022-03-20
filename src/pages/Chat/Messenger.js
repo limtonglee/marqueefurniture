@@ -48,6 +48,8 @@ const Messenger = () => {
         const newChatMessages = [...currentChat.chatMessages, arrivalMessage];
         return { ...prev, chatMessages: newChatMessages };
       });
+
+    arrivalMessage && refreshUserChatsWithoutUpdatingCurrentChat();
   }, [arrivalMessage]);
 
   useEffect(() => {
@@ -77,7 +79,6 @@ const Messenger = () => {
 
   useEffect(() => {
     handleResize();
-    getUserChats();
   }, []);
 
   // const getUserChats = async () => {
@@ -169,6 +170,39 @@ const Messenger = () => {
       if (values.length > 0) {
         setCurrentChat(values[values.length - 1]);
       }
+
+      return values;
+    });
+  };
+
+  const refreshUserChatsWithoutUpdatingCurrentChat = async () => {
+    const userChats = await getUserChats(userStore.id);
+
+    var promises = userChats.map(async (chat) => {
+      const id =
+        chat.firstuserid === userStore.id
+          ? chat.seconduserid
+          : chat.firstuserid;
+      const recipientUsername = await getUsernameById(id);
+      const recipientProfilePic = await getProfilePicById(id);
+
+      const chatMessages = await getChatMessages(chat.id);
+
+      const chatWithRecipientUsername = {
+        ...chat,
+        recipientUsername: recipientUsername,
+        recipientProfilePic: recipientProfilePic,
+        chatMessages: chatMessages,
+      };
+
+      return chatWithRecipientUsername;
+    });
+
+    await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
+
+    Promise.all(promises).then((values) => {
+      console.log("cleaned data", values);
+      setUserChats(values);
 
       return values;
     });

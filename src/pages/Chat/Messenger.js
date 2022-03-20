@@ -157,10 +157,10 @@ const Messenger = () => {
           />
         </Box>
       ) : (
-        <Container>
-          <Grid container spacing={3}>
-            <Grid item xs={4} md={4}>
-              <Box sx={{ height: "80vh" }}>
+        <Container sx={{ height: "90vh" }}>
+          <Grid container spacing={3} sx={{ height: "100%" }}>
+            <Grid item xs={4} md={4} sx={{ height: "100%" }}>
+              <Box sx={{ height: "100%" }}>
                 <ChatMenu
                   userChats={userChats}
                   currentChatId={currentChat.id}
@@ -168,8 +168,8 @@ const Messenger = () => {
                 />
               </Box>
             </Grid>
-            <Grid item xs={8} md={8}>
-              <Box sx={{ height: "80vh" }}>
+            <Grid item xs={8} md={8} sx={{ height: "100%" }}>
+              <Box sx={{ height: "100%" }}>
                 <Chatbox
                   currentChat={currentChat}
                   refreshCurrentChat={refreshCurrentChat}

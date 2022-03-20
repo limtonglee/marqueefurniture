@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
@@ -61,6 +61,12 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
 
   const openPopover = Boolean(anchorEl);
   const popoverId = openMoreMenu ? "simple-popover" : undefined;
+
+  const scrollRef = useRef();
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behaviour: "smooth" });
+  }, [currentChat]);
 
   return (
     <>
@@ -190,21 +196,39 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
               </Box>
             </>
           ) : (
-            currentChat.chatMessages.map((message) => {
-              if (message.type === "Message") {
-                return (
+            // currentChat.chatMessages.map((message) => {
+            //   if (message.type === "Message") {
+            //     return (
+            //       <ChatMessage
+            //         message={message}
+            //         recipientProfilePic={currentChat.recipientProfilePic}
+            //         own={message.userid === userStore.id}
+            //       />
+            //     );
+            //   } else if (message.type === "Announcement") {
+            //     return <ChatAnnouncement message={message} hasButton={false} />;
+            //   } else {
+            //     return <ChatAnnouncement message={message} hasButton={true} />;
+            //   }
+            // })
+
+            currentChat.chatMessages.map((message) => (
+              <div ref={scrollRef}>
+                {message.type === "Message" && (
                   <ChatMessage
                     message={message}
                     recipientProfilePic={currentChat.recipientProfilePic}
                     own={message.userid === userStore.id}
                   />
-                );
-              } else if (message.type === "Announcement") {
-                return <ChatAnnouncement message={message} hasButton={false} />;
-              } else {
-                return <ChatAnnouncement message={message} hasButton={true} />;
-              }
-            })
+                )}
+                {message.type === "Announcement" && (
+                  <ChatAnnouncement message={message} hasButton={false} />
+                )}
+                {message.type === "CTA Announcement" && (
+                  <ChatAnnouncement message={message} hasButton={true} />
+                )}
+              </div>
+            ))
           )}
         </Box>
         <Divider />

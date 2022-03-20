@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React from 'react';
+import { useEffect, useState } from "react";
 import { Layout } from '../Layout';
 import {
     Card,
@@ -7,35 +8,45 @@ import {
     Typography,
     Tabs,
     Tab,
-    Box,
-    styled,
     Grid,
-    TextField,
-    MenuItem
 } from '@mui/material';
 import AddVoucherModal from './AddVoucherModal';
-import { voucherData } from "../../../data/voucherData";
 import EditVoucherModal from "./EditVoucherModal";
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
+import * as SellerCenterAPI from "../../../services/SellerCenter";
 
 export const Voucher = () => {
     const [value, setValue] = React.useState(0);
-    const [data, setData] = React.useState(voucherData);
-    let tabData = voucherData;
+    const [data, setData] = useState([]);
+    const [vouchers, setVouchers] = useState([]);
+    
+    const getVouchers = async () => {
+        try {
+            const res = await SellerCenterAPI.getVouchers(1);
+            setData(JSON.parse(JSON.stringify(res.data)));
+            setVouchers(JSON.parse(JSON.stringify(res.data)));
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
+    useEffect(() => {
+        getVouchers();
+    }, []);
+
+    let tabData = vouchers;
     const handleChange = (event, newValue) => {
         setValue(newValue);
         updateData(newValue);
     };
+
     const updateData = (value) => {
         if (value === 1) {
-            tabData = voucherData.filter((voucher) => voucher.status === "Ongoing");
-        }
-        if (value === 2) {
-            tabData = voucherData.filter((voucher) => voucher.status === "Upcoming");
-        }
-        if (value === 3) {
-            tabData = voucherData.filter((voucher) => voucher.status === "Expired");
+            tabData = vouchers.filter((voucher) => voucher.status === "Ongoing");
+        } else if (value === 2) {
+            tabData = vouchers.filter((voucher) => voucher.status === "Upcoming");
+        }else if (value === 3) {
+            tabData = vouchers.filter((voucher) => voucher.status === "Expired");
         }
         setData(tabData);
     };
@@ -92,7 +103,7 @@ export const Voucher = () => {
                                             {item.id}
                                         </Grid>
                                         <Grid item xs={3}>
-                                            {item.usageLimit}
+                                            Min.Spend S${item.minspend}
                                         </Grid>
                                         <Grid item xs={2}>
                                             {item.status}

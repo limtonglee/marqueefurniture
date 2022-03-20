@@ -1,10 +1,18 @@
 
 import { get, remove, update, postAsFormInput } from "./api";
-
+// orders
 import { URL_GET_SHOP_ORDERS } from "../services/endpoints";
+// listings
 import { URL_GET_SHOP_LISTINGS } from "../services/endpoints";
+// vouchers
+import { URL_GET_SHOP_VOUCHERS } from "../services/endpoints";
+import { URL_EDIT_SHOP_VOUCHER } from "../services/endpoints";
+import { URL_CREATE_SHOP_VOUCHER } from "../services/endpoints";
+import { URL_DELETE_SHOP_VOUCHER } from "../services/endpoints";
+// categories
 import { URL_GET_SHOP_CATEGORIES } from "../services/endpoints";
 import { URL_CREATE_SHOP_CATEGORY } from "../services/endpoints";
+
 
 export const getOrders = (id) => {
 
@@ -22,6 +30,15 @@ export const getListings = (userId) => {
   };
 
   return get(URL_GET_SHOP_LISTINGS, params);
+};
+
+export const getVouchers = (id) => {
+
+  const params = {
+    shopId: id
+  };
+
+  return get(URL_GET_SHOP_VOUCHERS, params);
 };
 
 export const getShopCategories = (id) => {

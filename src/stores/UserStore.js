@@ -11,9 +11,10 @@ class userStore {
   isLoggedIn = false;
   isSeller = false;
   isAdmin = false;
-  userWebLink = "";
+  address = "";
   description = "";
   shop = "";
+  profilePic = "";
   // userStore.isSeller = false
   // getter no need but setter need
 
@@ -24,9 +25,10 @@ class userStore {
       isLoggedIn: observable,
       isSeller: observable,
       isAdmin: observable,
-      userWebLink: observable,
+      address: observable,
       description: observable,
       shop: observable,
+      profilePic: observable,
     });
     makeLocalStorage(this, "userStore", [
       "name",
@@ -34,9 +36,10 @@ class userStore {
       "isLoggedIn",
       "isSeller",
       "isAdmin",
-      "userWebLink",
+      "address",
       "description",
       "shop",
+      "profilePic",
     ]);
   }
 
@@ -48,6 +51,10 @@ class userStore {
     this.id = id;
   };
 
+  setProfilePic = (profilePic) => {
+    this.profilePic = profilePic;
+  };
+
   setIsLoggedIn = () => {
     this.isLoggedIn = true;
   };
@@ -57,9 +64,10 @@ class userStore {
     this.name = null;
     this.isSeller = false;
     this.isAdmin = false;
-    this.userWebLink = null;
+    this.address = null;
     this.description = null;
     this.shop = null;
+    this.profilePic = "";
   };
   setIsSeller = () => {
     this.isSeller = true;
@@ -69,8 +77,8 @@ class userStore {
     this.isAdmin = true;
   };
 
-  setUserWebLink = (link) => {
-    this.userWebLink = link;
+  setUserAddress = (link) => {
+    this.address = link;
   };
 
   setDescription = (description) => {

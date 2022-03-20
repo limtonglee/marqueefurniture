@@ -58,6 +58,8 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
 
   const { cartStore } = useStores();
 
+  const profilePic = userStore.profilePic;
+  
   const setLogout = (e) => {
     userStore.setIsLoggedOut();
     navigate("/marketplace");
@@ -134,7 +136,7 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
               </Tooltip>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src={jack} />
+                  <Avatar alt="Remy Sharp" src={`/api/image/${profilePic}`} />
                 </IconButton>
               </Tooltip>
               <Menu

@@ -3,8 +3,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import { Message } from "@mui/icons-material";
 
-const ChatAnnouncement = ({ hasButton }) => {
+const ChatAnnouncement = ({ message, hasButton }) => {
   return (
     <>
       <Box
@@ -19,7 +20,7 @@ const ChatAnnouncement = ({ hasButton }) => {
           <Box
             sx={{
               backgroundColor: "primary.main",
-              maxWidth: 300,
+              width: 300,
               borderRadius: 3,
               p: 1.8,
               color: "primary.contrastText",
@@ -34,16 +35,30 @@ const ChatAnnouncement = ({ hasButton }) => {
               }}
               component="div"
             >
-              Consultation request has been submitted.
+              {message.text}
             </Typography>
-            {hasButton && <Button variant="outlined">Add to Cart</Button>}
+            {hasButton && (
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "white",
+                  color: "primary.main",
+                  "&:hover": {
+                    backgroundColor: "grey.200",
+                    color: "primary.light",
+                  },
+                }}
+              >
+                Add to Cart
+              </Button>
+            )}
           </Box>
           <Typography
             variant="body2"
             display="block"
             sx={{ fontWeight: "normal" }}
           >
-            11:32 pm
+            {message.timestamp}
           </Typography>
         </Stack>
       </Box>

@@ -273,19 +273,23 @@ export const ItemDetails = () => {
             <Stack direction="row" spacing={1} mt={2}>
               {!!userStore.isLoggedIn ? (
                 <>
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      handleAddCart(item, {
-                        vertical: "top",
-                        horizontal: "center",
-                      });
-                    }}
-                    startIcon={<ShoppingCartIcon />}
-                  >
-                    Add to cart
-                  </Button>
-                  <ToastContainer />
+                  {item.type !== "Design" && (
+                    <>
+                      <Button
+                        variant="outlined"
+                        onClick={() => {
+                          handleAddCart(item, {
+                            vertical: "top",
+                            horizontal: "center",
+                          });
+                        }}
+                        startIcon={<ShoppingCartIcon />}
+                      >
+                        Add to cart
+                      </Button>
+                      <ToastContainer />
+                    </>
+                  )}
                   <Button
                     variant="outlined"
                     startIcon={<ChatIcon />}

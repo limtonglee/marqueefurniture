@@ -10,6 +10,7 @@ export const URL_GET_MOODBOARD = "/api/user/moodboards";
 //listings management
 export const URL_GET_LISTINGS = "/api/listings";
 export const URL_GET_LISTING_DETAILS = "/api/listing/details";
+export const URL_GET_LISTING_SELLER = "/api/listing/getSeller";
 
 //cart management
 export const URL_GET_CART = "/api/cart"

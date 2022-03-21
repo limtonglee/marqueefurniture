@@ -30,6 +30,8 @@ import { useStores } from "../../stores/RootStore";
 
 import { addToCart } from "../../services/Listings";
 
+import { getSellerInfo } from "../../services/Listings";
+
 //This is the listing page
 /* 
 Expansion of item details for this Done
@@ -42,10 +44,12 @@ Add in a back button Done
 Add in filter by category
 */
 export const ItemDetails = () => {
-
   const { userStore } = useStores();
   const param = useParams();
   const [item, setItems] = useState([]);
+  const [shopName, setShopName] = useState("");
+  const [images, setImages] = useState("");
+
 
   const notifyCart = () =>
     toast("Item added to cart!", {
@@ -59,9 +63,17 @@ export const ItemDetails = () => {
     });
 
   useEffect(() => {
+    const getSellerData = async (listingId) => {
+      const response = await getSellerInfo(listingId);
+      setShopName(response.data[0].shopname);
+      setImages(response.data[0].images);
+    };
+
     getListingDetails(param.itemId)
       .then((response) => {
         setItems(JSON.parse(JSON.stringify(response.data))[0]);
+       
+        getSellerData(param.itemId);
       })
       .catch((error) => {
         console.log(error);
@@ -93,6 +105,12 @@ export const ItemDetails = () => {
     color: "text.secondary",
     fontWeight: "500",
     fontSize: 20,
+  };
+
+  const getSellerData = async (listingId) => {
+    const response = await getSellerInfo(listingId);
+    console.log(response.data);
+    return;
   };
 
   return (
@@ -314,11 +332,12 @@ export const ItemDetails = () => {
         </Grid>
       </Grid>
       <Divider></Divider>
+
       <CardHeader
         avatar={
           <Link to={`/SellerProfile`} style={{ textDecoration: "none" }}>
             <Avatar
-              src={jack}
+              src={images}
               alt="profile-image"
               variant="rounded"
               shadow="sm"
@@ -328,6 +347,9 @@ export const ItemDetails = () => {
         }
         sx={{ p: 0 }}
       />
+      <Typography variant="h3" >
+        {shopName}
+      </Typography>
     </>
   );
 };

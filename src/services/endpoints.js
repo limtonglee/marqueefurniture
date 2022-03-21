@@ -11,6 +11,9 @@ export const URL_GET_MOODBOARD = "/api/user/moodboards";
 export const URL_GET_LISTINGS = "/api/listings";
 export const URL_GET_LISTING_DETAILS = "/api/listing/details";
 
+//cart management
+export const URL_GET_CART = "/api/cart"
+
 // posts management
 export const URL_GET_POSTS = "/api/posts"; // get all posts
 export const URL_GET_POST_DETAILS = "/api/post/details"; // get indiv post details

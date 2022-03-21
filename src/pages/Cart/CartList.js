@@ -7,11 +7,15 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { deleteCartItem, deleteCartItems, getCart } from "../../services/Cart";
-import { addToCart, getListingDetails } from "../../services/Listings";
+import {
+  addToCart,
+  getListingDetails,
+  getSellerInfo,
+} from "../../services/Listings";
 import { useStores } from "../../stores/RootStore";
 import { getCartTotal } from "../../utils/getCartTotal";
 import { getTotalPrice } from "../../utils/getTotalPrice";
-
+import { SellerData } from "./SellerData";
 
 const Img = styled("img")({
   margin: "auto",
@@ -159,9 +163,9 @@ export default function Cart() {
                 <Grid item xs={12} sm container>
                   <Grid item xs container direction="column" spacing={2}>
                     <Grid item xs>
-                      {/* <Typography gutterBottom variant="body1" component="div">
-                        Seller: {cartItem.author}
-                      </Typography> */}
+                  
+                        <SellerData listingId={cartItem.id} />
+
                       <Typography variant="body2" gutterBottom>
                         Item name: {cartItem.name}
                       </Typography>

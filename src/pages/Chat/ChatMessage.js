@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
+import { format } from "date-fns";
 
 import { useStores } from "../../stores/RootStore";
 
@@ -42,7 +43,7 @@ const ChatMessage = ({ message, recipientProfilePic, own }) => {
                 display="block"
                 sx={{ fontWeight: "normal" }}
               >
-                {message.timestamp}
+                {format(Date.parse(message.timestamp), "dd/MM/yyyy HH:MM")}
               </Typography>
             </Stack>
             <Avatar
@@ -78,7 +79,7 @@ const ChatMessage = ({ message, recipientProfilePic, own }) => {
                 display="block"
                 sx={{ fontWeight: "normal" }}
               >
-                {message.timestamp}
+                {format(Date.parse(message.timestamp), "dd/MM/yyyy HH:MM")}
               </Typography>
             </Stack>
           </Stack>

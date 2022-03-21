@@ -1,5 +1,7 @@
 //user management
 export const URL_LOGIN = "/api/user/login";
+export const URL_EDIT_PFP = "/api/profile/images";
+
 //export const URL_LOGOUT = '/logout';
 export const URL_SIGNUP = "/api/user/signup";
 export const URL_FORGOT_PASSWORD = "/api/user/forgot";
@@ -8,6 +10,14 @@ export const URL_GET_MOODBOARD = "/api/user/moodboards";
 //listings management
 export const URL_GET_LISTINGS = "/api/listings";
 export const URL_GET_LISTING_DETAILS = "/api/listing/details";
+export const URL_GET_LISTING_SELLER = "/api/listing/getSeller";
+
+//cart management
+export const URL_GET_CART = "/api/cart"
+export const URL_POST_CART_ITEM = "/api/cart/item"
+export const URL_DELETE_CART_ITEM = "/api/cart/deleteItem"
+export const URL_DELETE_CART_ITEMS = "/api/cart/deleteItems"
+
 
 // posts management
 export const URL_GET_POSTS = "/api/posts"; // get all posts

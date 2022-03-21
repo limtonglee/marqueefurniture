@@ -7,11 +7,33 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
+import axios from "axios";
 // prop-types is library for typechecking of props
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { useStores } from "../../../stores/RootStore";
 import { StartSellingDialog } from "./StartSellingDialog";
+
+import CircularProgress from "@mui/material/CircularProgress";
+
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+async function updateProfile({ image, userId, bio, userName, address }) {
+  const formData = new FormData();
+  formData.append("image", image);
+  formData.append("userId", userId);
+  formData.append("bio", bio);
+  formData.append("userName", userName);
+  formData.append("address", address);
+
+  const result = await axios.post(
+    "http://localhost:8080/api/profile/edit",
+    formData,
+    { headers: { "Content-Type": "multipart/form-data" } }
+  );
+  return result.data;
+}
 
 function ProfileInfoCard({
   title,
@@ -20,31 +42,63 @@ function ProfileInfoCard({
   userName,
   setUserName,
   setShopName,
+  setProfilePic,
 }) {
-  const [showEdit, setShowEdit] = useState(false);
-
   const { userStore } = useStores();
-
+  const [showEdit, setShowEdit] = useState(false);
   const [bio, setBio] = useState(userStore.description);
-  const [link, setLink] = useState(userStore.userWebLink);
-
+  const [address, setAddress] = useState(userStore.address);
   const [start, setStart] = useState(false);
+  const [file, setFile] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const userId = userStore.id;
+
+  const notifySubmit = () =>
+    toast("Profile updated!", {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 5000,
+    });
+
+  const fileSelected = (event) => {
+    const file = event.target.files[0];
+    setFile(file);
+  };
 
   const handleStart = () => {
     setStart(true);
   };
 
-  //handleSubmit not being called
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    userStore.setUserName(data.get("username"));
-    setUserName(data.get("username"));
-    userStore.setDescription(data.get("bio"));
-    setBio(data.get("bio"));
-    userStore.setUserWebLink(data.get("link"));
-    setLink(data.get("link"));
+    setIsLoading(true);
+
+    const result = await updateProfile({
+      image: file,
+      userId,
+      bio: data.get("bio"),
+      userName: data.get("username"),
+      address: data.get("address"),
+    });
+
+    if (result.profilePic !== undefined) {
+      setProfilePic(result.profilePic);
+
+      userStore.setProfilePic(result.profilePic);
+    }
+
+    if (result.msg === "User have successfully updated profile!") {
+      notifySubmit();
+      userStore.setUserName(data.get("username"));
+      setUserName(data.get("username"));
+      userStore.setDescription(data.get("bio"));
+      setBio(data.get("bio"));
+      userStore.setUserAddress(data.get("address"));
+      setAddress(data.get("address"));
+    }
+    setIsLoading(false);
     setShowEdit(!showEdit);
   };
 
@@ -53,6 +107,29 @@ function ProfileInfoCard({
       {!!showEdit && (
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Card sx={{ height: "100%" }}>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              pt={2}
+              px={2}
+            >
+              <Typography
+                variant="h6"
+                fontWeight="medium"
+                textTransform="capitalize"
+              >
+                Profile Pic
+              </Typography>
+            </Box>
+            <Box ml={2} mb={2} lineHeight={1}>
+              <input
+                onChange={fileSelected}
+                type="file"
+                accept="image/*"
+              ></input>
+            </Box>
+
             <Box
               display="flex"
               justifyContent="space-between"
@@ -95,7 +172,8 @@ function ProfileInfoCard({
                 <TextField
                   variant="outlined"
                   multiline
-                  rows={4}
+                  minRows={1}
+                  maxRows={4}
                   fullWidth
                   defaultValue={bio}
                   required
@@ -115,21 +193,17 @@ function ProfileInfoCard({
               <Box mb={2} lineHeight={1}>
                 <TextField
                   variant="outlined"
-                  defaultValue={link}
+                  defaultValue={address}
                   required
-                  id="link"
-                  name="link"
+                  id="address"
+                  name="address"
                 ></TextField>
-              </Box>
-
-              <Box>
-                <Box display="flex" py={1} pr={2}></Box>
               </Box>
             </Box>
 
             <Box
               sx={{
-                marginTop: 2,
+                marginTop: 0,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -138,6 +212,11 @@ function ProfileInfoCard({
               <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Save
               </Button>
+              {!!isLoading && (
+                <Box sx={{ display: "flex" }}>
+                  <CircularProgress />
+                </Box>
+              )}
 
               <Button variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Cancel Changes
@@ -199,7 +278,7 @@ function ProfileInfoCard({
 
               <Box mb={2} lineHeight={1}>
                 <Typography variant="button" color="text" fontWeight="regular">
-                  {link}
+                  {address}
                 </Typography>
               </Box>
             </Box>
@@ -233,6 +312,7 @@ function ProfileInfoCard({
           </Card>
         </Box>
       )}
+      <ToastContainer />
 
       <StartSellingDialog
         start={start}

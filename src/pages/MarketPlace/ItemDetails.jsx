@@ -24,13 +24,12 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import jack from "../../assets/images/jack.jpg";
-import { getListingDetails } from "../../services/Listings";
+import {
+  addToCart,
+  getListingDetails,
+  getSellerInfo,
+} from "../../services/Listings";
 import { useStores } from "../../stores/RootStore";
-
-import { addToCart } from "../../services/Listings";
-
-import { getSellerInfo } from "../../services/Listings";
 
 //This is the listing page
 /* 
@@ -49,7 +48,6 @@ export const ItemDetails = () => {
   const [item, setItems] = useState([]);
   const [shopName, setShopName] = useState("");
   const [images, setImages] = useState("");
-
 
   const notifyCart = () =>
     toast("Item added to cart!", {
@@ -72,7 +70,7 @@ export const ItemDetails = () => {
     getListingDetails(param.itemId)
       .then((response) => {
         setItems(JSON.parse(JSON.stringify(response.data))[0]);
-       
+
         getSellerData(param.itemId);
       })
       .catch((error) => {
@@ -105,12 +103,6 @@ export const ItemDetails = () => {
     color: "text.secondary",
     fontWeight: "500",
     fontSize: 20,
-  };
-
-  const getSellerData = async (listingId) => {
-    const response = await getSellerInfo(listingId);
-    console.log(response.data);
-    return;
   };
 
   return (
@@ -347,9 +339,7 @@ export const ItemDetails = () => {
         }
         sx={{ p: 0 }}
       />
-      <Typography variant="h3" >
-        {shopName}
-      </Typography>
+      <Typography variant="h3">{shopName}</Typography>
     </>
   );
 };

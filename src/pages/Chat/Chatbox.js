@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
@@ -21,7 +21,7 @@ import * as socialMediaAPI from "../../services/SocialMedia";
 
 import { useStores } from "../../stores/RootStore";
 
-const Chatbox = ({ currentChat }) => {
+const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
   console.log("currentChat", currentChat);
   const { userStore } = useStores();
 
@@ -29,6 +29,38 @@ const Chatbox = ({ currentChat }) => {
 
   const updateMessage = (e) => {
     setMessage(e.target.value);
+  };
+
+  const sendMessage = async () => {
+    const receiverId =
+      currentChat.firstuserid === userStore.id
+        ? currentChat.seconduserid
+        : currentChat.firstuserid;
+
+    const timestamp = new Date();
+
+    socket.current.emit("sendMessage", {
+      senderId: userStore.id,
+      receiverId: receiverId,
+      text: message,
+      type: "Message",
+      timestamp: timestamp,
+    });
+
+    try {
+      const res = await chatAPI.createMessage(
+        currentChat.id,
+        userStore.id,
+        "Message",
+        message
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log(data);
+      setMessage("");
+      refreshCurrentChat();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const [openMoreMenu, setOpenMoreMenu] = React.useState(false);
@@ -44,6 +76,12 @@ const Chatbox = ({ currentChat }) => {
 
   const openPopover = Boolean(anchorEl);
   const popoverId = openMoreMenu ? "simple-popover" : undefined;
+
+  const scrollRef = useRef();
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behaviour: "smooth" });
+  }, [currentChat]);
 
   return (
     <>
@@ -173,26 +211,44 @@ const Chatbox = ({ currentChat }) => {
               </Box>
             </>
           ) : (
-            currentChat.chatMessages.map((message) => {
-              if (message.type === "Message") {
-                return (
+            // currentChat.chatMessages.map((message) => {
+            //   if (message.type === "Message") {
+            //     return (
+            //       <ChatMessage
+            //         message={message}
+            //         recipientProfilePic={currentChat.recipientProfilePic}
+            //         own={message.userid === userStore.id}
+            //       />
+            //     );
+            //   } else if (message.type === "Announcement") {
+            //     return <ChatAnnouncement message={message} hasButton={false} />;
+            //   } else {
+            //     return <ChatAnnouncement message={message} hasButton={true} />;
+            //   }
+            // })
+
+            currentChat.chatMessages.map((message) => (
+              <div ref={scrollRef} key={message.id}>
+                {message.type === "Message" && (
                   <ChatMessage
                     message={message}
                     recipientProfilePic={currentChat.recipientProfilePic}
                     own={message.userid === userStore.id}
                   />
-                );
-              } else if (message.type === "Announcement") {
-                return <ChatAnnouncement message={message} hasButton={false} />;
-              } else {
-                return <ChatAnnouncement message={message} hasButton={true} />;
-              }
-            })
+                )}
+                {message.type === "Announcement" && (
+                  <ChatAnnouncement message={message} hasButton={false} />
+                )}
+                {message.type === "CTA Announcement" && (
+                  <ChatAnnouncement message={message} hasButton={true} />
+                )}
+              </div>
+            ))
           )}
         </Box>
         <Divider />
         <Box sx={{ p: 3, backgroundColor: "white" }}>
-          <form autocomplete="off">
+          <form autoComplete="off">
             <Stack direction="row" spacing={2}>
               <Box>
                 <IconButton>
@@ -209,11 +265,19 @@ const Chatbox = ({ currentChat }) => {
                 value={message}
                 autoComplete="off"
               />
-              <Box>
-                <IconButton>
-                  <SendIcon />
-                </IconButton>
-              </Box>
+              {message.length === 0 ? (
+                <Box>
+                  <IconButton disabled>
+                    <SendIcon />
+                  </IconButton>
+                </Box>
+              ) : (
+                <Box>
+                  <IconButton onClick={sendMessage}>
+                    <SendIcon />
+                  </IconButton>
+                </Box>
+              )}
             </Stack>
           </form>
         </Box>

@@ -22,10 +22,11 @@ export const getUserChats = (id) => {
   return get(URL_GET_USER_CHATS, params);
 };
 
-export const createMessage = (chatId, userId, text) => {
+export const createMessage = (chatId, userId, type, text) => {
   const body = {
     chatId: chatId,
     userId: userId,
+    type: type,
     text: text,
   };
   return postAsFormInput(URL_CREATE_MESSAGE, body);

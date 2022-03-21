@@ -19,7 +19,6 @@ function Header({ name, shopName , profilePic }) {
     <Box position="relative">
       <Grid
         container
-        spacing={1}
         alignItems="center"
         justifyContent={"space-between"}
       >

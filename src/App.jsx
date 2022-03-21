@@ -36,7 +36,7 @@ const App = () => {
         <ThemeConfig>
           <>
             <GlobalStyles />
-            <Container maxWidth="xxl">
+            <Container maxWidth="xxl" sx={{position:"absolute"}}>
               <>
                 {userStore.isLoggedIn ? (
                   !userStore.isAdmin && (

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 
 import Chatbox from "./Chatbox";
 import ChatMenu from "./ChatMenu";
@@ -10,6 +11,8 @@ import * as chatAPI from "../../services/Chat";
 import * as socialMediaAPI from "../../services/SocialMedia";
 
 import { useStores } from "../../stores/RootStore";
+
+import { io } from "socket.io-client";
 
 const Messenger = () => {
   const { userStore } = useStores();
@@ -22,6 +25,45 @@ const Messenger = () => {
     recipientProfilePic: "",
     chatMessages: [],
   });
+  const socket = useRef();
+  const [arrivalMessage, setArrivalMessage] = useState(null);
+
+  useEffect(() => {
+    socket.current = io("ws://localhost:8900");
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        userid: data.senderId,
+        text: data.text,
+        type: data.type,
+        timestamp: data.timestamp,
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    arrivalMessage &&
+      (currentChat.firstuserid === arrivalMessage.userid ||
+        currentChat.seconduserid === arrivalMessage.userid) &&
+      setCurrentChat((prev) => {
+        const newChatMessages = [...currentChat.chatMessages, arrivalMessage];
+        return { ...prev, chatMessages: newChatMessages };
+      });
+
+    arrivalMessage && refreshUserChatsWithoutUpdatingCurrentChat();
+  }, [arrivalMessage]);
+
+  useEffect(() => {
+    socket.current.emit("addUser", userStore.id);
+    socket.current.on("getUsers", (users) => {
+      console.log("getUsers", users);
+    });
+  }, [userStore]);
+
+  useEffect(() => {
+    socket.current.on("welcome", (message) => {
+      console.log(message);
+    });
+  }, [socket]);
 
   //choose the screen size
   const handleResize = () => {
@@ -37,7 +79,6 @@ const Messenger = () => {
 
   useEffect(() => {
     handleResize();
-    getUserChats();
   }, []);
 
   // const getUserChats = async () => {
@@ -124,7 +165,44 @@ const Messenger = () => {
       console.log("cleaned data", values);
       setUserChats(values);
 
-      setCurrentChat(values[values.length - 1]);
+      // setCurrentChat(values[values.length - 1]);
+
+      if (values.length > 0) {
+        setCurrentChat(values[values.length - 1]);
+      }
+
+      return values;
+    });
+  };
+
+  const refreshUserChatsWithoutUpdatingCurrentChat = async () => {
+    const userChats = await getUserChats(userStore.id);
+
+    var promises = userChats.map(async (chat) => {
+      const id =
+        chat.firstuserid === userStore.id
+          ? chat.seconduserid
+          : chat.firstuserid;
+      const recipientUsername = await getUsernameById(id);
+      const recipientProfilePic = await getProfilePicById(id);
+
+      const chatMessages = await getChatMessages(chat.id);
+
+      const chatWithRecipientUsername = {
+        ...chat,
+        recipientUsername: recipientUsername,
+        recipientProfilePic: recipientProfilePic,
+        chatMessages: chatMessages,
+      };
+
+      return chatWithRecipientUsername;
+    });
+
+    await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
+
+    Promise.all(promises).then((values) => {
+      console.log("cleaned data", values);
+      setUserChats(values);
 
       return values;
     });
@@ -134,6 +212,17 @@ const Messenger = () => {
     getUserChatsWithUsername();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const refreshCurrentChat = async () => {
+    const updatedChatMessages = await getChatMessages(currentChat.id);
+
+    const updatedChatWithRecipientUsername = {
+      ...currentChat,
+      chatMessages: updatedChatMessages,
+    };
+
+    setCurrentChat(updatedChatWithRecipientUsername);
+  };
 
   return (
     <>
@@ -146,10 +235,10 @@ const Messenger = () => {
           />
         </Box>
       ) : (
-        <Container>
-          <Grid container spacing={3}>
-            <Grid item xs={4} md={4}>
-              <Box sx={{ height: "80vh" }}>
+        <Container sx={{ height: "90vh" }}>
+          <Grid container spacing={3} sx={{ height: "100%" }}>
+            <Grid item xs={4} md={4} sx={{ height: "100%" }}>
+              <Box sx={{ height: "100%" }}>
                 <ChatMenu
                   userChats={userChats}
                   currentChatId={currentChat.id}
@@ -157,9 +246,41 @@ const Messenger = () => {
                 />
               </Box>
             </Grid>
-            <Grid item xs={8} md={8}>
-              <Box sx={{ height: "80vh" }}>
-                <Chatbox currentChat={currentChat} />
+            <Grid item xs={8} md={8} sx={{ height: "100%" }}>
+              <Box sx={{ height: "100%" }}>
+                {userChats.length > 0 ? (
+                  <Chatbox
+                    currentChat={currentChat}
+                    refreshCurrentChat={refreshCurrentChat}
+                    socket={socket}
+                  />
+                ) : (
+                  <Box
+                    sx={{
+                      bgcolor: "#f2f2f2",
+                      height: "100%",
+                      border: "1px solid lightgrey",
+                      borderRadius: 1,
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      variant="h5"
+                      gutterBottom
+                      component="div"
+                      sx={{ fontWeight: "normal", fontStyle: "italic" }}
+                    >
+                      No messages yet
+                    </Typography>
+                  </Box>
+                )}
+                {/* <Chatbox
+                  currentChat={currentChat}
+                  refreshCurrentChat={refreshCurrentChat}
+                /> */}
               </Box>
             </Grid>
           </Grid>

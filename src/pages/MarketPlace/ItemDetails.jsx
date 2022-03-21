@@ -28,6 +28,8 @@ import jack from "../../assets/images/jack.jpg";
 import { getListingDetails } from "../../services/Listings";
 import { useStores } from "../../stores/RootStore";
 
+import { addToCart } from "../../services/Listings";
+
 //This is the listing page
 /* 
 Expansion of item details for this Done
@@ -40,7 +42,6 @@ Add in a back button Done
 Add in filter by category
 */
 export const ItemDetails = () => {
-  const { cartStore } = useStores();
 
   const { userStore } = useStores();
   const param = useParams();
@@ -78,7 +79,14 @@ export const ItemDetails = () => {
 
   const handleAddCart = (item, newState) => {
     notifyCart();
-    cartStore.addItems(item);
+
+    const addItemToCart = async () => {
+      const response = await addToCart(userStore.id, item.id);
+      const result = await response.data;
+      console.log(result);
+    };
+
+    addItemToCart();
   };
 
   const HeadingTypoStyle = {

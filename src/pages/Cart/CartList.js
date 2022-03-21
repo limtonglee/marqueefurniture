@@ -3,16 +3,14 @@ import ButtonBase from "@mui/material/ButtonBase";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import { toJS } from "mobx";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getCart } from "../../services/Cart";
-import { getListingDetails } from "../../services/Listings";
+import { deleteCartItem, deleteCartItems, getCart } from "../../services/Cart";
+import { addToCart, getListingDetails } from "../../services/Listings";
 import { useStores } from "../../stores/RootStore";
 import { getCartTotal } from "../../utils/getCartTotal";
 import { getTotalPrice } from "../../utils/getTotalPrice";
-
 
 
 const Img = styled("img")({
@@ -23,8 +21,7 @@ const Img = styled("img")({
 });
 
 export default function Cart() {
-  const { cartStore, userStore } = useStores();
-  const [listings, setListings] = useState([]);
+  const { userStore } = useStores();
   const [items, setItems] = useState([]);
   const [count, setCount] = useState({});
 
@@ -46,40 +43,59 @@ export default function Cart() {
       console.log("called");
       const response = await getListingDetails(listingId);
       const result = await response.data[0];
-      console.log(result);
 
       setItems((items) => [...items, result]);
-      console.log(items);
     };
 
     const fetchCartData = async () => {
       const response = await getCart(userStore.id);
       const result = await response.data;
-      console.log(result);
 
-      setListings(result);
       updateListing(result);
     };
 
     fetchCartData().catch(console.error);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleDeleteOneItem = (itemId) => {
-    console.log("removing itemID " + itemId);
+  //deleting all items from database
+  const handleDeleteItem = (itemId) => {
+    const removeItems = async () => {
+      const response = await deleteCartItems(userStore.id, itemId);
+      const result = await response.data;
+      console.log(result);
+    };
 
-    cartStore.removeItems(itemId);
-    setItems(toJS(cartStore.getItems()));
+    removeItems();
+
+    let newCount = {};
+    for (let [key, value] of Object.entries(count)) {
+      if (parseInt(key) === itemId) {
+        const newItems = items.filter((item) => item.id !== itemId);
+        setItems(newItems);
+      } else {
+        newCount[parseInt(key)] = parseInt(value);
+      }
+    }
+    setCount(newCount);
   };
 
+  //delete one item from database
   const handleRemoveOneItem = (itemId) => {
+    const removeItem = async () => {
+      const response = await deleteCartItem(userStore.id, itemId);
+      const result = await response.data;
+      console.log(result);
+    };
+
+    removeItem();
+
     let newCount = {};
     for (let [key, value] of Object.entries(count)) {
       if (parseInt(key) === itemId) {
         const newValue = parseInt(value) - 1;
         if (newValue === 0) {
-          const newItems = items.filter(
-            (item) => (item.id !== itemId)
-          );
+          const newItems = items.filter((item) => item.id !== itemId);
           setItems(newItems);
         } else {
           newCount[parseInt(key)] = newValue;
@@ -101,6 +117,15 @@ export default function Cart() {
         newCount[parseInt(key)] = parseInt(value);
       }
     }
+
+    const addItemToCart = async () => {
+      const response = await addToCart(userStore.id, itemId);
+      const result = await response.data;
+      console.log(result);
+    };
+
+    addItemToCart();
+
     setCount(newCount);
   };
 
@@ -204,9 +229,9 @@ export default function Cart() {
                     <Button
                       size="small"
                       align="right"
-                      onClick={() => handleDeleteOneItem(cartItem.id)}
+                      onClick={() => handleDeleteItem(cartItem.id)}
                     >
-                      Delete
+                      Remove
                     </Button>
                   </Grid>
                 </Grid>

@@ -17,8 +17,8 @@ export const SellerData = ({ listingId }) => {
   });
 
   return (
-    <Typography variant="body2" gutterBottom>
-      Shop name: {shopName}
+    <Typography variant="body2" gutterBottom color="primary.main">
+      {shopName}
     </Typography>
   );
 };

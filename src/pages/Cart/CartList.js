@@ -35,16 +35,13 @@ export default function Cart() {
       result.forEach((x) => {
         counts[x.listingid] = (counts[x.listingid] || 0) + 1;
       });
-      console.log(counts);
       setCount(counts);
       for (let [key, value] of Object.entries(counts)) {
-        console.log(key, value);
         getListingDetail(key);
       }
     };
 
     const getListingDetail = async (listingId) => {
-      console.log("called");
       const response = await getListingDetails(listingId);
       const result = await response.data[0];
 
@@ -125,7 +122,6 @@ export default function Cart() {
     const addItemToCart = async () => {
       const response = await addToCart(userStore.id, itemId);
       const result = await response.data;
-      console.log(result);
     };
 
     addItemToCart();
@@ -163,8 +159,7 @@ export default function Cart() {
                 <Grid item xs={12} sm container>
                   <Grid item xs container direction="column" spacing={2}>
                     <Grid item xs>
-                  
-                        <SellerData listingId={cartItem.id} />
+                      <SellerData listingId={cartItem.id} />
 
                       <Typography variant="body2" gutterBottom>
                         Item name: {cartItem.name}
@@ -247,7 +242,7 @@ export default function Cart() {
         <Grid container spacing={2} direction="row-reverse">
           <Grid item xs={2}>
             <Typography variant="body2" component="div">
-              Cart Total: ${getCartTotal(items)}
+              Cart Total: ${getCartTotal(items, count)}
             </Typography>
             <Typography variant="subtitle1" component="div"></Typography>
           </Grid>

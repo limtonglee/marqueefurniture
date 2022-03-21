@@ -1,4 +1,11 @@
-import { Button, Container, Divider, Grid, ImageList } from "@mui/material";
+import {
+  Button,
+  Container,
+  Divider,
+  Grid,
+  ImageList,
+  Checkbox,
+} from "@mui/material";
 import ButtonBase from "@mui/material/ButtonBase";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
@@ -28,6 +35,7 @@ export default function Cart() {
   const { userStore } = useStores();
   const [items, setItems] = useState([]);
   const [count, setCount] = useState({});
+  const [selectedItemsId, setSelectedItemsId] = useState([]);
 
   useEffect(() => {
     const updateListing = (result) => {
@@ -129,6 +137,44 @@ export default function Cart() {
     setCount(newCount);
   };
 
+  const handleSelectAll = (event) => {
+    let newSelectedItemsId;
+
+    if (event.target.checked) {
+      newSelectedItemsId = items.map((item) => item.id);
+    } else {
+      newSelectedItemsId = [];
+    }
+
+    setSelectedItemsId(newSelectedItemsId);
+  };
+
+  const handleSelectOne = (event, id) => {
+    const selectedIndex = selectedItemsId.indexOf(id);
+    let newSelectedItemsId = [];
+
+    if (selectedIndex === -1) {
+      newSelectedItemsId = newSelectedItemsId.concat(selectedItemsId, id);
+    } else if (selectedIndex === 0) {
+      newSelectedItemsId = newSelectedItemsId.concat(selectedItemsId.slice(1));
+    } else if (selectedIndex === selectedItemsId.length - 1) {
+      newSelectedItemsId = newSelectedItemsId.concat(
+        selectedItemsId.slice(0, -1)
+      );
+    } else if (selectedIndex > 0) {
+      newSelectedItemsId = newSelectedItemsId.concat(
+        selectedItemsId.slice(0, selectedIndex),
+        selectedItemsId.slice(selectedIndex + 1)
+      );
+    }
+    setSelectedItemsId(newSelectedItemsId);
+    console.log(newSelectedItemsId);
+  };
+
+  const handleCheckout = () => {
+    
+  }
+
   return (
     <Container>
       <Typography variant="h3" fontWeight="bold">
@@ -145,10 +191,39 @@ export default function Cart() {
             theme.palette.mode === "dark" ? "#1A2027" : "#fff",
         }}
       >
+        <Grid container spacing={2}>
+          <Grid item>
+            <Checkbox
+              checked={selectedItemsId.length === items.length}
+              color="primary"
+              indeterminate={
+                selectedItemsId.length > 0 &&
+                selectedItemsId.length < items.length
+              }
+              onChange={handleSelectAll}
+            />
+          </Grid>
+          <Grid item>
+            <Typography variant="body2" component="div">
+              Products
+            </Typography>
+          </Grid>
+        </Grid>
+
+        <Divider />
+        <br />
         <ImageList cols={1} gap={15}>
           {items.map((cartItem) => (
             <>
               <Grid container spacing={2}>
+                <Grid item>
+                  <Checkbox
+                    checked={selectedItemsId.indexOf(cartItem.id) !== -1}
+                    onChange={(event) => handleSelectOne(event, cartItem.id)}
+                    value="true"
+                  />
+                </Grid>
+
                 <Grid item>
                   <Link to={`/marketplace/${cartItem.id}`}>
                     <ButtonBase sx={{ width: 128, height: 128 }}>
@@ -239,8 +314,18 @@ export default function Cart() {
             </>
           ))}
         </ImageList>
-        <Grid container spacing={2} direction="row-reverse">
-          <Grid item xs={2}>
+        <Grid container mt={1} spacing={1} direction="row-reverse">
+          <Grid item xs={1} m={1}>
+            <Button
+              size="small"
+              align="right"
+              variant="contained"
+              onClick ={() => handleCheckout()}
+            >
+              Checkout
+            </Button>
+          </Grid>
+          <Grid item xs={1}>
             <Typography variant="body2" component="div">
               Cart Total: ${getCartTotal(items, count)}
             </Typography>

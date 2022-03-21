@@ -2,6 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { getSellerInfo } from "../../services/Listings";
 import { Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export const SellerData = ({ listingId }) => {
   const [shopName, setShopName] = useState("");
@@ -17,8 +18,10 @@ export const SellerData = ({ listingId }) => {
   });
 
   return (
-    <Typography variant="body2" gutterBottom color="primary.main">
-      {shopName}
-    </Typography>
+    <Link to={`/SellerProfile`} style={{ textDecoration: "none" }}>
+      <Typography variant="body2" gutterBottom color="primary.main">
+        {shopName}
+      </Typography>
+    </Link>
   );
 };

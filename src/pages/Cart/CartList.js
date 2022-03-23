@@ -227,7 +227,7 @@ export default function Cart() {
                 <Grid item>
                   <Link to={`/marketplace/${cartItem.id}`}>
                     <ButtonBase sx={{ width: 128, height: 128 }}>
-                      <Img src={cartItem.image} alt={cartItem.name} />
+                      <Img src={`/api/image/${cartItem.image}`} alt={cartItem.name} />
                     </ButtonBase>
                   </Link>
                 </Grid>

@@ -16,6 +16,8 @@ import ReportIcon from "@mui/icons-material/Report";
 import ChatMessage from "./ChatMessage";
 import ChatAnnouncement from "./ChatAnnouncement";
 
+import { useNavigate } from "react-router-dom";
+
 import * as chatAPI from "../../services/Chat";
 import * as socialMediaAPI from "../../services/SocialMedia";
 
@@ -82,6 +84,13 @@ const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behaviour: "smooth" });
   }, [currentChat]);
+
+  let navigate = useNavigate();
+
+  const handleRequestForConsultation = () => {
+    console.log("handleRequestForConsultation");
+    navigate("/designConsultation");
+  };
 
   return (
     <>
@@ -164,20 +173,9 @@ const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
                     backgroundColor: "grey.200",
                   },
                 }}
+                onClick={handleRequestForConsultation}
               >
                 Request for consultation
-              </Button>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "white",
-                  color: "primary.main",
-                  "&:hover": {
-                    backgroundColor: "grey.200",
-                  },
-                }}
-              >
-                Update my requirements
               </Button>
             </Stack>
           </Box>

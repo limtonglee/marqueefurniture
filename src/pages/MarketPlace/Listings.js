@@ -212,10 +212,10 @@ export const Listings = () => {
             <Link to={`/marketplace/${item.id}`}>
               <Button>
                 <img
-                  src={`${item.image}?w=188&h=188&fit=crop&auto=format`}
-                  srcSet={`${item.image}?w=188&h=188&fit=crop&auto=format&dpr=2 2x`}
+                  src={`/api/image/${item.image}`}
                   alt={item.name}
                   loading="lazy"
+                  width="188" height="188"
                 />
               </Button>
             </Link>

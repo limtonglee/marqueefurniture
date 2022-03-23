@@ -10,7 +10,11 @@ import {
     Box,
     TextField,
     MenuItem,
+    Grid,
+    Button,
 } from '@mui/material';
+import { Link } from "react-router-dom";
+import UpdateOrderModal from './UpdateOrderModal';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 
 export const Orders = () => {
@@ -37,19 +41,23 @@ export const Orders = () => {
         setValue(newValue);
         updateData(newValue);
     };
-    
+
+    const refreshData = () => {
+        getOrders();
+    };
+
     const updateData = (value) => {
         if (value === 1) {
             tabData = order.filter((order) => order.order_status === "UNPAID");
-        }else if (value === 2) {
+        } else if (value === 2) {
             tabData = order.filter((order) => order.order_status === "PAID");
-        }else if (value === 3) {
+        } else if (value === 3) {
             tabData = order.filter((order) => order.order_status === "SHIPPING");
-        }else if (value === 4) {
+        } else if (value === 4) {
             tabData = order.filter((order) => order.order_status === "DELIVERED");
-        }else if (value === 5) {
+        } else if (value === 5) {
             tabData = order.filter((order) => order.order_status === "CANCELLED");
-        }else if (value === 6) {
+        } else if (value === 6) {
             tabData = order.filter((order) => order.order_status === "RETURN/REFUND");
         }
         setData(tabData);
@@ -114,7 +122,7 @@ export const Orders = () => {
                         onChange={(event) => handleSearch(event.target.value)}
                     />
                 </Stack>
-                <Card style={{ overflow: 'visible', padding: '12px'}}>
+                <Card style={{ overflow: 'visible', padding: '12px' }}>
                     <div className='page' style={{ height: '100%' }}>
                         <Box sx={{ width: '100%' }}>
                             <Tabs
@@ -154,38 +162,36 @@ export const Orders = () => {
                                             Order ID {item.id}
                                         </div>
                                     </div>
-                                    <div className='item' style={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        padding: '10px',
-                                    }}>
-                                        <div className='image'>
+                                    <Grid container p={2}>
+                                        <Grid item xs={2}>
                                             <img
                                                 src={`${item.image}?w=124&fit=crop&auto=format`}
                                                 srcSet={`${item.image}?w=124&fit=crop&auto=format&dpr=2 2x`}
                                                 alt={item.title}
                                                 loading="lazy"
                                             />
-                                        </div>
-                                        <div className='itemDetails' style={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            marginLeft: '5px',
-                                            marginRight: '10px'
-                                        }}>
-                                            <div>{item.name}</div>
-                                            <div>Variation: {item.variations}</div>
-                                        </div>
-                                        <div className='price' style={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            marginLeft: '10px',
-                                            marginRight: '20px',
-                                        }}>
-                                            <div>S${item.price}</div>
-                                        </div>
-                                        <div>{item.order_status}</div>
-                                    </div>
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            {item.name}
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            Variation: {item.variations}
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            ${item.price}
+                                        </Grid>
+                                        <Grid item xs={1}>
+                                            {item.order_status}
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            <Link to={`/sellercenter/orders/${item.id}`}>
+                                                <Button>
+                                                    View Order Details
+                                                </Button>
+                                            </Link>
+                                            <UpdateOrderModal refreshData={refreshData}>{item}</UpdateOrderModal>
+                                        </Grid>
+                                    </Grid>
                                 </Card>
                             ))}
                         </Box>

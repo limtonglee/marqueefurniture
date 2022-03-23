@@ -50,6 +50,7 @@ export const URL_DELETE_MOODBOARD = "/api/user/moodboard/delete";
 // sellercenter
 // orders
 export const URL_GET_SHOP_ORDERS = "/api/merchant/orders";
+export const URL_GET_SHOP_ORDER_DETAIL = "/api/merchant/order/individual";
 // listings
 export const URL_GET_SHOP_LISTINGS = "/api/merchant/listings";
 export const URL_CREATE_SHOP_LISTING = "/api/merchant/createListing";

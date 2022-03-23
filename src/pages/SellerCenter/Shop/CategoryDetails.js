@@ -14,6 +14,7 @@ import { listingsData } from "../../../data/listingsData";
 import AddIcon from '@mui/icons-material/Add';
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import CategoryAddProductModal from './CategoryAddProductModal';
+import * as SellerCenterAPI from "../../../services/SellerCenter";
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 

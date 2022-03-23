@@ -27,6 +27,7 @@ import ViewMoodboard from "./pages/SocialMedia/Moodboard/ViewMoodboard";
 // import Chat from "./pages/Chat/ChatModule";
 import Messenger from "./pages/Chat/Messenger";
 import RequestConsultation from "./pages/Design/RequestConsultation";
+import DesignOrderProgress from "./pages/Design/DesignOrderProgress";
 
 import { Box } from "@mui/material";
 import SellerProfile from "./pages/SellerProfile/SellerProfile";
@@ -46,6 +47,7 @@ const PostLogin = ({checked, setChecked, handleChange}) => {
         <Route path="/SellerProfile" element={<SellerProfile/>} />
         <Route path="/Chat" element={<Messenger/>} />
         <Route path="/designConsultation" element={<RequestConsultation/>} />
+        <Route path="/designOrderProgress" element={<DesignOrderProgress/>} />
         <Route path="/ideas" element={<Ideas />} />
         <Route path="/new-idea" element={<CreateNewPost />} />
         <Route path="/ideas/:postId" element={<Post />} />

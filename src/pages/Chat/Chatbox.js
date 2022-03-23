@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Popover from "@mui/material/Popover";
 import ReportIcon from "@mui/icons-material/Report";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 import ChatMessage from "./ChatMessage";
 import ChatAnnouncement from "./ChatAnnouncement";
@@ -90,6 +91,11 @@ const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
   const handleRequestForConsultation = () => {
     console.log("handleRequestForConsultation");
     navigate("/designConsultation");
+  };
+
+  const handleViewDesignOrderProgress = () => {
+    console.log("handleViewDesignOrderProgress");
+    navigate("/designOrderProgress");
   };
 
   return (
@@ -178,6 +184,35 @@ const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
                 Request for consultation
               </Button>
             </Stack>
+          </Box>
+          <Divider />
+          <Box
+            sx={{
+              px: 3,
+              py: 2,
+              backgroundColor: "secondary.lighter",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              "&:hover": {
+                cursor: "pointer",
+              },
+            }}
+            onClick={handleViewDesignOrderProgress}
+          >
+            <Box>
+              <Typography variant="h6" component="div">
+                Consultation request submitted
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                gutterBottom
+                sx={{ fontWeight: "normal" }}
+              >
+                Pending designer's acceptance
+              </Typography>
+            </Box>
+            <ArrowForwardIosIcon size="small" />
           </Box>
           <Divider />
         </Box>

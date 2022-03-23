@@ -2,12 +2,10 @@
 
 //for signup services
 import { get, remove, postAsFormInput } from "./api";
-import { URL_GET_LISTINGS } from "../services/endpoints";
-import { URL_GET_LISTING_DETAILS } from "../services/endpoints";
 import { URL_LISTING_LIKE } from "../services/endpoints";
 import { URL_LISTING_UNLIKE } from "../services/endpoints";
 import { URL_GET_LISTING_LIKE_USER } from "../services/endpoints";
-import { get, postAsJson } from "./api";
+import { postAsJson } from "./api";
 import {
   URL_GET_LISTINGS,
   URL_GET_LISTING_DETAILS,

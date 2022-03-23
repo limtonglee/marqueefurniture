@@ -19,6 +19,12 @@ export const URL_DELETE_CART_ITEM = "/api/cart/deleteItem"
 export const URL_DELETE_CART_ITEMS = "/api/cart/deleteItems"
 
 
+//liked listings management
+export const URL_LISTING_LIKE = "/api/listing/like"; // user liking a post
+export const URL_LISTING_UNLIKE = "/api/listing/unlike"; // user unliking a post
+export const URL_GET_LISTING_LIKE = "/api/listing/allLikes"; //getting all the user from the liked listing
+export const URL_GET_LISTING_LIKE_USER = "/api/listing/allLikes/user"; //getting all the liked listings from the user
+
 // posts management
 export const URL_GET_POSTS = "/api/posts"; // get all posts
 export const URL_GET_POST_DETAILS = "/api/post/details"; // get indiv post details

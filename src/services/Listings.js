@@ -1,7 +1,11 @@
 //for new user sign up
 
 //for signup services
-import { get, postAsJson } from "./api";
+import { get, remove, postAsFormInput } from "./api";
+import { URL_LISTING_LIKE } from "../services/endpoints";
+import { URL_LISTING_UNLIKE } from "../services/endpoints";
+import { URL_GET_LISTING_LIKE_USER } from "../services/endpoints";
+import { postAsJson } from "./api";
 import {
   URL_GET_LISTINGS,
   URL_GET_LISTING_DETAILS,
@@ -21,6 +25,30 @@ export const getListingDetails = (id) => {
   return get(URL_GET_LISTING_DETAILS, params);
 };
 
+export const likedListing = (listingId, userId) => {
+  const body = {
+    listingId: listingId,
+    userId: userId,
+  };
+  console.log(listingId, userId);
+  return postAsFormInput(URL_LISTING_LIKE, body);
+}
+
+export const unlikedListing = (listingId, userId) => {
+  const body = {
+    listingId: listingId,
+    userId: userId,
+  };
+  return remove(URL_LISTING_UNLIKE, body);
+}
+
+export const getLikedListing = (id) => {
+  const params = {
+    userId: id
+  };
+  
+  return get(URL_GET_LISTING_LIKE_USER, params);
+}
 export const addToCart = (userId, listingId) => {
   const body = {
     userId: userId,

@@ -52,6 +52,7 @@ export const URL_DELETE_MOODBOARD = "/api/user/moodboard/delete";
 export const URL_GET_SHOP_ORDERS = "/api/merchant/orders";
 // listings
 export const URL_GET_SHOP_LISTINGS = "/api/merchant/listings";
+export const URL_CREATE_SHOP_LISTING = "/api/merchant/createListing";
 // vouchers
 export const URL_GET_SHOP_VOUCHERS = "/api/merchant/vouchers";
 export const URL_EDIT_SHOP_VOUCHER = "/api/merchant/voucher/edit";
@@ -60,3 +61,6 @@ export const URL_DELETE_SHOP_VOUCHER = "/api/merchant/voucher/delete";
 // categories
 export const URL_GET_SHOP_CATEGORIES = "/api/merchant/shopCategories";
 export const URL_CREATE_SHOP_CATEGORY = "/api/merchant/shopCategories/add";
+export const URL_EDIT_SHOP_CATEGORY = "/api/merchant/shopCategories/edit";
+export const URL_DELETE_SHOP_CATEGORY = "/api/merchant/shopCategories/delete";
+export const URL_DELETE_SHOP_CATEGORY_LISTINGS = "/api/merchant/shopCategoryListings/delete";

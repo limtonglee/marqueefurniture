@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { Link } from "react-router-dom";
 import AddCategoryModal from './AddCategoryModal';
+import EditCategoryModal from './EditCategoryModal';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
@@ -30,6 +31,16 @@ export const ShopCategories = (props) => {
     useEffect(() => {
         getShopCategories();
     }, []);
+
+    const handleDelete = async (categoryId) => {
+        try {
+            await SellerCenterAPI.deleteShopCategory(categoryId);
+            await SellerCenterAPI.deleteShopCategoryListings(categoryId);
+            refreshData();
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const refreshData = () => {
         getShopCategories();
@@ -91,10 +102,10 @@ export const ShopCategories = (props) => {
                                                     Add Products
                                                 </Button>
                                             </Link>
-                                            <Button>
-                                                Edit
-                                            </Button>
-                                            <Button>
+                                            <EditCategoryModal refreshData={refreshData}>{category}</EditCategoryModal>
+                                            <Button onClick={e => {
+                                                handleDelete(category.id);
+                                            }}>
                                                 Delete
                                             </Button>
                                         </Stack>

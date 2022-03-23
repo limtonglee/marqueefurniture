@@ -45,7 +45,7 @@ export const Voucher = () => {
             tabData = vouchers.filter((voucher) => voucher.status === "Ongoing");
         } else if (value === 2) {
             tabData = vouchers.filter((voucher) => voucher.status === "Upcoming");
-        }else if (value === 3) {
+        } else if (value === 3) {
             tabData = vouchers.filter((voucher) => voucher.status === "Expired");
         }
         setData(tabData);
@@ -60,6 +60,10 @@ export const Voucher = () => {
         }
     };
 
+    const refreshData = () => {
+        getVouchers();
+    };
+
     return (
         
             <Layout>
@@ -67,7 +71,7 @@ export const Voucher = () => {
                     <Typography variant="h4" gutterBottom>
                         Vouchers
                     </Typography>
-                    <AddVoucherModal></AddVoucherModal>
+                    <AddVoucherModal refreshData={refreshData}></AddVoucherModal>
                 </Stack>
                 <Card style={{ overflow: 'visible' }}>
                     <Tabs
@@ -118,7 +122,7 @@ export const Voucher = () => {
                                             {item.status}
                                         </Grid>
                                         <Grid item xs={3}>
-                                            <EditVoucherModal>{item}</EditVoucherModal>
+                                            <EditVoucherModal refreshData={refreshData}>{item}</EditVoucherModal>
                                             <Button
                                                 variant="contained"
                                                 startIcon={<PlaylistRemoveIcon />}

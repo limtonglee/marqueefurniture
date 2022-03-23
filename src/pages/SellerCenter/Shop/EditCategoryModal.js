@@ -2,21 +2,20 @@ import React, { useReducer, useState } from 'react';
 import {
     Button,
     Box,
+    Card,
     Modal,
     TextField,
+    MenuItem,
     Typography,
     IconButton,
-    InputAdornment,
-    MenuItem,
+
 } from '@mui/material';
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from "@mui/icons-material/Close";
-import * as SellerCenterAPI from "../../../services/SellerCenter";
+import { editShopCategory } from "../../../services/SellerCenter";
 
-const AddVoucherModal = ({
+const EditCategoryModal = ({
+    children,
     refreshData,
 }) => {
     const style = {
@@ -28,14 +27,15 @@ const AddVoucherModal = ({
             bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
+            width: 350,
             borderRadius: 2,
         },
         contents: {
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
             marginTop: "20px",
             marginBottom: "15px",
+            justifyContent: "flex-start",
         },
         buttons: {
             display: "flex",
@@ -46,10 +46,7 @@ const AddVoucherModal = ({
     const formReducer = (state, event) => {
         if (event.reset) {
             return {
-                voucherName: '',
-                minSpend: 0,
-                discountAmount: 0,
-                voucherStatus: '',
+                categoryName: '',
             }
         }
         return {
@@ -58,20 +55,7 @@ const AddVoucherModal = ({
         }
     }
 
-    const voucherStatus = [
-        {
-            value: 'Ongoing',
-            label: 'Ongoing',
-        },
-        {
-            value: 'Upcoming',
-            label: 'Upcoming',
-        },
-        {
-            value: 'Expired',
-            label: 'Expired',
-        },
-    ];
+    const shopCategoryId = children.id;
 
 
     const [open, setOpen] = React.useState(false);
@@ -79,7 +63,6 @@ const AddVoucherModal = ({
     const handleClose = () => setOpen(false);
 
     const [formData, setFormData] = useReducer(formReducer, {});
-
 
     const handleChange = (event) => {
 
@@ -90,15 +73,7 @@ const AddVoucherModal = ({
     };
     const handleSubmit = event => {
         event.preventDefault();
-        SellerCenterAPI.createVoucher(
-            formData.voucherName,
-            formData.minSpend,
-            formData.discountAmount,
-            '2022-07-01',
-            '2022-07-01',
-            formData.voucherStatus,
-            1,
-        );
+        editShopCategory(formData.categoryName, shopCategoryId);
         refreshData();
         handleClose();
         setTimeout(() => {
@@ -108,14 +83,13 @@ const AddVoucherModal = ({
         }, 1000);
     }
 
+
     return (
         <>
             <Button
-                variant="contained"
-                startIcon={<AddIcon />}
                 onClick={handleOpen}
             >
-                Add Voucher
+                Edit
             </Button>
             <Modal
                 open={open}
@@ -136,7 +110,7 @@ const AddVoucherModal = ({
                             variant="h6"
                             component="h2"
                         >
-                            Add Voucher
+                            Edit Category
                         </Typography>
                         <IconButton
                             aria-label="delete"
@@ -147,55 +121,15 @@ const AddVoucherModal = ({
                     </Box>
                     <form onSubmit={handleSubmit}>
                         <Box sx={style.contents}>
-                            <Typography sx={{ verticalAlign: 'center' }}>
-                                Voucher Name
-                            </Typography>
+                            Category Display Name
                             <TextField
                                 required
                                 id="outlined-required"
-                                name="voucherName"
+                                name="categoryName"
+                                placeholder='Enter a category name'
                                 onChange={handleChange}
-                                value={formData.voucherName || ""}
+                                value={formData.categoryName || children.name}
                             >
-                            </TextField>
-                        </Box>
-                        <Box sx={style.contents}>
-                            Minimum spend
-                            <TextField
-                                required
-                                id="outlined-required"
-                                name="minSpend"
-                                onChange={handleChange}
-                                value={formData.minSpend || ""}
-                            >
-                            </TextField>
-                        </Box>
-                        <Box sx={style.contents}>
-                            Discount Amount
-                            <TextField
-                                required
-                                id="outlined-required"
-                                name="discountAmount"
-                                onChange={handleChange}
-                                value={formData.discountAmount || ""}
-                            >
-                            </TextField>
-                        </Box>
-                        <Box sx={style.contents}>
-                            Voucher status
-                            <TextField
-                                id="outlined-select-voucher-status"
-                                select
-                                name="voucherStatus"
-                                onChange={handleChange}
-                                value={formData.voucherStatus || ''}
-                                helperText=""
-                            >
-                                {voucherStatus.map((option) => (
-                                    <MenuItem value={option.value}>
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
                             </TextField>
                         </Box>
                         <Box sx={style.buttons}>
@@ -215,4 +149,4 @@ const AddVoucherModal = ({
     );
 }
 
-export default AddVoucherModal;
+export default EditCategoryModal;

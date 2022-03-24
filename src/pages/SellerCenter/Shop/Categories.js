@@ -99,7 +99,7 @@ export const ShopCategories = (props) => {
                                         <Stack direction="column" alignItems="center" justifyContent="space-between">
                                             <Link to={`/sellercenter/shop/categories/${category.id}`}>
                                                 <Button>
-                                                    Add Products
+                                                    Add Listings
                                                 </Button>
                                             </Link>
                                             <EditCategoryModal refreshData={refreshData}>{category}</EditCategoryModal>

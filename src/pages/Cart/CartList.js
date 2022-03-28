@@ -245,7 +245,7 @@ export default function Cart() {
                       <Typography variant="body2" color="text.secondary">
                         Brand: {cartItem.brand}
                       </Typography>
-                      <SellerVoucher listingId={cartItem.id} />
+                      <SellerVoucher shopId={cartItem.shopid} />
                     </Grid>
                   </Grid>
                   <Grid item>

@@ -129,11 +129,7 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open notification">
-                <>
                   <NotificationsPopover />
-                </>
-              </Tooltip>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="Remy Sharp" src={`/api/image/${profilePic}`} />

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from "react";
-import { Layout } from './Layout';
-// import { orderData } from "../../data/orderData";
+import { Layout } from '../Layout';
 import {
     Card,
     Stack,
@@ -11,50 +10,55 @@ import {
     Box,
     TextField,
     MenuItem,
+    Grid,
+    Button,
 } from '@mui/material';
-import Searchbar from "../../components/Searchbar";
-import { getOrders } from "../../services/SellerCenter";
+import { Link } from "react-router-dom";
+import UpdateOrderModal from './UpdateOrderModal';
+import * as SellerCenterAPI from "../../../services/SellerCenter";
 
 export const Orders = () => {
     const [value, setValue] = useState(0);
     const [data, setData] = useState([]);
+    const [order, setOrder] = useState([]);
 
-    //first use effect only called once
+    const getOrders = async () => {
+        try {
+            const res = await SellerCenterAPI.getOrders(1);
+            setData(JSON.parse(JSON.stringify(res.data)));
+            setOrder(JSON.parse(JSON.stringify(res.data)));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     useEffect(() => {
-        getOrders(1)
-            .then((response) => {
-                setData(JSON.parse(JSON.stringify(response.data)));
-                console.log('ZZZ ', response);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        getOrders();
     }, []);
-    
-    let tabData = data;
 
+    let tabData = order;
     const handleChange = (event, newValue) => {
         setValue(newValue);
         updateData(newValue);
     };
+
+    const refreshData = () => {
+        getOrders();
+    };
+
     const updateData = (value) => {
         if (value === 1) {
-            tabData = data.filter((order) => order.status === "UNPAID");
-        }
-        if (value === 2) {
-            tabData = data.filter((order) => order.status === "PAID");
-        }
-        if (value === 3) {
-            tabData = data.filter((order) => order.status === "SHIPPING");
-        }
-        if (value === 4) {
-            tabData = data.filter((order) => order.status === "Completed");
-        }
-        if (value === 5) {
-            tabData = data.filter((order) => order.status === "Cancellation");
-        }
-        if (value === 6) {
-            tabData = data.filter((order) => order.status === "Return/Refund");
+            tabData = order.filter((order) => order.order_status === "UNPAID");
+        } else if (value === 2) {
+            tabData = order.filter((order) => order.order_status === "PAID");
+        } else if (value === 3) {
+            tabData = order.filter((order) => order.order_status === "SHIPPING");
+        } else if (value === 4) {
+            tabData = order.filter((order) => order.order_status === "DELIVERED");
+        } else if (value === 5) {
+            tabData = order.filter((order) => order.order_status === "CANCELLED");
+        } else if (value === 6) {
+            tabData = order.filter((order) => order.order_status === "RETURN/REFUND");
         }
         setData(tabData);
     };
@@ -118,7 +122,7 @@ export const Orders = () => {
                         onChange={(event) => handleSearch(event.target.value)}
                     />
                 </Stack>
-                <Card style={{ overflow: 'visible', height: 700 }}>
+                <Card style={{ overflow: 'visible', padding: '12px' }}>
                     <div className='page' style={{ height: '100%' }}>
                         <Box sx={{ width: '100%' }}>
                             <Tabs
@@ -127,20 +131,20 @@ export const Orders = () => {
                             >
                                 <Tab label="All" />
                                 <Tab label="Unpaid" />
-                                <Tab label="To ship" />
+                                <Tab label="Paid" />
                                 <Tab label="Shipping" />
-                                <Tab label="Completed" />
-                                <Tab label="Cancellation" />
+                                <Tab label="Delivered" />
+                                <Tab label="Cancelled" />
                                 <Tab label="Return/Refund" />
                             </Tabs>
                             {data.map((item) => (
                                 <Card key={item.id}
                                     sx={{
                                         flexDirection: 'row',
-                                        margin: '20px',
+                                        margin: '12px',
                                         border: 1,
                                         borderColor: '#C4CDD5',
-                                        padding: '5px'
+                                        padding: '5px',
                                     }}>
 
                                     <div className='header' style={{
@@ -151,46 +155,43 @@ export const Orders = () => {
                                         borderColor: '#C4CDD5',
                                         padding: '10px',
                                     }}>
-                                        <div className='buyerName'>
-                                            {item.buyerName}
+                                        <div>
+                                            {item.username}
                                         </div>
-                                        <div className='orderID'>
+                                        <div>
                                             Order ID {item.id}
                                         </div>
                                     </div>
-                                    <div className='item' style={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        padding: '10px',
-                                    }}>
-                                        <div className='image'>
+                                    <Grid container p={2}>
+                                        <Grid item xs={2}>
                                             <img
-                                                src={`${item.img}?w=124&fit=crop&auto=format`}
-                                                srcSet={`${item.img}?w=124&fit=crop&auto=format&dpr=2 2x`}
+                                                src={`${item.image}?w=124&fit=crop&auto=format`}
+                                                srcSet={`${item.image}?w=124&fit=crop&auto=format&dpr=2 2x`}
                                                 alt={item.title}
                                                 loading="lazy"
                                             />
-                                        </div>
-                                        <div className='itemDetails' style={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            marginLeft: '5px',
-                                            marginRight: '10px'
-                                        }}>
-                                            <div>{item.productName}</div>
-                                            <div>Variation: {item.variation}</div>
-                                        </div>
-                                        <div className='price' style={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            marginLeft: '10px',
-                                            marginRight: '20px',
-                                        }}>
-                                            <div>S${item.price}</div>
-                                            <div>Credit/Debit Card</div>
-                                        </div>
-                                        <div>{item.status}</div>
-                                    </div>
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            {item.name}
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            Variation: {item.variations}
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            ${item.price}
+                                        </Grid>
+                                        <Grid item xs={1}>
+                                            {item.order_status}
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            <Link to={`/sellercenter/orders/${item.id}`}>
+                                                <Button>
+                                                    View Order Details
+                                                </Button>
+                                            </Link>
+                                            <UpdateOrderModal refreshData={refreshData}>{item}</UpdateOrderModal>
+                                        </Grid>
+                                    </Grid>
                                 </Card>
                             ))}
                         </Box>

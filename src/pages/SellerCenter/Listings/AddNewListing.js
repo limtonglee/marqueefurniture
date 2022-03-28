@@ -6,8 +6,19 @@ import {
     TextField,
     MenuItem,
 } from '@mui/material';
+import * as SellerCenterAPI from "../../../services/SellerCenter";
 
-const productType = [
+const style = {
+    cardStyle: {
+        '& .MuiTextField-root': { m: 1, width: '25ch' },
+        display: 'flex',
+        flexDirection: 'column',
+        padding: 2,
+        marginBottom: 1,
+    }
+};
+
+const type = [
     {
         value: 'Furniture',
         label: 'Furniture',
@@ -25,12 +36,22 @@ const productType = [
 const formReducer = (state, event) => {
     if (event.reset) {
         return {
-            productType: '',
-            productName: '',
-            productDescription: '',
-            variation: '',
-            price: 0,
-            stock: 0,
+            type: '',
+            name: '',
+            image: '',
+            description: '',
+            category: '',
+            brand: '',
+            warrantyInfo: '',
+            shippingProvider: '',
+            parcelSize: '',
+            weight: '',
+            stockAvailable: '',
+            listingPrice: '',
+            variations: '',
+            dimensions: '',
+            status: '',
+            shopId: '',
         }
     }
     return {
@@ -51,8 +72,24 @@ export const AddNewListing = () => {
     };
     const handleSubmit = event => {
         event.preventDefault();
-        setSubmitting(true);
-
+        SellerCenterAPI.createListing(
+            formData.name,
+            formData.image,
+            formData.description,
+            formData.category,
+            formData.brand,
+            formData.warrantyInfo,
+            formData.shippingProvider,
+            formData.parcelSize,
+            formData.weight,
+            formData.stockAvailable,
+            formData.listingPrice,
+            formData.variations,
+            formData.dimensions,
+            'LIVE',
+            1,
+            formData.type,
+        );
         setTimeout(() => {
             setSubmitting(false);
             setFormData({
@@ -63,25 +100,10 @@ export const AddNewListing = () => {
     return (
         <Layout>
             <h2>Add New Listing</h2>
-            {submitting &&
-                <div>You are submitting the following:
-                    <ul>
-                        {Object.entries(formData).map(([name, value]) => (
-                            <li key={name}><strong>{name}</strong>:{value.toString()}</li>
-                        ))}
-                    </ul>
-                </div>
-            }
             <form onSubmit={handleSubmit}>
                 <Card
                     component="form"
-                    sx={{
-                        '& .MuiTextField-root': { m: 1, width: '25ch' },
-                        display: 'flex',
-                        flexDirection: 'column',
-                        padding: 2,
-                        marginBottom: 1,
-                    }}
+                    sx={style.cardStyle}
                     noValidate
                     autoComplete="off"
                 >
@@ -90,12 +112,12 @@ export const AddNewListing = () => {
                         id="outlined-select-product-type"
                         select
                         label="Product type"
-                        name="productType"
+                        name="type"
                         onChange={handleChange}
-                        value={formData.productType || ''}
+                        value={formData.type || ''}
                         helperText=""
                     >
-                        {productType.map((option) => (
+                        {type.map((option) => (
                             <MenuItem value={option.value}>
                                 {option.label}
                             </MenuItem>
@@ -105,32 +127,75 @@ export const AddNewListing = () => {
                     <TextField
                         required
                         id="outlined-required"
-                        name="productName"
-                        label="Product Name"
+                        name="name"
+                        label="Product name"
                         onChange={handleChange}
-                        value={formData.productName || ''}
+                        value={formData.name || ''}
+                    >
+                    </TextField>
+                    <TextField
+                        required
+                        id="outlined-required"
+                        name="image"
+                        label="Image"
+                        onChange={handleChange}
+                        value={formData.image || ''}
                     >
                     </TextField>
                     <TextField
                         id="outlined-multiline-static"
                         multiline
                         rows={4}
-                        name="productDescription"
-                        label="Product Description"
+                        name="description"
+                        label="Product description"
                         onChange={handleChange}
-                        value={formData.productDescription || ''}
+                        value={formData.description || ''}
                     />
-                    <input type="file" />
+
                 </Card>
                 <Card
                     component="form"
-                    sx={{
-                        '& .MuiTextField-root': { m: 1, width: '25ch' },
-                        display: 'flex',
-                        flexDirection: 'column',
-                        padding: 2,
-                        marginBottom: 1,
-                    }}
+                    sx={style.cardStyle}
+                    noValidate
+                    autoComplete="off"
+                >
+                    Specification
+                    <TextField
+                        required
+                        id="outlined-required"
+                        name="category"
+                        label="Category"
+                        onChange={handleChange}
+                        value={formData.category || ''}>
+                    </TextField>
+                    <TextField
+                        required
+                        id="outlined-required"
+                        name="brand"
+                        label="Brand"
+                        onChange={handleChange}
+                        value={formData.brand || ''}>
+                    </TextField>
+                    <TextField
+                        required
+                        id="outlined-required"
+                        name="dimensions"
+                        label="Dimensions"
+                        onChange={handleChange}
+                        value={formData.dimensions || ''}>
+                    </TextField>
+                    <TextField
+                        required
+                        id="outlined-required"
+                        name="warrantyInfo"
+                        label="Warranty"
+                        onChange={handleChange}
+                        value={formData.warrantyInfo || ''}>
+                    </TextField>
+                </Card>
+                <Card
+                    component="form"
+                    sx={style.cardStyle}
                     noValidate
                     autoComplete="off"
                 >
@@ -138,33 +203,65 @@ export const AddNewListing = () => {
                     <TextField
                         required
                         id="outlined-required"
-                        name="variation"
+                        name="variations"
                         label="Variation"
                         onChange={handleChange}
-                        value={formData.variation || ''}>
+                        value={formData.variations || ''}>
                     </TextField>
                     <TextField
                         required
                         id="outlined-required"
-                        name="price"
+                        name="listingPrice"
                         label="Price"
                         onChange={handleChange}
-                        value={formData.price || ''}>
+                        value={formData.listingPrice || ''}>
                     </TextField>
                     <TextField
                         required
                         id="outlined-required"
-                        name="stock"
+                        name="stockAvailable"
                         label="Stock"
                         onChange={handleChange}
-                        value={formData.stock || ''}>
+                        value={formData.stockAvailable || ''}>
+                    </TextField>
+                </Card>
+                <Card
+                    component="form"
+                    sx={style.cardStyle}
+                    noValidate
+                    autoComplete="off"
+                >
+                    Shipping
+                    <TextField
+                        required
+                        id="outlined-required"
+                        name="weight"
+                        label="Weight"
+                        onChange={handleChange}
+                        value={formData.weight || ''}>
+                    </TextField>
+                    <TextField
+                        required
+                        id="outlined-required"
+                        name="parcelSize"
+                        label="Parcel size"
+                        onChange={handleChange}
+                        value={formData.parcelSize || ''}>
+                    </TextField>
+                    <TextField
+                        required
+                        id="outlined-required"
+                        name="shippingProvider"
+                        label="Shipping provider"
+                        onChange={handleChange}
+                        value={formData.shippingProvider || ''}>
                     </TextField>
                 </Card>
                 <Button
                     type="submit"
                     value="Submit"
                     variant="contained"
-                    sx={{m:2}}
+                    sx={{ m: 2 }}
                 >
                     Save and Publish
                 </Button>

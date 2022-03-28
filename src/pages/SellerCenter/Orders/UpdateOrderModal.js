@@ -12,9 +12,10 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from "@mui/icons-material/Close";
-import { createShopCategory } from "../../../services/SellerCenter";
+import * as SellerCenterAPI from "../../../services/SellerCenter";
 
-const AddCategoryModal = ({
+const UpdateOrderModal = ({
+    children,
     refreshData,
 }) => {
     const style = {
@@ -42,10 +43,37 @@ const AddCategoryModal = ({
         },
     };
 
+    const orderStatus = [
+        {
+            value: 'UNPAID',
+            label: 'UNPAID',
+        },
+        {
+            value: 'PAID',
+            label: 'PAID',
+        },
+        {
+            value: 'SHIPPING',
+            label: 'SHIPPING',
+        },
+        {
+            value: 'DELIVERED',
+            label: 'DELIVERED',
+        },
+        {
+            value: 'CANCELLED',
+            label: 'CANCELLED',
+        },
+        {
+            value: 'RETURN/REFUND',
+            label: 'RETURN/REFUND',
+        },
+    ];
+
     const formReducer = (state, event) => {
         if (event.reset) {
             return {
-                categoryName: '',
+                orderStatus: '',
             }
         }
         return {
@@ -53,7 +81,6 @@ const AddCategoryModal = ({
             [event.name]: event.value
         }
     }
-
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -70,7 +97,7 @@ const AddCategoryModal = ({
     };
     const handleSubmit = event => {
         event.preventDefault();
-        createShopCategory(formData.categoryName, 1);
+        // SellerCenterAPI.editShopCategory(formData.categoryName, shopCategoryId);
         refreshData();
         handleClose();
         setTimeout(() => {
@@ -80,14 +107,11 @@ const AddCategoryModal = ({
         }, 1000);
     }
 
+
     return (
         <>
-            <Button
-                variant="contained"
-                startIcon={<AddIcon />}
-                onClick={handleOpen}
-            >
-                Add Category
+            <Button onClick={handleOpen}>
+                Update Order Status
             </Button>
             <Modal
                 open={open}
@@ -108,7 +132,7 @@ const AddCategoryModal = ({
                             variant="h6"
                             component="h2"
                         >
-                            Add Category
+                            Update Order Status
                         </Typography>
                         <IconButton
                             aria-label="delete"
@@ -119,15 +143,18 @@ const AddCategoryModal = ({
                     </Box>
                     <form onSubmit={handleSubmit}>
                         <Box sx={style.contents}>
-                            Category Display Name
                             <TextField
-                                required
-                                id="outlined-required"
-                                name="categoryName"
-                                placeholder='Enter a category name'
+                                select
+                                label="Order Status"
+                                name="orderStatus"
                                 onChange={handleChange}
-                                value={formData.categoryName || ""}
+                                value={formData.orderStatus || children.order_status}
                             >
+                                {orderStatus.map((option) => (
+                                    <MenuItem value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
                             </TextField>
                         </Box>
                         <Box sx={style.buttons}>
@@ -147,4 +174,4 @@ const AddCategoryModal = ({
     );
 }
 
-export default AddCategoryModal;
+export default UpdateOrderModal;

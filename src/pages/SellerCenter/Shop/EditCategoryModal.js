@@ -12,9 +12,10 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from "@mui/icons-material/Close";
-import { createShopCategory } from "../../../services/SellerCenter";
+import * as SellerCenterAPI from "../../../services/SellerCenter";
 
-const AddCategoryModal = ({
+const EditCategoryModal = ({
+    children,
     refreshData,
 }) => {
     const style = {
@@ -45,7 +46,7 @@ const AddCategoryModal = ({
     const formReducer = (state, event) => {
         if (event.reset) {
             return {
-                categoryName: '',
+                name: '',
             }
         }
         return {
@@ -53,6 +54,8 @@ const AddCategoryModal = ({
             [event.name]: event.value
         }
     }
+
+    const shopCategoryId = children.id;
 
 
     const [open, setOpen] = React.useState(false);
@@ -70,7 +73,10 @@ const AddCategoryModal = ({
     };
     const handleSubmit = event => {
         event.preventDefault();
-        createShopCategory(formData.categoryName, 1);
+        console.log('ZZZ', formData.name);
+        console.log('ZZZ', shopCategoryId);
+        SellerCenterAPI.editShopCategory(formData.name, shopCategoryId);
+        
         refreshData();
         handleClose();
         setTimeout(() => {
@@ -80,14 +86,13 @@ const AddCategoryModal = ({
         }, 1000);
     }
 
+
     return (
         <>
             <Button
-                variant="contained"
-                startIcon={<AddIcon />}
                 onClick={handleOpen}
             >
-                Add Category
+                Edit
             </Button>
             <Modal
                 open={open}
@@ -108,7 +113,7 @@ const AddCategoryModal = ({
                             variant="h6"
                             component="h2"
                         >
-                            Add Category
+                            Edit Category
                         </Typography>
                         <IconButton
                             aria-label="delete"
@@ -123,10 +128,10 @@ const AddCategoryModal = ({
                             <TextField
                                 required
                                 id="outlined-required"
-                                name="categoryName"
+                                name="name"
                                 placeholder='Enter a category name'
                                 onChange={handleChange}
-                                value={formData.categoryName || ""}
+                                value={formData.name || children.name}
                             >
                             </TextField>
                         </Box>
@@ -147,4 +152,4 @@ const AddCategoryModal = ({
     );
 }
 
-export default AddCategoryModal;
+export default EditCategoryModal;

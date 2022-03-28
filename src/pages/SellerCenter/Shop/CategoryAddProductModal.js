@@ -91,7 +91,7 @@ export default function BasicModal({ children }) {
                 startIcon={<AddIcon />}
                 onClick={handleOpen}
             >
-                Add Products
+                Add Listings
             </Button>
             <Modal
                 open={open}
@@ -112,7 +112,7 @@ export default function BasicModal({ children }) {
                             variant="h6"
                             component="h2"
                         >
-                            Select Products
+                            Select Listing
                         </Typography>
                         <IconButton
                             aria-label="delete"

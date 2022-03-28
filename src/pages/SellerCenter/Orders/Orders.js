@@ -133,8 +133,8 @@ export const Orders = () => {
                                 <Tab label="Unpaid" />
                                 <Tab label="Paid" />
                                 <Tab label="Shipping" />
-                                <Tab label="Completed" />
-                                <Tab label="Cancellation" />
+                                <Tab label="Delivered" />
+                                <Tab label="Cancelled" />
                                 <Tab label="Return/Refund" />
                             </Tabs>
                             {data.map((item) => (

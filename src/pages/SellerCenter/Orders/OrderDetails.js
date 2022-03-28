@@ -22,11 +22,11 @@ export const OrderDetails = () => {
 
     const param = useParams();
     const [order, setOrder] = useState([]);
-    
     const getOrderDetails = async () => {
         try {
             const res = await SellerCenterAPI.getOrderDetails(param.orderId);
-            setOrder(JSON.parse(JSON.stringify(res.data)));
+            setOrder(JSON.parse(JSON.stringify(res.data))[0]);
+            console.log('ZZZ', order);
         } catch (error) {
             console.error(error);
         }
@@ -55,7 +55,7 @@ export const OrderDetails = () => {
                             Order Details
                         </Typography>
                         <Typography variant="h7">
-                            Order ID: {order[0].id} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tracking Number: {order[0].trackingnumber}
+                            Order ID: {order.id} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tracking Number: {order.trackingnumber}
                         </Typography>
                     </Box>
                     <Box sx={{ flexGrow: 1 }}>
@@ -65,15 +65,15 @@ export const OrderDetails = () => {
                                     <CardMedia
                                         component="img"
                                         height="240"
-                                        image={order[0].image}
+                                        image={order.image}
                                         alt="green iguana"
                                     />
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div">
-                                            {order[0].name}
+                                            {order.name}
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
-                                            Variation: {order[0].variations}
+                                            Variation: {order.variations}
                                         </Typography>
                                     </CardContent>
                                 </Card>

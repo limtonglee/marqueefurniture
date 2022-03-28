@@ -43,10 +43,37 @@ const UpdateOrderModal = ({
         },
     };
 
+    const orderStatus = [
+        {
+            value: 'UNPAID',
+            label: 'UNPAID',
+        },
+        {
+            value: 'PAID',
+            label: 'PAID',
+        },
+        {
+            value: 'SHIPPING',
+            label: 'SHIPPING',
+        },
+        {
+            value: 'DELIVERED',
+            label: 'DELIVERED',
+        },
+        {
+            value: 'CANCELLED',
+            label: 'CANCELLED',
+        },
+        {
+            value: 'RETURN/REFUND',
+            label: 'RETURN/REFUND',
+        },
+    ];
+
     const formReducer = (state, event) => {
         if (event.reset) {
             return {
-                categoryName: '',
+                orderStatus: '',
             }
         }
         return {
@@ -54,9 +81,6 @@ const UpdateOrderModal = ({
             [event.name]: event.value
         }
     }
-
-    const shopCategoryId = children.id;
-
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -119,15 +143,18 @@ const UpdateOrderModal = ({
                     </Box>
                     <form onSubmit={handleSubmit}>
                         <Box sx={style.contents}>
-                            Category Display Name
                             <TextField
-                                required
-                                id="outlined-required"
-                                name="categoryName"
-                                placeholder='Enter a category name'
+                                select
+                                label="Order Status"
+                                name="orderStatus"
                                 onChange={handleChange}
-                                value={formData.categoryName || children.name}
+                                value={formData.orderStatus || children.order_status}
                             >
+                                {orderStatus.map((option) => (
+                                    <MenuItem value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
                             </TextField>
                         </Box>
                         <Box sx={style.buttons}>

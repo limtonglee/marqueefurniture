@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from "@mui/icons-material/Close";
-import { editShopCategory } from "../../../services/SellerCenter";
+import * as SellerCenterAPI from "../../../services/SellerCenter";
 
 const EditCategoryModal = ({
     children,
@@ -46,7 +46,7 @@ const EditCategoryModal = ({
     const formReducer = (state, event) => {
         if (event.reset) {
             return {
-                categoryName: '',
+                name: '',
             }
         }
         return {
@@ -73,7 +73,10 @@ const EditCategoryModal = ({
     };
     const handleSubmit = event => {
         event.preventDefault();
-        editShopCategory(formData.categoryName, shopCategoryId);
+        console.log('ZZZ', formData.name);
+        console.log('ZZZ', shopCategoryId);
+        SellerCenterAPI.editShopCategory(formData.name, shopCategoryId);
+        
         refreshData();
         handleClose();
         setTimeout(() => {
@@ -125,10 +128,10 @@ const EditCategoryModal = ({
                             <TextField
                                 required
                                 id="outlined-required"
-                                name="categoryName"
+                                name="name"
                                 placeholder='Enter a category name'
                                 onChange={handleChange}
-                                value={formData.categoryName || children.name}
+                                value={formData.name || children.name}
                             >
                             </TextField>
                         </Box>

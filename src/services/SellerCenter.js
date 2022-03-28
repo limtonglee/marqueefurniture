@@ -117,11 +117,11 @@ export const createShopCategory = (name, shopId) => {
   return postAsFormInput(URL_CREATE_SHOP_CATEGORY, body);
 };
 export const editShopCategory = (name, shopCategoryId) => {
-  const body = {
+  const params = {
     name: name,
     shopCategoryId: shopCategoryId,
   };
-  return update(URL_EDIT_SHOP_CATEGORY, body);
+  return update(URL_EDIT_SHOP_CATEGORY, params);
 };
 export const deleteShopCategory = (shopCategoryId) => {
   const body = {

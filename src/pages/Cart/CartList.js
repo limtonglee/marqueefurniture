@@ -24,6 +24,8 @@ import { getCartTotal } from "../../utils/getCartTotal";
 import { getTotalPrice } from "../../utils/getTotalPrice";
 import { SellerData } from "./SellerData";
 
+import {SellerVoucher } from "./SellerVoucher";
+
 const Img = styled("img")({
   margin: "auto",
   display: "block",
@@ -212,9 +214,10 @@ export default function Cart() {
 
         <Divider />
         <br />
-        <ImageList cols={1} gap={15}>
+        <ImageList cols={1} gap={15} >
+          
           {items.map((cartItem) => (
-            <>
+            <div key={cartItem.name}>
               <Grid container spacing={2}>
                 <Grid item>
                   <Checkbox
@@ -242,6 +245,7 @@ export default function Cart() {
                       <Typography variant="body2" color="text.secondary">
                         Brand: {cartItem.brand}
                       </Typography>
+                      <SellerVoucher listingId={cartItem.id} />
                     </Grid>
                   </Grid>
                   <Grid item>
@@ -311,7 +315,7 @@ export default function Cart() {
                 </Grid>
               </Grid>
               <Divider variant="middle" />
-            </>
+            </div>
           ))}
         </ImageList>
         <Grid container mt={1} spacing={1} direction="row-reverse">

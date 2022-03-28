@@ -10,6 +10,7 @@ import ProfileInfoCard from "./About/ProfileInfoCard";
 // Overview page components
 import Header from "./Header";
 import MoodboardViewInProfile from "./Moodboard/MoodboardViewInProfile";
+import Divider from "@mui/material/Divider";
 
 function Profile() {
   const [tabValue, setTabValue] = useState(0);
@@ -45,6 +46,7 @@ function Profile() {
             <Tab label="Posts" />
             <Tab label="About" />
           </Tabs>
+          <Divider />
         </Box>
       </Grid>
       {tabValue === 2 ? (

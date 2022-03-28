@@ -42,7 +42,7 @@ const LogItem = ({ completed }) => {
               </Button>
             ) : (
               <Button variant="contained" sx={{ width: 160 }}>
-                Pay Now
+                Review and Pay
               </Button>
             )}
           </Box>

@@ -87,13 +87,10 @@ const EditVoucherModal = ({
     };
 
     const voucherId = children.id;
-    // formData.voucherName = children.voucherName;
-    // formData.minSpend = children.minSpend;
-    // formData.discountAmount = children.discountAmount;
-    // formData.voucherStatus = children.voucherStatus;
 
     const handleSubmit = event => {
         event.preventDefault();
+        if(formData.voucherName)
         SellerCenterAPI.editVoucher(
             voucherId,
             formData.voucherName,
@@ -103,11 +100,6 @@ const EditVoucherModal = ({
             '2022-07-01',
             formData.voucherStatus,
         );
-        // console.log('ZZZ', voucherId);
-        // console.log('ZZZ', formData.voucherName);
-        // console.log('ZZZ', formData.minSpend);
-        // console.log('ZZZ', formData.discountAmount);
-        // console.log('ZZZ', formData.voucherStatus);
         refreshData();
         handleClose();
         setTimeout(() => {

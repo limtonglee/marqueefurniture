@@ -83,7 +83,7 @@ export const createVoucher = (name, minSpend, discountAmount, startDate, endDate
   return postAsFormInput(URL_CREATE_SHOP_VOUCHER, body);
 };
 export const editVoucher = (voucherId, name, minSpend, discountAmount, startDate, endDate, status) => {
-  const body = {
+  const params = {
     voucherId: voucherId,
     name: name,
     minSpend: Number(minSpend),
@@ -92,8 +92,7 @@ export const editVoucher = (voucherId, name, minSpend, discountAmount, startDate
     endDate: endDate,
     status: status,
   };
-  // console.log('ZZZZ', body);
-  return update(URL_EDIT_SHOP_VOUCHER, body);
+  return update(URL_EDIT_SHOP_VOUCHER, params);
 };
 export const deleteVoucher = (voucherId) => {
   const body = {

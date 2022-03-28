@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React from 'react';
+import { useEffect, useState } from "react";
 import { Layout } from '../Layout';
 import { listingsData } from "../../../data/listingsData";
 // material
@@ -21,32 +22,44 @@ import Searchbar from "../../../components/Searchbar";
 import EditListingModal from "./EditListingModal";
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
-
+import * as SellerCenterAPI from "../../../services/SellerCenter";
 
 export const MyListings = () => {
     const navigate = useNavigate();
 
     const [value, setValue] = React.useState(0);
-    const [data, setData] = React.useState(listingsData);
-    let tabData = listingsData;
+    const [data, setData] = useState([]);
+    const [listings, setListings] = useState([]);
+
+    const getListings = async () => {
+        try {
+            const res = await SellerCenterAPI.getListings(1);
+            setData(JSON.parse(JSON.stringify(res.data)));
+            setListings(JSON.parse(JSON.stringify(res.data)));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        getListings();
+    }, []);
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
         updateData(newValue);
     };
 
+    let tabData = listings;
     const updateData = (value) => {
-        console.log(value);
         if (value === 1) {
-            tabData = listingsData.filter((order) => order.status === "Live");
+            tabData = listings.filter((listings) => listings.status === "LIVE");
         } else if (value === 2) {
-            tabData = listingsData.filter((order) => order.status === "Sold out");
+            tabData = listings.filter((listings) => listings.status === "SOLD OUT");
         } else if (value === 3) {
-            tabData = listingsData.filter((order) => order.status === "Violation");
-        } else if (value === 4) {
-            tabData = listingsData.filter((order) => order.status === "Delisted");
+            tabData = listings.filter((listings) => listings.status === "DELISTED");
         } else {
-            tabData = listingsData;
-            console.log("999999");
+            tabData = listings;
         }
         setData(tabData);
     };
@@ -132,7 +145,6 @@ export const MyListings = () => {
                         <Tab label="All" />
                         <Tab label="Live" />
                         <Tab label="Sold Out" />
-                        <Tab label="Violation" />
                         <Tab label="Delisted" />
                     </Tabs>
                     <Grid container p={2}>
@@ -169,25 +181,26 @@ export const MyListings = () => {
                                     <Grid container p={2}>
                                         <Grid item xs={3}>
                                             <img
-                                                src={`${item.img}?w=124&fit=crop&auto=format`}
-                                                srcSet={`${item.img}?w=124&fit=crop&auto=format&dpr=2 2x`}
+                                                src={`${item.image}?w=124&fit=crop&auto=format`}
+                                                srcSet={`${item.image}?w=124&fit=crop&auto=format&dpr=2 2x`}
                                                 alt={item.title}
                                                 loading="lazy"
                                             />
-                                            <div>{item.productName}</div>
-                                            <div>Variation: {item.variation}</div>
+                                            <div>{item.name}</div>
+                                            <div>Variation: {item.variations}</div>
                                         </Grid>
                                         <Grid item xs={1}>
                                             {item.id}
                                         </Grid>
                                         <Grid item xs={2}>
-                                            S${item.price}
+                                            S${item.listingprice}
+
                                         </Grid>
                                         <Grid item xs={1}>
                                             {item.status}
                                         </Grid>
                                         <Grid item xs={1}>
-                                            {item.stock}
+                                            {item.stockavailable}
                                         </Grid>
                                         <Grid item xs={1}>
                                             {item.sales}

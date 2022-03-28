@@ -26,11 +26,11 @@ export const remove = (url, params, headers = {}) =>
     headers,
   });
 
-export const update = (url, params, headers = {}) =>
+export const update = (url, data, headers = {}) =>
   request({
     method: "PUT",
     url,
-    params,
+    data,
     headers,
   });
 
@@ -52,11 +52,7 @@ export const postAsFormInput = (url, data, headers = {}) =>
     responseType: "json",
   });
 
-export const postAsImage = (
-  url,
-  data,
-  headers = {}
-) =>
+export const postAsImage = (url, data, headers = {}) =>
   instance.request({
     method: "POST",
     url,

@@ -13,11 +13,10 @@ export const URL_GET_LISTING_DETAILS = "/api/listing/details";
 export const URL_GET_LISTING_SELLER = "/api/listing/getSeller";
 
 //cart management
-export const URL_GET_CART = "/api/cart"
-export const URL_POST_CART_ITEM = "/api/cart/item"
-export const URL_DELETE_CART_ITEM = "/api/cart/deleteItem"
-export const URL_DELETE_CART_ITEMS = "/api/cart/deleteItems"
-
+export const URL_GET_CART = "/api/cart";
+export const URL_POST_CART_ITEM = "/api/cart/item";
+export const URL_DELETE_CART_ITEM = "/api/cart/deleteItem";
+export const URL_DELETE_CART_ITEMS = "/api/cart/deleteItems";
 
 // posts management
 export const URL_GET_POSTS = "/api/posts"; // get all posts
@@ -68,3 +67,9 @@ export const URL_CREATE_CHAT = "/api/chat/create";
 export const URL_GET_USER_CHATS = "/api/user/chats";
 export const URL_CREATE_MESSAGE = "/api/chat/message/create";
 export const URL_GET_CHAT_MESSAGES = "/api/chat/message";
+
+// notification
+export const URL_GET_USER_NOTIFICATIONS = "/api/user/notifications";
+export const URL_MARK_NOTIFICATION_AS_READ = "/api/user/notifications/readone";
+export const URL_MARK_ALL_NOTIFICATIONS_AS_READ =
+  "/api/user/notifications/readall";

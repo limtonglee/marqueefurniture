@@ -22,6 +22,7 @@ import jack from "../assets/images/jack.jpg";
 import { useStores } from "../stores/RootStore";
 import NotificationsPopover from "./NotificationsPopover";
 import ControlledSwitches from "./SwitchNav";
+import NotificationButton from "../pages/Notifications/NotificationButton";
 
 // const pageLinks = [
 // 	{ text: "Seller Center", link: "/sellercenter" },
@@ -57,7 +58,7 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
   const { cartStore } = useStores();
 
   const profilePic = userStore.profilePic;
-  
+
   const setLogout = (e) => {
     userStore.setIsLoggedOut();
     navigate("/marketplace");
@@ -127,6 +128,7 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
+              <NotificationButton />
               <Tooltip title="Open notification">
                 <>
                   <NotificationsPopover />

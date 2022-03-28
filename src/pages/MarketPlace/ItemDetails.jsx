@@ -24,8 +24,11 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import jack from "../../assets/images/jack.jpg";
-import { getListingDetails } from "../../services/Listings";
+import {
+  addToCart,
+  getListingDetails,
+  getSellerInfo,
+} from "../../services/Listings";
 import { useStores } from "../../stores/RootStore";
 
 //This is the listing page
@@ -40,11 +43,11 @@ Add in a back button Done
 Add in filter by category
 */
 export const ItemDetails = () => {
-  const { cartStore } = useStores();
-
   const { userStore } = useStores();
   const param = useParams();
   const [item, setItems] = useState([]);
+  const [shopName, setShopName] = useState("");
+  const [images, setImages] = useState("");
 
   const notifyCart = () =>
     toast("Item added to cart!", {
@@ -58,9 +61,17 @@ export const ItemDetails = () => {
     });
 
   useEffect(() => {
+    const getSellerData = async (listingId) => {
+      const response = await getSellerInfo(listingId);
+      setShopName(response.data[0].shopname);
+      setImages(response.data[0].images);
+    };
+
     getListingDetails(param.itemId)
       .then((response) => {
         setItems(JSON.parse(JSON.stringify(response.data))[0]);
+
+        getSellerData(param.itemId);
       })
       .catch((error) => {
         console.log(error);
@@ -78,7 +89,14 @@ export const ItemDetails = () => {
 
   const handleAddCart = (item, newState) => {
     notifyCart();
-    cartStore.addItems(item);
+
+    const addItemToCart = async () => {
+      const response = await addToCart(userStore.id, item.id);
+      const result = await response.data;
+      console.log(result);
+    };
+
+    addItemToCart();
   };
 
   const HeadingTypoStyle = {
@@ -100,7 +118,7 @@ export const ItemDetails = () => {
             <img
               height="auto"
               width="100%"
-              src={item.image}
+              src={`/api/image/${item.image}`}
               alt={item.name}
               title={item.name}
             />
@@ -116,7 +134,7 @@ export const ItemDetails = () => {
             }}
           >
             <img
-              src={`${item.image}?w=188&h=188&fit=crop&auto=format`}
+              src={`/api/image/${item.image}?w=188&h=188&fit=crop&auto=format`}
               alt={item.name}
               height="auto"
               width="50%"
@@ -255,19 +273,23 @@ export const ItemDetails = () => {
             <Stack direction="row" spacing={1} mt={2}>
               {!!userStore.isLoggedIn ? (
                 <>
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      handleAddCart(item, {
-                        vertical: "top",
-                        horizontal: "center",
-                      });
-                    }}
-                    startIcon={<ShoppingCartIcon />}
-                  >
-                    Add to cart
-                  </Button>
-                  <ToastContainer />
+                  {item.type !== "Design" && (
+                    <>
+                      <Button
+                        variant="outlined"
+                        onClick={() => {
+                          handleAddCart(item, {
+                            vertical: "top",
+                            horizontal: "center",
+                          });
+                        }}
+                        startIcon={<ShoppingCartIcon />}
+                      >
+                        Add to cart
+                      </Button>
+                      <ToastContainer />
+                    </>
+                  )}
                   <Button
                     variant="outlined"
                     startIcon={<ChatIcon />}
@@ -306,11 +328,12 @@ export const ItemDetails = () => {
         </Grid>
       </Grid>
       <Divider></Divider>
+
       <CardHeader
         avatar={
           <Link to={`/SellerProfile`} style={{ textDecoration: "none" }}>
             <Avatar
-              src={jack}
+              src={images}
               alt="profile-image"
               variant="rounded"
               shadow="sm"
@@ -320,6 +343,7 @@ export const ItemDetails = () => {
         }
         sx={{ p: 0 }}
       />
+      <Typography variant="h3">{shopName}</Typography>
     </>
   );
 };

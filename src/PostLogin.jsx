@@ -6,6 +6,7 @@ import MarketPlace from "./pages/MarketPlace";
 import { ItemDetails } from "./pages/MarketPlace/ItemDetails";
 import { Listings } from "./pages/MarketPlace/Listings";
 import Profile from "./pages/Profile";
+import LikedListing from "./pages/Profile/LikedListing/LikedListing";
 import { MoodboardDetails } from "./pages/Profile/Moodboard/MoodboardDetails";
 import Profiles from "./pages/Profiles";
 import SellerCenter from "./pages/SellerCenter";
@@ -25,7 +26,8 @@ import Ideas from "./pages/SocialMedia/Ideas";
 import Post from "./pages/SocialMedia/Posts/Post";
 import CreateNewPost from "./pages/SocialMedia/Posts/CreateNewPost";
 import ViewMoodboard from "./pages/SocialMedia/Moodboard/ViewMoodboard";
-import Chat from "./pages/Chat/ChatModule";
+// import Chat from "./pages/Chat/ChatModule";
+import Messenger from "./pages/Chat/Messenger";
 
 import { Box } from "@mui/material";
 import SellerProfile from "./pages/SellerProfile/SellerProfile";
@@ -41,9 +43,9 @@ const PostLogin = ({checked, setChecked, handleChange}) => {
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
-        <Route path="/Chat" element={<Chat />} />
+        {/* <Route path="/Chat" element={<Chat />} /> */}
         <Route path="/SellerProfile" element={<SellerProfile/>} />
-        <Route path="/Chat" element={<Chat/>} />
+        <Route path="/Chat" element={<Messenger/>} />
         <Route path="/ideas" element={<Ideas />} />
         <Route path="/new-idea" element={<CreateNewPost />} />
         <Route path="/ideas/:postId" element={<Post />} />
@@ -70,6 +72,7 @@ const PostLogin = ({checked, setChecked, handleChange}) => {
         <Route path="/profile" element={<Profiles />}>
           <Route path="" element={<Profile />} />
           <Route path=":moodboardId" element={<MoodboardDetails />} />
+          <Route path="likedListing" element={<LikedListing />} />
         </Route>
       </Routes>
     </>

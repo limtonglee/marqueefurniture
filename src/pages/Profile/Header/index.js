@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import jack from "../../../assets/images/jack.jpg";
 import { useStores } from "../../../stores/RootStore";
 
-function Header({ name, shopName }) {
+function Header({ name, shopName , profilePic }) {
   const { userStore } = useStores();
   const [active, setActive] = useState(true);
 
@@ -19,7 +19,6 @@ function Header({ name, shopName }) {
     <Box position="relative">
       <Grid
         container
-        spacing={1}
         alignItems="center"
         justifyContent={"space-between"}
       >
@@ -27,7 +26,7 @@ function Header({ name, shopName }) {
           <Grid container alignItems="center">
             <Grid item spacing={1} p={1}>
               <Avatar
-                src={jack}
+                src={`/api/image/${profilePic}`}
                 alt="profile-image"
                 variant="rounded"
                 size="xl"

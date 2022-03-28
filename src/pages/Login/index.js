@@ -34,7 +34,8 @@ const Login = () => {
             user.email,
             user.type,
             user.profilepic,
-            user.address
+            user.address,
+            user.bio
           );
         }
       })
@@ -112,17 +113,18 @@ const Login = () => {
 
   let navigate = useNavigate();
 
-  const setLogin = (id, username, email, type, profilepic, address) => {
+  const setLogin = (id, username, email, type, profilepic, address, bio) => {
     userStore.setIsLoggedIn();
     userStore.setUserName(username);
     userStore.setId(id);
-    userStore.setDescription("to do desc");
+    userStore.setDescription(bio);
+    userStore.setUserAddress(address)
+    userStore.setProfilePic(profilepic);
+
     //to change set to seller
     if (type === "Customer") {
       userStore.setIsSeller();
     }
-    userStore.setUserWebLink("to do link");
-
     navigate("/marketplace");
   };
 

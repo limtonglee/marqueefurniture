@@ -23,26 +23,20 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // import { user } from "../../data/currentUserData";
 import user from "../../data/currentUserData2";
-import { getListings } from "../../services/Listings";
+import { getLikedListing, getListings } from "../../services/Listings";
+import { likedListing } from "../../services/Listings";
+import { unlikedListing } from "../../services/Listings";
+import { useStores } from "../../stores/RootStore";
 
 //This is the main marketplace page
-/*Things to do:
-Inclusion of the bar to separate the different listings: "Furniture / Design / Services" Done
-Linking bar up with the difference in the listings Done
-Sharing of URL to the exact listing Done
-Add search bar Done
-Updating of the page to show only furniture, initial loading shows all the listing Done
-Liking and unliking a post Done
-Showcasing that the item has been liked before
-Add filtering 
-Formatting of the listings
-*/
+
 export const Listings = () => {
-  const { username, likedPosts, moodboards } = user;
   const [value, setValue] = useState(0);
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [listings, setListings] = useState([]);
+  const { userStore } = useStores();
+  const [likedList, setLikedList] = useState([]);
 
   //first use effect only called once
   useEffect(() => {
@@ -56,16 +50,38 @@ export const Listings = () => {
       });
   }, []);
 
+  useEffect(() => {
+    getLikedListing(userStore.id)
+      .then((response) => {
+        setLikedList(JSON.parse(JSON.stringify(response.data)));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   //use effect to check if the listings are updated
   useEffect(() => {
     // console.log("updating data effect: " + value);
     updateData(value);
   }, [listings]);
 
+
+  //To get the list of Liked List after every update
+  const getLikedList = () => {
+    getLikedListing(userStore.id).then((response) => {
+      setLikedList(JSON.parse(JSON.stringify(response.data)));
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
+
+  //Handling of snackbar to appear
   const handleSnack = () => {
     setOpen(true);
   };
 
+  //When snackbar closes
   const handleSnackClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -74,21 +90,55 @@ export const Listings = () => {
     setOpen(false);
   };
 
+  //When user decides to change filter (Furniture, Service & Design)
   const handleChange = (event, newValue) => {
     setValue(newValue);
     updateData(newValue);
   };
 
+  //This method will be called to check whether users has initially liked the listing
+  const checkInitialLike = (listingId) => {
+    for (let i in likedList){
+      if(likedList[i].listingid == listingId){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  //API call to BE to update database for user liking a listing
+  const likeListing = async (listingId, userId) => {
+    try {      
+      const res = await likedListing(listingId, userId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+    } catch (error) {
+      console.error(error);
+    }
+  }; 
+
+  //API call to BE to update database for user unliking a listing
+  const unlikeListing = async (listingId, userId) => {
+    try {
+      const res = await unlikedListing(listingId, userId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  //Method call when user wants to like or unlike a listing
   const handleLikeChange = (event, likedItem) => {
     console.log("Like has been clicked");
-    console.log(likedItem.likes);
-    if (likedItem.likes.includes(username)) {
-      likedItem.likes = likedItem.likes.filter((user) => user !== username);
+    if(checkInitialLike(likedItem.id)) {
+      console.log("This will be unliked");
+      unlikeListing(likedItem.id, userStore.id);
     } else {
-      likedItem.likes.push(username);
+      console.log("This will be liked");
+      likeListing(likedItem.id, userStore.id);
     }
   };
 
+  //Handling of search
   const handleSearch = (value) => {
     findListing(value);
   };
@@ -108,6 +158,7 @@ export const Listings = () => {
     }
   };
 
+  //Update the tabData when user filter through the different categories
   const updateData = (value) => {
     // console.log("updating data: " + value);
     let tabData = [];
@@ -161,10 +212,10 @@ export const Listings = () => {
             <Link to={`/marketplace/${item.id}`}>
               <Button>
                 <img
-                  src={`${item.image}?w=188&h=188&fit=crop&auto=format`}
-                  srcSet={`${item.image}?w=188&h=188&fit=crop&auto=format&dpr=2 2x`}
+                  src={`/api/image/${item.image}`}
                   alt={item.name}
                   loading="lazy"
+                  width="188" height="188"
                 />
               </Button>
             </Link>
@@ -198,15 +249,18 @@ export const Listings = () => {
 
               <Grid item xs={8}>
                 <Box display="flex" justifyContent="flex-end">
+                  
                   <Checkbox
                     size="small"
                     sx={{ color: "secondary" }}
                     icon={<FavoriteBorder fontSize="small" />}
                     checkedIcon={<Favorite fontSize="small" />}
                     value={item}
+                    checked={checkInitialLike(item.id)}
                     onChange={(e) => {
                       handleSnack();
                       handleLikeChange(e, item);
+                      getLikedList();
                     }}
                   />
                 </Box>
@@ -220,7 +274,7 @@ export const Listings = () => {
                     severity="success"
                     sx={{ width: "auto" }}
                   >
-                    Liked!
+                    Updated Successfully!
                   </Alert>
                 </Snackbar>
               </Grid>

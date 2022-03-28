@@ -18,6 +18,12 @@ export const URL_POST_CART_ITEM = "/api/cart/item";
 export const URL_DELETE_CART_ITEM = "/api/cart/deleteItem";
 export const URL_DELETE_CART_ITEMS = "/api/cart/deleteItems";
 
+//liked listings management
+export const URL_LISTING_LIKE = "/api/listing/like"; // user liking a post
+export const URL_LISTING_UNLIKE = "/api/listing/unlike"; // user unliking a post
+export const URL_GET_LISTING_LIKE = "/api/listing/allLikes"; //getting all the user from the liked listing
+export const URL_GET_LISTING_LIKE_USER = "/api/listing/allLikes/user"; //getting all the liked listings from the user
+
 // posts management
 export const URL_GET_POSTS = "/api/posts"; // get all posts
 export const URL_GET_POST_DETAILS = "/api/post/details"; // get indiv post details
@@ -60,6 +66,37 @@ export const URL_EDIT_MOODBOARD = "/api/user/moodboard/edit"; // new
 export const URL_DELETE_MOODBOARD = "/api/user/moodboard/delete";
 
 // sellercenter
+// orders
+export const URL_GET_SHOP_ORDERS = "/api/merchant/orders";
+export const URL_GET_SHOP_ORDER_DETAIL = "/api/merchant/order/individual";
+export const URL_UPDATE_SHOP_ORDER = "/api/merchant/updateOrder";
+// listings
+export const URL_GET_SHOP_LISTINGS = "/api/merchant/listings";
+export const URL_GET_SHOP_LISTING_DETAIL = "/api/merchant/listing/individual";
+export const URL_CREATE_SHOP_LISTING = "/api/merchant/createListing";
+export const URL_EDIT_SHOP_LISTING = "/api/merchant/editListing";
+// vouchers
+export const URL_GET_SHOP_VOUCHERS = "/api/merchant/vouchers";
+export const URL_EDIT_SHOP_VOUCHER = "/api/merchant/voucher/edit";
+export const URL_CREATE_SHOP_VOUCHER = "/api/merchant/voucher/add";
+export const URL_DELETE_SHOP_VOUCHER = "/api/merchant/voucher/delete";
+// categories
+export const URL_GET_SHOP_CATEGORIES = "/api/merchant/shopCategories";
+export const URL_CREATE_SHOP_CATEGORY = "/api/merchant/shopCategories/add";
+export const URL_EDIT_SHOP_CATEGORY = "/api/merchant/shopCategories/edit";
+export const URL_DELETE_SHOP_CATEGORY = "/api/merchant/shopCategories/delete";
+export const URL_DELETE_SHOP_CATEGORY_LISTINGS = "/api/merchant/shopCategoryListings/delete";
+export const URL_ADD_LISTING_SHOP_CATEGORY = "/api/merchant/shopCategories/addListing";
+// rating
+export const URL_GET_SHOP_RATINGS = "/api/merchant/ratings";
+export const URL_REPLY_REVIEW = "/api/merchant/replyReview";
+// shop profile
+export const URL_GET_SELLER_PROFILE = "/api/merchant/sellerProfile";
+export const URL_EDIT_SELLER_PROFILE = "/api/user/editSellerAccount";
+// income & balance
+export const URL_GET_INCOME = "/api/merchant/income";
+export const URL_GET_BALANCE = "/api/merchant/balance";
+export const URL_GET_BALANCE_WITHDRAW = "/api/merchant/balance/withdraw";
 export const URL_GET_MERCHANT_ORDER = "/api/merchant/orders";
 
 // chat

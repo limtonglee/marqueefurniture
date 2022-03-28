@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React from 'react';
+import { useEffect, useState } from "react";
 import { Layout } from '../Layout';
 import {
     Card,
@@ -7,37 +8,60 @@ import {
     Typography,
     Tabs,
     Tab,
-    Box,
-    styled,
     Grid,
-    TextField,
-    MenuItem
 } from '@mui/material';
 import AddVoucherModal from './AddVoucherModal';
-import { voucherData } from "../../../data/voucherData";
 import EditVoucherModal from "./EditVoucherModal";
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
+import * as SellerCenterAPI from "../../../services/SellerCenter";
 
 export const Voucher = () => {
     const [value, setValue] = React.useState(0);
-    const [data, setData] = React.useState(voucherData);
-    let tabData = voucherData;
+    const [data, setData] = useState([]);
+    const [vouchers, setVouchers] = useState([]);
+    
+    const getVouchers = async () => {
+        try {
+            const res = await SellerCenterAPI.getVouchers(1);
+            setData(JSON.parse(JSON.stringify(res.data)));
+            setVouchers(JSON.parse(JSON.stringify(res.data)));
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
+    useEffect(() => {
+        getVouchers();
+    }, []);
+
+    let tabData = vouchers;
     const handleChange = (event, newValue) => {
         setValue(newValue);
         updateData(newValue);
     };
+
     const updateData = (value) => {
         if (value === 1) {
-            tabData = voucherData.filter((voucher) => voucher.status === "Ongoing");
-        }
-        if (value === 2) {
-            tabData = voucherData.filter((voucher) => voucher.status === "Upcoming");
-        }
-        if (value === 3) {
-            tabData = voucherData.filter((voucher) => voucher.status === "Expired");
+            tabData = vouchers.filter((voucher) => voucher.status === "Ongoing");
+        } else if (value === 2) {
+            tabData = vouchers.filter((voucher) => voucher.status === "Upcoming");
+        } else if (value === 3) {
+            tabData = vouchers.filter((voucher) => voucher.status === "Expired");
         }
         setData(tabData);
+    };
+
+    const handleDelete = async (voucherId) => {
+        try {
+            const res = await SellerCenterAPI.deleteVoucher(voucherId);
+            getVouchers();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const refreshData = () => {
+        getVouchers();
     };
 
     return (
@@ -47,7 +71,7 @@ export const Voucher = () => {
                     <Typography variant="h4" gutterBottom>
                         Vouchers
                     </Typography>
-                    <AddVoucherModal></AddVoucherModal>
+                    <AddVoucherModal refreshData={refreshData}></AddVoucherModal>
                 </Stack>
                 <Card style={{ overflow: 'visible' }}>
                     <Tabs
@@ -92,13 +116,13 @@ export const Voucher = () => {
                                             {item.id}
                                         </Grid>
                                         <Grid item xs={3}>
-                                            {item.usageLimit}
+                                            Min.Spend S${item.minspend}
                                         </Grid>
                                         <Grid item xs={2}>
                                             {item.status}
                                         </Grid>
                                         <Grid item xs={3}>
-                                            <EditVoucherModal>{item}</EditVoucherModal>
+                                            <EditVoucherModal refreshData={refreshData}>{item}</EditVoucherModal>
                                             <Button
                                                 variant="contained"
                                                 startIcon={<PlaylistRemoveIcon />}
@@ -107,7 +131,7 @@ export const Voucher = () => {
                                                     marginTop: "12px"
                                                 }}
                                                 onClick={e => {
-                                                    
+                                                    handleDelete(item.id);
                                                 }}
                                             >
                                                 Delete

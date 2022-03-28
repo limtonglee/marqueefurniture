@@ -3,59 +3,74 @@ import React, { useReducer, useState } from 'react';
 import {
     Button,
     Box,
-    Card,
     Modal,
     TextField,
-    MenuItem,
     Typography,
     IconButton,
-
+    MenuItem,
 } from '@mui/material';
 import CloseIcon from "@mui/icons-material/Close";
+import * as SellerCenterAPI from "../../../services/SellerCenter";
 
-const style = {
-    wrapper: {
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        bgcolor: "background.paper",
-        boxShadow: 24,
-        p: 4,
-        width: 350,
-        borderRadius: 2,
-    },
-    contents: {
-        display: "flex",
-        flexDirection: "column",
-        marginTop: "20px",
-        marginBottom: "15px",
-        justifyContent: "flex-start",
-    },
-    buttons: {
-        display: "flex",
-        justifyContent: "end",
-    },
-};
+const EditVoucherModal = ({
+    children,
+    refreshData,
+}) => {
+    const style = {
+        wrapper: {
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+            width: 350,
+            borderRadius: 2,
+        },
+        contents: {
+            display: "flex",
+            flexDirection: "column",
+            marginTop: "20px",
+            marginBottom: "15px",
+            justifyContent: "flex-start",
+        },
+        buttons: {
+            display: "flex",
+            justifyContent: "end",
+        },
+    };
 
-const formReducer = (state, event) => {
-    if (event.reset) {
+    const formReducer = (state, event) => {
+        if (event.reset) {
+            return {
+                voucherName: children.name,
+                minSpend: children.minspend,
+                discountAmount: children.discountamount,
+                voucherStatus: children.status,
+            }
+        }
         return {
-            productType: '',
-            productName: '',
-            productDescription: '',
-            variation: '',
-            price: 0,
-            stock: 0,
+            ...state,
+            [event.name]: event.value
         }
     }
-    return {
-        ...state,
-        [event.name]: event.value
-    }
-}
 
-export default function BasicModal({ children }) {
+    const voucherStatus = [
+        {
+            value: 'Ongoing',
+            label: 'Ongoing',
+        },
+        {
+            value: 'Upcoming',
+            label: 'Upcoming',
+        },
+        {
+            value: 'Expired',
+            label: 'Expired',
+        },
+    ];
+
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -70,10 +85,23 @@ export default function BasicModal({ children }) {
             value: event.target.value,
         });
     };
+
+    const voucherId = children.id;
+
     const handleSubmit = event => {
         event.preventDefault();
-        setSubmitting(true);
-
+        if(formData.voucherName)
+        SellerCenterAPI.editVoucher(
+            voucherId,
+            formData.voucherName,
+            formData.minSpend,
+            formData.discountAmount,
+            '2022-07-01',
+            '2022-07-01',
+            formData.voucherStatus,
+        );
+        refreshData();
+        handleClose();
         setTimeout(() => {
             setSubmitting(false);
             setFormData({
@@ -123,7 +151,7 @@ export default function BasicModal({ children }) {
                     </Box>
                     <form onSubmit={handleSubmit}>
                         <Box sx={style.contents}>
-                            New Voucher Name
+                            Voucher Name
                             <TextField
                                 required
                                 id="outlined-required"
@@ -135,15 +163,42 @@ export default function BasicModal({ children }) {
                             </TextField>
                         </Box>
                         <Box sx={style.contents}>
-                            New Usage Limit
+                            Minimum spend
                             <TextField
                                 required
                                 id="outlined-required"
-                                name="usageLimit"
-                                placeholder='Minimum spend'
+                                name="minSpend"
                                 onChange={handleChange}
-                                value={formData.usageLimit || ""}
+                                value={formData.minSpend || children.minspend}
                             >
+                            </TextField>
+                        </Box>
+                        <Box sx={style.contents}>
+                            Discount Amount
+                            <TextField
+                                required
+                                id="outlined-required"
+                                name="discountAmount"
+                                onChange={handleChange}
+                                value={formData.discountAmount || children.discountamount}
+                            >
+                            </TextField>
+                        </Box>
+                        <Box sx={style.contents}>
+                            Voucher status
+                            <TextField
+                                id="outlined-select-voucher-status"
+                                select
+                                name="voucherStatus"
+                                onChange={handleChange}
+                                value={formData.voucherStatus || children.status}
+                                helperText=""
+                            >
+                                {voucherStatus.map((option) => (
+                                    <MenuItem value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
                             </TextField>
                         </Box>
                         <Box sx={style.buttons}>
@@ -162,3 +217,5 @@ export default function BasicModal({ children }) {
         </div>
     );
 }
+
+export default EditVoucherModal;

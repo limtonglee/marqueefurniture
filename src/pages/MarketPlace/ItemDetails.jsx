@@ -118,7 +118,7 @@ export const ItemDetails = () => {
             <img
               height="auto"
               width="100%"
-              src={item.image}
+              src={`/api/image/${item.image}`}
               alt={item.name}
               title={item.name}
             />
@@ -134,7 +134,7 @@ export const ItemDetails = () => {
             }}
           >
             <img
-              src={`${item.image}?w=188&h=188&fit=crop&auto=format`}
+              src={`/api/image/${item.image}?w=188&h=188&fit=crop&auto=format`}
               alt={item.name}
               height="auto"
               width="50%"

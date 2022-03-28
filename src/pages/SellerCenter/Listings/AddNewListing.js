@@ -73,7 +73,6 @@ export const AddNewListing = () => {
     const handleSubmit = event => {
         event.preventDefault();
         SellerCenterAPI.createListing(
-            formData.type,
             formData.name,
             formData.image,
             formData.description,
@@ -89,6 +88,7 @@ export const AddNewListing = () => {
             formData.dimensions,
             'LIVE',
             1,
+            formData.type,
         );
         setTimeout(() => {
             setSubmitting(false);

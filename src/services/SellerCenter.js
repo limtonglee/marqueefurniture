@@ -40,10 +40,9 @@ export const getListings = (userId) => {
   };
   return get(URL_GET_SHOP_LISTINGS, params);
 };
-export const createListing = (type, name, image, description, category, brand, warrantyInfo, shippingProvider,
-  parcelSize, weight, stockAvailable, listingPrice, variations, dimensions, status, shopId) => {
+export const createListing = (name, image, description, category, brand, warrantyInfo, shippingProvider,
+  parcelSize, weight, stockAvailable, listingPrice, variations, dimensions, status, shopId, type) => {
   const body = {
-    type: type,
     name: name,
     image: image,
     description: description,
@@ -59,6 +58,7 @@ export const createListing = (type, name, image, description, category, brand, w
     dimensions: dimensions,
     status: status,
     shopId: shopId,
+    type: type,
   };
   return postAsFormInput(URL_CREATE_SHOP_LISTING, body);
 };

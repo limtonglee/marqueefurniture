@@ -26,7 +26,6 @@ export const OrderDetails = () => {
         try {
             const res = await SellerCenterAPI.getOrderDetails(param.orderId);
             setOrder(JSON.parse(JSON.stringify(res.data))[0]);
-            console.log('ZZZ', order);
         } catch (error) {
             console.error(error);
         }
@@ -65,8 +64,7 @@ export const OrderDetails = () => {
                                     <CardMedia
                                         component="img"
                                         height="240"
-                                        image={order.image}
-                                        alt="green iguana"
+                                        image={`/api/image/${order.image}`}
                                     />
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div">
@@ -79,7 +77,7 @@ export const OrderDetails = () => {
                                 </Card>
                             </Grid>
                             <Grid item md={7} xs={12} sx={{ px: 2 }}>
-                                    
+                    
                             </Grid>
                         </Grid>
                     </Box>

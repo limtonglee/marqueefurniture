@@ -3,6 +3,7 @@ import { get, remove, update, postAsFormInput } from "./api";
 // orders
 import { URL_GET_SHOP_ORDERS } from "../services/endpoints";
 import { URL_GET_SHOP_ORDER_DETAIL } from "../services/endpoints";
+import { URL_UPDATE_SHOP_ORDER } from "../services/endpoints";
 // listings
 import { URL_GET_SHOP_LISTINGS } from "../services/endpoints";
 import { URL_CREATE_SHOP_LISTING } from "../services/endpoints";
@@ -33,6 +34,13 @@ export const getOrderDetails = (orderId) => {
     orderId: orderId
   };
   return get(URL_GET_SHOP_ORDER_DETAIL, params);
+};
+export const updateOrderStatus = (order_status, orderId) => {
+  const params = {
+    order_status: order_status,
+    orderId: orderId,
+  };
+  return update(URL_UPDATE_SHOP_ORDER, params);
 };
 
 

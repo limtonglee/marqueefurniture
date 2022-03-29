@@ -97,7 +97,7 @@ export const ShopProfile = () => {
                                 <CardMedia
                                     component="img"
                                     height="140"
-                                    image={`/api/image/${shop.images}`}
+                                    // image={`/api/image/${shop.images}`}
                                 />
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="div">

@@ -64,7 +64,7 @@ export const OrderDetails = () => {
                                     <CardMedia
                                         component="img"
                                         height="240"
-                                        image={`/api/image/${order.image}`}
+                                        // image={`/api/image/${order.image}`}
                                     />
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div">

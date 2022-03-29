@@ -27,6 +27,7 @@ import * as socialMediaAPI from "../../../services/SocialMedia";
 import FeedGrid from "../FeedGrid/FeedGrid";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Popover from "@mui/material/Popover";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -274,6 +275,12 @@ const ViewMoodboard = () => {
         </DialogActions>
       </Dialog>
       <Container sx={{ pt: 2 }}>
+        <IconButton
+          onClick={() => navigate(-1)}
+          sx={{ backgroundColor: "common.white", mb: 3 }}
+        >
+          <ArrowBackIosNewIcon />
+        </IconButton>
         <Grid container spacing={2}>
           <Grid item xs={12} md={9}>
             <Typography

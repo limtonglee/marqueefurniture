@@ -1,39 +1,31 @@
-import * as React from "react";
-import { getSellerInfo } from "../../services/Listings";
-import { getVouchers } from "../../services/SellerCenter";
-
-import CircleNotificationsOutlinedIcon from "@mui/icons-material/CircleNotificationsOutlined";
-import MarkChatReadIcon from "@mui/icons-material/MarkChatRead";
 import {
-  Badge,
   Box,
   Button,
-  Divider,
-  IconButton,
+  Grid,
   List,
-  ListItemAvatar,
   ListItemButton,
   ListItemText,
   ListSubheader,
   Tooltip,
   Typography,
-  Grid,
 } from "@mui/material";
-// material
-import { alpha } from "@mui/material/styles";
-import { formatDistanceToNow } from "date-fns";
-import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
 import MenuPopover from "../../components/MenuPopover";
 // utils
 // components
 import Scrollbar from "../../components/Scrollbar";
+import { getVouchers } from "../../services/SellerCenter";
 
-export const SellerVoucher = ({ shopId }) => {
+export const SellerVoucher = ({
+  shopId,
+  selectedVouchers,
+  setSelectedVouchers,
+  cartItem,
+}) => {
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [shopVouchers, setShopVouchers] = useState([]);
+  const [voucherName, setVoucherName] = useState("");
 
   const handleOpen = () => {
     setOpen(true);
@@ -43,9 +35,23 @@ export const SellerVoucher = ({ shopId }) => {
     setOpen(false);
   };
 
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const handleListItemClick = (event, item) => {
+    setSelectedIndex(item.id);
+    setVoucherName(item.name);
+    // if (containsVoucher(selectedVouchers, item.id)) {}
+    var filteredArray = selectedVouchers.filter((x) => x.itemId !== cartItem.id);
+    let appliedVoucher = { ...item, itemId: cartItem.id };
+    // console.log(appliedVoucher);
+    setSelectedVouchers([...filteredArray, appliedVoucher]);
+  };
+
   useEffect(() => {
     const getSellerVouchers = async (shopId) => {
       const response = await getVouchers(shopId);
+      console.log("use effect called");
+
       console.log(response.data);
       setShopVouchers(JSON.parse(JSON.stringify(response.data)));
     };
@@ -55,11 +61,19 @@ export const SellerVoucher = ({ shopId }) => {
   return (
     <>
       <Grid container spacing={2} direction="row">
-        <Grid item xs={4}>
+        <Grid item>
           <Typography variant="body2" gutterBottom>
             Voucher Applied:
           </Typography>
         </Grid>
+        {selectedIndex !== 0 && (
+          <Grid item>
+            <Typography variant="body2" gutterBottom>
+              {voucherName}
+            </Typography>
+          </Grid>
+        )}
+
         <Grid item xs={3}>
           <Tooltip title="Show vouchers">
             <Button ref={anchorRef} size="small" onClick={handleOpen}>
@@ -87,15 +101,38 @@ export const SellerVoucher = ({ shopId }) => {
                 disableSticky
                 sx={{ py: 1, px: 2.5, typography: "overline" }}
               >
-                New
+                Select voucher
               </ListSubheader>
             }
           >
-            {console.log(shopVouchers)}
-            {/* {shopVouchers.map((item) => (
-                      ))
-
-            } */}
+            {shopVouchers
+              .filter(
+                (x) =>
+                  x.status === "Ongoing" && x.minspend <= cartItem.listingprice
+              )
+              .map((item) => (
+                <ListItemButton
+                  selected={selectedIndex === item.id}
+                  onClick={(event) => handleListItemClick(event, item)}
+                >
+                  <ListItemText
+                    primary={item.name}
+                    secondary={
+                      <>
+                        <Typography
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          Min. spend: ${item.minspend}
+                        </Typography>
+                        {" — Do you have Paris recommendations? Have you ever…"}
+                      </>
+                    }
+                  />
+                </ListItemButton>
+              ))}
           </List>
         </Scrollbar>
       </MenuPopover>

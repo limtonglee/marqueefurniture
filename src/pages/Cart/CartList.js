@@ -10,6 +10,7 @@ import ButtonBase from "@mui/material/ButtonBase";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -26,6 +27,9 @@ import { SellerData } from "./SellerData";
 
 import {SellerVoucher } from "./SellerVoucher";
 
+import { useNavigate } from 'react-router-dom';
+
+
 const Img = styled("img")({
   margin: "auto",
   display: "block",
@@ -34,10 +38,13 @@ const Img = styled("img")({
 });
 
 export default function Cart() {
+  const navigate = useNavigate();
+
   const { userStore } = useStores();
   const [items, setItems] = useState([]);
   const [count, setCount] = useState({});
   const [selectedItemsId, setSelectedItemsId] = useState([]);
+  const [selectedVouchers, setSelectedVouchers] = useState([]);
 
   useEffect(() => {
     const updateListing = (result) => {
@@ -170,11 +177,23 @@ export default function Cart() {
       );
     }
     setSelectedItemsId(newSelectedItemsId);
-    console.log(newSelectedItemsId);
+    // console.log(selectedItemsId);
   };
 
   const handleCheckout = () => {
-    
+
+    const inSelectedIndex = (item) => {
+      let match = false;
+      selectedItemsId.forEach((element) => {
+        if(element === item.id) {
+          match = true;
+        }
+      })
+      return match;
+    }
+
+    const checkoutItems = items.filter(item => inSelectedIndex(item));
+    navigate('/checkout', { state: { items:checkoutItems , count:count, selectedItemsId: selectedItemsId, selectedVouchers:selectedVouchers  }})
   }
 
   return (
@@ -240,25 +259,28 @@ export default function Cart() {
                       <SellerData listingId={cartItem.id} />
 
                       <Typography variant="body2" gutterBottom>
-                        Item name: {cartItem.name}
+                        {cartItem.name}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      <Typography variant="body2" >
                         Brand: {cartItem.brand}
                       </Typography>
-                      <SellerVoucher shopId={cartItem.shopid} />
+                      <Divider sx={{marginBottom:"5px"}}/>
+                      <SellerVoucher shopId={cartItem.shopid} selectedVouchers={selectedVouchers} setSelectedVouchers={setSelectedVouchers} cartItem={cartItem}  />
                     </Grid>
                   </Grid>
                   <Grid item>
                     <Grid item>
+
                       <Typography variant="body2" component="div">
                         Unit Price:
                       </Typography>
+
                       <Typography
                         align="center"
                         variant="body2"
                         component="div"
                       >
-                        {cartItem.type !== "Design" && (
+                        {!!cartItem.listingprice && (
                           <>${cartItem.listingprice.toFixed(2)}</>
                         )}
                       </Typography>
@@ -291,7 +313,7 @@ export default function Cart() {
                         align="center"
                         component="div"
                       >
-                        {cartItem.type !== "Design" ? (
+                        {!!cartItem.listingprice ? (
                           <>
                             $
                             {getTotalPrice(

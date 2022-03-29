@@ -17,6 +17,9 @@ import { URL_CREATE_SHOP_CATEGORY } from "../services/endpoints";
 import { URL_EDIT_SHOP_CATEGORY } from "../services/endpoints";
 import { URL_DELETE_SHOP_CATEGORY } from "../services/endpoints";
 import { URL_DELETE_SHOP_CATEGORY_LISTINGS } from "../services/endpoints";
+// profile
+import { URL_GET_SELLER_PROFILE } from "../services/endpoints";
+import { URL_EDIT_SELLER_PROFILE } from "../services/endpoints";
 
 // orders
 export const getOrders = (id) => {
@@ -133,4 +136,21 @@ export const deleteShopCategoryListings = (shopCategoryId) => {
     shopCategoryId: shopCategoryId,
   };
   return remove(URL_DELETE_SHOP_CATEGORY_LISTINGS, body);
+};
+
+// profile
+export const getShopProfile = (id) => {
+  const params = {
+    userId: id
+  };
+  return get(URL_GET_SELLER_PROFILE, params);
+};
+export const editShopProfile = (name, website, description, shopId) => {
+  const params = {
+    shopId: shopId,
+    name: name,
+    website: website,
+    description: description,
+  };
+  return update(URL_EDIT_SELLER_PROFILE, params);
 };

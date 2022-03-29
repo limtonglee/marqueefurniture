@@ -45,20 +45,7 @@ export const Income = () => {
                     <Grid item xs={3} sx={{ marginRight: "24px" }}>
                         <Card sx={{ padding: "12px" }}>
                             <Typography variant="h5" gutterBottom>
-                                To Release
-                            </Typography>
-                            <Typography variant="h7" gutterBottom>
-                                Total
-                            </Typography>
-                            <Typography variant="h3" gutterBottom>
-                                $ 0.0
-                            </Typography>
-                        </Card>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Card sx={{ padding: "12px" }}>
-                            <Typography variant="h5" gutterBottom>
-                                Released
+                                Balance
                             </Typography>
                             <Typography variant="h7" gutterBottom>
                                 Total
@@ -125,6 +112,5 @@ export const Income = () => {
                 </Grid>
             </Card>
         </Layout>
-
     );
 }

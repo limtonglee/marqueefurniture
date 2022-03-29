@@ -7,6 +7,9 @@ export const URL_SIGNUP = "/api/user/signup";
 export const URL_FORGOT_PASSWORD = "/api/user/forgot";
 export const URL_GET_MOODBOARD = "/api/user/moodboards";
 
+// profile
+export const URL_GET_USERS_POSTS = "/api/post/user";
+
 //listings management
 export const URL_GET_LISTINGS = "/api/listings";
 export const URL_GET_LISTING_DETAILS = "/api/listing/details";
@@ -85,8 +88,10 @@ export const URL_GET_SHOP_CATEGORIES = "/api/merchant/shopCategories";
 export const URL_CREATE_SHOP_CATEGORY = "/api/merchant/shopCategories/add";
 export const URL_EDIT_SHOP_CATEGORY = "/api/merchant/shopCategories/edit";
 export const URL_DELETE_SHOP_CATEGORY = "/api/merchant/shopCategories/delete";
-export const URL_DELETE_SHOP_CATEGORY_LISTINGS = "/api/merchant/shopCategoryListings/delete";
-export const URL_ADD_LISTING_SHOP_CATEGORY = "/api/merchant/shopCategories/addListing";
+export const URL_DELETE_SHOP_CATEGORY_LISTINGS =
+  "/api/merchant/shopCategoryListings/delete";
+export const URL_ADD_LISTING_SHOP_CATEGORY =
+  "/api/merchant/shopCategories/addListing";
 // rating
 export const URL_GET_SHOP_RATINGS = "/api/merchant/ratings";
 export const URL_REPLY_REVIEW = "/api/merchant/replyReview";

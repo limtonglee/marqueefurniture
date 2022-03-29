@@ -74,6 +74,19 @@ const NotificationButton = () => {
     getCompleteNotificationData();
   }, []);
 
+  const markAllNotificationsAsRead = async () => {
+    try {
+      const res = await notificationAPI.markAllNotificationsAsRead(
+        userStore.id
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log(data);
+      refreshData();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const refreshData = () => {
     getCompleteNotificationData();
   };
@@ -189,11 +202,6 @@ const NotificationButton = () => {
   //   },
   // ];
 
-  const handleNotificationClick = () => {
-    handleClick();
-    console.log("click");
-  };
-
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -275,11 +283,16 @@ const NotificationButton = () => {
                   </Typography>
                 </Stack>
               </Grid>
-              {!notificationData.filter((noti) => noti.isunread === "1")
-                .length === 0 && (
+              {notificationData.filter((noti) => noti.isunread === "1").length >
+                0 && (
                 <Grid item xs={12} md={5}>
                   <Box>
-                    <Button variant="outlined">Mark all as read</Button>
+                    <Button
+                      variant="outlined"
+                      onClick={markAllNotificationsAsRead}
+                    >
+                      Mark all as read
+                    </Button>
                   </Box>
                 </Grid>
               )}
@@ -328,7 +341,7 @@ const NotificationButton = () => {
             ))}
           </List>
           <Divider />
-          {!notificationData.filter((noti) => noti.isunread === "1").length ===
+          {notificationData.filter((noti) => noti.isunread === "1").length >
             0 && (
             <Box
               sx={{

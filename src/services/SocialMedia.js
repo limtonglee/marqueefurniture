@@ -19,16 +19,22 @@ import {
   URL_ADD_POST_TO_MOODBOARD,
   URL_DELETE_POST_FROM_MOODBOARD,
   URL_GET_USER_MOODBOARDS,
-  URL_GET_MOODBOARD_DETAILS,
   URL_GET_MOODBOARD_POSTS,
   URL_CREATE_MOODBOARD,
-  // URL_CREATE_MOODBOARD_WITH_POST,
   URL_EDIT_MOODBOARD,
   URL_DELETE_MOODBOARD,
+  URL_GET_USERS_POSTS,
 } from "../services/endpoints";
 
 export const getAllPosts = () => {
   return get(URL_GET_POSTS);
+};
+
+export const getUserPosts = (id) => {
+  const params = {
+    userId: id,
+  };
+  return get(URL_GET_USERS_POSTS, params);
 };
 
 export const getPostDetails = (id) => {

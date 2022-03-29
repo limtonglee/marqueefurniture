@@ -22,7 +22,6 @@ const style = {
         bgcolor: "background.paper",
         boxShadow: 24,
         p: 4,
-        width: 350,
         borderRadius: 2,
     },
     contents: {
@@ -36,22 +35,14 @@ const style = {
         display: "flex",
         justifyContent: "end",
     },
+    cardStyle: {
+        '& .MuiTextField-root': { m: 1, width: '25ch' },
+        display: 'flex',
+        flexDirection: 'column',
+        padding: 2,
+        margin: 1,
+    }
 };
-
-const productType = [
-    {
-        value: 'Furniture',
-        label: 'Furniture',
-    },
-    {
-        value: 'Service',
-        label: 'Service',
-    },
-    {
-        value: 'Design',
-        label: 'Design',
-    },
-];
 
 const formReducer = (state, event) => {
     if (event.reset) {
@@ -136,107 +127,147 @@ export default function BasicModal({ children }) {
                             <CloseIcon />
                         </IconButton>
                     </Box>
-                    {submitting &&
-                        <div>You are submitting the following:
-                            <ul>
-                                {Object.entries(formData).map(([name, value]) => (
-                                    <li key={name}><strong>{name}</strong>:{value.toString()}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    }
                     <form onSubmit={handleSubmit}>
-                        <Card
-                            component="form"
-                            sx={{
-                                '& .MuiTextField-root': { m: 1, width: '25ch' },
-                                display: 'flex',
-                                flexDirection: 'column',
-                                padding: 2,
-                                marginBottom: 3,
-                            }}
-                            noValidate
-                            autoComplete="off"
-                        >
-                            Basic Information
-                            <TextField
-                                id="outlined-select-product-type"
-                                select
-                                label="Product type"
-                                name="productType"
-                                onChange={handleChange}
-                                value={formData.productType || ''}
-                                helperText=""
+                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                            <Card
+                                component="form"
+                                sx={style.cardStyle}
+                                noValidate
+                                autoComplete="off"
                             >
-                                {productType.map((option) => (
-                                    <MenuItem value={option.value}>
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
+                                Basic Information
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    name="name"
+                                    label="Product name"
+                                    onChange={handleChange}
+                                    value={formData.name || ''}
+                                >
+                                </TextField>
+                                <TextField
+                                    id="outlined-multiline-static"
+                                    multiline
+                                    rows={4}
+                                    name="description"
+                                    label="Product description"
+                                    onChange={handleChange}
+                                    value={formData.description || ''}
+                                />
 
-                            <TextField
-                                required
-                                id="outlined-required"
-                                name="productName"
-                                label="Product Name"
-                                onChange={handleChange}
-                                value={formData.productName || children.productName}
+                            </Card>
+                            <Card
+                                component="form"
+                                sx={style.cardStyle}
+                                noValidate
+                                autoComplete="off"
                             >
-                            </TextField>
-                            <TextField
-                                id="outlined-multiline-static"
-                                multiline
-                                rows={4}
-                                name="productDescription"
-                                label="Product Description"
-                                onChange={handleChange}
-                                value={formData.productDescription || ''}
-                            />
-                            <input type="file" />
-                        </Card>
-                        <Card
-                            component="form"
-                            sx={{
-                                '& .MuiTextField-root': { m: 1, width: '25ch' },
-                                display: 'flex',
-                                flexDirection: 'column',
-                                padding: 2,
-                                marginBottom: 3,
-                            }}
-                            noValidate
-                            autoComplete="off"
-                        >
-                            Sales Information
-                            <TextField
-                                required
-                                id="outlined-required"
-                                name="variation"
-                                label="Variation"
-                                onChange={handleChange}
-                                value={formData.variation || ''}>
-                            </TextField>
-                            <TextField
-                                required
-                                id="outlined-required"
-                                name="price"
-                                label="Price"
-                                onChange={handleChange}
-                                value={formData.price || ''}>
-                            </TextField>
-                            <TextField
-                                required
-                                id="outlined-required"
-                                name="stock"
-                                label="Stock"
-                                onChange={handleChange}
-                                value={formData.stock || ''}>
-                            </TextField>
-                        </Card>
+                                Specification
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    name="category"
+                                    label="Category"
+                                    onChange={handleChange}
+                                    value={formData.category || ''}>
+                                </TextField>
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    name="brand"
+                                    label="Brand"
+                                    onChange={handleChange}
+                                    value={formData.brand || ''}>
+                                </TextField>
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    name="dimensions"
+                                    label="Dimensions"
+                                    onChange={handleChange}
+                                    value={formData.dimensions || ''}>
+                                </TextField>
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    name="warrantyInfo"
+                                    label="Warranty"
+                                    onChange={handleChange}
+                                    value={formData.warrantyInfo || ''}>
+                                </TextField>
+                            </Card>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                            <Card
+                                component="form"
+                                sx={style.cardStyle}
+                                noValidate
+                                autoComplete="off"
+                            >
+                                Sales Information
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    name="variations"
+                                    label="Variation"
+                                    onChange={handleChange}
+                                    value={formData.variations || ''}>
+                                </TextField>
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    name="listingPrice"
+                                    label="Price"
+                                    onChange={handleChange}
+                                    value={formData.listingPrice || ''}>
+                                </TextField>
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    name="stockAvailable"
+                                    label="Stock"
+                                    onChange={handleChange}
+                                    value={formData.stockAvailable || ''}>
+                                </TextField>
+                            </Card>
+                            <Card
+                                component="form"
+                                sx={style.cardStyle}
+                                noValidate
+                                autoComplete="off"
+                            >
+                                Shipping
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    name="weight"
+                                    label="Weight"
+                                    onChange={handleChange}
+                                    value={formData.weight || ''}>
+                                </TextField>
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    name="parcelSize"
+                                    label="Parcel size"
+                                    onChange={handleChange}
+                                    value={formData.parcelSize || ''}>
+                                </TextField>
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    name="shippingProvider"
+                                    label="Shipping provider"
+                                    onChange={handleChange}
+                                    value={formData.shippingProvider || ''}>
+                                </TextField>
+                            </Card>
+                        </div>
                         <Button
                             type="submit"
                             value="Submit"
                             variant="contained"
+                            sx={{ m: 2 }}
                         >
                             Save and Publish
                         </Button>

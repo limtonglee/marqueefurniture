@@ -21,6 +21,9 @@ import { URL_DELETE_SHOP_CATEGORY_LISTINGS } from "../services/endpoints";
 // profile
 import { URL_GET_SELLER_PROFILE } from "../services/endpoints";
 import { URL_EDIT_SELLER_PROFILE } from "../services/endpoints";
+// finance
+import { URL_GET_INCOME } from "../services/endpoints";
+import { URL_GET_BALANCE } from "../services/endpoints";
 
 // orders
 export const getOrders = (id) => {
@@ -161,4 +164,18 @@ export const editShopProfile = (name, website, description, shopId) => {
     description: description,
   };
   return update(URL_EDIT_SELLER_PROFILE, params);
+};
+
+// Finance
+export const getIncome = (sellerId) => {
+  const params = {
+    sellerId: sellerId
+  };
+  return get(URL_GET_INCOME, params);
+};
+export const getBalance = (shopId) => {
+  const params = {
+    shopId: shopId
+  };
+  return get(URL_GET_BALANCE, params);
 };

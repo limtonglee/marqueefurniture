@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React from 'react';
+import { useEffect, useState } from "react";
 import { Layout } from '../Layout';
 import {
     Card,
@@ -13,27 +14,39 @@ import {
     TextField,
     MenuItem
 } from '@mui/material';
-import { incomeDetailsData } from "../../../data/incomeDetailsData";
-
+// import { incomeDetailsData } from "../../../data/incomeDetailsData";
+import * as SellerCenterAPI from "../../../services/SellerCenter";
 
 export const Income = () => {
-    const [value, setValue] = React.useState(0);
-    const [data, setData] = React.useState(incomeDetailsData);
-    let tabData = incomeDetailsData;
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-        updateData(newValue);
-    };
-    const updateData = (value) => {
-        if (value === 1) {
-            tabData = incomeDetailsData.filter((item) => item.status === "To Release");
+    
+    const [data, setData] = useState([]);
+    const [income, setIncome] = useState([]);
+    const [balance, setBalance] = useState([]);
+
+    const getIncome = async () => {
+        try {
+            const res = await SellerCenterAPI.getIncome(1);
+            setData(JSON.parse(JSON.stringify(res.data)));
+            setIncome(JSON.parse(JSON.stringify(res.data)));
+        } catch (error) {
+            console.error(error);
         }
-        if (value === 2) {
-            tabData = incomeDetailsData.filter((item) => item.status === "Released");
-        }
-        setData(tabData);
     };
+
+    const getBalance = async () => {
+        try {
+            const res = await SellerCenterAPI.getBalance(1);
+            setBalance(JSON.parse(JSON.stringify(res.data))[0]);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        getIncome();
+        getBalance();
+    }, []);
 
     return (
         <Layout>
@@ -51,7 +64,7 @@ export const Income = () => {
                                 Total
                             </Typography>
                             <Typography variant="h3" gutterBottom>
-                                $ 0.0
+                                $ {balance.balance}
                             </Typography>
                         </Card>
                     </Grid>
@@ -62,20 +75,9 @@ export const Income = () => {
                 <Typography variant="h5" gutterBottom>
                     Income Details
                 </Typography>
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                >
-                    <Tab label="All" />
-                    <Tab label="To Release" />
-                    <Tab label="Released" />
-                </Tabs>
                 <Grid container p={2}>
                     <Grid item xs={3}>
                         Order
-                    </Grid>
-                    <Grid item xs={3}>
-                        Estimated Release Date
                     </Grid>
                     <Grid item xs={3}>
                         Status
@@ -94,16 +96,13 @@ export const Income = () => {
                                 }}>
                                 <Grid container p={2}>
                                     <Grid item xs={3}>
-                                        {item.order}
+                                        {item.id}
                                     </Grid>
                                     <Grid item xs={3}>
-                                        {item.releaseDate}
+                                        {item.order_status}
                                     </Grid>
                                     <Grid item xs={3}>
-                                        {item.status}
-                                    </Grid>
-                                    <Grid item xs={3}>
-                                        {item.payoutAmount}
+                                        {item.price}
                                     </Grid>
                                 </Grid>
                             </Card>

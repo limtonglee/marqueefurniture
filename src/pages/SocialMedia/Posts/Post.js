@@ -368,7 +368,8 @@ const Post = () => {
                   component="img"
                   width="100%"
                   objectfit="scale-down"
-                  image={post.image}
+                  // image={post.image}
+                  image={`/api/image/${post.image}`}
                   alt="post picture"
                 />
               </Card>
@@ -481,6 +482,7 @@ const Post = () => {
                         autoFocus={true}
                         onChange={updateComment}
                         value={comment}
+                        autoComplete="off"
                       />
                       {comment.length === 0 ? (
                         <Button

@@ -124,7 +124,8 @@ const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
               <Avatar
                 alt="User"
                 // src="https://images.generated.photos/nSW_I6izlbs1PZri0EwntItqrnybtGrDKTz9RNnnDHk/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LmNvbmQvMzlkNTg3/MjMtODFhYi00Y2Zh/LTlkMjQtNTU0Njdl/NjU1MmU2LmpwZw.jpg"
-                src={currentChat.recipientProfilePic}
+                // src={currentChat.recipientProfilePic}
+                src={`/api/image/${currentChat.recipientProfilePic}`}
                 sx={{ height: 60, width: 60 }}
               />
               <Box>
@@ -265,7 +266,8 @@ const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
                 {message.type === "Message" && (
                   <ChatMessage
                     message={message}
-                    recipientProfilePic={currentChat.recipientProfilePic}
+                    // recipientProfilePic={currentChat.recipientProfilePic}
+                    recipientProfilePic={`/api/image/${currentChat.recipientProfilePic}`}
                     own={message.userid === userStore.id}
                   />
                 )}

@@ -58,7 +58,7 @@ const PostLogin = ({checked, setChecked, handleChange}) => {
         <Route path="/new-idea" element={<CreateNewPost />} />
         <Route path="/ideas/:postId" element={<Post />} />
         <Route path="/moodboard/:username/:moodboardId" element={<ViewMoodboard />} />
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/login" element={<Login />} /> */}
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/sellercenter" element={<SellerCenter />}>

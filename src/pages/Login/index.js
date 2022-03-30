@@ -19,10 +19,10 @@ const Login = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    // console.log({
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    // });
 
     login(data.get("email"), data.get("password"))
       .then((response) => {

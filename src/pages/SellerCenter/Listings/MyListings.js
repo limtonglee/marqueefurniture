@@ -181,10 +181,9 @@ export const MyListings = () => {
                                     <Grid container p={2}>
                                         <Grid item xs={3}>
                                             <img
-                                                src={`${item.image}?w=124&fit=crop&auto=format`}
-                                                srcSet={`${item.image}?w=124&fit=crop&auto=format&dpr=2 2x`}
+                                                src={`/api/image/${item.image}?w=124&fit=crop&auto=format`}
                                                 alt={item.title}
-                                                loading="lazy"
+                                                
                                             />
                                             <div>{item.name}</div>
                                             <div>Variation: {item.variations}</div>

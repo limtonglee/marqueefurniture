@@ -1,5 +1,5 @@
 import { Layout } from '../Layout';
-import React, { useReducer, useState } from 'react';
+import React, { useReducer, useState, useEffect } from "react";
 import {
     Button,
     Card,
@@ -14,18 +14,15 @@ import {
     CardActions,
 
 } from '@mui/material';
-import PhotoCamera from "@mui/icons-material/PhotoCamera";;
+import * as SellerCenterAPI from "../../../services/SellerCenter";
 
-const shopData = {
-    shopName: "ABC Furniture Shop",
-    shopDescription: "This is the official online store of ABC Furniture Shop.",
-}
 
 const formReducer = (state, event) => {
     if (event.reset) {
         return {
             shopName: '',
             shopDescription: '',
+            shopWebsite: '',
         }
     }
     return {
@@ -39,12 +36,22 @@ const Input = styled("input")({
 });
 
 export const ShopProfile = () => {
-    const [fileUploaded, setFileUploaded] = useState("");
-    const mockFileUpload = () => {
-        setFileUploaded("https://picsum.photos/200/300");
+    const [shop, setShop] = useState([]);
+
+    const getShopProfile = async () => {
+        try {
+            const res = await SellerCenterAPI.getShopProfile(1);
+            setShop(JSON.parse(JSON.stringify(res.data))[0]);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
-    const [formData, setFormData] = useReducer(formReducer, {shopData});
+    useEffect(() => {
+        getShopProfile();
+    }, []);
+
+    const [formData, setFormData] = useReducer(formReducer, {});
     const [submitting, setSubmitting] = useState(false);
     const handleChange = (event) => {
         setFormData({
@@ -53,9 +60,9 @@ export const ShopProfile = () => {
         });
     };
     const handleSubmit = event => {
-        shopData.shopName = formData.shopName;
-        shopData.shopDescription = formData.shopDescription;
         event.preventDefault();
+        SellerCenterAPI.editShopProfile(formData.shopName, formData.shopWebsite, formData.shopDescription, 1);
+        getShopProfile();
         setSubmitting(true);
         setTimeout(() => {
             setSubmitting(false);
@@ -90,30 +97,19 @@ export const ShopProfile = () => {
                                 <CardMedia
                                     component="img"
                                     height="140"
-                                    image="https://expatliving.sg/wp-content/uploads/2017/05/vitra.jpg"
-                                    alt="green iguana"
+                                    // image={`/api/image/${shop.images}`}
                                 />
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="div">
-                                        {shopData.shopName}
+                                        {shop.shopname}
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
                                         Products: 10
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
-                                        Response Rate: 96%
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        Response Time: Within hours
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
                                         Shop Rating: 4.5
                                     </Typography>
                                 </CardContent>
-                                <CardActions>
-                                    <Button size="small">Share</Button>
-                                    <Button size="small">Learn More</Button>
-                                </CardActions>
                             </Card>
                         </Grid>
                         <Grid item md={7} xs={12} sx={{ px: 2 }}>
@@ -129,10 +125,25 @@ export const ShopProfile = () => {
                                         Shop Name
                                     </Typography>
                                     <TextField
-                                        id="outlined-multiline-static"
+                                        
                                         name="shopName"
                                         onChange={handleChange}
-                                        value={formData.shopName || shopData.shopName}
+                                        value={formData.shopName || shop.shopname}
+                                        sx={{ width: "100%" }}
+                                    />
+                                </Box>
+                                <Box sx={{ mt: 3 }}>
+                                    <Typography
+                                        variant="subtitle1"
+                                        gutterBottom
+                                        component="div"
+                                    >
+                                        Shop Website
+                                    </Typography>
+                                    <TextField
+                                        name="shopWebsite"
+                                        onChange={handleChange}
+                                        value={formData.shopWebsite || shop.website}
                                         sx={{ width: "100%" }}
                                     />
                                 </Box>
@@ -150,62 +161,9 @@ export const ShopProfile = () => {
                                         rows={4}
                                         name="shopDescription"
                                         onChange={handleChange}
-                                        value={formData.shopDescription || shopData.shopDescription}
+                                        value={formData.shopDescription || shop.description}
                                         sx={{ width: "100%" }}
                                     />
-                                </Box>
-                                <Box sx={{ mt: 3 }}>
-                                    <Typography
-                                        variant="subtitle1"
-                                        gutterBottom
-                                        component="div"
-                                    >
-                                        Images
-                                    </Typography>
-                                    {mockFileUpload.length === 0 ? (
-                                        <Box
-                                            sx={{
-                                                width: "100%",
-                                                height: 250,
-                                                display: "flex",
-                                                justifyContent: "center",
-                                                alignItems: "center",
-                                                backgroundColor: "#F0F0F0",
-                                                borderRadius: 3,
-                                            }}
-                                            onClick={mockFileUpload}
-                                        >
-                                            <label htmlFor="contained-button-file">
-                                                <Input
-                                                    accept="image/*"
-                                                    id="contained-button-file"
-                                                    multiple
-                                                    type="file"
-                                                />
-                                                <Button
-                                                    variant="contained"
-                                                    component="span"
-                                                    startIcon={<PhotoCamera />}
-                                                    size="large"
-                                                >
-                                                    Upload
-                                                </Button>
-                                            </label>
-                                        </Box>
-                                    ) : (
-                                        <Card
-                                            sx={{ width: "100%", position: "relative" }}
-                                            onClick={() => console.log("hi")}
-                                        >
-                                            <CardMedia
-                                                component="img"
-                                                width="100%"
-                                                objectfit="scale-down"
-                                                image={fileUploaded}
-                                                alt="post picture"
-                                            />
-                                        </Card>
-                                    )}
                                 </Box>
                                 <Button
                                     type="submit"

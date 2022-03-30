@@ -19,6 +19,7 @@ class userStore {
   // getter no need but setter need
 
   prevTabOnProfile = 0;
+  prevViewOnMoodboard = true;
 
   constructor() {
     makeAutoObservable(this, {
@@ -93,6 +94,10 @@ class userStore {
 
   setPrevTabOnProfile = (newTab) => {
     this.prevTabOnProfile = newTab;
+  };
+
+  setPrevViewOnMoodboard = (newView) => {
+    this.prevViewOnMoodboard = newView;
   };
 }
 

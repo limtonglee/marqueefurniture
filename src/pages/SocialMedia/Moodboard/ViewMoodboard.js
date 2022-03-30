@@ -21,18 +21,20 @@ import ShareIcon from "@mui/icons-material/Share";
 import IconButton from "@mui/material/IconButton";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import ProductView from "./ProductView";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useNavigationType } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import * as socialMediaAPI from "../../../services/SocialMedia";
 import FeedGrid from "../FeedGrid/FeedGrid";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Popover from "@mui/material/Popover";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { useStores } from "../../../stores/RootStore";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 const ViewMoodboard = () => {
+  const { userStore } = useStores();
   const username = useParams().username; // eslint-disable-line no-unused-vars
   const moodboardId = parseInt(useParams().moodboardId);
   const [currentMoodboard, setCurrentMoodboard] = useState([]);
@@ -145,6 +147,10 @@ const ViewMoodboard = () => {
   useEffect(() => {
     getCompleteMoodboardData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    if (navigationType === "POP") {
+      setIsPostView(userStore.prevViewOnMoodboard);
+    }
   }, []);
 
   const refreshData = () => {
@@ -208,10 +214,13 @@ const ViewMoodboard = () => {
     handleClosePopover();
   };
 
+  const navigationType = useNavigationType();
+
   const [isPostView, setIsPostView] = React.useState(true);
 
   const toggleView = () => {
     setIsPostView(!isPostView);
+    userStore.setPrevViewOnMoodboard(!isPostView);
   };
 
   const [anchorEl, setAnchorEl] = React.useState(null);

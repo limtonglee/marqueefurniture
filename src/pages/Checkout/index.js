@@ -121,21 +121,49 @@ export default function Checkout() {
                       >
                         Unit Price:
                       </Typography>
-                      <Typography
-                        align="right"
-                        variant="body2"
-                        component="div"
-                      >
-                        {!!cartItem.listingprice && (
-                          <>
-                            $
-                            {(
-                              cartItem.listingprice -
-                              isVoucherPresent(cartItem.id, selectedVouchers)
-                            ).toFixed(2)}
-                          </>
-                        )}
-                      </Typography>
+                      {isVoucherPresent(cartItem.id, selectedVouchers) === 0 ? (
+                        <Typography
+                          align="right"
+                          variant="body2"
+                          component="div"
+                        >
+                          {!!cartItem.listingprice && (
+                            <>${cartItem.listingprice.toFixed(2)}</>
+                          )}
+                        </Typography>
+                      ) : (
+                        <>
+                          <Typography
+                            align="right"
+                            variant="body2"
+                            component="div"
+                            sx={{ textDecoration: "line-through" }}
+                          >
+                            {!!cartItem.listingprice && (
+                              <>${cartItem.listingprice.toFixed(2)}</>
+                            )}
+                          </Typography>
+
+                          <Typography
+                            align="right"
+                            variant="body2"
+                            component="div"
+                          >
+                            {!!cartItem.listingprice && (
+                              <>
+                                $
+                                {(
+                                  cartItem.listingprice -
+                                  isVoucherPresent(
+                                    cartItem.id,
+                                    selectedVouchers
+                                  )
+                                ).toFixed(2)}
+                              </>
+                            )}
+                          </Typography>
+                        </>
+                      )}
                     </Grid>
                   </Grid>
                   <Grid item xs={2}>

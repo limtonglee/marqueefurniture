@@ -9,6 +9,8 @@ import { useStores } from "./stores/RootStore";
 // theme
 import ThemeConfig from "./theme";
 import GlobalStyles from "./theme/globalStyles";
+import Box from "@mui/material/Box";
+import "/node_modules/react-image-gallery/styles/css/image-gallery.css";
 
 const App = () => {
   //const previousLocation = useRef(location);
@@ -36,7 +38,8 @@ const App = () => {
         <ThemeConfig>
           <>
             <GlobalStyles />
-            <Container maxWidth="xxl" sx={{position:"absolute"}}>
+            {/* <Container maxWidth="xxl" sx={{position:"absolute"}}> */}
+            <Box sx={{position:"absolute", left: 0, right: 0, ml: "auto", mr:"auto"}}>
               <>
                 {userStore.isLoggedIn ? (
                   !userStore.isAdmin && (
@@ -61,7 +64,8 @@ const App = () => {
                   />
                 )}
               </>
-            </Container>
+              </Box>
+            {/* </Container> */}
           </>
         </ThemeConfig>
       )}

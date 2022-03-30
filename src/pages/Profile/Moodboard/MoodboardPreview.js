@@ -16,7 +16,8 @@ const MoodboardPreview = ({ moodboard }) => {
               <CardMedia
                 component="img"
                 height="130"
-                image={moodboard.moodboardItems[0].image}
+                // image={moodboard.moodboardItems[0].image}
+                image={`/api/image/${moodboard.moodboardItems[0].image}`}
                 alt={moodboard.boardName}
                 sx={{
                   borderRadius: "0 !important",
@@ -29,7 +30,8 @@ const MoodboardPreview = ({ moodboard }) => {
                   <CardMedia
                     component="img"
                     height="63"
-                    image={moodboard.moodboardItems[1].image}
+                    // image={moodboard.moodboardItems[1].image}
+                    image={`/api/image/${moodboard.moodboardItems[1].image}`}
                     alt={moodboard.boardName}
                     sx={{
                       borderRadius: "0 !important",
@@ -47,7 +49,8 @@ const MoodboardPreview = ({ moodboard }) => {
                   <CardMedia
                     component="img"
                     height="63"
-                    image={moodboard.moodboardItems[2].image}
+                    // image={moodboard.moodboardItems[2].image}
+                    image={`/api/image/${moodboard.moodboardItems[2].image}`}
                     alt={moodboard.boardName}
                     sx={{
                       borderRadius: "0 !important",

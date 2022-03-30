@@ -1,15 +1,22 @@
 // @mui icons
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
+import { Button } from "@mui/material";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import { useState } from "react";
 import { useStores } from "../../stores/RootStore";
 import ProfileInfoCard from "./About/ProfileInfoCard";
 // Overview page components
 import Header from "./Header";
 import MoodboardViewInProfile from "./Moodboard/MoodboardViewInProfile";
+import Divider from "@mui/material/Divider";
+import * as socialMediaAPI from "../../services/SocialMedia";
+import FeedGrid from "../SocialMedia/FeedGrid/FeedGrid";
+import AddIcon from "@mui/icons-material/Add";
+import { useNavigate, useNavigationType } from "react-router-dom";
+import Stack from "@mui/material/Stack";
 
 function Profile() {
   const [tabValue, setTabValue] = useState(0);
@@ -24,7 +31,116 @@ function Profile() {
 
   const handleSetTabValue = (event, newValue) => {
     setTabValue(newValue);
+    console.log(newValue);
+    userStore.setPrevTabOnProfile(newValue);
   };
+
+  const [posts, setPosts] = useState([]);
+  const [postsStore, setPostsStore] = useState([]);
+
+  const getUserPosts = async () => {
+    try {
+      const res = await socialMediaAPI.getUserPosts(userStore.id);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getPostLikes = async (post) => {
+    try {
+      const res = await socialMediaAPI.getPostLikes(post.id);
+      let data = JSON.parse(JSON.stringify(res)).data;
+      data = data.map((item) => item.username); // clean likes data
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getPostProducts = async (post) => {
+    try {
+      const res = await socialMediaAPI.getPostListings(post.id);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getPostTags = async (post) => {
+    try {
+      const res = await socialMediaAPI.getPostTags(post.id);
+      let data = JSON.parse(JSON.stringify(res)).data;
+      data = data.map((item) => item.tagname); // clean tags data
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getPostComments = async (post) => {
+    try {
+      const res = await socialMediaAPI.getPostComments(post.id);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getCompletePostData = async () => {
+    const allPosts = await getUserPosts();
+
+    var promises = allPosts.map(async (post) => {
+      const postLikes = await getPostLikes(post);
+      const postProducts = await getPostProducts(post);
+      const postTags = await getPostTags(post);
+      const postComments = await getPostComments(post);
+      const completePost = {
+        ...post,
+        comments: postComments,
+        likes: postLikes,
+        products: postProducts,
+        tags: postTags,
+      };
+
+      // console.log("completePost", completePost);
+      return completePost;
+    });
+
+    await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
+
+    Promise.all(promises).then((values) => {
+      console.log("cleaned post data", values);
+      // setPosts(values);
+
+      setPosts(values.sort((a, b) => b.id - a.id));
+      setPostsStore(values.sort((a, b) => b.id - a.id));
+
+      return values;
+    });
+  };
+
+  let navigate = useNavigate();
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    getCompletePostData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    if (navigationType === "POP") {
+      setTabValue(userStore.prevTabOnProfile);
+    }
+  }, []);
+
+  const handleCreatePost = () => {
+    console.log("handleCreatePost");
+    navigate("/new-idea");
+  };
+
+  // console.log("navigationType", navigationType); // ! string : "POP" | "PUSH" | "REPLACE"
 
   return (
     <Container maxWidth="xl">
@@ -45,9 +161,30 @@ function Profile() {
             <Tab label="Posts" />
             <Tab label="About" />
           </Tabs>
+          <Divider />
         </Box>
       </Grid>
-      {tabValue === 2 ? (
+      {tabValue === 0 && <MoodboardViewInProfile />}
+      {tabValue === 1 && (
+        <>
+          <Box
+            sx={{
+              p: 2,
+            }}
+          >
+            <Button
+              startIcon={<AddIcon />}
+              variant="outlined"
+              onClick={handleCreatePost}
+              sx={{ mb: 3 }}
+            >
+              New Post
+            </Button>
+            <FeedGrid posts={posts} />
+          </Box>
+        </>
+      )}
+      {tabValue === 2 && (
         <Grid>
           <Grid item xs={12} md={12} xl={12}>
             <ProfileInfoCard
@@ -61,10 +198,7 @@ function Profile() {
             />
           </Grid>
         </Grid>
-      ) : (
-        <></>
       )}
-      {tabValue === 0 && <MoodboardViewInProfile />}
     </Container>
   );
 }

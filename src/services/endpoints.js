@@ -18,6 +18,8 @@ export const URL_POST_CART_ITEM = "/api/cart/item"
 export const URL_DELETE_CART_ITEM = "/api/cart/deleteItem"
 export const URL_DELETE_CART_ITEMS = "/api/cart/deleteItems"
 
+//checkout management
+export const URL_CHECKOUT = "/api/checkout"
 
 //liked listings management
 export const URL_LISTING_LIKE = "/api/listing/like"; // user liking a post

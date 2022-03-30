@@ -386,7 +386,28 @@ const ViewMoodboard = () => {
         {currentMoodboard.moodboardItems ? (
           <>
             {currentMoodboard.moodboardItems.length === 0 ? (
-              <h1>no posts</h1>
+              <>
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: 200,
+                    border: "1px solid #DFE3E8",
+                    borderRadius: 3,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    variant="h5"
+                    gutterBottom
+                    component="div"
+                    sx={{ fontWeight: "normal", fontStyle: "italic" }}
+                  >
+                    {isPostView ? "No pins yet" : "No products tagged"}
+                  </Typography>
+                </Box>
+              </>
             ) : (
               <>
                 {isPostView && (

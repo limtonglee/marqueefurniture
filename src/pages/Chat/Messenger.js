@@ -29,6 +29,18 @@ const Messenger = () => {
   const [arrivalMessage, setArrivalMessage] = useState(null);
 
   useEffect(() => {
+    socket.current = io("ws://localhost:8900");
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        userid: data.senderId,
+        text: data.text,
+        type: data.type,
+        timestamp: data.timestamp,
+      });
+    });
+  }, []);
+
+  useEffect(() => {
     arrivalMessage &&
       (currentChat.firstuserid === arrivalMessage.userid ||
         currentChat.seconduserid === arrivalMessage.userid) &&

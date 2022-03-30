@@ -54,6 +54,11 @@ const ChatMenu = ({ userChats, currentChatId, setCurrentChat }) => {
             {userChats
               .slice(0)
               .reverse()
+              .filter(
+                (chat) =>
+                  chat.recipientUsername.indexOf(searchTerm) !== -1 ||
+                  searchTerm === ""
+              )
               .map((chat) => (
                 <ChatMenuItem
                   key={chat.id}

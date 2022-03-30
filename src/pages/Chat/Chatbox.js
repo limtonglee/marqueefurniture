@@ -20,6 +20,7 @@ import ChatAnnouncement from "./ChatAnnouncement";
 import { useNavigate } from "react-router-dom";
 
 import * as chatAPI from "../../services/Chat";
+import * as accountsAPI from "../../services/Accounts";
 
 import { useStores } from "../../stores/RootStore";
 
@@ -28,6 +29,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
   const { userStore } = useStores();
 
   const [message, setMessage] = useState("");
+  const [userType, setUserType] = useState("");
 
   const updateMessage = (e) => {
     setMessage(e.target.value);
@@ -64,6 +66,27 @@ const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
       console.error(error);
     }
   };
+
+  const getUserType = async () => {
+    try {
+      console.log(currentChat);
+      const res = await accountsAPI.getUserType(
+        currentChat.firstuserid === userStore.id
+          ? currentChat.seconduserid
+          : currentChat.firstuserid
+      );
+      const data = JSON.parse(JSON.stringify(res)).data[0]["type"];
+      console.log("data from getuserType", data);
+      setUserType(data);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getUserType();
+  }, [currentChat]);
 
   const [openMoreMenu, setOpenMoreMenu] = React.useState(false); // eslint-disable-line no-unused-vars
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -132,7 +155,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
                   {currentChat.recipientUsername}
                 </Typography>
                 <Typography variant="subtitle1" sx={{ fontWeight: "normal" }}>
-                  Designer
+                  {userType}
                 </Typography>
               </Box>
             </Stack>

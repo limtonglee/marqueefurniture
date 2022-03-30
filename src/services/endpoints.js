@@ -9,6 +9,7 @@ export const URL_GET_MOODBOARD = "/api/user/moodboards";
 
 // profile
 export const URL_GET_USERS_POSTS = "/api/post/user";
+export const URL_GET_USER_TYPE = "/api/user/getrole";
 
 //listings management
 export const URL_GET_LISTINGS = "/api/listings";

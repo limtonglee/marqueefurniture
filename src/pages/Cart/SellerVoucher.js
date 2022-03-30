@@ -114,6 +114,7 @@ export const SellerVoucher = ({
                 <ListItemButton
                   selected={selectedIndex === item.id}
                   onClick={(event) => handleListItemClick(event, item)}
+                  key={item.id}
                 >
                   <ListItemText
                     primary={item.name}

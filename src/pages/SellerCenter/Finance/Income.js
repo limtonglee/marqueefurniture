@@ -9,7 +9,6 @@ import {
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 import { useStores } from "../../../stores/RootStore";
 
-
 export const Income = () => {
     const [data, setData] = useState([]);
     const [income, setIncome] = useState([]);
@@ -35,10 +34,14 @@ export const Income = () => {
         }
     };
 
-    useEffect(() => {
+    const initialLoad = () => {
         getIncome();
         getBalance();
-    });
+    }
+
+    useEffect(() => {
+        initialLoad();
+    }, []);
 
     return (
         <Layout>

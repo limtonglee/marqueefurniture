@@ -184,11 +184,11 @@ export const Orders = () => {
                                             {item.order_status}
                                         </Grid>
                                         <Grid item xs={2}>
-                                            <Link to={`/sellercenter/orders/${item.id}`}>
+                                            {/* <Link to={`/sellercenter/orders/${item.id}`}>
                                                 <Button>
                                                     View Order Details
                                                 </Button>
-                                            </Link>
+                                            </Link> */}
                                             <UpdateOrderModal refreshData={refreshData}>{item}</UpdateOrderModal>
                                         </Grid>
                                     </Grid>

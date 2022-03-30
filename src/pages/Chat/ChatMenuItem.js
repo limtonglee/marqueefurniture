@@ -80,7 +80,8 @@ const ChatMenuItem = ({ chat, isCurrent, setCurrentChat }) => {
           <Avatar
             alt="Seller"
             // src="https://images.generated.photos/nSW_I6izlbs1PZri0EwntItqrnybtGrDKTz9RNnnDHk/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LmNvbmQvMzlkNTg3/MjMtODFhYi00Y2Zh/LTlkMjQtNTU0Njdl/NjU1MmU2LmpwZw.jpg"
-            src={chat.recipientProfilePic}
+            // src={chat.recipientProfilePic}
+            src={`/api/image/${chat.recipientProfilePic}`}
           />
         </ListItemAvatar>
         <ListItemText

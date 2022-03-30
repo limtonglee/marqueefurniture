@@ -188,7 +188,8 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
             component="img"
             width="100%"
             objectfit="scale-down"
-            image={post.image}
+            // image={post.image}
+            image={`/api/image/${post.image}`}
             alt="post picture"
           />
         </Link>

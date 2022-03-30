@@ -7,19 +7,22 @@ export const URL_SIGNUP = "/api/user/signup";
 export const URL_FORGOT_PASSWORD = "/api/user/forgot";
 export const URL_GET_MOODBOARD = "/api/user/moodboards";
 
+// profile
+export const URL_GET_USERS_POSTS = "/api/post/user";
+
 //listings management
 export const URL_GET_LISTINGS = "/api/listings";
 export const URL_GET_LISTING_DETAILS = "/api/listing/details";
 export const URL_GET_LISTING_SELLER = "/api/listing/getSeller";
 
 //cart management
-export const URL_GET_CART = "/api/cart"
-export const URL_POST_CART_ITEM = "/api/cart/item"
-export const URL_DELETE_CART_ITEM = "/api/cart/deleteItem"
-export const URL_DELETE_CART_ITEMS = "/api/cart/deleteItems"
+export const URL_GET_CART = "/api/cart";
+export const URL_POST_CART_ITEM = "/api/cart/item";
+export const URL_DELETE_CART_ITEM = "/api/cart/deleteItem";
+export const URL_DELETE_CART_ITEMS = "/api/cart/deleteItems";
 
 //checkout management
-export const URL_CHECKOUT = "/api/checkout"
+export const URL_CHECKOUT = "/api/checkout";
 
 //liked listings management
 export const URL_LISTING_LIKE = "/api/listing/like"; // user liking a post
@@ -88,8 +91,10 @@ export const URL_GET_SHOP_CATEGORIES = "/api/merchant/shopCategories";
 export const URL_CREATE_SHOP_CATEGORY = "/api/merchant/shopCategories/add";
 export const URL_EDIT_SHOP_CATEGORY = "/api/merchant/shopCategories/edit";
 export const URL_DELETE_SHOP_CATEGORY = "/api/merchant/shopCategories/delete";
-export const URL_DELETE_SHOP_CATEGORY_LISTINGS = "/api/merchant/shopCategoryListings/delete";
-export const URL_ADD_LISTING_SHOP_CATEGORY = "/api/merchant/shopCategories/addListing";
+export const URL_DELETE_SHOP_CATEGORY_LISTINGS =
+  "/api/merchant/shopCategoryListings/delete";
+export const URL_ADD_LISTING_SHOP_CATEGORY =
+  "/api/merchant/shopCategories/addListing";
 // rating
 export const URL_GET_SHOP_RATINGS = "/api/merchant/product/review";
 export const URL_REPLY_REVIEW = "/api/merchant/replyReview";
@@ -107,3 +112,9 @@ export const URL_CREATE_CHAT = "/api/chat/create";
 export const URL_GET_USER_CHATS = "/api/user/chats";
 export const URL_CREATE_MESSAGE = "/api/chat/message/create";
 export const URL_GET_CHAT_MESSAGES = "/api/chat/message";
+
+// notification
+export const URL_GET_USER_NOTIFICATIONS = "/api/user/notifications";
+export const URL_MARK_NOTIFICATION_AS_READ = "/api/user/notifications/readone";
+export const URL_MARK_ALL_NOTIFICATIONS_AS_READ =
+  "/api/user/notifications/readall";

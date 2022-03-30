@@ -23,6 +23,9 @@ import jack from "../assets/images/jack.jpg";
 import { useStores } from "../stores/RootStore";
 import NotificationsPopover from "./NotificationsPopover";
 import ControlledSwitches from "./SwitchNav";
+import NotificationButton from "../pages/Notifications/NotificationButton";
+import Stack from "@mui/material/Stack";
+import ChatButton from "../pages/Chat/ChatButton";
 
 // const pageLinks = [
 // 	{ text: "Seller Center", link: "/sellercenter" },
@@ -34,9 +37,8 @@ const AdminPageLinks = [{ text: "Admin Management", link: "/admin" }];
 
 const settings = [
   { text: "Profile", link: "/profile" },
-  { text: "Moodboards", link: "/moodboard/elon/0" },
   { text: "Cart", link: "/cart" },
-  { text: "Chat", link: "/chat" },
+  // { text: "Chat", link: "/chat" },
   { text: "Liked Listing", link: "/profile/likedListing" },
   { text: "Seller Center", link: "/sellercenter" },
 ];
@@ -129,12 +131,20 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
+              <Stack direction="row" spacing={2}>
+                {/* <Tooltip title="Open notification">
+                <>
                   <NotificationsPopover />
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src={`/api/image/${profilePic}`} />
-                </IconButton>
-              </Tooltip>
+                </>
+              </Tooltip> */}
+                <NotificationButton />
+                <ChatButton />
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt="Remy Sharp" src={`/api/image/${profilePic}`} />
+                  </IconButton>
+                </Tooltip>
+              </Stack>
               <Menu
                 sx={{ mt: "45px" }}
                 id="menu-appbar"
@@ -158,15 +168,6 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
                         <Tooltip title="Profile" placement="right">
                           <AccountCircleOutlinedIcon
                             sx={{ color: "common.black" }}
-                          />
-                        </Tooltip>
-                      )}
-                      {setting.text === "Moodboards" && (
-                        <Tooltip title="Moodboards" placement="right">
-                          <DashboardIcon
-                            sx={{
-                              color: "common.black",
-                            }}
                           />
                         </Tooltip>
                       )}

@@ -6,7 +6,10 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { getCartTotal } from "../../utils/getCartTotal";
 import { getTotalPrice } from "../../utils/getTotalPrice";
+import { inSelectedIndex } from "../../utils/inSelectedIndex";
+import { isVoucherPresent } from "../../utils/isVoucherPresent";
 import { SellerData } from "../Cart/SellerData";
 
 const Img = styled("img")({
@@ -24,8 +27,18 @@ export default function Checkout() {
   const count = location.state.count;
   const selectedItemsId = location.state.selectedItemsId;
   const selectedVouchers = location.state.selectedVouchers;
-  
+
   const handleConfirm = () => {};
+
+  const VoucherName = ({ cartItemId }) => {
+    let voucherName = "";
+    selectedVouchers.forEach((voucher) => {
+      if (voucher.itemId === cartItemId) {
+        voucherName = voucher.name;
+      }
+    });
+    return <>{voucherName}</>;
+  };
 
   return (
     <Container>
@@ -91,30 +104,48 @@ export default function Checkout() {
                             Voucher Applied:
                           </Typography>
                         </Grid>
-                    
+                        <Grid item>
+                          <Typography variant="body2" gutterBottom>
+                            <VoucherName cartItemId={cartItem.id} />
+                          </Typography>
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid item>
+                  <Grid item xs={2}>
                     <Grid item>
-                      <Typography variant="body2" component="div">
+                      <Typography
+                        variant="body2"
+                        component="div"
+                        align="right"
+                      >
                         Unit Price:
                       </Typography>
                       <Typography
-                        align="center"
+                        align="right"
                         variant="body2"
                         component="div"
                       >
-                        {cartItem.type !== "Design" && (
-                          <>${cartItem.listingprice.toFixed(2)}</>
+                        {!!cartItem.listingprice && (
+                          <>
+                            $
+                            {(
+                              cartItem.listingprice -
+                              isVoucherPresent(cartItem.id, selectedVouchers)
+                            ).toFixed(2)}
+                          </>
                         )}
                       </Typography>
                     </Grid>
                   </Grid>
-                  <Grid item>
+                  <Grid item xs={2}>
                     <Grid item>
-                      <Typography variant="body2" component="div">
-                        Item Quantity:
+                      <Typography
+                        variant="body2"
+                        component="div"
+                        align="center"
+                      >
+                        Quantity:
                       </Typography>
                       <Typography
                         align="center"
@@ -125,7 +156,7 @@ export default function Checkout() {
                       </Typography>
                     </Grid>
                   </Grid>
-                  <Grid item>
+                  <Grid item xs={1}>
                     <Grid item>
                       <Typography variant="body2" component="div">
                         Item Total:
@@ -135,11 +166,12 @@ export default function Checkout() {
                         align="center"
                         component="div"
                       >
-                        {cartItem.type !== "Design" ? (
+                        {!!cartItem.listingprice ? (
                           <>
                             $
                             {getTotalPrice(
-                              cartItem.listingprice,
+                              cartItem.listingprice -
+                                isVoucherPresent(cartItem.id, selectedVouchers),
                               count[cartItem.id]
                             )}
                           </>
@@ -167,9 +199,14 @@ export default function Checkout() {
             </Button>
           </Grid>
           <Grid item xs={1}>
-            {/* <Typography variant="body2" component="div">
-              Cart Total: ${getCartTotal(items, count)}
-            </Typography> */}
+            <Typography variant="body2" component="div">
+              Order Total: $
+              {getCartTotal(
+                items.filter((item) => inSelectedIndex(item, selectedItemsId)),
+                count,
+                selectedVouchers
+              )}
+            </Typography>
             <Typography variant="subtitle1" component="div"></Typography>
           </Grid>
         </Grid>

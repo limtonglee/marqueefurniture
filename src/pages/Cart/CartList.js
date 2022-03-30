@@ -25,6 +25,8 @@ import { getCartTotal } from "../../utils/getCartTotal";
 import { getTotalPrice } from "../../utils/getTotalPrice";
 import { SellerData } from "./SellerData";
 
+import { isVoucherPresent } from "../../utils/isVoucherPresent";
+import { inSelectedIndex } from "../../utils/inSelectedIndex";
 import { SellerVoucher } from "./SellerVoucher";
 
 import { useNavigate } from "react-router-dom";
@@ -35,8 +37,6 @@ const Img = styled("img")({
   maxWidth: "100%",
   maxHeight: "100%",
 });
-
-
 
 export default function Cart() {
   const navigate = useNavigate();
@@ -76,16 +76,6 @@ export default function Cart() {
     fetchCartData().catch(console.error);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const inSelectedIndex = (item) => {
-    let match = false;
-    selectedItemsId.forEach((element) => {
-      if (element === item.id) {
-        match = true;
-      }
-    });
-    return match;
-  };
 
   //deleting all items from database
   const handleDeleteItem = (itemId) => {
@@ -192,9 +182,9 @@ export default function Cart() {
   };
 
   const handleCheckout = () => {
-
-
-    const checkoutItems = items.filter((item) => inSelectedIndex(item));
+    const checkoutItems = items.filter((item) =>
+      inSelectedIndex(item, selectedItemsId)
+    );
     navigate("/checkout", {
       state: {
         items: checkoutItems,
@@ -203,18 +193,6 @@ export default function Cart() {
         selectedVouchers: selectedVouchers,
       },
     });
-  };
-
-  const isVoucherPresent = (cartItemId) => {
-    let present = 0;
-    // console.log(selectedVouchers);
-    selectedVouchers.forEach((voucher) => {
-      // console.log(voucher.discountamount);
-      if (voucher.itemId === cartItemId) {
-        present = voucher.discountamount;
-      }
-    });
-    return present;
   };
 
   return (
@@ -296,14 +274,14 @@ export default function Cart() {
                       />
                     </Grid>
                   </Grid>
-                  <Grid item>
-                    <Grid item>
-                      <Typography variant="body2" component="div">
+                  <Grid item xs={2}>
+                    <Grid item >
+                      <Typography variant="body2" component="div" align="right">
                         Unit Price:
                       </Typography>
-                      {isVoucherPresent(cartItem.id) === 0 ? (
+                      {isVoucherPresent(cartItem.id, selectedVouchers) === 0 ? (
                         <Typography
-                          align="center"
+                          align="right"
                           variant="body2"
                           component="div"
                         >
@@ -314,7 +292,7 @@ export default function Cart() {
                       ) : (
                         <>
                           <Typography
-                            align="center"
+                            align="right"
                             variant="body2"
                             component="div"
                             sx={{ textDecoration: "line-through" }}
@@ -325,7 +303,7 @@ export default function Cart() {
                           </Typography>
 
                           <Typography
-                            align="center"
+                            align="right"
                             variant="body2"
                             component="div"
                           >
@@ -334,7 +312,10 @@ export default function Cart() {
                                 $
                                 {(
                                   cartItem.listingprice -
-                                  isVoucherPresent(cartItem.id)
+                                  isVoucherPresent(
+                                    cartItem.id,
+                                    selectedVouchers
+                                  )
                                 ).toFixed(2)}
                               </>
                             )}
@@ -343,7 +324,7 @@ export default function Cart() {
                       )}
                     </Grid>
                   </Grid>
-                  <Grid item>
+                  <Grid item xs={2}>
                     <Grid item>
                       <Button
                         size="small"
@@ -374,10 +355,9 @@ export default function Cart() {
                           <>
                             $
                             {getTotalPrice(
-                              (cartItem.listingprice -
-                              isVoucherPresent(cartItem.id)),
-                              count[cartItem.id],
-                              
+                              cartItem.listingprice -
+                                isVoucherPresent(cartItem.id, selectedVouchers),
+                              count[cartItem.id]
                             )}
                           </>
                         ) : (
@@ -412,7 +392,12 @@ export default function Cart() {
           </Grid>
           <Grid item xs={1}>
             <Typography variant="body2" component="div">
-              Cart Total: ${getCartTotal(items.filter((item) => inSelectedIndex(item)), count, selectedVouchers)}
+              Cart Total: $
+              {getCartTotal(
+                items.filter((item) => inSelectedIndex(item, selectedItemsId)),
+                count,
+                selectedVouchers
+              )}
             </Typography>
             <Typography variant="subtitle1" component="div"></Typography>
           </Grid>

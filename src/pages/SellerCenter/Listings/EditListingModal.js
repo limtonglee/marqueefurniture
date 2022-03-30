@@ -53,7 +53,6 @@ const formReducer = (state, event) => {
     if (event.reset) {
         return {
             name: '',
-            image: '',
             description: '',
             category: '',
             brand: '',
@@ -87,9 +86,28 @@ const formReducer = (state, event) => {
             value: event.target.value,
         });
     };
+
+    const voucherId = children.id;
+
     const handleSubmit = event => {
         event.preventDefault();
-
+        SellerCenterAPI(
+            
+            formData.name,
+            formData.description,
+            formData.category,
+            formData.brand,
+            formData.warrantyInfo,
+            formData.shippingProvider,
+            formData.parcelSize,
+            formData.weight,
+            formData.stockAvailable,
+            formData.listingPrice,
+            formData.variations,
+            formData.dimensions,
+        );
+        refreshData();
+        handleClose();
         setTimeout(() => {
             setFormData({
                 reset: true

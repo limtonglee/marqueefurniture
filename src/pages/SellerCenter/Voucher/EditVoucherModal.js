@@ -89,7 +89,6 @@ const EditVoucherModal = ({
 
     const handleSubmit = event => {
         event.preventDefault();
-        if(formData.voucherName)
         SellerCenterAPI.editVoucher(
             voucherId,
             formData.voucherName,

@@ -7,6 +7,7 @@ import { URL_UPDATE_SHOP_ORDER } from "../services/endpoints";
 // listings
 import { URL_GET_SHOP_LISTINGS } from "../services/endpoints";
 import { URL_CREATE_SHOP_LISTING } from "../services/endpoints";
+import { URL_EDIT_SHOP_LISTING } from "../services/endpoints";
 // vouchers
 import { URL_GET_SHOP_VOUCHERS } from "../services/endpoints";
 import { URL_EDIT_SHOP_VOUCHER } from "../services/endpoints";
@@ -78,6 +79,24 @@ export const createListing = (name, image, description, category, brand, warrant
     type: type,
   };
   return postAsFormInput(URL_CREATE_SHOP_LISTING, body);
+};
+export const editListing = (name, description, category, brand, warrantyInfo, shippingProvider,
+  parcelSize, weight, stockAvailable, listingPrice, variations, dimensions) => {
+  const body = {
+    name: name,
+    description: description,
+    category: category,
+    brand: brand,
+    warrantyInfo: warrantyInfo,
+    shippingProvider: shippingProvider,
+    parcelSize: parcelSize,
+    weight: weight,
+    stockAvailable: stockAvailable,
+    listingPrice: listingPrice,
+    variations: variations,
+    dimensions: dimensions,
+  };
+  return update(URL_EDIT_SHOP_LISTING, body);
 };
 
 // vouchers

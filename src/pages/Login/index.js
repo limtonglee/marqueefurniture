@@ -134,15 +134,11 @@ const Login = () => {
     if (type === "Seller") {
       userStore.setIsSeller();
     }
+    if (type === "Admin") {
+      userStore.setIsAdmin();
+    }
 
     navigate("/marketplace");
-  };
-
-  const setAdminLogin = () => {
-    userStore.setIsLoggedIn();
-    userStore.setUserName("admin");
-    userStore.setIsAdmin();
-    navigate("/admin");
   };
 
   return (

@@ -21,6 +21,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import * as socialMediaAPI from "../../../services/SocialMedia";
 import user from "../../../data/currentUserData2";
+import { useStores } from "../../../stores/RootStore";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -34,6 +35,8 @@ const MoodboardModal = ({
   refreshPosts,
   sourceMoodboardId,
 }) => {
+  const { userStore } = useStores();
+
   const modalStyles = {
     wrapper: {
       position: "absolute",
@@ -63,7 +66,7 @@ const MoodboardModal = ({
 
   const getUserMoodboards = async () => {
     try {
-      const res = await socialMediaAPI.getUserMoodboards(user.id);
+      const res = await socialMediaAPI.getUserMoodboards(userStore.id);
       const data = JSON.parse(JSON.stringify(res)).data;
       return data;
     } catch (error) {

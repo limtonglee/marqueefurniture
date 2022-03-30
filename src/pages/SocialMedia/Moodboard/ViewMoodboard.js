@@ -41,7 +41,7 @@ const ViewMoodboard = () => {
 
   const getUserMoodboards = async () => {
     try {
-      const res = await socialMediaAPI.getUserMoodboards(user.id);
+      const res = await socialMediaAPI.getUserMoodboards(userStore.id);
       const data = JSON.parse(JSON.stringify(res)).data;
       return data;
     } catch (error) {

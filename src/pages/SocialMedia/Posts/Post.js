@@ -20,21 +20,24 @@ import SendIcon from "@mui/icons-material/Send";
 import { useParams } from "react-router-dom";
 import MoodboardModal from "../Moodboard/MoodboardModal";
 import TextField from "@mui/material/TextField";
+import { useStores } from "../../../stores/RootStore";
 
 import * as socialMediaAPI from "../../../services/SocialMedia";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
-const { username } = user;
+// const { username } = user;
 
 const Post = () => {
+  const { userStore } = useStores();
+
   const { postId } = useParams();
 
   const [moodboards, setMoodboards] = useState([]);
 
   const getUserMoodboards = async () => {
     try {
-      const res = await socialMediaAPI.getUserMoodboards(user.id);
+      const res = await socialMediaAPI.getUserMoodboards(userStore.id);
       const data = JSON.parse(JSON.stringify(res)).data;
       return data;
     } catch (error) {
@@ -182,7 +185,7 @@ const Post = () => {
   const [postLikesCount, setPostLikesCount] = useState(0);
 
   useEffect(() => {
-    setLikesChecked(post.likes.includes(username));
+    setLikesChecked(post.likes.includes(userStore.username));
     setPostLikesCount(post.likes.length);
   }, [post]);
 
@@ -268,12 +271,12 @@ const Post = () => {
     console.log("no. of likes before clicking:", post.likes.length);
     console.log("liked by before clicking:", post.likes);
     console.log("post.id", post.id);
-    console.log("user.id", user.id);
+    console.log("user.id", userStore.id);
 
-    if (post.likes.includes(username)) {
-      unlikePost(post.id, user.id);
+    if (post.likes.includes(userStore.username)) {
+      unlikePost(post.id, userStore.id);
     } else {
-      likePost(post.id, user.id);
+      likePost(post.id, userStore.id);
     }
 
     console.log("no. of likes after clicking:", post.likes.length);
@@ -320,7 +323,7 @@ const Post = () => {
     try {
       const res = await socialMediaAPI.createPostComment(
         comment,
-        user.id,
+        userStore.id,
         postId
       );
       const data = JSON.parse(JSON.stringify(res)).data;

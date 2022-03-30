@@ -42,11 +42,11 @@ export const getOrderDetails = (orderId) => {
   return get(URL_GET_SHOP_ORDER_DETAIL, params);
 };
 export const updateOrderStatus = (order_status, orderId) => {
-  const params = {
+  const body = {
     order_status: order_status,
     orderId: orderId,
   };
-  return update(URL_UPDATE_SHOP_ORDER, params);
+  return update(URL_UPDATE_SHOP_ORDER, body);
 };
 
 
@@ -100,7 +100,7 @@ export const createVoucher = (name, minSpend, discountAmount, startDate, endDate
   return postAsFormInput(URL_CREATE_SHOP_VOUCHER, body);
 };
 export const editVoucher = (voucherId, name, minSpend, discountAmount, startDate, endDate, status) => {
-  const params = {
+  const body = {
     voucherId: voucherId,
     name: name,
     minSpend: Number(minSpend),
@@ -109,7 +109,7 @@ export const editVoucher = (voucherId, name, minSpend, discountAmount, startDate
     endDate: endDate,
     status: status,
   };
-  return update(URL_EDIT_SHOP_VOUCHER, params);
+  return update(URL_EDIT_SHOP_VOUCHER, body);
 };
 export const deleteVoucher = (voucherId) => {
   const body = {
@@ -133,11 +133,11 @@ export const createShopCategory = (name, shopId) => {
   return postAsFormInput(URL_CREATE_SHOP_CATEGORY, body);
 };
 export const editShopCategory = (name, shopCategoryId) => {
-  const params = {
+  const body = {
     name: name,
     shopCategoryId: shopCategoryId,
   };
-  return update(URL_EDIT_SHOP_CATEGORY, params);
+  return update(URL_EDIT_SHOP_CATEGORY, body);
 };
 export const deleteShopCategory = (shopCategoryId) => {
   const body = {
@@ -160,13 +160,13 @@ export const getShopProfile = (id) => {
   return get(URL_GET_SELLER_PROFILE, params);
 };
 export const editShopProfile = (name, website, description, shopId) => {
-  const params = {
+  const body = {
     shopId: shopId,
     name: name,
     website: website,
     description: description,
   };
-  return update(URL_EDIT_SELLER_PROFILE, params);
+  return update(URL_EDIT_SELLER_PROFILE, body);
 };
 
 // rating

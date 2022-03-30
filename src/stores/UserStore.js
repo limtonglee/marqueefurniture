@@ -18,6 +18,9 @@ class userStore {
   // userStore.isSeller = false
   // getter no need but setter need
 
+  prevTabOnProfile = 0;
+  prevViewOnMoodboard = true;
+
   constructor() {
     makeAutoObservable(this, {
       name: observable,
@@ -87,6 +90,14 @@ class userStore {
 
   setShop = (shop) => {
     this.shop = shop;
+  };
+
+  setPrevTabOnProfile = (newTab) => {
+    this.prevTabOnProfile = newTab;
+  };
+
+  setPrevViewOnMoodboard = (newView) => {
+    this.prevViewOnMoodboard = newView;
   };
 }
 

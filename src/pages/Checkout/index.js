@@ -3,15 +3,29 @@ import { Button, Container, Divider, Grid, ImageList } from "@mui/material";
 import ButtonBase from "@mui/material/ButtonBase";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { deleteCartItems } from "../../services/Cart";
+import { checkout } from "../../services/Checkout";
+import { getSellerInfo } from "../../services/Listings";
+import { useStores } from "../../stores/RootStore";
 import { getCartTotal } from "../../utils/getCartTotal";
 import { getTotalPrice } from "../../utils/getTotalPrice";
 import { inSelectedIndex } from "../../utils/inSelectedIndex";
-import { isVoucherPresent } from "../../utils/isVoucherPresent";
+import { getVoucherId, isVoucherPresent } from "../../utils/isVoucherPresent";
 import { SellerData } from "../Cart/SellerData";
 
+const notifyCheckout = () =>
+  toast("checkout successful! Redirecting to orders page...", {
+    position: toast.POSITION.TOP_CENTER,
+    autoClose: 3000,
+  });
 const Img = styled("img")({
   margin: "auto",
   display: "block",
@@ -22,13 +36,54 @@ const Img = styled("img")({
 export default function Checkout() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { userStore } = useStores();
 
   const items = location.state.items;
   const count = location.state.count;
   const selectedItemsId = location.state.selectedItemsId;
   const selectedVouchers = location.state.selectedVouchers;
+  const [message, setMessage] = useState("no message");
 
-  const handleConfirm = () => {};
+  const [paymentMethod, setPaymentMethod] = useState("");
+
+  const handleConfirm = () => {
+    console.log("items");
+
+    console.log(items);
+    if (paymentMethod === "COD") {
+      items.forEach(async (item) => {
+        const result = await performCheckout(item);
+      });
+    }
+    notifyCheckout();
+    const myTimeout = setTimeout(() => {
+      navigate("/profile", { state: { redirect: "cart" } });
+    }, 4000);
+  };
+
+  const performCheckout = async (item) => {
+    const price = getTotalPrice(
+      item.listingprice - isVoucherPresent(item.id, selectedVouchers),
+      count[item.id]
+    );
+    const voucherId = getVoucherId(item.id, selectedVouchers);
+    const sellerResponse = await getSellerInfo(item.id);
+    const sellerId = sellerResponse.data[0].userid;
+    const response = await checkout(
+      userStore.address,
+      message,
+      price,
+      sellerId,
+      userStore.id,
+      item.id,
+      voucherId,
+      count[item.id]
+    );
+    if (response.status === 200) {
+      const deleteItem = await deleteCartItems(userStore.id, item.id);
+      console.log(deleteItem);
+    }
+  };
 
   const VoucherName = ({ cartItemId }) => {
     let voucherName = "";
@@ -38,6 +93,10 @@ export default function Checkout() {
       }
     });
     return <>{voucherName}</>;
+  };
+
+  const handleChange = (event, newValue) => {
+    setPaymentMethod(newValue);
   };
 
   return (
@@ -52,6 +111,13 @@ export default function Checkout() {
         onClick={() => navigate(-1)}
         color="primary"
       />
+      <Grid container mt={1} spacing={1} direction="row">
+        <Grid item m={1}>
+          <Typography variant="h5" component="div">
+            Delivery address: {userStore.address}
+          </Typography>
+        </Grid>
+      </Grid>
 
       <Paper
         sx={{
@@ -114,11 +180,7 @@ export default function Checkout() {
                   </Grid>
                   <Grid item xs={2}>
                     <Grid item>
-                      <Typography
-                        variant="body2"
-                        component="div"
-                        align="right"
-                      >
+                      <Typography variant="body2" component="div" align="right">
                         Unit Price:
                       </Typography>
                       {isVoucherPresent(cartItem.id, selectedVouchers) === 0 ? (
@@ -215,6 +277,24 @@ export default function Checkout() {
             </div>
           ))}
         </ImageList>
+        <Grid container mt={1} spacing={1} direction="row">
+          <Grid item xs={2} m={1}>
+            <Typography variant="h5" component="div">
+              Payment methods
+            </Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <ToggleButtonGroup
+              value={paymentMethod}
+              exclusive
+              onChange={handleChange}
+            >
+              <ToggleButton value="COD">Cash on Delivery</ToggleButton>
+              <ToggleButton value="center">Credit card</ToggleButton>
+              <ToggleButton value="right">MF coins</ToggleButton>
+            </ToggleButtonGroup>
+          </Grid>
+        </Grid>
         <Grid container mt={1} spacing={1} direction="row-reverse">
           <Grid item xs={1} m={1}>
             <Button
@@ -225,6 +305,7 @@ export default function Checkout() {
             >
               Confirm
             </Button>
+            <ToastContainer />
           </Grid>
           <Grid item xs={1}>
             <Typography variant="body2" component="div">

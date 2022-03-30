@@ -49,7 +49,7 @@ const ChatAnnouncement = ({ message, hasButton }) => {
                   },
                 }}
               >
-                Add to Cart
+                Review and Pay
               </Button>
             )}
           </Box>

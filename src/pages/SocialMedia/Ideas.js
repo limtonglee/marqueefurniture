@@ -67,6 +67,7 @@ const Ideas = () => {
     try {
       const res = await socialMediaAPI.getAllPosts();
       const data = JSON.parse(JSON.stringify(res)).data;
+      console.log("data at getAllPosts", data);
       return data;
     } catch (error) {
       console.error(error);

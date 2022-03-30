@@ -186,7 +186,6 @@ const MoodboardViewInProfile = () => {
             <Box>
               <Link
                 to={`/moodboard/${user.username}/${moodboard.id}`}
-                target="_blank"
                 style={{ textDecoration: "none", color: "black" }}
               >
                 <Typography

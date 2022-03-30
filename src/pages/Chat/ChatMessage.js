@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
+import { format } from "date-fns";
 
 import { useStores } from "../../stores/RootStore";
 
@@ -42,13 +43,14 @@ const ChatMessage = ({ message, recipientProfilePic, own }) => {
                 display="block"
                 sx={{ fontWeight: "normal" }}
               >
-                {message.timestamp}
+                {format(Date.parse(message.timestamp), "dd/MM/yyyy HH:MM")}
               </Typography>
             </Stack>
             <Avatar
-              alt="Me"
+              alt={userStore.username}
               // src="https://images.generated.photos/VVtQpKLyaZOHYCz0ayJAbVgNQt7rAytRVuWQuJWEMAE/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LmNvbmQvNzdhOGNl/NzAtMjBhZC00NWQ2/LWJhMGUtYTY1MDQ5/YmQwMDA5LmpwZw.jpg"
-              src={recipientProfilePic}
+              // src={recipientProfilePic}
+              src={`/api/image/${userStore.profilePic}`}
             />
           </Stack>
         </Box>
@@ -78,7 +80,7 @@ const ChatMessage = ({ message, recipientProfilePic, own }) => {
                 display="block"
                 sx={{ fontWeight: "normal" }}
               >
-                {message.timestamp}
+                {format(Date.parse(message.timestamp), "dd/MM/yyyy HH:MM")}
               </Typography>
             </Stack>
           </Stack>

@@ -12,9 +12,12 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Popover from "@mui/material/Popover";
 import ReportIcon from "@mui/icons-material/Report";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 import ChatMessage from "./ChatMessage";
 import ChatAnnouncement from "./ChatAnnouncement";
+
+import { useNavigate } from "react-router-dom";
 
 import * as chatAPI from "../../services/Chat";
 import * as socialMediaAPI from "../../services/SocialMedia";
@@ -83,6 +86,18 @@ const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
     scrollRef.current?.scrollIntoView({ behaviour: "smooth" });
   }, [currentChat]);
 
+  let navigate = useNavigate();
+
+  const handleRequestForConsultation = () => {
+    console.log("handleRequestForConsultation");
+    navigate("/designConsultation");
+  };
+
+  const handleViewDesignOrderProgress = () => {
+    console.log("handleViewDesignOrderProgress");
+    navigate("/designOrderProgress");
+  };
+
   return (
     <>
       <Box
@@ -109,7 +124,8 @@ const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
               <Avatar
                 alt="User"
                 // src="https://images.generated.photos/nSW_I6izlbs1PZri0EwntItqrnybtGrDKTz9RNnnDHk/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LmNvbmQvMzlkNTg3/MjMtODFhYi00Y2Zh/LTlkMjQtNTU0Njdl/NjU1MmU2LmpwZw.jpg"
-                src={currentChat.recipientProfilePic}
+                // src={currentChat.recipientProfilePic}
+                src={`/api/image/${currentChat.recipientProfilePic}`}
                 sx={{ height: 60, width: 60 }}
               />
               <Box>
@@ -164,22 +180,40 @@ const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
                     backgroundColor: "grey.200",
                   },
                 }}
+                onClick={handleRequestForConsultation}
               >
                 Request for consultation
               </Button>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "white",
-                  color: "primary.main",
-                  "&:hover": {
-                    backgroundColor: "grey.200",
-                  },
-                }}
-              >
-                Update my requirements
-              </Button>
             </Stack>
+          </Box>
+          <Divider />
+          <Box
+            sx={{
+              px: 3,
+              py: 2,
+              backgroundColor: "secondary.lighter",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              "&:hover": {
+                cursor: "pointer",
+              },
+            }}
+            onClick={handleViewDesignOrderProgress}
+          >
+            <Box>
+              <Typography variant="h6" component="div">
+                Consultation request submitted
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                gutterBottom
+                sx={{ fontWeight: "normal" }}
+              >
+                Pending designer's acceptance
+              </Typography>
+            </Box>
+            <ArrowForwardIosIcon size="small" />
           </Box>
           <Divider />
         </Box>
@@ -232,7 +266,8 @@ const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
                 {message.type === "Message" && (
                   <ChatMessage
                     message={message}
-                    recipientProfilePic={currentChat.recipientProfilePic}
+                    // recipientProfilePic={currentChat.recipientProfilePic}
+                    recipientProfilePic={`/api/image/${currentChat.recipientProfilePic}`}
                     own={message.userid === userStore.id}
                   />
                 )}

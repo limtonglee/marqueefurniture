@@ -21,6 +21,9 @@ export const URL_POST_CART_ITEM = "/api/cart/item";
 export const URL_DELETE_CART_ITEM = "/api/cart/deleteItem";
 export const URL_DELETE_CART_ITEMS = "/api/cart/deleteItems";
 
+//checkout management
+export const URL_CHECKOUT = "/api/checkout";
+
 //liked listings management
 export const URL_LISTING_LIKE = "/api/listing/like"; // user liking a post
 export const URL_LISTING_UNLIKE = "/api/listing/unlike"; // user unliking a post
@@ -93,7 +96,7 @@ export const URL_DELETE_SHOP_CATEGORY_LISTINGS =
 export const URL_ADD_LISTING_SHOP_CATEGORY =
   "/api/merchant/shopCategories/addListing";
 // rating
-export const URL_GET_SHOP_RATINGS = "/api/merchant/ratings";
+export const URL_GET_SHOP_RATINGS = "/api/merchant/product/review";
 export const URL_REPLY_REVIEW = "/api/merchant/replyReview";
 // shop profile
 export const URL_GET_SELLER_PROFILE = "/api/merchant/sellerProfile";

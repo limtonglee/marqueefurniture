@@ -174,14 +174,9 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
                       {setting.text === "Cart" && (
                         <>
                           <Tooltip title="Cart" placement="right">
-                            <Badge
-                              color="secondary"
-                              badgeContent={cartStore.items.length}
-                            >
-                              <ShoppingCartCheckoutIcon
-                                sx={{ color: "common.black" }}
-                              />
-                            </Badge>
+                            <ShoppingCartCheckoutIcon
+                              sx={{ color: "common.black" }}
+                            />
                           </Tooltip>
                         </>
                       )}

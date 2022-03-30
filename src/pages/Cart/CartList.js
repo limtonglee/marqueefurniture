@@ -10,6 +10,7 @@ import ButtonBase from "@mui/material/ButtonBase";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -24,6 +25,12 @@ import { getCartTotal } from "../../utils/getCartTotal";
 import { getTotalPrice } from "../../utils/getTotalPrice";
 import { SellerData } from "./SellerData";
 
+import { isVoucherPresent } from "../../utils/isVoucherPresent";
+import { inSelectedIndex } from "../../utils/inSelectedIndex";
+import { SellerVoucher } from "./SellerVoucher";
+
+import { useNavigate } from "react-router-dom";
+
 const Img = styled("img")({
   margin: "auto",
   display: "block",
@@ -32,10 +39,13 @@ const Img = styled("img")({
 });
 
 export default function Cart() {
+  const navigate = useNavigate();
+
   const { userStore } = useStores();
   const [items, setItems] = useState([]);
   const [count, setCount] = useState({});
   const [selectedItemsId, setSelectedItemsId] = useState([]);
+  const [selectedVouchers, setSelectedVouchers] = useState([]);
 
   useEffect(() => {
     const updateListing = (result) => {
@@ -168,12 +178,22 @@ export default function Cart() {
       );
     }
     setSelectedItemsId(newSelectedItemsId);
-    console.log(newSelectedItemsId);
+    // console.log(selectedItemsId);
   };
 
   const handleCheckout = () => {
-    
-  }
+    const checkoutItems = items.filter((item) =>
+      inSelectedIndex(item, selectedItemsId)
+    );
+    navigate("/checkout", {
+      state: {
+        items: checkoutItems,
+        count: count,
+        selectedItemsId: selectedItemsId,
+        selectedVouchers: selectedVouchers,
+      },
+    });
+  };
 
   return (
     <Container>
@@ -214,7 +234,7 @@ export default function Cart() {
         <br />
         <ImageList cols={1} gap={15}>
           {items.map((cartItem) => (
-            <>
+            <div key={cartItem.name}>
               <Grid container spacing={2}>
                 <Grid item>
                   <Checkbox
@@ -227,7 +247,10 @@ export default function Cart() {
                 <Grid item>
                   <Link to={`/marketplace/${cartItem.id}`}>
                     <ButtonBase sx={{ width: 128, height: 128 }}>
-                      <Img src={`/api/image/${cartItem.image}`} alt={cartItem.name} />
+                      <Img
+                        src={`/api/image/${cartItem.image}`}
+                        alt={cartItem.name}
+                      />
                     </ButtonBase>
                   </Link>
                 </Grid>
@@ -237,30 +260,71 @@ export default function Cart() {
                       <SellerData listingId={cartItem.id} />
 
                       <Typography variant="body2" gutterBottom>
-                        Item name: {cartItem.name}
+                        {cartItem.name}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      <Typography variant="body2">
                         Brand: {cartItem.brand}
                       </Typography>
+                      <Divider sx={{ marginBottom: "5px" }} />
+                      <SellerVoucher
+                        shopId={cartItem.shopid}
+                        selectedVouchers={selectedVouchers}
+                        setSelectedVouchers={setSelectedVouchers}
+                        cartItem={cartItem}
+                      />
                     </Grid>
                   </Grid>
-                  <Grid item>
-                    <Grid item>
-                      <Typography variant="body2" component="div">
+                  <Grid item xs={2}>
+                    <Grid item >
+                      <Typography variant="body2" component="div" align="right">
                         Unit Price:
                       </Typography>
-                      <Typography
-                        align="center"
-                        variant="body2"
-                        component="div"
-                      >
-                        {cartItem.type !== "Design" && (
-                          <>${cartItem.listingprice.toFixed(2)}</>
-                        )}
-                      </Typography>
+                      {isVoucherPresent(cartItem.id, selectedVouchers) === 0 ? (
+                        <Typography
+                          align="right"
+                          variant="body2"
+                          component="div"
+                        >
+                          {!!cartItem.listingprice && (
+                            <>${cartItem.listingprice.toFixed(2)}</>
+                          )}
+                        </Typography>
+                      ) : (
+                        <>
+                          <Typography
+                            align="right"
+                            variant="body2"
+                            component="div"
+                            sx={{ textDecoration: "line-through" }}
+                          >
+                            {!!cartItem.listingprice && (
+                              <>${cartItem.listingprice.toFixed(2)}</>
+                            )}
+                          </Typography>
+
+                          <Typography
+                            align="right"
+                            variant="body2"
+                            component="div"
+                          >
+                            {!!cartItem.listingprice && (
+                              <>
+                                $
+                                {(
+                                  cartItem.listingprice -
+                                  isVoucherPresent(
+                                    cartItem.id,
+                                    selectedVouchers
+                                  )
+                                ).toFixed(2)}
+                              </>
+                            )}
+                          </Typography>
+                        </>
+                      )}
                     </Grid>
                   </Grid>
-                  <Grid item>
+                  <Grid item xs={2}>
                     <Grid item>
                       <Button
                         size="small"
@@ -287,11 +351,12 @@ export default function Cart() {
                         align="center"
                         component="div"
                       >
-                        {cartItem.type !== "Design" ? (
+                        {!!cartItem.listingprice ? (
                           <>
                             $
                             {getTotalPrice(
-                              cartItem.listingprice,
+                              cartItem.listingprice -
+                                isVoucherPresent(cartItem.id, selectedVouchers),
                               count[cartItem.id]
                             )}
                           </>
@@ -311,7 +376,7 @@ export default function Cart() {
                 </Grid>
               </Grid>
               <Divider variant="middle" />
-            </>
+            </div>
           ))}
         </ImageList>
         <Grid container mt={1} spacing={1} direction="row-reverse">
@@ -320,14 +385,19 @@ export default function Cart() {
               size="small"
               align="right"
               variant="contained"
-              onClick ={() => handleCheckout()}
+              onClick={() => handleCheckout()}
             >
               Checkout
             </Button>
           </Grid>
           <Grid item xs={1}>
             <Typography variant="body2" component="div">
-              Cart Total: ${getCartTotal(items, count)}
+              Cart Total: $
+              {getCartTotal(
+                items.filter((item) => inSelectedIndex(item, selectedItemsId)),
+                count,
+                selectedVouchers
+              )}
             </Typography>
             <Typography variant="subtitle1" component="div"></Typography>
           </Grid>

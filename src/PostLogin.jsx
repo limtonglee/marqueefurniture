@@ -11,7 +11,6 @@ import { MoodboardDetails } from "./pages/Profile/Moodboard/MoodboardDetails";
 import Profiles from "./pages/Profiles";
 import SellerCenter from "./pages/SellerCenter";
 import Cart from "./pages/Cart/CartList";
-import { Balance } from "./pages/SellerCenter/Finance/Balance";
 import { Income } from "./pages/SellerCenter/Finance/Income";
 import { AddNewListing } from "./pages/SellerCenter/Listings/AddNewListing";
 import { MyListings } from "./pages/SellerCenter/Listings/MyListings";
@@ -35,6 +34,7 @@ import ReviewDesign from "./pages/Design/ReviewDesign";
 
 import { Box } from "@mui/material";
 import SellerProfile from "./pages/SellerProfile/SellerProfile";
+import Checkout from "./pages/Checkout";
 
 const PostLogin = ({checked, setChecked, handleChange}) => {
   return (
@@ -60,6 +60,7 @@ const PostLogin = ({checked, setChecked, handleChange}) => {
         <Route path="/moodboard/:username/:moodboardId" element={<ViewMoodboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/sellercenter" element={<SellerCenter />}>
           <Route path="" element={<Orders />} />
           <Route path="orders" element={<Orders />} />
@@ -75,7 +76,6 @@ const PostLogin = ({checked, setChecked, handleChange}) => {
           <Route path="shop/categories/:categoryId" element={<ShopCategoryDetails />} />
           <Route path="finance" element={<Income />} />
           <Route path="finance/income" element={<Income />} />
-          <Route path="finance/balance" element={<Balance />} />
         </Route>
         <Route path="/profile" element={<Profiles />}>
           <Route path="" element={<Profile />} />

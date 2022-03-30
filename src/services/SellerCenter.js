@@ -3,6 +3,7 @@ import { get, remove, update, postAsFormInput } from "./api";
 // orders
 import { URL_GET_SHOP_ORDERS } from "../services/endpoints";
 import { URL_GET_SHOP_ORDER_DETAIL } from "../services/endpoints";
+import { URL_UPDATE_SHOP_ORDER } from "../services/endpoints";
 // listings
 import { URL_GET_SHOP_LISTINGS } from "../services/endpoints";
 import { URL_CREATE_SHOP_LISTING } from "../services/endpoints";
@@ -17,6 +18,15 @@ import { URL_CREATE_SHOP_CATEGORY } from "../services/endpoints";
 import { URL_EDIT_SHOP_CATEGORY } from "../services/endpoints";
 import { URL_DELETE_SHOP_CATEGORY } from "../services/endpoints";
 import { URL_DELETE_SHOP_CATEGORY_LISTINGS } from "../services/endpoints";
+// profile
+import { URL_GET_SELLER_PROFILE } from "../services/endpoints";
+import { URL_EDIT_SELLER_PROFILE } from "../services/endpoints";
+// rating
+import { URL_GET_SHOP_RATINGS } from "../services/endpoints";
+import { URL_REPLY_REVIEW } from "../services/endpoints";
+// finance
+import { URL_GET_INCOME } from "../services/endpoints";
+import { URL_GET_BALANCE } from "../services/endpoints";
 
 // orders
 export const getOrders = (id) => {
@@ -30,6 +40,13 @@ export const getOrderDetails = (orderId) => {
     orderId: orderId
   };
   return get(URL_GET_SHOP_ORDER_DETAIL, params);
+};
+export const updateOrderStatus = (order_status, orderId) => {
+  const body = {
+    order_status: order_status,
+    orderId: orderId,
+  };
+  return update(URL_UPDATE_SHOP_ORDER, body);
 };
 
 
@@ -83,7 +100,7 @@ export const createVoucher = (name, minSpend, discountAmount, startDate, endDate
   return postAsFormInput(URL_CREATE_SHOP_VOUCHER, body);
 };
 export const editVoucher = (voucherId, name, minSpend, discountAmount, startDate, endDate, status) => {
-  const params = {
+  const body = {
     voucherId: voucherId,
     name: name,
     minSpend: Number(minSpend),
@@ -92,7 +109,7 @@ export const editVoucher = (voucherId, name, minSpend, discountAmount, startDate
     endDate: endDate,
     status: status,
   };
-  return update(URL_EDIT_SHOP_VOUCHER, params);
+  return update(URL_EDIT_SHOP_VOUCHER, body);
 };
 export const deleteVoucher = (voucherId) => {
   const body = {
@@ -116,11 +133,11 @@ export const createShopCategory = (name, shopId) => {
   return postAsFormInput(URL_CREATE_SHOP_CATEGORY, body);
 };
 export const editShopCategory = (name, shopCategoryId) => {
-  const params = {
+  const body = {
     name: name,
     shopCategoryId: shopCategoryId,
   };
-  return update(URL_EDIT_SHOP_CATEGORY, params);
+  return update(URL_EDIT_SHOP_CATEGORY, body);
 };
 export const deleteShopCategory = (shopCategoryId) => {
   const body = {
@@ -133,4 +150,50 @@ export const deleteShopCategoryListings = (shopCategoryId) => {
     shopCategoryId: shopCategoryId,
   };
   return remove(URL_DELETE_SHOP_CATEGORY_LISTINGS, body);
+};
+
+// profile
+export const getShopProfile = (id) => {
+  const params = {
+    userId: id
+  };
+  return get(URL_GET_SELLER_PROFILE, params);
+};
+export const editShopProfile = (name, website, description, shopId) => {
+  const body = {
+    shopId: shopId,
+    name: name,
+    website: website,
+    description: description,
+  };
+  return update(URL_EDIT_SELLER_PROFILE, body);
+};
+
+// rating
+export const getShopRatings = (shopId) => {
+  const params = {
+    shopId: shopId
+  };
+  return get(URL_GET_SHOP_RATINGS, params);
+};
+export const replyReview = (reviewId, sellerReply) => {
+  const params = {
+    reviewId: reviewId,
+    sellerReply: sellerReply,
+  };
+  return update(URL_REPLY_REVIEW, params);
+};
+
+// Finance
+export const getIncome = (sellerId) => {
+  const params = {
+    sellerId: sellerId
+  };
+  return get(URL_GET_INCOME, params);
+};
+export const getBalance = (shopId) => {
+  const params = {
+    shopId: shopId
+  };
+  return get(URL_GET_BALANCE, params);
 };

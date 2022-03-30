@@ -97,7 +97,7 @@ const UpdateOrderModal = ({
     };
     const handleSubmit = event => {
         event.preventDefault();
-        // SellerCenterAPI.editShopCategory(formData.categoryName, shopCategoryId);
+        SellerCenterAPI.updateOrderStatus(formData.orderStatus, children.id);
         refreshData();
         handleClose();
         setTimeout(() => {

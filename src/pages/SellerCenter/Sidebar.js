@@ -65,18 +65,8 @@ const Sidebar = () => {
           },
           {
             title: 'Finance',
-            itemId: '/sellercenter/finance',
+            itemId: '/sellercenter/finance/income',
             elemBefore: () => <AccountBalanceWalletIcon />,
-            subNav: [
-              {
-                title: 'Income Overview',
-                itemId: '/sellercenter/finance/income',
-              },
-              {
-                title: 'Balance Overview',
-                itemId: '/sellercenter/finance/balance',
-              },
-            ],
           },
         ]}
       />

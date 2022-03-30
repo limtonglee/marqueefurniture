@@ -91,7 +91,7 @@ export const URL_DELETE_SHOP_CATEGORY = "/api/merchant/shopCategories/delete";
 export const URL_DELETE_SHOP_CATEGORY_LISTINGS = "/api/merchant/shopCategoryListings/delete";
 export const URL_ADD_LISTING_SHOP_CATEGORY = "/api/merchant/shopCategories/addListing";
 // rating
-export const URL_GET_SHOP_RATINGS = "/api/merchant/ratings";
+export const URL_GET_SHOP_RATINGS = "/api/merchant/product/review";
 export const URL_REPLY_REVIEW = "/api/merchant/replyReview";
 // shop profile
 export const URL_GET_SELLER_PROFILE = "/api/merchant/sellerProfile";

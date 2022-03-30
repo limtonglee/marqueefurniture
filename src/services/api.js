@@ -26,11 +26,11 @@ export const remove = (url, params, headers = {}) =>
     headers,
   });
 
-export const update = (url, params, headers = {}) =>
+export const update = (url, body, headers = {}) =>
   request({
     method: "PUT",
     url,
-    params,
+    body,
     headers,
   });
 

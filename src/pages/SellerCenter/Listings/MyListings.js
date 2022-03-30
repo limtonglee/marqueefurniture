@@ -23,6 +23,7 @@ import EditListingModal from "./EditListingModal";
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
+import { useStores } from "../../../stores/RootStore";
 
 export const MyListings = () => {
     const navigate = useNavigate();
@@ -30,10 +31,11 @@ export const MyListings = () => {
     const [value, setValue] = React.useState(0);
     const [data, setData] = useState([]);
     const [listings, setListings] = useState([]);
+    const { userStore } = useStores();
 
     const getListings = async () => {
         try {
-            const res = await SellerCenterAPI.getListings(1);
+            const res = await SellerCenterAPI.getListings(userStore.id);
             setData(JSON.parse(JSON.stringify(res.data)));
             setListings(JSON.parse(JSON.stringify(res.data)));
         } catch (error) {

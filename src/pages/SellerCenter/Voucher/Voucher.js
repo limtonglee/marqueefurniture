@@ -14,15 +14,17 @@ import AddVoucherModal from './AddVoucherModal';
 import EditVoucherModal from "./EditVoucherModal";
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
+import { useStores } from "../../../stores/RootStore";
 
 export const Voucher = () => {
     const [value, setValue] = React.useState(0);
     const [data, setData] = useState([]);
     const [vouchers, setVouchers] = useState([]);
-    
+    const { userStore } = useStores();
+
     const getVouchers = async () => {
         try {
-            const res = await SellerCenterAPI.getVouchers(1);
+            const res = await SellerCenterAPI.getVouchers(userStore.id);
             setData(JSON.parse(JSON.stringify(res.data)));
             setVouchers(JSON.parse(JSON.stringify(res.data)));
         } catch (error) {

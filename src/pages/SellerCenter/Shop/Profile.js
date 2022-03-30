@@ -15,7 +15,7 @@ import {
 
 } from '@mui/material';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
-
+import { useStores } from "../../../stores/RootStore";
 
 const formReducer = (state, event) => {
     if (event.reset) {
@@ -31,16 +31,13 @@ const formReducer = (state, event) => {
     }
 }
 
-const Input = styled("input")({
-    display: "none",
-});
-
 export const ShopProfile = () => {
     const [shop, setShop] = useState([]);
+    const { userStore } = useStores();
 
     const getShopProfile = async () => {
         try {
-            const res = await SellerCenterAPI.getShopProfile(1);
+            const res = await SellerCenterAPI.getShopProfile(userStore.id);
             setShop(JSON.parse(JSON.stringify(res.data))[0]);
         } catch (error) {
             console.error(error);

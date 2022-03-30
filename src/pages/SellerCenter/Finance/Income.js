@@ -3,30 +3,22 @@ import { useEffect, useState } from "react";
 import { Layout } from '../Layout';
 import {
     Card,
-    Stack,
-    Button,
     Typography,
-    Tabs,
-    Tab,
-    Box,
-    styled,
     Grid,
-    TextField,
-    MenuItem
 } from '@mui/material';
-// import { incomeDetailsData } from "../../../data/incomeDetailsData";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
+import { useStores } from "../../../stores/RootStore";
+
 
 export const Income = () => {
-
-    
     const [data, setData] = useState([]);
     const [income, setIncome] = useState([]);
     const [balance, setBalance] = useState([]);
+    const { userStore } = useStores();
 
     const getIncome = async () => {
         try {
-            const res = await SellerCenterAPI.getIncome(1);
+            const res = await SellerCenterAPI.getIncome(userStore.id);
             setData(JSON.parse(JSON.stringify(res.data)));
             setIncome(JSON.parse(JSON.stringify(res.data)));
         } catch (error) {
@@ -36,7 +28,7 @@ export const Income = () => {
 
     const getBalance = async () => {
         try {
-            const res = await SellerCenterAPI.getBalance(1);
+            const res = await SellerCenterAPI.getBalance(userStore.id);
             setBalance(JSON.parse(JSON.stringify(res.data))[0]);
         } catch (error) {
             console.error(error);

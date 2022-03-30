@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Badge from "@mui/material/Badge";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import IconButton from "@mui/material/IconButton";
@@ -12,6 +12,7 @@ import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
 
 import { useStores } from "../../stores/RootStore";
+import { io } from "socket.io-client";
 
 import * as socialMediaAPI from "../../services/SocialMedia";
 import * as notificationAPI from "../../services/Notification";
@@ -20,8 +21,9 @@ import NotificationItem from "./NotificationItem";
 
 const NotificationButton = () => {
   const { userStore } = useStores();
-
   const [notificationData, setNotificationData] = useState([]);
+  const socket = useRef();
+  const [arrivalNotification, setArrivalNotification] = useState(null);
 
   const getUsernameById = async (userId) => {
     try {
@@ -73,7 +75,58 @@ const NotificationButton = () => {
   useEffect(() => {
     getCompleteNotificationData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    socket.current = io("ws://localhost:8900");
+    socket.current.on("likePost", (data) => {
+      setArrivalNotification({
+        id: data.id,
+        description: data.description,
+        isunread: data.isunread,
+        link: data.link,
+        timestamp: data.timestamp,
+        triggeruserid: data.triggeruserid,
+        triggerUsername: data.triggerUsername,
+        userid: data.userid,
+      });
+      console.log("notification button setArrivalNoti");
+    });
   }, []);
+
+  useEffect(() => {
+    arrivalNotification &&
+      userStore.id === arrivalNotification.userid &&
+      setNotificationData((prev) => [...notificationData, arrivalNotification]);
+
+    console.log("[...notificationData, arrivalNotification]", [
+      ...notificationData,
+      arrivalNotification,
+    ]);
+
+    // setNotificationData(async (prev) => {
+    //   const triggerusername = await getUsernameById(
+    //     arrivalNotification.triggeruserid
+    //   );
+    //   const completeNoti = {
+    //     ...arrivalNotification,
+    //     triggerusername: triggerusername,
+    //   };
+
+    //   const newNotificationData = [...notificationData];
+    //   newNotificationData.pop();
+    //   newNotificationData.push(completeNoti);
+    //   return newNotificationData;
+    // });
+
+    // arrivalNotification && getCompleteNotificationData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [arrivalNotification]);
+
+  useEffect(() => {
+    socket.current.emit("addUser", userStore.id);
+    socket.current.on("getUsers", (users) => {
+      console.log("getUsers", users);
+    });
+  }, [userStore]);
 
   const markAllNotificationsAsRead = async () => {
     try {

@@ -32,7 +32,7 @@ const Comment = ({ comment, post, setPost, getCompletePost }) => {
 
   return (
     <>
-      {comment.username === userStore.username ? (
+      {comment.username === userStore.name ? (
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Stack direction="row" spacing={0.5}>
             <Box sx={commentStyles.username}>{comment.username}</Box>

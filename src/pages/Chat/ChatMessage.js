@@ -47,7 +47,7 @@ const ChatMessage = ({ message, recipientProfilePic, own }) => {
               </Typography>
             </Stack>
             <Avatar
-              alt={userStore.username}
+              alt={userStore.name}
               // src="https://images.generated.photos/VVtQpKLyaZOHYCz0ayJAbVgNQt7rAytRVuWQuJWEMAE/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LmNvbmQvNzdhOGNl/NzAtMjBhZC00NWQ2/LWJhMGUtYTY1MDQ5/YmQwMDA5LmpwZw.jpg"
               // src={recipientProfilePic}
               src={`/api/image/${userStore.profilePic}`}

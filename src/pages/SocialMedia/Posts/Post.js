@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
@@ -19,6 +19,8 @@ import TextField from "@mui/material/TextField";
 import { useStores } from "../../../stores/RootStore";
 
 import * as socialMediaAPI from "../../../services/SocialMedia";
+import * as notificationAPI from "../../../services/Notification";
+import { io } from "socket.io-client";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -26,6 +28,7 @@ const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const Post = () => {
   const { userStore } = useStores();
+  const socket = useRef();
 
   const { postId } = useParams();
 
@@ -73,10 +76,10 @@ const Post = () => {
     });
   };
 
-  useEffect(() => {
-    getCompleteMoodboardData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   getCompleteMoodboardData();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   useEffect(() => {
     getCompleteMoodboardData();
@@ -174,6 +177,8 @@ const Post = () => {
     getCompletePost();
     getAuthorUsername();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    socket.current = io("ws://localhost:8900");
   }, []);
 
   const [likesChecked, setLikesChecked] = useState(false);
@@ -181,7 +186,7 @@ const Post = () => {
   const [postLikesCount, setPostLikesCount] = useState(0);
 
   useEffect(() => {
-    setLikesChecked(post.likes.includes(userStore.username));
+    setLikesChecked(post.likes.includes(userStore.name));
     setPostLikesCount(post.likes.length);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post]);
@@ -242,15 +247,60 @@ const Post = () => {
   };
 
   const likePost = async (postId, userId) => {
+    const description = "has liked your post";
+    const isunread = "1";
+    const link = `/ideas/${post.id}`;
+    const timestamp = new Date();
+    const triggeruserid = userStore.id;
+    const triggerusername = authorUsername;
+    const userid = post.userid;
+    console.log("post.userid", post.userid);
+    console.log("userid", userid);
+    console.log("author username", triggerusername);
+
+    console.log(` triggeruserid ${triggeruserid} userid ${userid}`);
+
+    socket.current.emit("likePost", {
+      id: timestamp,
+      description: description,
+      isunread: isunread,
+      link: link,
+      timestamp: timestamp,
+      triggeruserid: triggeruserid,
+      triggerUsername: triggerusername,
+      userid: userid,
+    });
+
     try {
-      const res = await socialMediaAPI.likePost(postId, userId);
-      const data = JSON.parse(JSON.stringify(res)).data;
-      console.log(data);
+      const res1 = await socialMediaAPI.likePost(postId, userId);
+      const data1 = JSON.parse(JSON.stringify(res1)).data;
+      console.log(data1);
       getCompletePost();
+
+      const res2 = await notificationAPI.createNotification(
+        description,
+        isunread,
+        link,
+        triggeruserid,
+        userid
+      );
+      const data2 = JSON.parse(JSON.stringify(res2)).data;
+      console.log(data2);
     } catch (error) {
       console.error(error);
     }
   };
+
+  // const likePost = async (postId, userId) => {
+  //   try {
+  //     const res = await socialMediaAPI.likePost(postId, userId);
+  //     const data = JSON.parse(JSON.stringify(res)).data;
+  //     console.log(data);
+  //     getCompletePost();
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const unlikePost = async (postId, userId) => {
     try {
@@ -270,7 +320,7 @@ const Post = () => {
     console.log("post.id", post.id);
     console.log("user.id", userStore.id);
 
-    if (post.likes.includes(userStore.username)) {
+    if (post.likes.includes(userStore.name)) {
       unlikePost(post.id, userStore.id);
     } else {
       likePost(post.id, userStore.id);

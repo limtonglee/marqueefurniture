@@ -25,7 +25,7 @@ const NotificationItem = ({ notification, refreshData }) => {
         <ListItem disablePadding>
           <ListItemButton
             component="a"
-            href="#simple-list"
+            href={notification.link !== "" ? notification.link : ""}
             sx={{
               width: "100%",
               p: 3,

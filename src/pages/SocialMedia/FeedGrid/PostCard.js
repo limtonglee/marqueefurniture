@@ -72,7 +72,7 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
       // console.log(
       //   `postId ${post.id} is liked by user? ${data.includes(username)}`
       // );
-      setLikesChecked(data.includes(userStore.username) ? true : false);
+      setLikesChecked(data.includes(userStore.name) ? true : false);
     } catch (error) {
       console.error(error);
     }

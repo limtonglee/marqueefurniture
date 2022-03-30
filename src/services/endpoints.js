@@ -118,3 +118,4 @@ export const URL_GET_USER_NOTIFICATIONS = "/api/user/notifications";
 export const URL_MARK_NOTIFICATION_AS_READ = "/api/user/notifications/readone";
 export const URL_MARK_ALL_NOTIFICATIONS_AS_READ =
   "/api/user/notifications/readall";
+export const URL_CREATE_NOTIFICATION = "/api/user/notifications/create";

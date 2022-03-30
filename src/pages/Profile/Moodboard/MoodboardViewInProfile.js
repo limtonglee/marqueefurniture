@@ -186,7 +186,7 @@ const MoodboardViewInProfile = () => {
           <Grid item xs={6} md={4} key={moodboard.id}>
             <Box>
               <Link
-                to={`/moodboard/${userStore.username}/${moodboard.id}`}
+                to={`/moodboard/${userStore.name}/${moodboard.id}`}
                 style={{ textDecoration: "none", color: "black" }}
               >
                 <Typography

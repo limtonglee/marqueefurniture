@@ -9,10 +9,7 @@ import {
     Typography,
     CardMedia,
     Grid,
-    styled,
     CardContent,
-    CardActions,
-
 } from '@mui/material';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 import { useStores } from "../../../stores/RootStore";
@@ -49,7 +46,6 @@ export const ShopProfile = () => {
     }, []);
 
     const [formData, setFormData] = useReducer(formReducer, {});
-    const [submitting, setSubmitting] = useState(false);
     const handleChange = (event) => {
         setFormData({
             name: event.target.name,
@@ -60,9 +56,8 @@ export const ShopProfile = () => {
         event.preventDefault();
         SellerCenterAPI.editShopProfile(formData.shopName, formData.shopWebsite, formData.shopDescription, 1);
         getShopProfile();
-        setSubmitting(true);
         setTimeout(() => {
-            setSubmitting(false);
+
         }, 3000);
     }
 

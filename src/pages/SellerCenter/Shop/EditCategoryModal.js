@@ -1,16 +1,13 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer } from 'react';
 import {
     Button,
     Box,
-    Card,
     Modal,
     TextField,
-    MenuItem,
     Typography,
     IconButton,
 
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from "@mui/icons-material/Close";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 

@@ -34,7 +34,7 @@ export const Voucher = () => {
 
     useEffect(() => {
         getVouchers();
-    }, []);
+    });
 
     let tabData = vouchers;
     const handleChange = (event, newValue) => {
@@ -55,8 +55,8 @@ export const Voucher = () => {
 
     const handleDelete = async (voucherId) => {
         try {
-            const res = await SellerCenterAPI.deleteVoucher(voucherId);
-            getVouchers();
+            await SellerCenterAPI.deleteVoucher(voucherId);
+            refreshData();
         } catch (error) {
             console.error(error);
         }

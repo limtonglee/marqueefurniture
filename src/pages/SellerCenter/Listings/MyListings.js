@@ -1,7 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from "react";
 import { Layout } from '../Layout';
-import { listingsData } from "../../../data/listingsData";
 // material
 import {
     Card,
@@ -10,15 +9,12 @@ import {
     Typography,
     Tabs,
     Tab,
-    Box,
-    styled,
     Grid,
     TextField,
     MenuItem
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router";
-import Searchbar from "../../../components/Searchbar";
 import EditListingModal from "./EditListingModal";
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
@@ -45,7 +41,7 @@ export const MyListings = () => {
 
     useEffect(() => {
         getListings();
-    }, []);
+    });
 
     const handleChange = (event, newValue) => {
         setValue(newValue);

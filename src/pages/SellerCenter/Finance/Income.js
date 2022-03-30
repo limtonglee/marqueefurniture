@@ -38,7 +38,7 @@ export const Income = () => {
     useEffect(() => {
         getIncome();
         getBalance();
-    }, []);
+    });
 
     return (
         <Layout>

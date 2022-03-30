@@ -64,7 +64,6 @@ const formReducer = (state, event) => {
 
 export const AddNewListing = () => {
     const [formData, setFormData] = useReducer(formReducer, {});
-    const [submitting, setSubmitting] = useState(false);
 
     const handleChange = (event) => {
         setFormData({
@@ -93,7 +92,6 @@ export const AddNewListing = () => {
             formData.type,
         );
         setTimeout(() => {
-            setSubmitting(false);
             setFormData({
                 reset: true
             })

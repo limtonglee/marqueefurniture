@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { getSellerInfo } from "../../services/Listings";
 import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import StorefrontIcon from '@mui/icons-material/Storefront';
+
 
 export const SellerData = ({ listingId }) => {
   const [shopName, setShopName] = useState("");
@@ -15,11 +17,12 @@ export const SellerData = ({ listingId }) => {
       setShopName(response.data[0].shopname);
     };
     getSellerData(listingId);
-  });
+  }, []);
 
   return (
     <Link to={`/SellerProfile`} style={{ textDecoration: "none" }}>
-      <Typography variant="body2" gutterBottom color="primary.main">
+      <Typography variant="body2"  color="primary.main">
+      <StorefrontIcon/>
         {shopName}
       </Typography>
     </Link>

@@ -115,13 +115,15 @@ export const ItemDetails = () => {
       <Grid container spacing={2}>
         <Grid item md={6} xs={12}>
           <CardMedia width="auto" align="center">
-            <img
-              height="auto"
-              width="100%"
-              src={`/api/image/${item.image}`}
-              alt={item.name}
-              title={item.name}
-            />
+            {item.image !== undefined && (
+              <img
+                height="auto"
+                width="100%"
+                src={`/api/image/${item.image}`}
+                alt={item.name}
+                title={item.name}
+              />
+            )}
           </CardMedia>
           <ImageListItem
             key={item.image}
@@ -133,12 +135,14 @@ export const ItemDetails = () => {
               height: 75,
             }}
           >
-            <img
-              src={`/api/image/${item.image}?w=188&h=188&fit=crop&auto=format`}
-              alt={item.name}
-              height="auto"
-              width="50%"
-            />
+            {item.image !== undefined && (
+              <img
+                src={`/api/image/${item.image}`}
+                alt={item.name}
+                height="auto"
+                width="50%"
+              />
+            )}
           </ImageListItem>
         </Grid>
         <Grid item md={6} xs={12}>
@@ -177,10 +181,10 @@ export const ItemDetails = () => {
                   />
                 </ListItem>
                 <Divider />
+                <Typography variant="h3" sx={HeadingTypoStyle}>
+                  Variation:
+                </Typography>
                 <Typography variant="h3" color={item.variations}>
-                  <Typography variant="h3" sx={HeadingTypoStyle}>
-                    Variation:
-                  </Typography>
                   {item.variations}
                 </Typography>
                 <Divider />
@@ -327,18 +331,21 @@ export const ItemDetails = () => {
           </CardContent>
         </Grid>
       </Grid>
+
       <Divider></Divider>
 
       <CardHeader
         avatar={
           <Link to={`/SellerProfile`} style={{ textDecoration: "none" }}>
-            <Avatar
-              src={images}
-              alt="profile-image"
-              variant="rounded"
-              shadow="sm"
-              sx={{ height: "70px", width: "70px" }}
-            />
+            {images !== "" && (
+              <Avatar
+                src={`/api/image/${images}`}
+                alt="profile-image"
+                variant="rounded"
+                shadow="sm"
+                sx={{ height: "70px", width: "70px" }}
+              />
+            )}
           </Link>
         }
         sx={{ p: 0 }}

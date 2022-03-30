@@ -201,9 +201,9 @@ export const editShopProfile = (name, website, description, shopId) => {
 };
 
 // rating
-export const getShopRatings = (shopId) => {
+export const getShopRatings = (sellerId) => {
   const params = {
-    shopId: shopId
+    sellerId: sellerId
   };
   return get(URL_GET_SHOP_RATINGS, params);
 };

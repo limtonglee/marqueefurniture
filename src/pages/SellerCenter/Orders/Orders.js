@@ -167,11 +167,9 @@ export const Orders = () => {
                                     <Grid container p={2}>
                                         <Grid item xs={2}>
                                             <img
-                                                src={`/api/image/${item.image}?w=124&fit=crop&auto=format`}
-                                                alt={item.name}
+                                                src={`/api/image/${item.image}`}
+                                                alt='image'
                                             />
-                                        </Grid>
-                                        <Grid item xs={2}>
                                             {item.name}
                                         </Grid>
                                         <Grid item xs={3}>
@@ -180,7 +178,7 @@ export const Orders = () => {
                                         <Grid item xs={2}>
                                             ${item.price}
                                         </Grid>
-                                        <Grid item xs={1}>
+                                        <Grid item xs={3}>
                                             {item.order_status}
                                         </Grid>
                                         <Grid item xs={2}>

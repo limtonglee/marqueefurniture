@@ -12,6 +12,7 @@ import {
 
 } from '@mui/material';
 import CloseIcon from "@mui/icons-material/Close";
+import * as SellerCenterAPI from "../../../services/SellerCenter";
 
 const style = {
     wrapper: {
@@ -47,12 +48,19 @@ const style = {
 const formReducer = (state, event) => {
     if (event.reset) {
         return {
-            productType: '',
-            productName: '',
-            productDescription: '',
-            variation: '',
-            price: 0,
-            stock: 0,
+            name: '',
+            image: '',
+            description: '',
+            category: '',
+            brand: '',
+            warrantyInfo: '',
+            shippingProvider: '',
+            parcelSize: '',
+            weight: '',
+            stockAvailable: '',
+            listingPrice: '',
+            variations: '',
+            dimensions: '',
         }
     }
     return {
@@ -142,7 +150,7 @@ export default function BasicModal({ children }) {
                                     name="name"
                                     label="Product name"
                                     onChange={handleChange}
-                                    value={formData.name || ''}
+                                    value={formData.name || children.name}
                                 >
                                 </TextField>
                                 <TextField

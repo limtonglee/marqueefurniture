@@ -21,18 +21,8 @@ import Autocomplete from "@mui/material/Autocomplete";
 
 import Grid from "@mui/material/Grid";
 
-import { shadows } from "@mui/system";
-
 const RequestConsultation = () => {
   let navigate = useNavigate();
-
-  const [values, setValues] = React.useState({
-    amount: "",
-    password: "",
-    weight: "",
-    weightRange: "",
-    showPassword: false,
-  });
 
   const [moodboardValues, setMoodboardValues] = useState([]);
   const [designValues, setDesignValues] = useState([]);

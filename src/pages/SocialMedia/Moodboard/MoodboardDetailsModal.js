@@ -7,8 +7,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
-// import { user } from "../../../data/currentUserData";
-import user from "../../../data/currentUserData2";
 import * as socialMediaAPI from "../../../services/SocialMedia";
 import { useStores } from "../../../stores/RootStore";
 

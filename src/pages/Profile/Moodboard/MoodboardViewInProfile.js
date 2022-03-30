@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
-// import user from "../../../data/currentUserData2";
 import { useStores } from "../../../stores/RootStore";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";

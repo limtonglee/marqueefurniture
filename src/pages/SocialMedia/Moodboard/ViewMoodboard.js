@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import { user } from "../../../data/currentUserData";
-import user from "../../../data/currentUserData2";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -151,6 +149,7 @@ const ViewMoodboard = () => {
     if (navigationType === "POP") {
       setIsPostView(userStore.prevViewOnMoodboard);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const refreshData = () => {

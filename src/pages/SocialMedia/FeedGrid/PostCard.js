@@ -7,8 +7,6 @@ import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import PushPinIcon from "@mui/icons-material/PushPin";
-// import { user } from "../../../data/currentUserData";
-import user from "../../../data/currentUserData2";
 import MoodboardModal from "../Moodboard/MoodboardModal";
 import { Link } from "react-router-dom";
 import * as socialMediaAPI from "../../../services/SocialMedia";

@@ -20,7 +20,6 @@ import ChatAnnouncement from "./ChatAnnouncement";
 import { useNavigate } from "react-router-dom";
 
 import * as chatAPI from "../../services/Chat";
-import * as socialMediaAPI from "../../services/SocialMedia";
 
 import { useStores } from "../../stores/RootStore";
 
@@ -66,7 +65,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
     }
   };
 
-  const [openMoreMenu, setOpenMoreMenu] = React.useState(false);
+  const [openMoreMenu, setOpenMoreMenu] = React.useState(false); // eslint-disable-line no-unused-vars
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClickPopover = (event) => {

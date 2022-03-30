@@ -16,7 +16,6 @@ import * as socialMediaAPI from "../../services/SocialMedia";
 import FeedGrid from "../SocialMedia/FeedGrid/FeedGrid";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate, useNavigationType } from "react-router-dom";
-import Stack from "@mui/material/Stack";
 
 function Profile() {
   const [tabValue, setTabValue] = useState(0);
@@ -36,7 +35,7 @@ function Profile() {
   };
 
   const [posts, setPosts] = useState([]);
-  const [postsStore, setPostsStore] = useState([]);
+  const [postsStore, setPostsStore] = useState([]); // eslint-disable-line no-unused-vars
 
   const getUserPosts = async () => {
     try {
@@ -133,6 +132,7 @@ function Profile() {
     if (navigationType === "POP") {
       setTabValue(userStore.prevTabOnProfile);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCreatePost = () => {

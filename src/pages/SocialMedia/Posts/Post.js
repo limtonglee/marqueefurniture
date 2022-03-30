@@ -4,8 +4,6 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-// import { user } from "../../../data/currentUserData";
-import user from "../../../data/currentUserData2";
 import Checkbox from "@mui/material/Checkbox";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
@@ -15,8 +13,6 @@ import Stack from "@mui/material/Stack";
 import Comment from "./Comment";
 import Avatar from "@mui/material/Avatar";
 import SendIcon from "@mui/icons-material/Send";
-// import { postData } from "../../../data/postData";
-// import postData from "../../../data/postData2";
 import { useParams } from "react-router-dom";
 import MoodboardModal from "../Moodboard/MoodboardModal";
 import TextField from "@mui/material/TextField";
@@ -187,6 +183,7 @@ const Post = () => {
   useEffect(() => {
     setLikesChecked(post.likes.includes(userStore.username));
     setPostLikesCount(post.likes.length);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post]);
 
   const postCardStyles = {

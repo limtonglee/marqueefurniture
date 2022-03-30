@@ -1,11 +1,8 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-// import { user } from "../../../data/currentUserData";
-import user from "../../../data/currentUserData2";
 import Button from "@mui/material/Button";
 import { useStores } from "../../../stores/RootStore";
-
 import * as socialMediaAPI from "../../../services/SocialMedia";
 
 // const { username } = user;

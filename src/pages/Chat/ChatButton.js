@@ -5,8 +5,8 @@ import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
 
 const ChatButton = () => {
-  const [chatData, setChatData] = useState([]);
-  const [unreadCount, setUnreadCount] = useState(0);
+  const [chatData, setChatData] = useState([]); // eslint-disable-line no-unused-vars
+  const [unreadCount, setUnreadCount] = useState(0); // eslint-disable-line no-unused-vars
 
   let navigate = useNavigate();
 

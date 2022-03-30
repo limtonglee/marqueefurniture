@@ -1,6 +1,5 @@
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import StorefrontIcon from "@mui/icons-material/Storefront";
@@ -8,7 +7,6 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Divider, Tooltip } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
-import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -19,9 +17,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import jack from "../assets/images/jack.jpg";
 import { useStores } from "../stores/RootStore";
-import NotificationsPopover from "./NotificationsPopover";
 import ControlledSwitches from "./SwitchNav";
 import NotificationButton from "../pages/Notifications/NotificationButton";
 import Stack from "@mui/material/Stack";
@@ -58,7 +54,7 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
 
   const { userStore } = useStores();
 
-  const { cartStore } = useStores();
+  const { cartStore } = useStores(); // eslint-disable-line no-unused-vars
 
   const profilePic = userStore.profilePic;
 

@@ -50,6 +50,7 @@ const Messenger = () => {
       });
 
     arrivalMessage && refreshUserChatsWithoutUpdatingCurrentChat();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [arrivalMessage]);
 
   useEffect(() => {

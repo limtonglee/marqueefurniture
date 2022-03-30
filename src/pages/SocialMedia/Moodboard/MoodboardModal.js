@@ -20,7 +20,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import * as socialMediaAPI from "../../../services/SocialMedia";
-import user from "../../../data/currentUserData2";
 import { useStores } from "../../../stores/RootStore";
 
 const Alert = React.forwardRef(function Alert(props, ref) {

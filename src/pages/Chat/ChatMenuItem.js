@@ -7,7 +7,6 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 
 import * as chatAPI from "../../services/Chat";
-import * as socialMediaAPI from "../../services/SocialMedia";
 
 const ChatMenuItem = ({ chat, isCurrent, setCurrentChat }) => {
   // console.log("chat at chatmenuitem", chat);
@@ -29,6 +28,7 @@ const ChatMenuItem = ({ chat, isCurrent, setCurrentChat }) => {
 
   useEffect(() => {
     setMessagePreview(getLastMessagePreview(chat));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

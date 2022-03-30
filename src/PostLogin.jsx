@@ -31,6 +31,7 @@ import Messenger from "./pages/Chat/Messenger";
 
 import { Box } from "@mui/material";
 import SellerProfile from "./pages/SellerProfile/SellerProfile";
+import Checkout from "./pages/Checkout";
 
 const PostLogin = ({checked, setChecked, handleChange}) => {
   return (
@@ -52,6 +53,7 @@ const PostLogin = ({checked, setChecked, handleChange}) => {
         <Route path="/moodboard/:username/:moodboardId" element={<ViewMoodboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/sellercenter" element={<SellerCenter />}>
           <Route path="" element={<Orders />} />
           <Route path="orders" element={<Orders />} />

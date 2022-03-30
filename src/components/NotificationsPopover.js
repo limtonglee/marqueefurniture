@@ -118,25 +118,27 @@ export default function NotificationsPopover() {
 
   return (
     <>
-      <IconButton
-        ref={anchorRef}
-        size="large"
-        color={open ? "primary" : "default"}
-        onClick={handleOpen}
-        sx={{
-          ...(open && {
-            bgcolor: (theme) =>
-              alpha(
-                theme.palette.primary.main,
-                theme.palette.action.focusOpacity
-              ),
-          }),
-        }}
-      >
-        <Badge badgeContent={totalUnRead} color="error">
-          <CircleNotificationsOutlinedIcon sx={{ color: "common.white" }} />
-        </Badge>
-      </IconButton>
+      <Tooltip title="Open notification">
+        <IconButton
+          ref={anchorRef}
+          size="large"
+          color={open ? "primary" : "default"}
+          onClick={handleOpen}
+          sx={{
+            ...(open && {
+              bgcolor: (theme) =>
+                alpha(
+                  theme.palette.primary.main,
+                  theme.palette.action.focusOpacity
+                ),
+            }),
+          }}
+        >
+          <Badge badgeContent={totalUnRead} color="error">
+            <CircleNotificationsOutlinedIcon sx={{ color: "common.white" }} />
+          </Badge>
+        </IconButton>
+      </Tooltip>
 
       <MenuPopover
         open={open}

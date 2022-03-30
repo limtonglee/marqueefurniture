@@ -4,7 +4,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import StorefrontIcon from "@mui/icons-material/Storefront";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Divider, Tooltip } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
@@ -33,12 +33,12 @@ import ControlledSwitches from "./SwitchNav";
 const AdminPageLinks = [{ text: "Admin Management", link: "/admin" }];
 
 const settings = [
-	{ text: "Profile", link: "/profile" },
-	{ text: "Moodboards", link: "/moodboard/elon/0" },
-	{ text: "Cart", link: "/cart" },
-	{ text: "Chat", link: "/chat" },
-  { text: "Liked Listing", link: "/profile/likedListing"},
-	{ text: "Seller Center", link: "/sellercenter" },
+  { text: "Profile", link: "/profile" },
+  { text: "Moodboards", link: "/moodboard/elon/0" },
+  { text: "Cart", link: "/cart" },
+  { text: "Chat", link: "/chat" },
+  { text: "Liked Listing", link: "/profile/likedListing" },
+  { text: "Seller Center", link: "/sellercenter" },
 ];
 
 const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
@@ -59,7 +59,7 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
   const { cartStore } = useStores();
 
   const profilePic = userStore.profilePic;
-  
+
   const setLogout = (e) => {
     userStore.setIsLoggedOut();
     navigate("/marketplace");
@@ -129,11 +129,7 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open notification">
-                <>
                   <NotificationsPopover />
-                </>
-              </Tooltip>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="Remy Sharp" src={`/api/image/${profilePic}`} />
@@ -177,14 +173,9 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
                       {setting.text === "Cart" && (
                         <>
                           <Tooltip title="Cart" placement="right">
-                            <Badge
-                              color="secondary"
-                              badgeContent={cartStore.items.length}
-                            >
-                              <ShoppingCartCheckoutIcon
-                                sx={{ color: "common.black" }}
-                              />
-                            </Badge>
+                            <ShoppingCartCheckoutIcon
+                              sx={{ color: "common.black" }}
+                            />
                           </Tooltip>
                         </>
                       )}
@@ -197,9 +188,7 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
                       )}
                       {setting.text === "Liked Listing" && (
                         <Tooltip title="Liked Listing" placement="right">
-                          <FavoriteBorderIcon
-                            sx={{ color: "common.black" }}
-                          />
+                          <FavoriteBorderIcon sx={{ color: "common.black" }} />
                         </Tooltip>
                       )}
                       {setting.text === "Seller Center" && (

@@ -7,6 +7,7 @@ import {
     MenuItem,
 } from '@mui/material';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
+import { useStores } from "../../../stores/RootStore";
 
 const style = {
     cardStyle: {
@@ -64,7 +65,7 @@ const formReducer = (state, event) => {
 
 export const AddNewListing = () => {
     const [formData, setFormData] = useReducer(formReducer, {});
-    const [submitting, setSubmitting] = useState(false);
+    const { userStore } = useStores();
 
     const handleChange = (event) => {
         setFormData({
@@ -89,11 +90,10 @@ export const AddNewListing = () => {
             formData.variations,
             formData.dimensions,
             'LIVE',
-            1,
+            userStore.id,
             formData.type,
         );
         setTimeout(() => {
-            setSubmitting(false);
             setFormData({
                 reset: true
             })
@@ -272,8 +272,6 @@ export const AddNewListing = () => {
                     Save and Publish
                 </Button>
             </form>
-
         </Layout>
-
     );
 }

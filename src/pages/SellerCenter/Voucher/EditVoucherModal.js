@@ -1,5 +1,5 @@
 import EditIcon from '@mui/icons-material/Edit';
-import React, { useReducer, useState } from 'react';
+import React, { useReducer } from 'react';
 import {
     Button,
     Box,
@@ -76,7 +76,6 @@ const EditVoucherModal = ({
     const handleClose = () => setOpen(false);
 
     const [formData, setFormData] = useReducer(formReducer, {});
-    const [submitting, setSubmitting] = useState(false);
 
     const handleChange = (event) => {
 
@@ -90,7 +89,6 @@ const EditVoucherModal = ({
 
     const handleSubmit = event => {
         event.preventDefault();
-        if(formData.voucherName)
         SellerCenterAPI.editVoucher(
             voucherId,
             formData.voucherName,
@@ -103,7 +101,6 @@ const EditVoucherModal = ({
         refreshData();
         handleClose();
         setTimeout(() => {
-            setSubmitting(false);
             setFormData({
                 reset: true
             })

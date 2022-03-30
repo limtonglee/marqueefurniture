@@ -9,13 +9,10 @@ import {
     Typography,
     CardMedia,
     Grid,
-    styled,
     CardContent,
-    CardActions,
-
 } from '@mui/material';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
-
+import { useStores } from "../../../stores/RootStore";
 
 const formReducer = (state, event) => {
     if (event.reset) {
@@ -31,16 +28,13 @@ const formReducer = (state, event) => {
     }
 }
 
-const Input = styled("input")({
-    display: "none",
-});
-
 export const ShopProfile = () => {
     const [shop, setShop] = useState([]);
+    const { userStore } = useStores();
 
     const getShopProfile = async () => {
         try {
-            const res = await SellerCenterAPI.getShopProfile(1);
+            const res = await SellerCenterAPI.getShopProfile(userStore.id);
             setShop(JSON.parse(JSON.stringify(res.data))[0]);
         } catch (error) {
             console.error(error);
@@ -52,7 +46,6 @@ export const ShopProfile = () => {
     }, []);
 
     const [formData, setFormData] = useReducer(formReducer, {});
-    const [submitting, setSubmitting] = useState(false);
     const handleChange = (event) => {
         setFormData({
             name: event.target.name,
@@ -61,11 +54,14 @@ export const ShopProfile = () => {
     };
     const handleSubmit = event => {
         event.preventDefault();
-        SellerCenterAPI.editShopProfile(formData.shopName, formData.shopWebsite, formData.shopDescription, 1);
+        SellerCenterAPI.editShopProfile(
+            formData.shopName, 
+            formData.shopWebsite, 
+            formData.shopDescription, 
+            userStore.id);
         getShopProfile();
-        setSubmitting(true);
         setTimeout(() => {
-            setSubmitting(false);
+
         }, 3000);
     }
 

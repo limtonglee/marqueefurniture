@@ -12,16 +12,18 @@ import { Link } from "react-router-dom";
 import AddCategoryModal from './AddCategoryModal';
 import EditCategoryModal from './EditCategoryModal';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
+import { useStores } from "../../../stores/RootStore";
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
-export const ShopCategories = (props) => {
+export const ShopCategories = () => {
 
     const [data, setData] = useState([]);
-
+    const { userStore } = useStores();
+    
     const getShopCategories = async () => {
         try {
-            const res = await SellerCenterAPI.getShopCategories(1);
+            const res = await SellerCenterAPI.getShopCategories(userStore.id);
             setData(JSON.parse(JSON.stringify(res.data)));
         } catch (error) {
             console.error(error);
@@ -53,7 +55,7 @@ export const ShopCategories = (props) => {
                     <Typography variant="h4" gutterBottom>
                         My Shop Categories
                     </Typography>
-                    <AddCategoryModal refreshData={refreshData}></AddCategoryModal>
+                    <AddCategoryModal refreshData={refreshData}>{userStore.id}</AddCategoryModal>
                 </Stack>
                 <Grid container>
                     <Grid item xs={4}>

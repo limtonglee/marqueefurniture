@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Layout } from "../Layout";
-import user from "../../../data/currentUserData2";
 // material
 import {
     Card,
     Stack,
-    Button,
     Typography,
     Tabs,
     Tab,
@@ -14,8 +12,6 @@ import {
     Grid,
     ButtonBase,
     Avatar,
-    Link,
-    TextField,
 } from "@mui/material";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 

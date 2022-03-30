@@ -2,20 +2,15 @@ import React from 'react';
 import { useEffect, useState } from "react";
 import { Layout } from '../Layout';
 import {
-    Button,
     Card,
-    TextField,
     Container,
     Box,
     Typography,
     CardMedia,
     Grid,
-    styled,
     CardContent,
-    CardActions,
 } from '@mui/material';
 import { useParams } from "react-router-dom";
-import UpdateOrderModal from './UpdateOrderModal';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 
 export const OrderDetails = () => {
@@ -33,7 +28,7 @@ export const OrderDetails = () => {
 
     useEffect(() => {
         getOrderDetails();
-    }, []);
+    });
 
     return (
         <>

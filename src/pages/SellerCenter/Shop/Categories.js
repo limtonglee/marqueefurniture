@@ -16,7 +16,7 @@ import { useStores } from "../../../stores/RootStore";
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
-export const ShopCategories = (props) => {
+export const ShopCategories = () => {
 
     const [data, setData] = useState([]);
     const { userStore } = useStores();
@@ -55,7 +55,7 @@ export const ShopCategories = (props) => {
                     <Typography variant="h4" gutterBottom>
                         My Shop Categories
                     </Typography>
-                    <AddCategoryModal refreshData={refreshData}></AddCategoryModal>
+                    <AddCategoryModal refreshData={refreshData}>{userStore.id}</AddCategoryModal>
                 </Stack>
                 <Grid container>
                     <Grid item xs={4}>

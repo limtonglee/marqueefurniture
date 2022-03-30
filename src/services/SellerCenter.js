@@ -8,6 +8,7 @@ import { URL_UPDATE_SHOP_ORDER } from "../services/endpoints";
 import { URL_GET_SHOP_LISTINGS } from "../services/endpoints";
 import { URL_CREATE_SHOP_LISTING } from "../services/endpoints";
 import { URL_EDIT_SHOP_LISTING } from "../services/endpoints";
+import { URL_EDIT_SHOP_LISTING_STATUS } from "../services/endpoints";
 // vouchers
 import { URL_GET_SHOP_VOUCHERS } from "../services/endpoints";
 import { URL_EDIT_SHOP_VOUCHER } from "../services/endpoints";
@@ -80,10 +81,12 @@ export const createListing = (name, image, description, category, brand, warrant
   };
   return postAsFormInput(URL_CREATE_SHOP_LISTING, body);
 };
-export const editListing = (name, description, category, brand, warrantyInfo, shippingProvider,
-  parcelSize, weight, stockAvailable, listingPrice, variations, dimensions) => {
+export const editListing = (listingId, name, image, description, category, brand, warrantyInfo, shippingProvider,
+  parcelSize, weight, stockAvailable, listingPrice, variations, dimensions, status, type) => {
   const body = {
+    listingId: listingId,
     name: name,
+    image: image,
     description: description,
     category: category,
     brand: brand,
@@ -95,8 +98,17 @@ export const editListing = (name, description, category, brand, warrantyInfo, sh
     listingPrice: listingPrice,
     variations: variations,
     dimensions: dimensions,
+    status: status,
+    type: type,
   };
   return update(URL_EDIT_SHOP_LISTING, body);
+};
+export const updateListingStatus = (status, listingId) => {
+  const body = {
+    status: status,
+    listingId: listingId,
+  };
+  return update(URL_EDIT_SHOP_LISTING_STATUS, body);
 };
 
 // vouchers

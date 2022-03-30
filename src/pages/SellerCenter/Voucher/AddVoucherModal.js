@@ -13,6 +13,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 
 const AddVoucherModal = ({
+    userId,
     refreshData,
 }) => {
     const style = {
@@ -93,7 +94,7 @@ const AddVoucherModal = ({
             '2022-07-01',
             '2022-07-01',
             formData.voucherStatus,
-            1,
+            userId,
         );
         refreshData();
         handleClose();

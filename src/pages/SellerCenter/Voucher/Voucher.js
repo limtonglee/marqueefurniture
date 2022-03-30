@@ -34,7 +34,7 @@ export const Voucher = () => {
 
     useEffect(() => {
         getVouchers();
-    });
+    }, []);
 
     let tabData = vouchers;
     const handleChange = (event, newValue) => {
@@ -73,7 +73,7 @@ export const Voucher = () => {
                     <Typography variant="h4" gutterBottom>
                         Vouchers
                     </Typography>
-                    <AddVoucherModal refreshData={refreshData}></AddVoucherModal>
+                    <AddVoucherModal refreshData={refreshData}>{userStore.id}</AddVoucherModal>
                 </Stack>
                 <Card style={{ overflow: 'visible' }}>
                     <Tabs

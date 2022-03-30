@@ -52,18 +52,19 @@ const style = {
 const formReducer = (state, event) => {
     if (event.reset) {
         return {
-            name: '',
-            description: '',
-            category: '',
-            brand: '',
-            warrantyInfo: '',
-            shippingProvider: '',
-            parcelSize: '',
-            weight: '',
-            stockAvailable: '',
-            listingPrice: '',
-            variations: '',
-            dimensions: '',
+            name: children.name,
+            description: children.description,
+            category: children.category,
+            brand: children.brand,
+            warrantyInfo: children.warrantyinfo,
+            shippingProvider: children.shippingprovider,
+            parcelSize: children.parcelsize,
+            weight: children.weight,
+            stockAvailable: children.stockavailable,
+            listingPrice: children.listingprice,
+            variations: children.variations,
+            dimensions: children.dimensions,
+            type: children.type,
         }
     }
     return {
@@ -87,13 +88,12 @@ const formReducer = (state, event) => {
         });
     };
 
-    const voucherId = children.id;
-
     const handleSubmit = event => {
         event.preventDefault();
-        SellerCenterAPI(
-            
+        SellerCenterAPI.editListing(
+            children.id,
             formData.name,
+            children.image,
             formData.description,
             formData.category,
             formData.brand,
@@ -105,6 +105,8 @@ const formReducer = (state, event) => {
             formData.listingPrice,
             formData.variations,
             formData.dimensions,
+            'LIVE',
+            children.type,
         );
         refreshData();
         handleClose();

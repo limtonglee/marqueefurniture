@@ -13,6 +13,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { createShopCategory } from "../../../services/SellerCenter";
 
 const AddCategoryModal = ({
+    userId,
     refreshData,
 }) => {
     const style = {
@@ -68,7 +69,7 @@ const AddCategoryModal = ({
     };
     const handleSubmit = event => {
         event.preventDefault();
-        createShopCategory(formData.categoryName, 1);
+        createShopCategory(formData.categoryName, userId);
         refreshData();
         handleClose();
         setTimeout(() => {

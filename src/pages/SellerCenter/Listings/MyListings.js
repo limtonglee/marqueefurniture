@@ -41,7 +41,11 @@ export const MyListings = () => {
 
     useEffect(() => {
         getListings();
-    });
+    }, []);
+
+    const refreshData = () => {
+        getListings();
+    };
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -91,13 +95,15 @@ export const MyListings = () => {
         }
     };
 
-    const handleDelist = (event, item, value) => {
-        if (item.status !== 'Delisted') {
-            item.status = 'Delisted';
-        } else if (item.status === 'Delisted') {
-            item.status = 'Live';
+    const handleDelist = async (item) => {
+        const status = item.status === 'DELISTED' ? 'LIVE' : 'DELISTED';
+        try {
+            await SellerCenterAPI.updateListingStatus(status, item.id);
+            refreshData();
+        } catch (error) {
+            console.error(error);
         }
-        handleChange();
+        refreshData();
     }
 
     return (
@@ -152,10 +158,10 @@ export const MyListings = () => {
                         <Grid item xs={1}>
                             SKU
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={1}>
                             Price
                         </Grid>
-                        <Grid item xs={1}>
+                        <Grid item xs={2}>
                             Status
                         </Grid>
                         <Grid item xs={1}>
@@ -179,9 +185,8 @@ export const MyListings = () => {
                                     <Grid container p={2}>
                                         <Grid item xs={3}>
                                             <img
-                                                src={`/api/image/${item.image}?w=124&fit=crop&auto=format`}
+                                                src={`/api/image/${item.image}`}
                                                 alt={item.title}
-                                                
                                             />
                                             <div>{item.name}</div>
                                             <div>Variation: {item.variations}</div>
@@ -189,11 +194,11 @@ export const MyListings = () => {
                                         <Grid item xs={1}>
                                             {item.id}
                                         </Grid>
-                                        <Grid item xs={2}>
+                                        <Grid item xs={1}>
                                             S${item.listingprice}
 
                                         </Grid>
-                                        <Grid item xs={1}>
+                                        <Grid item xs={2}>
                                             {item.status}
                                         </Grid>
                                         <Grid item xs={1}>
@@ -203,8 +208,8 @@ export const MyListings = () => {
                                             {item.sales}
                                         </Grid>
                                         <Grid item xs={3}>
-                                            <EditListingModal>{item}</EditListingModal>
-                                            {item.status === "Delisted" ? (
+                                            <EditListingModal refreshData={refreshData}>{item}</EditListingModal>
+                                            {item.status === "DELISTED" ? (
                                                 <Button
                                                     variant="contained"
                                                     startIcon={<PlaylistAddIcon />}
@@ -227,7 +232,7 @@ export const MyListings = () => {
                                                         marginTop: "12px"
                                                     }}
                                                     onClick={e => {
-                                                        handleDelist(e, item, value);
+                                                        handleDelist(item);
                                                     }}
                                                 >
                                                     Delist

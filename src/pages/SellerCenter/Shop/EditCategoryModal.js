@@ -70,8 +70,6 @@ const EditCategoryModal = ({
     };
     const handleSubmit = event => {
         event.preventDefault();
-        console.log('ZZZ', formData.name);
-        console.log('ZZZ', shopCategoryId);
         SellerCenterAPI.editShopCategory(formData.name, shopCategoryId);
         
         refreshData();

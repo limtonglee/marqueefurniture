@@ -54,7 +54,11 @@ export const ShopProfile = () => {
     };
     const handleSubmit = event => {
         event.preventDefault();
-        SellerCenterAPI.editShopProfile(formData.shopName, formData.shopWebsite, formData.shopDescription, 1);
+        SellerCenterAPI.editShopProfile(
+            formData.shopName, 
+            formData.shopWebsite, 
+            formData.shopDescription, 
+            userStore.id);
         getShopProfile();
         setTimeout(() => {
 

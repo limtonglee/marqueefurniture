@@ -9,8 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getOrders } from "../../../services/Orders";
 import { useStores } from "../../../stores/RootStore";
 import { getListingDetails } from "../../../services/Listings";
-import { SellerData} from "../../Cart/SellerData";
-
+import { SellerData } from "../../Cart/SellerData";
 
 const Img = styled("img")({
   margin: "auto",
@@ -30,23 +29,35 @@ export default function Orders() {
     const getListingDetail = async (listingId) => {
       const response = await getListingDetails(listingId);
       const result = await response.data[0];
-      console.log(result)
+      console.log(result);
 
       setItems((items) => [...items, result]);
     };
 
-    const fetchCartData = async () => {
+    const fetchOrderData = async () => {
       const response = await getOrders(userStore.id);
-      const result = await response.data;
-      result.forEach((x) => {
+      const orderResult = await response.data;
+      orderResult.forEach((x) => {
         getListingDetail(x.listingid);
       });
-      setOrders(result);
+      setOrders(orderResult);
     };
 
-    fetchCartData().catch(console.error);
+    fetchOrderData().catch(console.error);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const getItem = (listingId) => {
+    console.log(listingId)
+    let cartItem = {};
+    items.forEach((item) => {
+      console.log(item)
+      if (item.id === listingId) {
+        cartItem = item;
+      }
+    });
+    return cartItem;
+  };
 
   return (
     <Container>
@@ -67,52 +78,45 @@ export default function Orders() {
         <Divider />
         <br />
         <ImageList cols={1} gap={15}>
-          {items.map((cartItem) => (
-            <div key={cartItem.name}>
+          {orders.map((orderItem) => (
+            <div key={orderItem.id}>
               <Grid container spacing={2}>
                 <Grid item>
-                  <Link to={`/marketplace/${cartItem.id}`}>
+                  <Link to={`/marketplace/${getItem(orderItem.listingid).id}`}>
                     <ButtonBase sx={{ width: 128, height: 128 }}>
-                      <Img
-                        src={`/api/image/${cartItem.image}`}
-                        alt={cartItem.name}
-                      />
+                      {getItem(orderItem.id).image !== undefined && (
+                        <Img
+                          src={`/api/image/${getItem(orderItem.listingid).image}`}
+                          alt={getItem(orderItem.id).name}
+                        />
+                      )}
                     </ButtonBase>
                   </Link>
                 </Grid>
                 <Grid item xs={12} sm container>
                   <Grid item xs container direction="column" spacing={2}>
                     <Grid item xs>
-                      <SellerData listingId={cartItem.id} />
+                      {/* <SellerData listingId={getItem(orderItem.id).id} /> */}
 
                       <Typography variant="body2" gutterBottom>
-                        {cartItem.name}
+                        {getItem(orderItem.listingid).name}
                       </Typography>
                       <Typography variant="body2">
-                        Brand: {cartItem.brand}
+                        Brand: {getItem(orderItem.listingid).brand}
+                      </Typography>
+                      <Typography variant="body2">
+                        Order Status: {orderItem.order_status}
                       </Typography>
                       <Divider sx={{ marginBottom: "5px" }} />
                       <Grid container spacing={2} direction="row">
+                  
                         <Grid item>
-                          <Typography variant="body2" gutterBottom>
-                            Voucher Applied:
-                          </Typography>
-                        </Grid>
-                        <Grid item>
-                          <Typography variant="body2" gutterBottom>
-                          </Typography>
+                          <Typography variant="body2" gutterBottom></Typography>
                         </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid item xs={2}>
-                    <Grid item>
-                      <Typography variant="body2" component="div" align="right">
-                        Unit Price:
-                      </Typography>
-                     
-                    </Grid>
-                  </Grid>
+        
                   <Grid item xs={2}>
                     <Grid item>
                       <Typography
@@ -120,28 +124,25 @@ export default function Orders() {
                         component="div"
                         align="center"
                       >
-                        Quantity:
+                        Quantity: 
                       </Typography>
                       <Typography
                         align="center"
                         variant="body2"
                         component="div"
-                      >
-                      </Typography>
+                      >{orderItem.quantity}</Typography>
                     </Grid>
                   </Grid>
                   <Grid item xs={1}>
                     <Grid item>
                       <Typography variant="body2" component="div">
-                        Item Total:
+                        Item Total: 
                       </Typography>
                       <Typography
                         variant="subtitle1"
                         align="center"
                         component="div"
-                      >
-              
-                      </Typography>
+                      >{orderItem.price}</Typography>
                     </Grid>
                   </Grid>
                 </Grid>

@@ -35,6 +35,7 @@ import ReviewDesign from "./pages/Design/ReviewDesign";
 import { Box } from "@mui/material";
 import SellerProfile from "./pages/SellerProfile/SellerProfile";
 import Checkout from "./pages/Checkout";
+import ProfileOrders from "./pages/Profile/Orders";
 
 const PostLogin = ({checked, setChecked, handleChange}) => {
   return (
@@ -79,6 +80,7 @@ const PostLogin = ({checked, setChecked, handleChange}) => {
         </Route>
         <Route path="/profile" element={<Profiles />}>
           <Route path="" element={<Profile />} />
+          <Route path="orders" element={<ProfileOrders />} />
           <Route path=":moodboardId" element={<MoodboardDetails />} />
           <Route path="likedListing" element={<LikedListing />} />
         </Route>

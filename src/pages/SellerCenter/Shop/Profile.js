@@ -94,6 +94,8 @@ export const ShopProfile = () => {
                                     component="img"
                                     height="140"
                                     // image={`/api/image/${shop.images}`}
+                                    image="https://expatliving.sg/wp-content/uploads/2017/05/vitra.jpg"
+                                    alt={`/api/image/journeyeast.jpeg`}
                                 />
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="div">

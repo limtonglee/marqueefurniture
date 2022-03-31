@@ -179,6 +179,8 @@ const Post = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
 
     socket.current = io("ws://localhost:8900");
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [likesChecked, setLikesChecked] = useState(false);
@@ -252,7 +254,7 @@ const Post = () => {
     const link = `/ideas/${post.id}`;
     const timestamp = new Date();
     const triggeruserid = userStore.id;
-    const triggerusername = authorUsername;
+    const triggerusername = userStore.name;
     const userid = post.userid;
     console.log("post.userid", post.userid);
     console.log("userid", userid);

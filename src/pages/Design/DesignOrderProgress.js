@@ -156,12 +156,12 @@ const DesignOrderProgress = () => {
                   </Box>
                 </>
               )}
-              {tabValue === 1 && (
+              {/* {tabValue === 1 && (
                 <>
                   <h1>requirements</h1>
                   copy from requirements section after it's done
                 </>
-              )}
+              )} */}
               {tabValue === 2 && (
                 <>
                   <Box sx={{ mt: 5 }}>

@@ -90,6 +90,7 @@ const NotificationButton = () => {
       });
       console.log("notification button setArrivalNoti");
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

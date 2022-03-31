@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
 import SearchIcon from "@mui/icons-material/Search";
@@ -114,9 +113,9 @@ const ChatMenu = ({ userChats, currentChatId, setCurrentChat }) => {
             >
               No chats yet
             </Typography>
-            <Button variant="contained" size="small">
+            {/* <Button variant="contained" size="small">
               Search for chat
-            </Button>
+            </Button> */}
           </Stack>
         </Box>
       )}

@@ -326,7 +326,7 @@ const MoodboardModal = ({
             </Box>
 
             <Box sx={modalStyles.contents}>
-              <Box sx={{ maxHeight: 250, overflow: "scroll" }}>
+              <Box sx={{ maxHeight: 250, overflowY: "scroll" }}>
                 <List dense sx={{ height: "20 !important" }}>
                   {moodboards.map((moodboard, index) => {
                     const moodboardName = moodboard.boardname;
@@ -356,6 +356,11 @@ const MoodboardModal = ({
                                   ? moodboard.moodboardItems[0].image
                                   : null
                               }
+                              // src={`/api/image/${
+                              //   moodboard.moodboardItems.length > 0
+                              //     ? moodboard.moodboardItems[0].image
+                              //     : null
+                              // }`}
                               sx={{
                                 borderRadius: "10%",
                               }}
@@ -457,6 +462,12 @@ const MoodboardModal = ({
                                   ? moodboard.moodboardItems[0].image
                                   : null
                               }
+                              // src={`/api/image/ \n
+                              // ${
+                              //   moodboard.moodboardItems.length > 0
+                              //     ? moodboard.moodboardItems[0].image
+                              //     : null
+                              // }`}
                               sx={{
                                 borderRadius: "10%",
                               }}

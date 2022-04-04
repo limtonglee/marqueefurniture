@@ -101,7 +101,7 @@ const Post = () => {
     likes: [],
     products: [],
     tags: [],
-    userid: 0,
+    userid: 1,
   });
 
   const getPostDetails = async (postId) => {
@@ -162,6 +162,8 @@ const Post = () => {
     let postDetails = await getPostDetails(postId);
     postDetails = { ...postDetails[0] };
 
+    console.log("postDetails line 165", postDetails);
+
     const postLikes = await getPostLikes(postId);
     const postProducts = await getPostProducts(postId);
     const postTags = await getPostTags(postId);
@@ -176,12 +178,16 @@ const Post = () => {
 
     console.log("completePost", completePost);
     setPost(completePost);
+
+    const postAuthor = await getAuthorUsername(postDetails.userid);
+    setAuthorUsername(postAuthor);
+
     return completePost;
   };
 
   useEffect(() => {
     getCompletePost();
-    getAuthorUsername();
+    // getAuthorUsername();
     // eslint-disable-next-line react-hooks/exhaustive-deps
 
     // socket.current = io("ws://localhost:8900");
@@ -280,16 +286,18 @@ const Post = () => {
     //   userid: userid,
     // });
 
-    socket.sendLikePost({
-      id: timestamp,
-      description: description,
-      isunread: isunread,
-      link: link,
-      timestamp: timestamp,
-      triggeruserid: triggeruserid,
-      triggerUsername: triggerusername,
-      userid: userid,
-    });
+    if (post.userid !== userStore.id) {
+      socket.sendLikePost({
+        id: timestamp,
+        description: description,
+        isunread: isunread,
+        link: link,
+        timestamp: timestamp,
+        triggeruserid: triggeruserid,
+        triggerUsername: triggerusername,
+        userid: userid,
+      });
+    }
 
     try {
       const res1 = await socialMediaAPI.likePost(postId, userId);
@@ -297,15 +305,17 @@ const Post = () => {
       console.log(data1);
       getCompletePost();
 
-      const res2 = await notificationAPI.createNotification(
-        description,
-        isunread,
-        link,
-        triggeruserid,
-        userid
-      );
-      const data2 = JSON.parse(JSON.stringify(res2)).data;
-      console.log(data2);
+      if (post.userid !== userStore.id) {
+        const res2 = await notificationAPI.createNotification(
+          description,
+          isunread,
+          link,
+          triggeruserid,
+          userid
+        );
+        const data2 = JSON.parse(JSON.stringify(res2)).data;
+        console.log(data2);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -421,11 +431,15 @@ const Post = () => {
 
   const [authorUsername, setAuthorUsername] = useState("");
 
-  const getAuthorUsername = async () => {
+  const getAuthorUsername = async (userId) => {
     try {
-      const res = await socialMediaAPI.getUsernameById(post.userid);
-      let data = JSON.parse(JSON.stringify(res)).data[0].username;
-      setAuthorUsername(data);
+      console.log("line 434", post);
+      const res = await socialMediaAPI.getUsernameById(userId);
+      console.log("res", JSON.parse(JSON.stringify(res)).data[0]["username"]);
+      // let data = JSON.parse(JSON.stringify(res)).data[0].username;
+      let data = JSON.parse(JSON.stringify(res)).data[0]["username"];
+      console.log("getAuthorUsername", data);
+      // setAuthorUsername(data);
       return data;
     } catch (error) {
       console.error(error);

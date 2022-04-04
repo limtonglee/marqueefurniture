@@ -235,6 +235,7 @@ const Messenger = () => {
     };
 
     setCurrentChat(updatedChatWithRecipientUsername);
+    refreshUserChatsWithoutUpdatingCurrentChat();
   };
 
   return (
@@ -256,6 +257,7 @@ const Messenger = () => {
                   userChats={userChats}
                   currentChatId={currentChat.id}
                   setCurrentChat={setCurrentChat}
+                  refreshData={refreshUserChatsWithoutUpdatingCurrentChat}
                 />
               </Box>
             </Grid>
@@ -264,6 +266,7 @@ const Messenger = () => {
                 {userChats.length > 0 ? (
                   <Chatbox
                     currentChat={currentChat}
+                    // refreshCurrentChat={refreshCurrentChat}
                     refreshCurrentChat={refreshCurrentChat}
                     // socket={socket}
                   />

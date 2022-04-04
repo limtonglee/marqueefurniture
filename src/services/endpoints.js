@@ -113,6 +113,7 @@ export const URL_CREATE_CHAT = "/api/chat/create";
 export const URL_GET_USER_CHATS = "/api/user/chats";
 export const URL_CREATE_MESSAGE = "/api/chat/message/create";
 export const URL_GET_CHAT_MESSAGES = "/api/chat/message";
+export const URL_MARK_CHAT_AS_READ = "/api/chat/read";
 
 // notification
 export const URL_GET_USER_NOTIFICATIONS = "/api/user/notifications";

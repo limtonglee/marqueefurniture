@@ -12,7 +12,12 @@ import List from "@mui/material/List";
 
 import ChatMenuItem from "./ChatMenuItem";
 
-const ChatMenu = ({ userChats, currentChatId, setCurrentChat }) => {
+const ChatMenu = ({
+  userChats,
+  currentChatId,
+  setCurrentChat,
+  refreshData,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearchTerm = (event) => {
@@ -58,12 +63,14 @@ const ChatMenu = ({ userChats, currentChatId, setCurrentChat }) => {
                   chat.recipientUsername.indexOf(searchTerm) !== -1 ||
                   searchTerm === ""
               )
+              .sort((a, b) => (b.lastupdatetime = a.lastupdatetime))
               .map((chat) => (
                 <ChatMenuItem
                   key={chat.id}
                   chat={chat}
                   isCurrent={currentChatId === chat.id}
                   setCurrentChat={setCurrentChat}
+                  refreshData={refreshData}
                 />
               ))}
           </List>

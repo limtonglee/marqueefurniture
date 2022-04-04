@@ -29,6 +29,7 @@ import { URL_REPLY_REVIEW } from "../services/endpoints";
 // finance
 import { URL_GET_INCOME } from "../services/endpoints";
 import { URL_GET_BALANCE } from "../services/endpoints";
+import { URL_UPDATE_BALANCE_WITHDRAW } from "../services/endpoints";
 
 // orders
 export const getOrders = (id) => {
@@ -227,4 +228,11 @@ export const getBalance = (shopId) => {
     shopId: shopId
   };
   return get(URL_GET_BALANCE, params);
+};
+export const withdrawBalance = (withdrawalAmount, shopId) => {
+  const body = {
+    withdrawalAmount: withdrawalAmount,
+    shopId: shopId,
+  };
+  return update(URL_UPDATE_BALANCE_WITHDRAW, body);
 };

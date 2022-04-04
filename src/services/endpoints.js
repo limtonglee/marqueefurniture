@@ -107,7 +107,7 @@ export const URL_EDIT_SELLER_PROFILE = "/api/user/editSellerAccount";
 // income & balance
 export const URL_GET_INCOME = "/api/merchant/income";
 export const URL_GET_BALANCE = "/api/merchant/balance";
-export const URL_GET_BALANCE_WITHDRAW = "/api/merchant/balance/withdraw";
+export const URL_UPDATE_BALANCE_WITHDRAW = "/api/merchant/balance/withdraw";
 export const URL_GET_MERCHANT_ORDER = "/api/merchant/orders";
 
 // chat

@@ -6,14 +6,25 @@ import {
     Typography,
     Grid,
 } from '@mui/material';
+import WithdrawBalanceModal from "./WithdrawBalanceModal";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 import { useStores } from "../../../stores/RootStore";
 
 export const Income = () => {
     const [data, setData] = useState([]);
+    const [shop, setShop] = useState([]);
     const [income, setIncome] = useState([]);
     const [balance, setBalance] = useState([]);
     const { userStore } = useStores();
+
+    const getShop = async () => {
+        try {
+            const res = await SellerCenterAPI.getShopProfile(userStore.id);
+            setShop(JSON.parse(JSON.stringify(res.data))[0]);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const getIncome = async () => {
         try {
@@ -29,12 +40,14 @@ export const Income = () => {
         try {
             const res = await SellerCenterAPI.getBalance(userStore.id);
             setBalance(JSON.parse(JSON.stringify(res.data))[0]);
+            console.log(balance);
         } catch (error) {
             console.error(error);
         }
     };
 
     const initialLoad = () => {
+        getShop();
         getIncome();
         getBalance();
     }
@@ -42,6 +55,10 @@ export const Income = () => {
     useEffect(() => {
         initialLoad();
     }, []);
+
+    const refreshData = () => {
+        getBalance();
+    };
 
     return (
         <Layout>
@@ -59,7 +76,11 @@ export const Income = () => {
                                 Total
                             </Typography>
                             <Typography variant="h3" gutterBottom>
-                                $ {balance.balance}
+                                $ {balance.balance} 
+                                <WithdrawBalanceModal 
+                                    refreshData={refreshData} 
+                                    shopId={shop.id}>
+                                </WithdrawBalanceModal>
                             </Typography>
                         </Card>
                     </Grid>

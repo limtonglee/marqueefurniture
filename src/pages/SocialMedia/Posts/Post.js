@@ -34,6 +34,7 @@ const Post = () => {
   const { postId } = useParams();
 
   const [moodboards, setMoodboards] = useState([]);
+  const [postPinned, setPostPinned] = useState(false);
 
   const getUserMoodboards = async () => {
     try {
@@ -72,20 +73,24 @@ const Post = () => {
     await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
 
     Promise.all(promises).then((values) => {
+      console.log("getCompleteMoodboardData values", values);
       setMoodboards(values);
+
+      console.log(
+        "postInUserMoodboards(values)??",
+        postInUserMoodboards(values)
+      );
+
+      setPostPinned(postInUserMoodboards(values));
+
       return values;
     });
   };
 
-  // useEffect(() => {
-  //   getCompleteMoodboardData();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   useEffect(() => {
     getCompleteMoodboardData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [moodboards]);
+  }, []);
 
   // help idk what to initialise this to
   const [post, setPost] = useState({
@@ -354,10 +359,11 @@ const Post = () => {
     setCommentActivated(true);
   };
 
-  const postInUserMoodboards = () => {
+  const postInUserMoodboards = (moodboards) => {
     const moodboardsWithThisPost = moodboards.filter((moodboard) => {
       for (let moodboardItem of moodboard.moodboardItems) {
-        if (moodboardItem.id === post.id) {
+        if (moodboardItem.id === parseInt(post.id)) {
+          console.log("equal", moodboardItem.id);
           return true;
         }
       }
@@ -366,14 +372,21 @@ const Post = () => {
     return moodboardsWithThisPost.length > 0;
   };
 
-  const [postPinned, setPostPinned] = useState(
-    postInUserMoodboards() ? true : false
-  );
+  // const [postPinned, setPostPinned] = useState(
+  //   postInUserMoodboards() ? true : false
+  // );
 
-  useEffect(() => {
-    setPostPinned(postInUserMoodboards() ? true : false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [moodboards]);
+  // useEffect(() => {
+  //   setPostPinned(postInUserMoodboards() ? true : false);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [moodboards]);
+
+  const refreshData = () => {
+    console.log("refreshData called");
+    getCompleteMoodboardData();
+    getCompletePost();
+    // setPostPinned(postInUserMoodboards() ? true : false);
+  };
 
   const [comment, setComment] = useState("");
 
@@ -488,7 +501,10 @@ const Post = () => {
                 open={open}
                 closeMoodboardModal={closeMoodboardModal}
                 post={post}
+                moodboards={moodboards}
+                setMoodboards={setMoodboards}
                 postPinned={postPinned}
+                refreshPosts={refreshData}
               />
               <Box sx={{ pt: 1 }}>
                 <Stack direction="row" spacing={0.5}>

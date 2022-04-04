@@ -101,6 +101,29 @@ const MoodboardModal = ({
 
     Promise.all(promises).then((values) => {
       setMoodboards(values);
+
+      // !
+      console.log("bijj values", values);
+
+      values.forEach((moodboard) => {
+        for (let moodboardItem of moodboard.moodboardItems) {
+          console.log(
+            `moodboardItem.id ${moodboardItem.id} post.id ${post.id}`
+          );
+          console.log(
+            `typeof moodboardItem.id ${typeof moodboardItem.id} typeof post.id ${typeof post.id}`
+          );
+          if (moodboardItem.id === parseInt(post.id)) {
+            console.log("bij line 110");
+            checked.push(moodboard.id);
+          }
+        }
+      });
+      console.log("checked line 132", checked);
+      setPrevChecked(checked);
+
+      // !
+
       return values;
     });
   };
@@ -110,25 +133,27 @@ const MoodboardModal = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    getCompleteMoodboardData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [moodboards]);
+  // !
+  // useEffect(() => {
+  //   getCompleteMoodboardData();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [moodboards]);
 
   const [checked, setChecked] = useState([]);
   const [prevChecked, setPrevChecked] = useState([]);
 
   useEffect(() => {
-    if (postPinned && checked.length === 0) {
-      moodboards.forEach((moodboard) => {
-        for (let moodboardItem of moodboard.moodboardItems) {
-          if (moodboardItem.id === post.id) {
-            checked.push(moodboard.id);
-          }
+    console.log("heree line 124");
+    moodboards.forEach((moodboard) => {
+      for (let moodboardItem of moodboard.moodboardItems) {
+        if (moodboardItem.id === parseInt(post.id)) {
+          checked.push(moodboard.id);
         }
-      });
-      setPrevChecked(checked);
-    }
+      }
+    });
+    console.log("checked line 132", checked);
+    setPrevChecked(checked);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moodboards]);
 
@@ -170,11 +195,21 @@ const MoodboardModal = ({
     }
   };
 
+  // !
   const addPostToMoodboard = () => {
     for (let moodboardId of checked) {
       console.log(`adding post.id ${post.id} to moodboardId ${moodboardId}`);
       addPostToMoodboardAPI(post.id, moodboardId);
     }
+
+    // update moodboard state
+    getCompleteMoodboardData();
+
+    if (refreshPosts) {
+      console.log("moodboardmodal refreshposts triggered");
+      refreshPosts();
+    }
+
     closeMoodboardModal();
     setPrevChecked(checked);
     handleClickSnackbar();
@@ -201,13 +236,14 @@ const MoodboardModal = ({
       addPostToMoodboardAPI(post.id, moodboardId);
     }
 
+    if (refreshPosts) {
+      console.log("moodboardmodal refreshposts triggered");
+      refreshPosts();
+    }
+
     closeMoodboardModal();
     setPrevChecked(checked);
     handleClickSnackbar();
-
-    if (refreshPosts) {
-      refreshPosts();
-    }
   };
 
   const deletePostFromThisMoodboard = () => {
@@ -222,13 +258,13 @@ const MoodboardModal = ({
     // update moodboard state
     getCompleteMoodboardData();
 
-    closeMoodboardModal();
-    handleCloseDialog();
-    handleClickSnackbar();
-
     if (refreshPosts) {
       refreshPosts();
     }
+
+    closeMoodboardModal();
+    handleCloseDialog();
+    handleClickSnackbar();
   };
 
   const [openSnackbar, setOpenSnackbar] = React.useState(false);

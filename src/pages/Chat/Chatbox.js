@@ -22,9 +22,11 @@ import { useNavigate } from "react-router-dom";
 import * as chatAPI from "../../services/Chat";
 import * as accountsAPI from "../../services/Accounts";
 
+import * as socket from "../../services/socket";
+
 import { useStores } from "../../stores/RootStore";
 
-const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
+const Chatbox = ({ currentChat, refreshCurrentChat }) => {
   console.log("currentChat", currentChat);
   const { userStore } = useStores();
 
@@ -43,7 +45,15 @@ const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
 
     const timestamp = new Date();
 
-    socket.current.emit("sendMessage", {
+    // socket.current.emit("sendMessage", {
+    //   senderId: userStore.id,
+    //   receiverId: receiverId,
+    //   text: message,
+    //   type: "Message",
+    //   timestamp: timestamp,
+    // });
+
+    socket.sendMessage({
       senderId: userStore.id,
       receiverId: receiverId,
       text: message,
@@ -86,6 +96,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat, socket }) => {
 
   useEffect(() => {
     getUserType();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentChat]);
 
   const [openMoreMenu, setOpenMoreMenu] = React.useState(false); // eslint-disable-line no-unused-vars

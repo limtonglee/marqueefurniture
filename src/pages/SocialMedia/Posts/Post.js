@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
@@ -20,7 +20,8 @@ import { useStores } from "../../../stores/RootStore";
 
 import * as socialMediaAPI from "../../../services/SocialMedia";
 import * as notificationAPI from "../../../services/Notification";
-import { io } from "socket.io-client";
+
+import * as socket from "../../../services/socket";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -28,7 +29,7 @@ const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const Post = () => {
   const { userStore } = useStores();
-  const socket = useRef();
+  // const socket = useRef();
 
   const { postId } = useParams();
 
@@ -178,7 +179,8 @@ const Post = () => {
     getAuthorUsername();
     // eslint-disable-next-line react-hooks/exhaustive-deps
 
-    socket.current = io("ws://localhost:8900");
+    // socket.current = io("ws://localhost:8900");
+    socket.initiateSocket(userStore.id);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -262,7 +264,18 @@ const Post = () => {
 
     console.log(` triggeruserid ${triggeruserid} userid ${userid}`);
 
-    socket.current.emit("likePost", {
+    // socket.current.emit("likePost", {
+    //   id: timestamp,
+    //   description: description,
+    //   isunread: isunread,
+    //   link: link,
+    //   timestamp: timestamp,
+    //   triggeruserid: triggeruserid,
+    //   triggerUsername: triggerusername,
+    //   userid: userid,
+    // });
+
+    socket.sendLikePost({
       id: timestamp,
       description: description,
       isunread: isunread,

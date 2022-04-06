@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import { Layout } from '../Layout';
 import {
     Card,
@@ -8,38 +9,36 @@ import {
     Switch,
 } from '@mui/material';
 import { useParams } from "react-router-dom";
-import { shopCategoriesData } from "../../../data/shopCategoriesData";
-import { listingsData } from "../../../data/listingsData";
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import CategoryAddProductModal from './CategoryAddProductModal';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
+import { useLocation } from 'react-router-dom'
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
-
-function getProductList(productIdList) {
-
-    var productList = [];
-    for (let j = 0; j < productIdList.length; j++) {
-        for (let i = 0; i < listingsData.length; i++) {
-            if (productIdList[j] === listingsData[i].id) {
-                productList.push(listingsData[i]);
-                break;
-            }
-        }
-    }
-    return productList;
-}
-
 
 export const ShopCategoryDetails = () => {
 
     const param = useParams();
-    const category = shopCategoriesData[param.categoryId];
-    var productList = getProductList(category.productIdList);
+    const [data, setData] = useState([]);
+    const location = useLocation();
+    const categoryName = location.state;
+
+    const getShopCategoryListings = async () => {
+        try {
+            const res = await SellerCenterAPI.getShopCategoryListings(param.categoryId);
+            setData(JSON.parse(JSON.stringify(res.data)));
+            console.log('ZZZ', data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        getShopCategoryListings();
+    }, []);
 
     const handleRemove = (product) => {
-        console.log(productList.indexOf(product));
-        productList.splice(productList.indexOf(product));
+
     }
 
     return (
@@ -50,11 +49,11 @@ export const ShopCategoryDetails = () => {
                         <Grid item xs={10}>
                             <Box sx={{ display: "flex", flexDirection: "column" }}>
                                 <Typography variant="h3">
-                                    {category.name}
+                                    {categoryName}
                                 </Typography>
                                 <Typography>
-                                    Created By: {category.createdBy} &nbsp;&nbsp;&nbsp;&nbsp;
-                                    Product(s): {category.products}
+                                    Created By:  Seller &nbsp;&nbsp;&nbsp;&nbsp;
+                                    Product(s): 
                                 </Typography>
                             </Box>
                         </Grid>
@@ -91,25 +90,24 @@ export const ShopCategoryDetails = () => {
                             Actions
                         </Grid>
                         <Grid item xs={12}>
-                            {productList.map((product) => (
+                            {data.map((item) => (
                                 <Card sx={{ marginTop: "24px", padding: "18px"}}>
                                     <Grid container spacing={2}>
                                         <Grid item xs={3}>
                                             <img
-                                                src={`${product.img}?w=124&fit=crop&auto=format`}
-                                                srcSet={`${product.img}?w=124&fit=crop&auto=format&dpr=2 2x`}
+                                                src={`/api/image/${item.image}`}
                                                 alt='img'
                                                 loading="lazy"
                                             />
                                         </Grid>
                                         <Grid item xs={3}>
-                                            {product.productName}
+                                            {item.name}
                                         </Grid>
                                         <Grid item xs={2}>
-                                            {product.price}
+                                            {item.listingprice}
                                         </Grid>
                                         <Grid item xs={2}>
-                                            {product.stock}
+                                            {item.stockavailable}
                                         </Grid>
                                         <Grid item xs={2}>
                                             <Button
@@ -119,7 +117,7 @@ export const ShopCategoryDetails = () => {
                                                     height: '36px',
                                                 }}
                                                 onClick={e => {
-                                                    handleRemove(product);
+                                                    handleRemove(item);
                                                 }}
                                             >
                                                 Remove

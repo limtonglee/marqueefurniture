@@ -20,7 +20,7 @@ export const ShopCategories = () => {
 
     const [data, setData] = useState([]);
     const { userStore } = useStores();
-    
+
     const getShopCategories = async () => {
         try {
             const res = await SellerCenterAPI.getShopCategories(userStore.id);
@@ -55,7 +55,7 @@ export const ShopCategories = () => {
                     <Typography variant="h4" gutterBottom>
                         My Shop Categories
                     </Typography>
-                    <AddCategoryModal 
+                    <AddCategoryModal
                         refreshData={refreshData}
                         userId={userStore.id}
                     />
@@ -102,7 +102,10 @@ export const ShopCategories = () => {
                                     </Grid>
                                     <Grid item xs={2}>
                                         <Stack direction="column" alignItems="center" justifyContent="space-between">
-                                            <Link to={`/sellercenter/shop/categories/${category.id}`}>
+                                            <Link to={`/sellercenter/shop/categories/${category.id}`}
+
+                                                state={`${category.name}`}
+                                            >
                                                 <Button>
                                                     Add Listings
                                                 </Button>

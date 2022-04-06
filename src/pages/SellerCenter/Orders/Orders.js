@@ -23,6 +23,16 @@ export const Orders = () => {
     const [data, setData] = useState([]);
     const [order, setOrder] = useState([]);
     const { userStore } = useStores();
+    const [shop, setShop] = useState([]);
+
+    const getShop = async () => {
+        try {
+            const res = await SellerCenterAPI.getShopProfile(userStore.id);
+            setShop(JSON.parse(JSON.stringify(res.data))[0]);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const getOrders = async () => {
         try {
@@ -35,7 +45,10 @@ export const Orders = () => {
     };
 
     useEffect(() => {
+        getShop();
         getOrders();
+        userStore.setShop(shop);
+        console.log('ZZZZ', userStore.shop.id);
     }, []);
 
     let tabData = order;

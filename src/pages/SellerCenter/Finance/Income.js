@@ -13,19 +13,9 @@ import { useStores } from "../../../stores/RootStore";
 
 export const Income = () => {
     const [data, setData] = useState([]);
-    const [shop, setShop] = useState([]);
     const [income, setIncome] = useState([]);
     const [balance, setBalance] = useState([]);
     const { userStore } = useStores();
-
-    const getShop = async () => {
-        try {
-            const res = await SellerCenterAPI.getShopProfile(userStore.id);
-            setShop(JSON.parse(JSON.stringify(res.data))[0]);
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
     const getIncome = async () => {
         try {
@@ -39,22 +29,17 @@ export const Income = () => {
 
     const getBalance = async () => {
         try {
-            const res = await SellerCenterAPI.getBalance(userStore.id);
+            const res = await SellerCenterAPI.getBalance(userStore.shop.id);
             setBalance(JSON.parse(JSON.stringify(res.data))[0]);
             console.log(balance);
         } catch (error) {
             console.error(error);
         }
     };
-
-    const initialLoad = () => {
-        getShop();
+    
+    useEffect(() => {
         getIncome();
         getBalance();
-    }
-
-    useEffect(() => {
-        initialLoad();
     }, []);
 
     const refreshData = () => {
@@ -82,7 +67,7 @@ export const Income = () => {
                                 </Typography>
                                 <WithdrawBalanceModal
                                     refreshData={refreshData}
-                                    shopId={shop.id}
+                                    shopId={userStore.shop.id}
                                     balance={balance.balance}
                                 />
                             </Stack>

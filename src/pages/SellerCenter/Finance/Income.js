@@ -5,6 +5,7 @@ import {
     Card,
     Typography,
     Grid,
+    Stack,
 } from '@mui/material';
 import WithdrawBalanceModal from "./WithdrawBalanceModal";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
@@ -75,13 +76,16 @@ export const Income = () => {
                             <Typography variant="h7" gutterBottom>
                                 Total
                             </Typography>
-                            <Typography variant="h3" gutterBottom>
-                                $ {balance.balance} 
-                                <WithdrawBalanceModal 
-                                    refreshData={refreshData} 
-                                    shopId={shop.id}>
-                                </WithdrawBalanceModal>
-                            </Typography>
+                            <Stack direction="column">
+                                <Typography variant="h3" gutterBottom>
+                                    $ {balance.balance}
+                                </Typography>
+                                <WithdrawBalanceModal
+                                    refreshData={refreshData}
+                                    shopId={shop.id}
+                                    balance={balance.balance}
+                                />
+                            </Stack>
                         </Card>
                     </Grid>
                 </Grid>
@@ -103,7 +107,7 @@ export const Income = () => {
                     </Grid>
                     <Grid item xs={12} >
                         {data.map((item) => (
-                            <Card 
+                            <Card
                                 sx={{
                                     marginTop: '10px',
                                     marginBottom: '10px',

@@ -12,6 +12,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 
 const WithdrawBalanceModal = ({
+    balance,
     shopId,
     refreshData,
 }) => {
@@ -55,11 +56,15 @@ const WithdrawBalanceModal = ({
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
     const [formData, setFormData] = useReducer(formReducer, {});
+    const [withdrawAmount, setWithdrawAmount] = React.useState({});
 
     const handleChange = (event) => {
-
+        // if (event.target.value <= balance) {
+        //     setWithdrawAmount({ helperText: '', error: false });
+        // } else {
+        //     setWithdrawAmount({ helperText: 'Invalid amount', error: true });
+        // }
         setFormData({
             name: event.target.name,
             value: event.target.value,
@@ -68,8 +73,8 @@ const WithdrawBalanceModal = ({
     const handleSubmit = event => {
         event.preventDefault();
         SellerCenterAPI.withdrawBalance(formData.withdrawAmount, shopId);
-        refreshData();
         handleClose();
+        refreshData();
         setTimeout(() => {
             setFormData({
                 reset: true
@@ -121,6 +126,8 @@ const WithdrawBalanceModal = ({
                                 id="outlined-number"
                                 name="withdrawAmount"
                                 type="number"
+                                // helperText={withdrawAmount.helperText}
+                                // error={withdrawAmount.state.error}
                                 onChange={handleChange}
                                 value={formData.withdrawAmount || ''}
                             >

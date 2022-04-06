@@ -55,7 +55,10 @@ export const ShopCategories = () => {
                     <Typography variant="h4" gutterBottom>
                         My Shop Categories
                     </Typography>
-                    <AddCategoryModal refreshData={refreshData}>{userStore.id}</AddCategoryModal>
+                    <AddCategoryModal 
+                        refreshData={refreshData}
+                        userId={userStore.id}
+                    />
                 </Stack>
                 <Grid container>
                     <Grid item xs={4}>

@@ -38,8 +38,19 @@ export const ShopRating = () => {
         }
     };
 
+    const [average, setAverage] = useState(0);
+    const calculateAverage = () => {
+        var sum = 0;
+        for (var i = 0; i < ratings.length; i++) {
+            sum += ratings[i].rating;
+        }
+        setAverage((sum / ratings.length).toFixed(1));
+        console.log(average);
+    };
+
     useEffect(() => {
         getRatings();
+        calculateAverage();
     }, []);
 
     const refreshData = () => {
@@ -83,21 +94,6 @@ export const ShopRating = () => {
         console.log('ZZZ2', tabData);
         setData(tabData);
     };
-
-
-    const [average, setAverage] = useState(0);
-    const calculateAverage = () => {
-        var sum = 0;
-        for (var i = 0; i < ratings.length; i++) {
-            sum += ratings[i].rating;
-        }
-        setAverage((sum / ratings.length).toFixed(1));
-    };
-    useEffect(() => {
-        calculateAverage();
-    }, []);
-
-
 
     return (
         <>

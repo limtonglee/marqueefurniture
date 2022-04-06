@@ -24,7 +24,9 @@ export const Voucher = () => {
 
     const getVouchers = async () => {
         try {
-            const res = await SellerCenterAPI.getVouchers(userStore.id);
+            console.log('ZZZ', userStore.shop);
+            const res = await SellerCenterAPI.getVouchers(userStore.shop);
+            
             setData(JSON.parse(JSON.stringify(res.data)));
             setVouchers(JSON.parse(JSON.stringify(res.data)));
         } catch (error) {

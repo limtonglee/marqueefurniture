@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 import { useStores } from "../../../stores/RootStore";
+import ReplyReviewModal from './ReplyReviewModal';
 
 const Img = styled("img")({
     margin: "auto",
@@ -223,9 +224,16 @@ export const ShopRating = () => {
                                                 <Typography gutterBottom variant="subtitle1" component="div">
                                                     {/* ABC Furniture Shop */}
                                                 </Typography>
-                                                <Typography variant="body2" gutterBottom>
-                                                    {item.sellerreply}
-                                                </Typography>
+                                                {item.sellerreply === '' ? (
+                                                    <ReplyReviewModal 
+                                                        reviewId={item.id}
+                                                        refreshData={refreshData}
+                                                    />
+                                                ) : (
+                                                    <Typography variant="body2" gutterBottom>
+                                                        {item.sellerreply}
+                                                    </Typography>
+                                                )}
                                             </Grid>
                                         </Grid>
                                         <Grid item>

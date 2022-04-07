@@ -30,7 +30,7 @@ const Img = styled("img")({
   maxHeight: "100%",
 });
 
-export default function Cart() {
+export default function Cart({setCartCount}) {
   const navigate = useNavigate();
 
   const { userStore } = useStores();

@@ -123,7 +123,6 @@ const Login = () => {
   let navigate = useNavigate();
 
   const setLogin = (id, username, email, type, profilepic, address, bio) => {
-    userStore.setIsLoggedIn();
     userStore.setUserName(username);
     userStore.setId(id);
     userStore.setDescription(bio);
@@ -138,6 +137,7 @@ const Login = () => {
       userStore.setIsAdmin();
     }
 
+    userStore.setIsLoggedIn();
     navigate("/marketplace");
   };
 

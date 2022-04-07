@@ -1,14 +1,12 @@
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import DashboardIcon from "@mui/icons-material/Dashboard";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import StorefrontIcon from "@mui/icons-material/Storefront";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Divider, Tooltip } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
-import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -16,14 +14,16 @@ import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import CartButton from "../pages/Cart/CartButton";
+import ChatButton from "../pages/Chat/ChatButton";
+import NotificationButton from "../pages/Notifications/NotificationButton";
+import { getCart } from "../services/Cart";
 import { useStores } from "../stores/RootStore";
 import ControlledSwitches from "./SwitchNav";
-import NotificationButton from "../pages/Notifications/NotificationButton";
-import Stack from "@mui/material/Stack";
-import ChatButton from "../pages/Chat/ChatButton";
 
 // const pageLinks = [
 // 	{ text: "Seller Center", link: "/sellercenter" },
@@ -35,7 +35,7 @@ const AdminPageLinks = [{ text: "Admin Management", link: "/admin" }];
 
 const sellerSettings = [
   { text: "Profile", link: "/profile" },
-  { text: "Cart", link: "/cart" },
+  // { text: "Cart", link: "/cart" },
   // { text: "Chat", link: "/chat" },
   { text: "Liked Listing", link: "/profile/likedListing" },
   { text: "Seller Center", link: "/sellercenter" },
@@ -50,23 +50,37 @@ const normalSettings = [
 
 const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [cartCount, setCartCount] = useState(0);
+  const { userStore } = useStores();
+  const profilePic = userStore.profilePic;
 
   let navigate = useNavigate();
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
+    console.log("postlogin bar rerender");
+    updateCart();
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
-  const { userStore } = useStores();
-  const profilePic = userStore.profilePic;
-
   const setLogout = (e) => {
     userStore.setIsLoggedOut();
     navigate("/marketplace");
+  };
+
+  const updateCart = () => {
+    const fetchCartData = async () => {
+      // console.log("userId" + userStore.id)
+      const response = await getCart(userStore.id);
+      const result = await response.data;
+      setCartCount(result.length);
+    };
+
+    fetchCartData().catch(console.error);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
   return (
@@ -179,11 +193,7 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
                           )}
                           {setting.text === "Cart" && (
                             <>
-                              <Tooltip title="Cart" placement="right">
-                                <ShoppingCartCheckoutIcon
-                                  sx={{ color: "common.black" }}
-                                />
-                              </Tooltip>
+                              <CartButton cartCount={cartCount} />
                             </>
                           )}
                           {setting.text === "Chat" && (

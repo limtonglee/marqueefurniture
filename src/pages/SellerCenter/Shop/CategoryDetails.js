@@ -52,8 +52,8 @@ export const ShopCategoryDetails = () => {
                                     {categoryName}
                                 </Typography>
                                 <Typography>
-                                    Created By:  Seller &nbsp;&nbsp;&nbsp;&nbsp;
-                                    Product(s): 
+                                    Created By: Seller &nbsp;&nbsp;&nbsp;&nbsp;
+                                    Product(s): {data.length}
                                 </Typography>
                             </Box>
                         </Grid>

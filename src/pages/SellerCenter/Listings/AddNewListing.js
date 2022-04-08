@@ -88,14 +88,15 @@ export const AddNewListing = () => {
     apiFormData.append("description", formData.description);
     apiFormData.append("category", formData.category);
     //change this to shop id
-    apiFormData.append("shopId", userStore.id);
+    console.log('ZZZ', userStore.shop.id);
+    apiFormData.append("shopId", userStore.shop.id);
 
     const result = await axios.post(
-        "http://localhost:8080/api/merchant/createListing",
-        apiFormData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-    
+      "http://localhost:8080/api/merchant/createListing",
+      apiFormData,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+
 
     /*
         SellerCenterAPI.createListing(
@@ -155,16 +156,7 @@ export const AddNewListing = () => {
               label="Product name"
               onChange={handleChange}
               value={formData.name || ""}
-            ></TextField>
-            <TextField
-              required
-              id="outlined-required"
-              name="image"
-              label="Image"
-              onChange={handleChange}
-              value={formData.image || ""}
-            ></TextField>
-            <input onChange={fileSelected} type="file" accept="image/*"></input>
+            />
             <TextField
               id="outlined-multiline-static"
               multiline
@@ -174,6 +166,12 @@ export const AddNewListing = () => {
               onChange={handleChange}
               value={formData.description || ""}
             />
+            <input
+              onChange={fileSelected}
+              type="file"
+              accept="image/*"
+              style={{ paddingLeft: '8px'}}
+            ></input>
           </Card>
           <Card
             component="form"

@@ -14,6 +14,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../services/Login";
 import { useStores } from "../../stores/RootStore";
+import { getShopProfile } from "../../services/SellerCenter";
 
 const Login = () => {
   const [incorrectLogin, setIncorrectLogin] = useState(false);
@@ -117,6 +118,14 @@ const Login = () => {
   };
 
   */
+  const getShop = async () => {
+    try {
+      const res = await getShopProfile(userStore.id);
+      userStore.setShop(JSON.parse(JSON.stringify(res.data))[0]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const { userStore } = useStores();
 
@@ -132,6 +141,7 @@ const Login = () => {
     //to change set to seller
     if (type === "Seller") {
       userStore.setIsSeller();
+      getShop();
     }
     if (type === "Admin") {
       userStore.setIsAdmin();

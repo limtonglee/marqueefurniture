@@ -16,11 +16,6 @@ import ProfileInfoCard from "./About/ProfileInfoCard";
 // Overview page components
 import Header from "./Header";
 import MoodboardViewInProfile from "./Moodboard/MoodboardViewInProfile";
-import Divider from "@mui/material/Divider";
-import * as socialMediaAPI from "../../services/SocialMedia";
-import FeedGrid from "../SocialMedia/FeedGrid/FeedGrid";
-import AddIcon from "@mui/icons-material/Add";
-import { useNavigate, useNavigationType } from "react-router-dom";
 
 function Profile() {
   const [tabValue, setTabValue] = useState(0);

@@ -4,6 +4,7 @@ import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import SearchIcon from "@mui/icons-material/Search";
 import WeekendIcon from "@mui/icons-material/Weekend";
+import Divider from "@mui/material/Divider";
 import {
   Alert,
   Box,
@@ -66,14 +67,15 @@ export const Listings = () => {
     updateData(value);
   }, [listings]);
 
-
   //To get the list of Liked List after every update
   const getLikedList = () => {
-    getLikedListing(userStore.id).then((response) => {
-      setLikedList(JSON.parse(JSON.stringify(response.data)));
-    }).catch((error) => {
-      console.log(error);
-    });
+    getLikedListing(userStore.id)
+      .then((response) => {
+        setLikedList(JSON.parse(JSON.stringify(response.data)));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   //Handling of snackbar to appear
@@ -98,23 +100,23 @@ export const Listings = () => {
 
   //This method will be called to check whether users has initially liked the listing
   const checkInitialLike = (listingId) => {
-    for (let i in likedList){
-      if(likedList[i].listingid == listingId){
+    for (let i in likedList) {
+      if (likedList[i].listingid == listingId) {
         return true;
       }
     }
     return false;
-  }
+  };
 
   //API call to BE to update database for user liking a listing
   const likeListing = async (listingId, userId) => {
-    try {      
+    try {
       const res = await likedListing(listingId, userId);
       const data = JSON.parse(JSON.stringify(res)).data;
     } catch (error) {
       console.error(error);
     }
-  }; 
+  };
 
   //API call to BE to update database for user unliking a listing
   const unlikeListing = async (listingId, userId) => {
@@ -124,12 +126,12 @@ export const Listings = () => {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   //Method call when user wants to like or unlike a listing
   const handleLikeChange = (event, likedItem) => {
     console.log("Like has been clicked");
-    if(checkInitialLike(likedItem.id)) {
+    if (checkInitialLike(likedItem.id)) {
       console.log("This will be unliked");
       unlikeListing(likedItem.id, userStore.id);
     } else {
@@ -201,6 +203,7 @@ export const Listings = () => {
           <Tab icon={<HomeRepairServiceIcon />} label="Service" />
           <Tab icon={<ArchitectureIcon />} label="Design" />
         </Tabs>
+        <Divider />
       </Box>
 
       <Box sx={{ maxWidth: 1500 }}>
@@ -215,7 +218,8 @@ export const Listings = () => {
                   src={`/api/image/${item.image}`}
                   alt={item.name}
                   loading="lazy"
-                  width="188" height="188"
+                  width="188"
+                  height="188"
                 />
               </Button>
             </Link>
@@ -249,7 +253,6 @@ export const Listings = () => {
 
               <Grid item xs={8}>
                 <Box display="flex" justifyContent="flex-end">
-                  
                   <Checkbox
                     size="small"
                     sx={{ color: "secondary" }}

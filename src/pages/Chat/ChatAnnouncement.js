@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import { Message } from "@mui/icons-material";
 
 const ChatAnnouncement = ({ message, hasButton }) => {
   return (

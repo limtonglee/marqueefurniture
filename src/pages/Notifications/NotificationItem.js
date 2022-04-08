@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -25,7 +25,7 @@ const NotificationItem = ({ notification, refreshData }) => {
         <ListItem disablePadding>
           <ListItemButton
             component="a"
-            href="#simple-list"
+            href={notification.link !== "" ? notification.link : ""}
             sx={{
               width: "100%",
               p: 3,

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
-import user from "../../../data/currentUserData2";
+import { useStores } from "../../../stores/RootStore";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import MoodboardPreview from "./MoodboardPreview";
@@ -19,6 +19,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const MoodboardViewInProfile = () => {
+  const { userStore } = useStores();
   let currentSort = "popular";
 
   const [username, setUsername] = useState(useParams().username); // eslint-disable-line no-unused-vars
@@ -28,7 +29,7 @@ const MoodboardViewInProfile = () => {
   // need to update this to get user.id from username
   const getUserMoodboards = async () => {
     try {
-      const res = await socialMediaAPI.getUserMoodboards(user.id);
+      const res = await socialMediaAPI.getUserMoodboards(userStore.id);
       const data = JSON.parse(JSON.stringify(res)).data;
       return data;
     } catch (error) {
@@ -180,12 +181,34 @@ const MoodboardViewInProfile = () => {
           New Moodboard
         </Button>
       </Box>
+      {moodboards.length === 0 && (
+        <Box
+          sx={{
+            width: "100%",
+            height: 200,
+            border: "1px solid #DFE3E8",
+            borderRadius: 3,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            variant="h5"
+            gutterBottom
+            component="div"
+            sx={{ fontWeight: "normal", fontStyle: "italic" }}
+          >
+            No moodboards yet
+          </Typography>
+        </Box>
+      )}
       <Grid container spacing={3}>
         {moodboards.map((moodboard) => (
           <Grid item xs={6} md={4} key={moodboard.id}>
             <Box>
               <Link
-                to={`/moodboard/${user.username}/${moodboard.id}`}
+                to={`/moodboard/${userStore.name}/${moodboard.id}`}
                 style={{ textDecoration: "none", color: "black" }}
               >
                 <Typography

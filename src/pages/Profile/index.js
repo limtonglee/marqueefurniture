@@ -35,7 +35,7 @@ function Profile() {
   };
 
   const [posts, setPosts] = useState([]);
-  const [postsStore, setPostsStore] = useState([]);
+  const [postsStore, setPostsStore] = useState([]); // eslint-disable-line no-unused-vars
 
   const getUserPosts = async () => {
     try {
@@ -132,6 +132,7 @@ function Profile() {
     if (navigationType === "POP") {
       setTabValue(userStore.prevTabOnProfile);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCreatePost = () => {
@@ -179,7 +180,7 @@ function Profile() {
             >
               New Post
             </Button>
-            <FeedGrid posts={posts} />
+            <FeedGrid posts={posts} fromProfile={true} />
           </Box>
         </>
       )}

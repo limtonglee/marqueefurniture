@@ -5,11 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
-import Avatar from "@mui/material/Avatar";
-import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
 
 import Tab from "@mui/material/Tab";
@@ -160,12 +156,12 @@ const DesignOrderProgress = () => {
                   </Box>
                 </>
               )}
-              {tabValue === 1 && (
+              {/* {tabValue === 1 && (
                 <>
                   <h1>requirements</h1>
                   copy from requirements section after it's done
                 </>
-              )}
+              )} */}
               {tabValue === 2 && (
                 <>
                   <Box sx={{ mt: 5 }}>

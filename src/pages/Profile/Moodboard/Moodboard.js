@@ -9,7 +9,6 @@ import CardMedia from "@mui/material/CardMedia";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-
 function Moodboard({ image, label, title, description, action }) {
   return (
     <Card
@@ -72,11 +71,7 @@ function Moodboard({ image, label, title, description, action }) {
             {description}
           </Typography>
         </Box>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+        <Box display="flex" justifyContent="space-between" alignItems="center">
           {action.type === "internal" ? (
             <Button
               component={Link}

@@ -5,6 +5,7 @@ import {
   URL_GET_USER_CHATS,
   URL_CREATE_MESSAGE,
   URL_GET_CHAT_MESSAGES,
+  URL_MARK_CHAT_AS_READ,
 } from "../services/endpoints";
 
 export const createChat = (senderId, receiverId) => {
@@ -37,4 +38,12 @@ export const getChatMessages = (id) => {
     chatId: id,
   };
   return get(URL_GET_CHAT_MESSAGES, params);
+};
+
+export const markChatAsRead = (id) => {
+  const body = {
+    chatId: id,
+    isUnread: "0",
+  };
+  return update(URL_MARK_CHAT_AS_READ, body);
 };

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
 import SearchIcon from "@mui/icons-material/Search";
@@ -13,99 +12,17 @@ import List from "@mui/material/List";
 
 import ChatMenuItem from "./ChatMenuItem";
 
-import * as chatAPI from "../../services/Chat";
-import * as socialMediaAPI from "../../services/SocialMedia";
-
-import { useStores } from "../../stores/RootStore";
-
-const ChatMenu = ({ userChats, currentChatId, setCurrentChat }) => {
-  const { userStore } = useStores();
-
+const ChatMenu = ({
+  userChats,
+  currentChatId,
+  setCurrentChat,
+  refreshData,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
-
-  // const [userChats, setUserChats] = useState([]);
 
   const handleSearchTerm = (event) => {
     setSearchTerm(event.target.value);
   };
-
-  // const getUsernameById = async (userId) => {
-  //   try {
-  //     const res = await socialMediaAPI.getUsernameById(userId);
-  //     let data = JSON.parse(JSON.stringify(res)).data[0].username;
-  //     return data;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // const getProfilePicById = async (userId) => {
-  //   try {
-  //     const res = await socialMediaAPI.getProfilePicById(userId);
-  //     let data = JSON.parse(JSON.stringify(res)).data[0].profilepic;
-  //     return data;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // const getUserChats = async (userId) => {
-  //   try {
-  //     const res = await chatAPI.getUserChats(userId);
-  //     const data = JSON.parse(JSON.stringify(res)).data;
-  //     return data;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // const getChatMessages = async (chatId) => {
-  //   try {
-  //     const res = await chatAPI.getChatMessages(chatId);
-  //     const data = JSON.parse(JSON.stringify(res)).data;
-  //     return data;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // const getUserChatsWithUsername = async () => {
-  //   const userChats = await getUserChats(userStore.id);
-
-  //   var promises = userChats.map(async (chat) => {
-  //     const id =
-  //       chat.firstuserid === userStore.id
-  //         ? chat.seconduserid
-  //         : chat.firstuserid;
-  //     const recipientUsername = await getUsernameById(id);
-  //     const recipientProfilePic = await getProfilePicById(id);
-
-  //     const chatMessages = await getChatMessages(chat.id);
-
-  //     const chatWithRecipientUsername = {
-  //       ...chat,
-  //       recipientUsername: recipientUsername,
-  //       recipientProfilePic: recipientProfilePic,
-  //       chatMessages: chatMessages,
-  //     };
-
-  //     return chatWithRecipientUsername;
-  //   });
-
-  //   await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
-
-  //   Promise.all(promises).then((values) => {
-  //     console.log("cleaned data", values);
-  //     setUserChats(values);
-
-  //     return values;
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   getUserChatsWithUsername();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   return (
     <>
@@ -141,12 +58,19 @@ const ChatMenu = ({ userChats, currentChatId, setCurrentChat }) => {
             {userChats
               .slice(0)
               .reverse()
+              .filter(
+                (chat) =>
+                  chat.recipientUsername.indexOf(searchTerm) !== -1 ||
+                  searchTerm === ""
+              )
+              .sort((a, b) => (b.lastupdatetime = a.lastupdatetime))
               .map((chat) => (
                 <ChatMenuItem
                   key={chat.id}
                   chat={chat}
                   isCurrent={currentChatId === chat.id}
                   setCurrentChat={setCurrentChat}
+                  refreshData={refreshData}
                 />
               ))}
           </List>
@@ -179,7 +103,6 @@ const ChatMenu = ({ userChats, currentChatId, setCurrentChat }) => {
             p: 0.5,
             height: "92%",
             display: "flex",
-            alignItems: "stretch",
             overflowY: "scroll",
             border: "1px solid lightgrey",
             borderRadius: 1,
@@ -197,9 +120,9 @@ const ChatMenu = ({ userChats, currentChatId, setCurrentChat }) => {
             >
               No chats yet
             </Typography>
-            <Button variant="contained" size="small">
+            {/* <Button variant="contained" size="small">
               Search for chat
-            </Button>
+            </Button> */}
           </Stack>
         </Box>
       )}

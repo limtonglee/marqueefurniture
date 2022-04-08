@@ -1,15 +1,15 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-// import { user } from "../../../data/currentUserData";
-import user from "../../../data/currentUserData2";
 import Button from "@mui/material/Button";
-
+import { useStores } from "../../../stores/RootStore";
 import * as socialMediaAPI from "../../../services/SocialMedia";
 
-const { username } = user;
+// const { username } = user;
 
 const Comment = ({ comment, post, setPost, getCompletePost }) => {
+  const { userStore } = useStores();
+
   const commentStyles = {
     username: {
       fontWeight: "bold",
@@ -32,7 +32,7 @@ const Comment = ({ comment, post, setPost, getCompletePost }) => {
 
   return (
     <>
-      {comment.username === username ? (
+      {comment.username === userStore.name ? (
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Stack direction="row" spacing={0.5}>
             <Box sx={commentStyles.username}>{comment.username}</Box>

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 import * as socialMediaAPI from "../../../services/SocialMedia";

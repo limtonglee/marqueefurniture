@@ -113,6 +113,7 @@ export const getProfilePicById = (userId) => {
 };
 
 export const likePost = (postId, userId) => {
+  console.log(` likePost service postId ${postId} userId ${userId}`);
   const body = {
     postId: postId,
     userId: userId,
@@ -121,6 +122,7 @@ export const likePost = (postId, userId) => {
 };
 
 export const unlikePost = (postId, userId) => {
+  console.log(`unlikePost service postId ${postId} userId ${userId}`);
   const params = {
     postId: postId,
     userId: userId,

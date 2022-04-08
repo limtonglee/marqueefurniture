@@ -7,22 +7,23 @@ import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import PushPinIcon from "@mui/icons-material/PushPin";
-// import { user } from "../../../data/currentUserData";
-import user from "../../../data/currentUserData2";
 import MoodboardModal from "../Moodboard/MoodboardModal";
 import { Link } from "react-router-dom";
 import * as socialMediaAPI from "../../../services/SocialMedia";
+import { useStores } from "../../../stores/RootStore";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
-const { username } = user;
+// const { username } = user;
 
 const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
+  const { userStore } = useStores();
+
   const [moodboards, setMoodboards] = useState([]);
 
   const getUserMoodboards = async () => {
     try {
-      const res = await socialMediaAPI.getUserMoodboards(user.id);
+      const res = await socialMediaAPI.getUserMoodboards(userStore.id);
       const data = JSON.parse(JSON.stringify(res)).data;
       return data;
     } catch (error) {
@@ -71,7 +72,7 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
       // console.log(
       //   `postId ${post.id} is liked by user? ${data.includes(username)}`
       // );
-      setLikesChecked(data.includes(username) ? true : false);
+      setLikesChecked(data.includes(userStore.name) ? true : false);
     } catch (error) {
       console.error(error);
     }
@@ -149,16 +150,16 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
     console.log("no. of likes before clicking:", post.likes.length);
     console.log("liked by before clicking:", post.likes);
     console.log("post.id", post.id);
-    console.log("user.id", user.id);
+    console.log("user.id", userStore.id);
 
     if (likesChecked) {
       console.log("unlike");
       setLikesChecked(false);
-      unlikePost(post.id, user.id);
+      unlikePost(post.id, userStore.id);
     } else {
       console.log("like");
       setLikesChecked(true);
-      likePost(post.id, user.id);
+      likePost(post.id, userStore.id);
     }
 
     console.log("no. of likes after clicking:", post.likes.length);
@@ -200,7 +201,7 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
             checkedIcon={<PushPinIcon fontSize="small" />}
             sx={postCardStyles.checkboxes}
             // onChange={handleChangeForPin}
-            onClick={handleClick}
+            // onClick={handleClick} // 31 mar
             checked={postPinned}
           />
           <Checkbox
@@ -214,7 +215,7 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
         </CardActions>
       </Card>
 
-      <MoodboardModal
+      {/* <MoodboardModal
         open={open}
         closeMoodboardModal={closeMoodboardModal}
         post={post}
@@ -223,7 +224,7 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
         postPinned={postPinned}
         refreshPosts={refreshPosts}
         sourceMoodboardId={sourceMoodboardId}
-      />
+      /> */}
     </>
   );
 };

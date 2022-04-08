@@ -5,14 +5,19 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Badge from "@mui/material/Badge";
 
 import * as chatAPI from "../../services/Chat";
-import * as socialMediaAPI from "../../services/SocialMedia";
+import { useStores } from "../../stores/RootStore";
+import * as socket from "../../services/socket";
 
-const ChatMenuItem = ({ chat, isCurrent, setCurrentChat }) => {
+const ChatMenuItem = ({ chat, isCurrent, setCurrentChat, refreshData }) => {
   // console.log("chat at chatmenuitem", chat);
+  const { userStore } = useStores();
 
   const [messagePreview, setMessagePreview] = useState("");
+  const [invisible, setInvisible] = useState(true);
 
   const getLastMessagePreview = (chat) => {
     if (chat.chatMessages.length === 0) {
@@ -27,13 +32,45 @@ const ChatMenuItem = ({ chat, isCurrent, setCurrentChat }) => {
     }
   };
 
+  // useEffect(() => {
+  //   setMessagePreview(getLastMessagePreview(chat));
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
   useEffect(() => {
-    setMessagePreview(getLastMessagePreview(chat));
+    socket.bumpChatButtonRefresh(userStore.id);
   }, []);
 
   useEffect(() => {
     setMessagePreview(getLastMessagePreview(chat));
+    // setInvisible(chat.isunread !== "1");
+
+    if (isCurrent) {
+      setInvisible(true);
+      markChatAsRead(chat.id);
+      socket.bumpChatButtonRefresh(userStore.id);
+
+      userStore.setCurrentChatPerson(
+        chat.firstuserid === userStore.id ? chat.seconduserid : chat.firstuserid
+      );
+    } else {
+      setInvisible(isInvisible(chat));
+    }
   }, [chat]);
+
+  const isInvisible = (chat) => {
+    if (chat.chatMessages.length > 0) {
+      if (
+        chat.chatMessages[chat.chatMessages.length - 1].userid !==
+          userStore.id &&
+        chat.isunread === "1"
+      ) {
+        return false; // needs noti of new message from other party
+      }
+      return true;
+    }
+    return true;
+  };
 
   const isCurrentChatStyles = {
     backgroundColor: "primary.lighter",
@@ -56,7 +93,28 @@ const ChatMenuItem = ({ chat, isCurrent, setCurrentChat }) => {
     }
   };
 
+  const markChatAsRead = async (chatId) => {
+    try {
+      const res = await chatAPI.markChatAsRead(chatId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log("markChatAsRead", data);
+      // refreshData();
+      setInvisible(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleSelectChat = async () => {
+    userStore.setCurrentChatPerson(
+      chat.firstuserid === userStore.id ? chat.seconduserid : chat.firstuserid
+    );
+
+    if (chat.isunread) {
+      await markChatAsRead(chat.id);
+      socket.bumpChatButtonRefresh(userStore.id);
+    }
+
     // update the chat with latest messages first before updating state
     const updatedChatMessages = await getChatMessages(chat.id);
 
@@ -67,22 +125,113 @@ const ChatMenuItem = ({ chat, isCurrent, setCurrentChat }) => {
 
     setCurrentChat(updatedChat);
     setMessagePreview(getLastMessagePreview(updatedChat));
+    // setInvisible(isInvisible(updatedChat));
   };
+
+  // chat.chatMessages.length > 0 &&
+  //   console.log(
+  //     "bij",
+  //     chat.chatMessages[chat.chatMessages.length - 1].userid !== userStore.id
+  //   );
 
   return (
     <>
+      {/* {chat.isunread === "0" ? (
+        <>
+          <ListItem
+            alignItems="flex-start"
+            sx={isCurrent ? isCurrentChatStyles : notCurrentChatStyles}
+            onClick={handleSelectChat}
+          >
+            <ListItemAvatar>
+              <Avatar
+                alt="Seller"
+                // src="https://images.generated.photos/nSW_I6izlbs1PZri0EwntItqrnybtGrDKTz9RNnnDHk/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LmNvbmQvMzlkNTg3/MjMtODFhYi00Y2Zh/LTlkMjQtNTU0Njdl/NjU1MmU2LmpwZw.jpg"
+                // src={chat.recipientProfilePic}
+                src={`/api/image/${chat.recipientProfilePic}`}
+              />
+            </ListItemAvatar>
+            <ListItemText
+              primary={
+                <>
+                  <Typography
+                    sx={{ display: "inline" }}
+                    component="span"
+                    variant="h6"
+                    color="text.primary"
+                  >
+                    {chat.recipientUsername}
+                  </Typography>
+                </>
+              }
+              secondary={messagePreview}
+            />
+          </ListItem>
+          <Divider variant="middle" component="li" />
+        </>
+      ) : (
+        <>
+          <ListItem
+            alignItems="flex-start"
+            sx={isCurrent ? isCurrentChatStyles : notCurrentChatStyles}
+            onClick={handleSelectChat}
+          >
+            <ListItemAvatar>
+              <Badge
+                color="warning"
+                variant="dot"
+                overlap="circular"
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                invisible={invisible}
+              >
+                <Avatar
+                  alt="Seller"
+                  // src="https://images.generated.photos/nSW_I6izlbs1PZri0EwntItqrnybtGrDKTz9RNnnDHk/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LmNvbmQvMzlkNTg3/MjMtODFhYi00Y2Zh/LTlkMjQtNTU0Njdl/NjU1MmU2LmpwZw.jpg"
+                  // src={chat.recipientProfilePic}
+                  src={`/api/image/${chat.recipientProfilePic}`}
+                />
+              </Badge>
+            </ListItemAvatar>
+            <ListItemText
+              primary={
+                <>
+                  <Typography
+                    sx={{ display: "inline" }}
+                    component="span"
+                    variant="h6"
+                    color="text.primary"
+                  >
+                    {chat.recipientUsername}
+                  </Typography>
+                </>
+              }
+              secondary={messagePreview}
+            />
+          </ListItem>
+          <Divider variant="middle" component="li" />
+        </>
+      )} */}
+
       <ListItem
         alignItems="flex-start"
         sx={isCurrent ? isCurrentChatStyles : notCurrentChatStyles}
         onClick={handleSelectChat}
       >
         <ListItemAvatar>
-          <Avatar
-            alt="Seller"
-            // src="https://images.generated.photos/nSW_I6izlbs1PZri0EwntItqrnybtGrDKTz9RNnnDHk/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LmNvbmQvMzlkNTg3/MjMtODFhYi00Y2Zh/LTlkMjQtNTU0Njdl/NjU1MmU2LmpwZw.jpg"
-            // src={chat.recipientProfilePic}
-            src={`/api/image/${chat.recipientProfilePic}`}
-          />
+          <Badge
+            color="warning"
+            variant="dot"
+            overlap="circular"
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            invisible={invisible}
+          >
+            <Avatar
+              alt="Seller"
+              // src="https://images.generated.photos/nSW_I6izlbs1PZri0EwntItqrnybtGrDKTz9RNnnDHk/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LmNvbmQvMzlkNTg3/MjMtODFhYi00Y2Zh/LTlkMjQtNTU0Njdl/NjU1MmU2LmpwZw.jpg"
+              // src={chat.recipientProfilePic}
+              src={`/api/image/${chat.recipientProfilePic}`}
+            />
+          </Badge>
         </ListItemAvatar>
         <ListItemText
           primary={
@@ -97,24 +246,28 @@ const ChatMenuItem = ({ chat, isCurrent, setCurrentChat }) => {
               </Typography>
             </>
           }
-          secondary={messagePreview}
+          secondary={
+            <>
+              <Typography
+                sx={{ display: "inline" }}
+                component="span"
+                variant="body2"
+                color="text.primary"
+              >
+                {chat.chatMessages.length > 0 && (
+                  <>
+                    {chat.chatMessages[chat.chatMessages.length - 1].userid ===
+                    userStore.id
+                      ? "You:"
+                      : chat.recipientUsername}
+                    {` – `}
+                  </>
+                )}
+              </Typography>
+              {messagePreview}
+            </>
+          }
         />
-        {/* <ListItemText
-              primary="Brunch this weekend?"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    sx={{ display: "inline" }}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    Ali Connors
-                  </Typography>
-                  {" — I'll be in your neighborhood doing errands this…"}
-                </React.Fragment>
-              }
-            /> */}
       </ListItem>
       <Divider variant="middle" component="li" />
     </>

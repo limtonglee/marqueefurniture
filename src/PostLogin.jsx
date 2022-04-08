@@ -34,13 +34,13 @@ import ReviewDesign from "./pages/Design/ReviewDesign";
 
 import { Box } from "@mui/material";
 import SellerProfile from "./pages/SellerProfile/SellerProfile";
-import Checkout from "./pages/Checkout";
+import StripeContainer from "./pages/Checkout/StripeContainer";
 import ProfileOrders from "./pages/Profile/Orders";
 
 const PostLogin = ({checked, setChecked, handleChange}) => {
   return (
     <>
-      <PostLoginNavBar checked={checked} setChecked={setChecked} handleChange={handleChange}/>
+      <PostLoginNavBar position="fixed" checked={checked} setChecked={setChecked} handleChange={handleChange}/>
       <Box sx={{ mt: 15 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/marketplace" />} />
@@ -61,7 +61,7 @@ const PostLogin = ({checked, setChecked, handleChange}) => {
         <Route path="/moodboard/:username/:moodboardId" element={<ViewMoodboard />} />
         {/* <Route path="/login" element={<Login />} /> */}
         <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/checkout" element={<StripeContainer />} />
         <Route path="/sellercenter" element={<SellerCenter />}>
           <Route path="" element={<Orders />} />
           <Route path="orders" element={<Orders />} />

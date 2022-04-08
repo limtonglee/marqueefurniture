@@ -1,4 +1,4 @@
-import { URL_CHECKOUT } from "./endpoints";
+import { URL_CHECKOUT , URL_PAYMENT } from "./endpoints";
 import { postAsJson } from "./api";
 
 export const checkout = (
@@ -9,7 +9,8 @@ export const checkout = (
   buyerId,
   listingId,
   voucherId = {},
-  quantity
+  quantity,
+  paymentMethod
 ) => {
   const body = {
     address: address,
@@ -20,6 +21,15 @@ export const checkout = (
     listingId: listingId,
     voucherId: voucherId,
     quantity: quantity,
+    paymentMethod: paymentMethod,
   };
   return postAsJson(URL_CHECKOUT, body);
 };
+
+export const payment = (amount, id) => {
+  const body = {
+    amount: parseInt(amount*100),
+    id: id,
+  }
+  return postAsJson(URL_PAYMENT, body)
+}

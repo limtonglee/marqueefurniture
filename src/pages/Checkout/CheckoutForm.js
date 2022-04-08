@@ -1,8 +1,10 @@
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
+import EditIcon from "@mui/icons-material/Edit";
 import { Button, Container, Divider, Grid, ImageList } from "@mui/material";
 import ButtonBase from "@mui/material/ButtonBase";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
+import TextField from "@mui/material/TextField";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
@@ -16,36 +18,15 @@ import { deleteCartItems } from "../../services/Cart";
 import { checkout, payment } from "../../services/Checkout";
 import { getSellerInfo } from "../../services/Listings";
 import { useStores } from "../../stores/RootStore";
-import palette from "../../theme/palette";
 import { getCartTotal } from "../../utils/getCartTotal";
 import { getTotalPrice } from "../../utils/getTotalPrice";
 import { inSelectedIndex } from "../../utils/inSelectedIndex";
 import { getVoucherId, isVoucherPresent } from "../../utils/isVoucherPresent";
 import { SellerData } from "../Cart/SellerData";
-
-const CARD_OPTIONS = {
-  iconStyle: "solid",
-  hidePostalCode: true,
-  style: {
-    base: {
-      iconColor: palette.primary.main,
-      color: palette.common.black,
-      fontWeight: 500,
-      fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
-      fontSize: "16px",
-      fontSmoothing: "antialiased",
-      ":-webkit-autofill": { color: "#fce883" },
-      "::placeholder": { color: palette.primary.main },
-    },
-    invalid: {
-      iconColor: palette.error.main,
-      color: palette.error.main,
-    },
-  },
-};
+import { CARD_OPTIONS } from "./CardOptions";
 
 const notifyCheckout = () =>
-  toast("checkout successful! Redirecting to orders page...", {
+  toast("SUCCESS! Redirecting to orders page...", {
     position: toast.POSITION.TOP_CENTER,
     autoClose: 3000,
   });
@@ -69,16 +50,17 @@ export default function Checkout({
   const elements = useElements();
 
   const [message, setMessage] = useState("no message");
-
+  const [editAddress, setEditAddress] = useState(false);
+  const [address, setAddress] = useState(userStore.address);
   const [paymentMethod, setPaymentMethod] = useState("");
 
   const handleConfirm = async () => {
     console.log("items");
 
-    console.log(items);
+    // console.log(items);
     if (paymentMethod === "COD") {
       items.forEach(async (item) => {
-        const result = await performCheckout(item);
+        await performCheckout(item);
       });
       notifyCheckout();
     }
@@ -118,8 +100,8 @@ export default function Checkout({
       }
     }
 
-    const myTimeout = setTimeout(() => {
-      navigate("/profile", { state: { redirect: "cart" } });
+    setTimeout(() => {
+      navigate("/profile/orders", { state: { redirect: "cart" } });
     }, 4000);
   };
 
@@ -132,7 +114,7 @@ export default function Checkout({
     const sellerResponse = await getSellerInfo(item.id);
     const sellerId = sellerResponse.data[0].userid;
     const response = await checkout(
-      userStore.address,
+      address,
       message,
       price,
       sellerId,
@@ -162,6 +144,15 @@ export default function Checkout({
     setPaymentMethod(newValue);
   };
 
+  const handleAddressChange = (event) => {
+    // console.log(event.target.value);
+    setAddress(event.target.value);
+  };
+  const handleMessageChange = (event) => {
+    // console.log(event.target.value);
+    setMessage(event.target.value);
+  };
+
   return (
     <Container>
       <Typography variant="h3" fontWeight="bold">
@@ -174,12 +165,53 @@ export default function Checkout({
         onClick={() => navigate(-1)}
         color="primary"
       />
-      <Grid container mt={1} spacing={1} direction="row">
-        <Grid item m={1}>
-          <Typography variant="h5" component="div">
-            Delivery address: {userStore.address}
-          </Typography>
-        </Grid>
+      <Grid container mt={1} spacing={1} direction="row" alignItems="center">
+        {!editAddress ? (
+          <>
+            <Grid item m={1}>
+              <Typography variant="h5" component="div">
+                Delivery address: {address}
+              </Typography>
+            </Grid>
+            <Grid item xs={1} m={1}>
+              <EditIcon
+                color="primary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setEditAddress(true);
+                }}
+              />
+            </Grid>
+          </>
+        ) : (
+          <>
+            <Grid item m={1}>
+              <Typography variant="h5" component="div">
+                Delivery address:
+              </Typography>
+            </Grid>
+            <Grid item xs={4} m={1}>
+              <TextField
+                variant="standard"
+                id="address"
+                name="address"
+                defaultValue={address}
+                onChange={handleAddressChange}
+                fullWidth
+                required
+              ></TextField>
+            </Grid>
+            <Grid item xs={1} m={1}>
+              <EditIcon
+                color="primary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setEditAddress(false);
+                }}
+              />
+            </Grid>
+          </>
+        )}
       </Grid>
 
       <Paper
@@ -191,7 +223,7 @@ export default function Checkout({
             theme.palette.mode === "dark" ? "#1A2027" : "#fff",
         }}
       >
-        <Grid container spacing={2}>
+        <Grid container alignItems="center" spacing={2}>
           <Grid item>
             <Typography variant="body2" component="div">
               Products
@@ -204,7 +236,7 @@ export default function Checkout({
         <ImageList cols={1} gap={15}>
           {items.map((cartItem) => (
             <div key={cartItem.name}>
-              <Grid container spacing={2}>
+              <Grid container alignItems="center" spacing={2}>
                 <Grid item>
                   <Link to={`/marketplace/${cartItem.id}`}>
                     <ButtonBase sx={{ width: 128, height: 128 }}>
@@ -340,10 +372,10 @@ export default function Checkout({
             </div>
           ))}
         </ImageList>
-        <Grid container mt={1} spacing={1} direction="row">
-          <Grid item xs={1.5} m={1}>
+        <Grid container mt={1} spacing={1} alignItems="center" direction="row">
+          <Grid item xs={1} m={1}>
             <Typography variant="subtitle2" component="div">
-              Payment methods
+              Payment methods:
             </Typography>
           </Grid>
           <Grid item xs={8}>
@@ -359,10 +391,16 @@ export default function Checkout({
           </Grid>
         </Grid>
         {!!(paymentMethod === "CC") && (
-          <Grid container mt={1} spacing={1} direction="row">
+          <Grid
+            container
+            mt={1}
+            spacing={1}
+            alignItems="center"
+            direction="row"
+          >
             <Grid item xs={1} m={1}>
               <Typography variant="subtitle2" component="div">
-                C.C. Info
+                C.C. Info:
               </Typography>
             </Grid>
             <Grid item xs={6} m={1}>
@@ -370,11 +408,21 @@ export default function Checkout({
             </Grid>
           </Grid>
         )}
-        <Grid container mt={1} spacing={1} direction="row">
+        <Grid container mt={1} spacing={1} alignItems="center" direction="row">
           <Grid item xs={1} m={1}>
             <Typography variant="subtitle2" component="div">
-              Message
+              Message:
             </Typography>
+          </Grid>
+          <Grid item xs={4} m={1}>
+            <TextField
+              variant="standard"
+              id="message"
+              name="message"
+              onChange={handleMessageChange}
+              fullWidth
+              required
+            ></TextField>
           </Grid>
         </Grid>
 

@@ -88,12 +88,14 @@ export const ItemDetails = () => {
   };
 
   const handleAddCart = (item, newState) => {
-    notifyCart();
 
     const addItemToCart = async () => {
       const response = await addToCart(userStore.id, item.id);
       const result = await response.data;
       console.log(result);
+      if (result === "Item added") {
+        notifyCart();
+      }
     };
 
     addItemToCart();

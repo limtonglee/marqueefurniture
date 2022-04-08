@@ -1,5 +1,5 @@
 import {URL_GET_ORDERS} from "./endpoints"
-import { get, remove } from "./api";
+import { get } from "./api";
 
 export const getOrders = (id) => {
   const params = {

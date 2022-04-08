@@ -26,11 +26,9 @@ const ChatButton = () => {
     try {
       const res = await chatAPI.getUserChats(userId);
       const data = JSON.parse(JSON.stringify(res)).data;
-      console.log("chat button data", data);
       setUserChats(data);
 
       const unread = data.filter((chat) => chat["isunread"] === "1").length;
-      console.log("unread!!!!!", unread);
       setUnreadCount(unread);
 
       return data;
@@ -57,7 +55,6 @@ const ChatButton = () => {
     });
 
     socket.subscribeToGetBumpChatButtonRefresh((err, data) => {
-      console.log("subscribeToGetBumpChatButtonRefresh");
       getUserChats(userStore.id);
     });
   }, [userStore.id]);

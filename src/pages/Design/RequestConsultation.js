@@ -12,8 +12,11 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
+import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
+import Select from "@mui/material/Select";
+import CloseIcon from "@mui/icons-material/Close";
 
 import AddIcon from "@mui/icons-material/Add";
 import UploadIcon from "@mui/icons-material/Upload";
@@ -67,6 +70,24 @@ const RequestConsultation = () => {
 
   const handleChangeOtherComments = (event) => {
     setOtherComments(event.target.value);
+  };
+
+  const [roomRows, setRoomRows] = useState([
+    { id: 1, roomSize: "", roomType: "Bedroom" },
+  ]);
+
+  const updateRoomSize = (index, event) => {
+    console.log("roomRows", roomRows);
+    const newRoomRows = [...roomRows];
+    newRoomRows[index].roomSize = event.target.value;
+    setRoomRows(newRoomRows);
+  };
+
+  const updateRoomType = (index, event) => {
+    console.log("roomRows", roomRows);
+    const newRoomRows = [...roomRows];
+    newRoomRows[index].roomType = event.target.value;
+    setRoomRows(newRoomRows);
   };
 
   return (
@@ -126,7 +147,7 @@ const RequestConsultation = () => {
                   <Typography variant="h4" gutterBottom component="div">
                     Geometry
                   </Typography>
-                  <Stack direction="row" spacing={3}>
+                  {/* <Stack direction="row" spacing={3}>
                     <Typography variant="h6" gutterBottom component="div">
                       Room 1
                     </Typography>
@@ -167,18 +188,113 @@ const RequestConsultation = () => {
                         </Box>
                       </Stack>
                       <Box>
-                        <Button startIcon={<AddIcon />} variant="outlined">
+                        <Button
+                          startIcon={<AddIcon />}
+                          variant="outlined"
+                          onClick={handleAddAnotherRoom}
+                        >
                           Add another room
                         </Button>
                       </Box>
                     </Stack>
-                  </Stack>
+                  </Stack> */}
+                  <FormControl>
+                    <Stack spacing={2}>
+                      {roomRows.map((room, i) => (
+                        <>
+                          <Stack
+                            direction="row"
+                            spacing={3}
+                            sx={{ display: "flex", alignItems: "center" }}
+                          >
+                            <Typography
+                              variant="h6"
+                              gutterBottom
+                              component="div"
+                            >
+                              Room {i + 1}
+                            </Typography>
+                            <Stack spacing={2}>
+                              <Stack direction="row" spacing={2}>
+                                <Box>
+                                  <TextField
+                                    id="outlined-textarea"
+                                    placeholder="Enter area"
+                                    type="number"
+                                    InputProps={{
+                                      endAdornment: (
+                                        <InputAdornment>sq ft</InputAdornment>
+                                      ),
+                                    }}
+                                    value={room.roomSize}
+                                    onChange={(event) =>
+                                      updateRoomSize(i, event)
+                                    }
+                                  />
+                                </Box>
+                                <Box>
+                                  <TextField
+                                    required
+                                    id="outlined-required"
+                                    placeholder="Enter room type"
+                                    value={room.roomType}
+                                    onChange={(event) =>
+                                      updateRoomType(i, event)
+                                    }
+                                  />
+                                </Box>
+                                {i !== 0 && (
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <CloseIcon
+                                      name="close"
+                                      onClick={() =>
+                                        setRoomRows((cur) => [
+                                          ...cur.slice(0, i),
+                                          ...cur.slice(i + 1),
+                                        ])
+                                      }
+                                    />
+                                  </Box>
+                                )}
+                              </Stack>
+                            </Stack>
+                          </Stack>
+                        </>
+                      ))}
+                    </Stack>
+                  </FormControl>
+                  <Box>
+                    <Button
+                      startIcon={<AddIcon />}
+                      variant="outlined"
+                      // onClick={() =>
+                      //   setRoomRows((prev) => prev.concat([roomField]))
+                      // }
+                      onClick={() => {
+                        const newRoomRows = [...roomRows];
+                        newRoomRows.push({
+                          id: Math.random(),
+                          roomSize: "",
+                          roomType: "",
+                        });
+                        setRoomRows((prev) => newRoomRows);
+                      }}
+                      sx={{ mt: 2 }}
+                    >
+                      Add another room
+                    </Button>
+                  </Box>
                 </Box>
                 <Box>
                   <Typography variant="h4" gutterBottom component="div">
                     Floor plan
                   </Typography>
-                  <Button variant="contained" sx={{ height: 60, width: 80 }}>
+                  <Button variant="outlined" sx={{ height: 60, width: 80 }}>
                     <Box>
                       <UploadIcon fontSize="small" sx={{ mb: -1 }} />
                       Upload
@@ -261,7 +377,7 @@ const RequestConsultation = () => {
           </Grid>
         </Grid>
       </Container>
-      <Box
+      {/* <Box
         sx={{
           position: "fixed",
           bottom: 0,
@@ -277,7 +393,7 @@ const RequestConsultation = () => {
         <Button variant="contained" size="large" sx={{ width: "100%" }}>
           Submit
         </Button>
-      </Box>
+      </Box> */}
     </>
   );
 };

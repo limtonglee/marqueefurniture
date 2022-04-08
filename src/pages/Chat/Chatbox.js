@@ -27,7 +27,7 @@ import * as socket from "../../services/socket";
 import { useStores } from "../../stores/RootStore";
 
 const Chatbox = ({ currentChat, refreshCurrentChat }) => {
-  console.log("currentChat", currentChat);
+  // console.log("currentChat", currentChat);
   const { userStore } = useStores();
 
   const [message, setMessage] = useState("");

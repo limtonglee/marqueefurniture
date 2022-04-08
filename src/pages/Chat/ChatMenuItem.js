@@ -10,6 +10,7 @@ import Badge from "@mui/material/Badge";
 
 import * as chatAPI from "../../services/Chat";
 import { useStores } from "../../stores/RootStore";
+import * as socket from "../../services/socket";
 
 const ChatMenuItem = ({ chat, isCurrent, setCurrentChat, refreshData }) => {
   // console.log("chat at chatmenuitem", chat);
@@ -37,12 +38,21 @@ const ChatMenuItem = ({ chat, isCurrent, setCurrentChat, refreshData }) => {
   // }, []);
 
   useEffect(() => {
+    socket.bumpChatButtonRefresh(userStore.id);
+  }, []);
+
+  useEffect(() => {
     setMessagePreview(getLastMessagePreview(chat));
     // setInvisible(chat.isunread !== "1");
 
     if (isCurrent) {
       setInvisible(true);
       markChatAsRead(chat.id);
+      socket.bumpChatButtonRefresh(userStore.id);
+
+      userStore.setCurrentChatPerson(
+        chat.firstuserid === userStore.id ? chat.seconduserid : chat.firstuserid
+      );
     } else {
       setInvisible(isInvisible(chat));
     }
@@ -96,8 +106,13 @@ const ChatMenuItem = ({ chat, isCurrent, setCurrentChat, refreshData }) => {
   };
 
   const handleSelectChat = async () => {
+    userStore.setCurrentChatPerson(
+      chat.firstuserid === userStore.id ? chat.seconduserid : chat.firstuserid
+    );
+
     if (chat.isunread) {
       await markChatAsRead(chat.id);
+      socket.bumpChatButtonRefresh(userStore.id);
     }
 
     // update the chat with latest messages first before updating state

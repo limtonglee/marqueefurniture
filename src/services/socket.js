@@ -44,6 +44,16 @@ export const subscribeToGetLikes = (callback) => {
   });
 };
 
+export const subscribeToGetBumpChatButtonRefresh = (callback) => {
+  if (!socket) {
+    return;
+  }
+
+  socket.on("bumpChatButtonRefresh", (data) => {
+    callback(null, data);
+  });
+};
+
 // ! SENDING
 
 export const sendMessage = (data) => {
@@ -60,4 +70,12 @@ export const sendLikePost = (data) => {
   }
 
   socket.emit("likePost", data);
+};
+
+export const bumpChatButtonRefresh = (data) => {
+  if (!socket) {
+    return;
+  }
+
+  socket.emit("bumpChatButtonRefresh", data);
 };

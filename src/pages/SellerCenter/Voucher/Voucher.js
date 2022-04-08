@@ -14,15 +14,17 @@ import AddVoucherModal from './AddVoucherModal';
 import EditVoucherModal from "./EditVoucherModal";
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
+import { useStores } from "../../../stores/RootStore";
 
 export const Voucher = () => {
     const [value, setValue] = React.useState(0);
     const [data, setData] = useState([]);
     const [vouchers, setVouchers] = useState([]);
-    
+    const { userStore } = useStores();
+
     const getVouchers = async () => {
         try {
-            const res = await SellerCenterAPI.getVouchers(1);
+            const res = await SellerCenterAPI.getVouchers(userStore.id);
             setData(JSON.parse(JSON.stringify(res.data)));
             setVouchers(JSON.parse(JSON.stringify(res.data)));
         } catch (error) {
@@ -53,8 +55,8 @@ export const Voucher = () => {
 
     const handleDelete = async (voucherId) => {
         try {
-            const res = await SellerCenterAPI.deleteVoucher(voucherId);
-            getVouchers();
+            await SellerCenterAPI.deleteVoucher(voucherId);
+            refreshData();
         } catch (error) {
             console.error(error);
         }
@@ -71,7 +73,7 @@ export const Voucher = () => {
                     <Typography variant="h4" gutterBottom>
                         Vouchers
                     </Typography>
-                    <AddVoucherModal refreshData={refreshData}></AddVoucherModal>
+                    <AddVoucherModal refreshData={refreshData}>{userStore.id}</AddVoucherModal>
                 </Stack>
                 <Card style={{ overflow: 'visible' }}>
                     <Tabs

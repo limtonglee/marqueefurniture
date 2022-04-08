@@ -1,35 +1,27 @@
 import {
   Button,
+  Checkbox,
   Container,
   Divider,
   Grid,
   ImageList,
-  Checkbox,
 } from "@mui/material";
 import ButtonBase from "@mui/material/ButtonBase";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { deleteCartItem, deleteCartItems, getCart } from "../../services/Cart";
-import {
-  addToCart,
-  getListingDetails,
-  getSellerInfo,
-} from "../../services/Listings";
+import { addToCart, getListingDetails } from "../../services/Listings";
 import { useStores } from "../../stores/RootStore";
 import { getCartTotal } from "../../utils/getCartTotal";
 import { getTotalPrice } from "../../utils/getTotalPrice";
-import { SellerData } from "./SellerData";
-
-import { isVoucherPresent } from "../../utils/isVoucherPresent";
 import { inSelectedIndex } from "../../utils/inSelectedIndex";
+import { isVoucherPresent } from "../../utils/isVoucherPresent";
+import { SellerData } from "./SellerData";
 import { SellerVoucher } from "./SellerVoucher";
-
-import { useNavigate } from "react-router-dom";
 
 const Img = styled("img")({
   margin: "auto",
@@ -38,7 +30,7 @@ const Img = styled("img")({
   maxHeight: "100%",
 });
 
-export default function Cart() {
+export default function Cart({setCartCount}) {
   const navigate = useNavigate();
 
   const { userStore } = useStores();
@@ -54,7 +46,7 @@ export default function Cart() {
         counts[x.listingid] = (counts[x.listingid] || 0) + 1;
       });
       setCount(counts);
-      for (let [key, value] of Object.entries(counts)) {
+      for (let [key] of Object.entries(counts)) {
         getListingDetail(key);
       }
     };
@@ -140,6 +132,7 @@ export default function Cart() {
     const addItemToCart = async () => {
       const response = await addToCart(userStore.id, itemId);
       const result = await response.data;
+      console.log(result)
     };
 
     addItemToCart();
@@ -275,7 +268,7 @@ export default function Cart() {
                     </Grid>
                   </Grid>
                   <Grid item xs={2}>
-                    <Grid item >
+                    <Grid item>
                       <Typography variant="body2" component="div" align="right">
                         Unit Price:
                       </Typography>

@@ -6,12 +6,10 @@ import {
     Box,
     Grid,
     Switch,
-    CardContent
 } from '@mui/material';
 import { useParams } from "react-router-dom";
 import { shopCategoriesData } from "../../../data/shopCategoriesData";
 import { listingsData } from "../../../data/listingsData";
-import AddIcon from '@mui/icons-material/Add';
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import CategoryAddProductModal from './CategoryAddProductModal';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
@@ -100,6 +98,7 @@ export const ShopCategoryDetails = () => {
                                             <img
                                                 src={`${product.img}?w=124&fit=crop&auto=format`}
                                                 srcSet={`${product.img}?w=124&fit=crop&auto=format&dpr=2 2x`}
+                                                alt='img'
                                                 loading="lazy"
                                             />
                                         </Grid>

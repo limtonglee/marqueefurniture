@@ -9,24 +9,26 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import * as React from "react";
+import Alert from "@mui/material/Alert";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../services/Login";
 import { useStores } from "../../stores/RootStore";
 
 const Login = () => {
+  const [incorrectLogin, setIncorrectLogin] = useState(false);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
 
     login(data.get("email"), data.get("password"))
       .then((response) => {
-        if (response.status === 200) {
+        if (
+          response.status === 200 &&
+          response.data.msg !== "Incorrect login info"
+        ) {
           const user = response.data[0];
           setLogin(
             user.id,
@@ -37,6 +39,9 @@ const Login = () => {
             user.address,
             user.bio
           );
+        } else {
+          console.log(response.data.msg);
+          setIncorrectLogin(true);
         }
       })
       .catch((error) => {
@@ -48,6 +53,10 @@ const Login = () => {
     //   setAdminLogin();
     // } else {
     //   setLogin(data.get("email"));
+  };
+
+  const handleChange = (event) => {
+    setIncorrectLogin(false);
   };
 
   /*
@@ -114,25 +123,22 @@ const Login = () => {
   let navigate = useNavigate();
 
   const setLogin = (id, username, email, type, profilepic, address, bio) => {
-    userStore.setIsLoggedIn();
     userStore.setUserName(username);
     userStore.setId(id);
     userStore.setDescription(bio);
-    userStore.setUserAddress(address)
+    userStore.setUserAddress(address);
     userStore.setProfilePic(profilepic);
 
     //to change set to seller
-    if (type === "Customer") {
+    if (type === "Seller") {
       userStore.setIsSeller();
     }
-    navigate("/marketplace");
-  };
+    if (type === "Admin") {
+      userStore.setIsAdmin();
+    }
 
-  const setAdminLogin = () => {
     userStore.setIsLoggedIn();
-    userStore.setUserName("admin");
-    userStore.setIsAdmin();
-    navigate("/admin");
+    navigate("/marketplace");
   };
 
   return (
@@ -153,6 +159,12 @@ const Login = () => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          {!!incorrectLogin && (
+            <Alert severity="error">
+              Your account and/or password is incorrect, please try again
+            </Alert>
+          )}
+
           <Box
             component="form"
             onSubmit={handleSubmit}
@@ -178,6 +190,7 @@ const Login = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={handleChange}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

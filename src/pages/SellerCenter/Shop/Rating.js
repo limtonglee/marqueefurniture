@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Layout } from "../Layout";
-import user from "../../../data/currentUserData2";
 // material
 import {
     Card,
     Stack,
-    Button,
     Typography,
     Tabs,
     Tab,
@@ -14,10 +12,9 @@ import {
     Grid,
     ButtonBase,
     Avatar,
-    Link,
-    TextField,
 } from "@mui/material";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
+import { useStores } from "../../../stores/RootStore";
 
 const Img = styled("img")({
     margin: "auto",
@@ -26,16 +23,14 @@ const Img = styled("img")({
     maxHeight: "100%",
 });
 
-
-
 export const ShopRating = () => {
-    const [value, setValue] = useState(0);
     const [data, setData] = useState([]);
     const [ratings, setRatings] = useState([]);
+    const { userStore } = useStores();
 
     const getRatings = async () => {
         try {
-            const res = await SellerCenterAPI.getShopRatings(1);
+            const res = await SellerCenterAPI.getShopRatings(userStore.id);
             setData(JSON.parse(JSON.stringify(res.data)));
             setRatings(JSON.parse(JSON.stringify(res.data)));
         } catch (error) {
@@ -47,30 +42,61 @@ export const ShopRating = () => {
         getRatings();
     }, []);
 
-    let tabData = ratings;
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-        updateData(newValue);
-    };
-
     const refreshData = () => {
         getRatings();
     };
 
-    const updateData = (value) => {
-        if (value === 1) {
-            tabData = ratings.filter((ratings) => ratings.rating === 5);
-        } else if (value === 2) {
-            tabData = ratings.filter((ratings) => ratings.rating === 4);
-        } else if (value === 3) {
-            tabData = ratings.filter((ratings) => ratings.rating === 3);
-        } else if (value === 4) {
-            tabData = ratings.filter((ratings) => ratings.rating === 2);
-        } else if (value === 5) {
-            tabData = ratings.filter((ratings) => ratings.rating === 1);
+    let tabData = ratings;
+    const [value1, setValue1] = useState(0);
+    const [value2, setValue2] = useState(0);
+
+    const handleTab1 = (event, newValue) => {
+        setValue1(newValue);
+        updateData();
+    };
+    const handleTab2 = (event, newValue) => {
+        setValue2(newValue);
+        updateData();
+    };
+    const updateData = () => {
+        console.log('ZZZ', value1);
+        console.log('ZZZ', value2);
+        if (value1 === 1) {
+            tabData = ratings.filter((ratings) => ratings.sellerreply === '');
+        } else if (value1 === 2) {
+            tabData = ratings.filter((ratings) => ratings.sellerreply !== '');
+        } else {
+            tabData = ratings;
         }
+        console.log('ZZZ1', tabData);
+        if (value2 === 1) {
+            tabData = tabData.filter((ratings) => ratings.rating === 5);
+        } else if (value2 === 2) {
+            tabData = tabData.filter((ratings) => ratings.rating === 4);
+        } else if (value2 === 3) {
+            tabData = tabData.filter((ratings) => ratings.rating === 3);
+        } else if (value2 === 4) {
+            tabData = tabData.filter((ratings) => ratings.rating === 2);
+        } else if (value2 === 5) {
+            tabData = tabData.filter((ratings) => ratings.rating === 1);
+        }
+        console.log('ZZZ2', tabData);
         setData(tabData);
     };
+
+
+    const [average, setAverage] = useState(0);
+    const calculateAverage = () => {
+        var sum = 0;
+        for (var i = 0; i < ratings.length; i++) {
+            sum += ratings[i].rating;
+        }
+        setAverage((sum / ratings.length).toFixed(1));
+    };
+    useEffect(() => {
+        calculateAverage();
+    }, []);
+
 
 
     return (
@@ -81,11 +107,14 @@ export const ShopRating = () => {
                         Shop Rating
                     </Typography>
                     <Typography variant="h4" gutterBottom>
-                        4.5/5
+                        {average}/5
                     </Typography>
                 </Stack>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs>
+                    <Tabs
+                        value={value1}
+                        onChange={handleTab1}
+                    >
                         <Tab label="All" />
                         <Tab label="To Reply" />
                         <Tab label="Replied" />
@@ -93,8 +122,8 @@ export const ShopRating = () => {
                 </Box>
                 <Box sx={{ border: 1, borderColor: 'divider', margin: '10px' }}>
                     <Tabs
-                        value={value}
-                        onChange={handleChange}
+                        value={value2}
+                        onChange={handleTab2}
                     >
                         <Tab label="All" />
                         <Tab label="5 Star" />
@@ -116,37 +145,37 @@ export const ShopRating = () => {
                     </Grid>
                 </Grid>
                 {data.map((item) => (
-                    <Grid container spacing={2}>
+                    <Grid key={item.id} container spacing={2}
+                        sx={{ marginTop: '4px', marginBottom: '4px' }}
+                    >
                         <Grid item xs={4}>
                             <Card sx={{ height: '100%' }}>
                                 <Grid container spacing={2} p={2}>
                                     <Grid item>
                                         <ButtonBase sx={{ width: 128, height: 128 }}>
-                                            <Img alt="complex" src="https://images.unsplash.com/photo-1540574163026-643ea20ade25" />
+                                            <Img
+                                                src={`/api/image/${item.image}`}
+                                                alt="complex"
+                                            />
                                         </ButtonBase>
                                     </Grid>
                                     <Grid item xs={12} sm container>
                                         <Grid item xs container direction="column" spacing={2}>
                                             <Grid item xs>
                                                 <Typography gutterBottom variant="subtitle1" component="div">
-                                                    Sofa
+                                                    {item.name}
                                                 </Typography>
                                                 <Typography variant="body2" gutterBottom>
-                                                    Variation: Brown
+                                                    Variation: {item.variations}
                                                 </Typography>
                                                 <Typography variant="body2" color="text.secondary">
-                                                    ID: 0
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Typography sx={{ cursor: 'pointer' }} variant="body2">
-                                                    Link to listing
+                                                    ID: {item.listingid}
                                                 </Typography>
                                             </Grid>
                                         </Grid>
                                         <Grid item>
                                             <Typography variant="subtitle1" component="div">
-                                                $298.99
+                                                ${item.listingprice}
                                             </Typography>
                                         </Grid>
                                     </Grid>
@@ -160,24 +189,24 @@ export const ShopRating = () => {
                                         <Grid item xs container direction="column" spacing={2}>
                                             <Grid item xs>
                                                 <Avatar
-                                                    alt="Remy Sharp"
-                                                    src="https://www.pngkey.com/png/detail/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png"
+                                                    alt="avatar"
+                                                    src={`/api/image/${item.profilepic}`}
                                                     sx={{ width: 50, height: 50 }}
                                                 />
                                                 <Typography gutterBottom variant="subtitle1" component="div">
-                                                    Remy Sharp
+                                                    {item.username}
                                                 </Typography>
                                                 <Typography variant="body2" gutterBottom>
-                                                    Good item, fast delivery
+                                                    {item.description}
                                                 </Typography>
                                                 <Typography variant="body2" gutterBottom>
-                                                    Rating: 5/5
+                                                    Rating: {item.rating}/5
                                                 </Typography>
                                             </Grid>
                                         </Grid>
                                         <Grid item>
                                             <Typography variant="subtitle1" component="div">
-                                                Date: 27/2/2022
+                                                {/* Date: {item.datetime} */}
                                             </Typography>
                                         </Grid>
                                     </Grid>
@@ -191,21 +220,21 @@ export const ShopRating = () => {
                                         <Grid item xs container direction="column" spacing={2}>
                                             <Grid item xs>
                                                 <Avatar
-                                                    alt="Remy Sharp"
+                                                    alt="avatar"
                                                     src="https://i.pinimg.com/originals/34/60/3c/34603ce8a80b1ce9a768cad7ebf63c56.jpg"
                                                     sx={{ width: 50, height: 50 }}
                                                 />
                                                 <Typography gutterBottom variant="subtitle1" component="div">
-                                                    ABC Furniture Shop
+                                                    {/* ABC Furniture Shop */}
                                                 </Typography>
                                                 <Typography variant="body2" gutterBottom>
-                                                    Thank you for your review!
+                                                    {item.sellerreply}
                                                 </Typography>
                                             </Grid>
                                         </Grid>
                                         <Grid item>
                                             <Typography variant="subtitle1" component="div">
-                                                Date: 27/2/2022
+                                                {/* Date: 27/2/2022 */}
                                             </Typography>
                                         </Grid>
                                     </Grid>

@@ -24,6 +24,8 @@ export const URL_DELETE_CART_ITEMS = "/api/cart/deleteItems";
 
 //checkout management
 export const URL_CHECKOUT = "/api/checkout";
+export const URL_PAYMENT = "/api/payment"
+export const URL_GET_ORDERS = "/api/user/orders"
 
 //liked listings management
 export const URL_LISTING_LIKE = "/api/listing/like"; // user liking a post
@@ -82,6 +84,7 @@ export const URL_GET_SHOP_LISTINGS = "/api/merchant/listings";
 export const URL_GET_SHOP_LISTING_DETAIL = "/api/merchant/listing/individual";
 export const URL_CREATE_SHOP_LISTING = "/api/merchant/createListing";
 export const URL_EDIT_SHOP_LISTING = "/api/merchant/editListing";
+export const URL_EDIT_SHOP_LISTING_STATUS = "/api/merchant/delistListing";
 // vouchers
 export const URL_GET_SHOP_VOUCHERS = "/api/merchant/vouchers";
 export const URL_EDIT_SHOP_VOUCHER = "/api/merchant/voucher/edit";

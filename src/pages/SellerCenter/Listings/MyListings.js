@@ -1,7 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from "react";
 import { Layout } from '../Layout';
-import { listingsData } from "../../../data/listingsData";
 // material
 import {
     Card,
@@ -10,19 +9,17 @@ import {
     Typography,
     Tabs,
     Tab,
-    Box,
-    styled,
     Grid,
     TextField,
     MenuItem
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router";
-import Searchbar from "../../../components/Searchbar";
 import EditListingModal from "./EditListingModal";
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
+import { useStores } from "../../../stores/RootStore";
 
 export const MyListings = () => {
     const navigate = useNavigate();
@@ -30,10 +27,11 @@ export const MyListings = () => {
     const [value, setValue] = React.useState(0);
     const [data, setData] = useState([]);
     const [listings, setListings] = useState([]);
+    const { userStore } = useStores();
 
     const getListings = async () => {
         try {
-            const res = await SellerCenterAPI.getListings(1);
+            const res = await SellerCenterAPI.getListings(userStore.id);
             setData(JSON.parse(JSON.stringify(res.data)));
             setListings(JSON.parse(JSON.stringify(res.data)));
         } catch (error) {
@@ -44,6 +42,10 @@ export const MyListings = () => {
     useEffect(() => {
         getListings();
     }, []);
+
+    const refreshData = () => {
+        getListings();
+    };
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -93,13 +95,15 @@ export const MyListings = () => {
         }
     };
 
-    const handleDelist = (event, item, value) => {
-        if (item.status !== 'Delisted') {
-            item.status = 'Delisted';
-        } else if (item.status === 'Delisted') {
-            item.status = 'Live';
+    const handleDelist = async (item) => {
+        const status = item.status === 'DELISTED' ? 'LIVE' : 'DELISTED';
+        try {
+            await SellerCenterAPI.updateListingStatus(status, item.id);
+            refreshData();
+        } catch (error) {
+            console.error(error);
         }
-        handleChange();
+        refreshData();
     }
 
     return (
@@ -154,10 +158,10 @@ export const MyListings = () => {
                         <Grid item xs={1}>
                             SKU
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={1}>
                             Price
                         </Grid>
-                        <Grid item xs={1}>
+                        <Grid item xs={2}>
                             Status
                         </Grid>
                         <Grid item xs={1}>
@@ -181,9 +185,8 @@ export const MyListings = () => {
                                     <Grid container p={2}>
                                         <Grid item xs={3}>
                                             <img
-                                                src={`/api/image/${item.image}?w=124&fit=crop&auto=format`}
+                                                src={`/api/image/${item.image}`}
                                                 alt={item.title}
-                                                
                                             />
                                             <div>{item.name}</div>
                                             <div>Variation: {item.variations}</div>
@@ -191,11 +194,11 @@ export const MyListings = () => {
                                         <Grid item xs={1}>
                                             {item.id}
                                         </Grid>
-                                        <Grid item xs={2}>
+                                        <Grid item xs={1}>
                                             S${item.listingprice}
 
                                         </Grid>
-                                        <Grid item xs={1}>
+                                        <Grid item xs={2}>
                                             {item.status}
                                         </Grid>
                                         <Grid item xs={1}>
@@ -205,8 +208,8 @@ export const MyListings = () => {
                                             {item.sales}
                                         </Grid>
                                         <Grid item xs={3}>
-                                            <EditListingModal>{item}</EditListingModal>
-                                            {item.status === "Delisted" ? (
+                                            <EditListingModal refreshData={refreshData}>{item}</EditListingModal>
+                                            {item.status === "DELISTED" ? (
                                                 <Button
                                                     variant="contained"
                                                     startIcon={<PlaylistAddIcon />}
@@ -229,7 +232,7 @@ export const MyListings = () => {
                                                         marginTop: "12px"
                                                     }}
                                                     onClick={e => {
-                                                        handleDelist(e, item, value);
+                                                        handleDelist(item);
                                                     }}
                                                 >
                                                     Delist

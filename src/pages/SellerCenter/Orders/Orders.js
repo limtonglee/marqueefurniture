@@ -16,15 +16,17 @@ import {
 import { Link } from "react-router-dom";
 import UpdateOrderModal from './UpdateOrderModal';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
+import { useStores } from "../../../stores/RootStore";
 
 export const Orders = () => {
     const [value, setValue] = useState(0);
     const [data, setData] = useState([]);
     const [order, setOrder] = useState([]);
+    const { userStore } = useStores();
 
     const getOrders = async () => {
         try {
-            const res = await SellerCenterAPI.getOrders(1);
+            const res = await SellerCenterAPI.getOrders(userStore.id);
             setData(JSON.parse(JSON.stringify(res.data)));
             setOrder(JSON.parse(JSON.stringify(res.data)));
         } catch (error) {
@@ -165,11 +167,9 @@ export const Orders = () => {
                                     <Grid container p={2}>
                                         <Grid item xs={2}>
                                             <img
-                                                src={`/api/image/${item.image}?w=124&fit=crop&auto=format`}
-                                                alt={item.name}
+                                                src={`/api/image/${item.image}`}
+                                                alt='image'
                                             />
-                                        </Grid>
-                                        <Grid item xs={2}>
                                             {item.name}
                                         </Grid>
                                         <Grid item xs={3}>
@@ -178,15 +178,15 @@ export const Orders = () => {
                                         <Grid item xs={2}>
                                             ${item.price}
                                         </Grid>
-                                        <Grid item xs={1}>
+                                        <Grid item xs={3}>
                                             {item.order_status}
                                         </Grid>
                                         <Grid item xs={2}>
-                                            <Link to={`/sellercenter/orders/${item.id}`}>
+                                            {/* <Link to={`/sellercenter/orders/${item.id}`}>
                                                 <Button>
                                                     View Order Details
                                                 </Button>
-                                            </Link>
+                                            </Link> */}
                                             <UpdateOrderModal refreshData={refreshData}>{item}</UpdateOrderModal>
                                         </Grid>
                                     </Grid>

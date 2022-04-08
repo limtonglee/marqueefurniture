@@ -6,13 +6,17 @@ import {
     Card,
     Modal,
     TextField,
-    MenuItem,
     Typography,
     IconButton,
 
 } from '@mui/material';
 import CloseIcon from "@mui/icons-material/Close";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
+
+const EditListingModal = ({
+    children,
+    refreshData,
+}) => {
 
 const style = {
     wrapper: {
@@ -48,19 +52,19 @@ const style = {
 const formReducer = (state, event) => {
     if (event.reset) {
         return {
-            name: '',
-            image: '',
-            description: '',
-            category: '',
-            brand: '',
-            warrantyInfo: '',
-            shippingProvider: '',
-            parcelSize: '',
-            weight: '',
-            stockAvailable: '',
-            listingPrice: '',
-            variations: '',
-            dimensions: '',
+            name: children.name,
+            description: children.description,
+            category: children.category,
+            brand: children.brand,
+            warrantyInfo: children.warrantyinfo,
+            shippingProvider: children.shippingprovider,
+            parcelSize: children.parcelsize,
+            weight: children.weight,
+            stockAvailable: children.stockavailable,
+            listingPrice: children.listingprice,
+            variations: children.variations,
+            dimensions: children.dimensions,
+            type: children.type,
         }
     }
     return {
@@ -69,13 +73,12 @@ const formReducer = (state, event) => {
     }
 }
 
-export default function BasicModal({ children }) {
+
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     const [formData, setFormData] = useReducer(formReducer, {});
-    const [submitting, setSubmitting] = useState(false);
 
     const handleChange = (event) => {
 
@@ -84,12 +87,30 @@ export default function BasicModal({ children }) {
             value: event.target.value,
         });
     };
+
     const handleSubmit = event => {
         event.preventDefault();
-        setSubmitting(true);
-
+        SellerCenterAPI.editListing(
+            children.id,
+            formData.name,
+            children.image,
+            formData.description,
+            formData.category,
+            formData.brand,
+            formData.warrantyInfo,
+            formData.shippingProvider,
+            formData.parcelSize,
+            formData.weight,
+            formData.stockAvailable,
+            formData.listingPrice,
+            formData.variations,
+            formData.dimensions,
+            'LIVE',
+            children.type,
+        );
+        refreshData();
+        handleClose();
         setTimeout(() => {
-            setSubmitting(false);
             setFormData({
                 reset: true
             })
@@ -160,7 +181,7 @@ export default function BasicModal({ children }) {
                                     name="description"
                                     label="Product description"
                                     onChange={handleChange}
-                                    value={formData.description || ''}
+                                    value={formData.description || children.description}
                                 />
 
                             </Card>
@@ -177,7 +198,7 @@ export default function BasicModal({ children }) {
                                     name="category"
                                     label="Category"
                                     onChange={handleChange}
-                                    value={formData.category || ''}>
+                                    value={formData.category || children.category}>
                                 </TextField>
                                 <TextField
                                     required
@@ -185,15 +206,16 @@ export default function BasicModal({ children }) {
                                     name="brand"
                                     label="Brand"
                                     onChange={handleChange}
-                                    value={formData.brand || ''}>
+                                    value={formData.brand || children.brand}>
                                 </TextField>
                                 <TextField
+
                                     required
                                     id="outlined-required"
                                     name="dimensions"
                                     label="Dimensions"
                                     onChange={handleChange}
-                                    value={formData.dimensions || ''}>
+                                    value={formData.dimensions || children.dimensions}>
                                 </TextField>
                                 <TextField
                                     required
@@ -201,7 +223,7 @@ export default function BasicModal({ children }) {
                                     name="warrantyInfo"
                                     label="Warranty"
                                     onChange={handleChange}
-                                    value={formData.warrantyInfo || ''}>
+                                    value={formData.warrantyInfo || children.warrantyinfo}>
                                 </TextField>
                             </Card>
                         </div>
@@ -219,7 +241,7 @@ export default function BasicModal({ children }) {
                                     name="variations"
                                     label="Variation"
                                     onChange={handleChange}
-                                    value={formData.variations || ''}>
+                                    value={formData.variations || children.variations}>
                                 </TextField>
                                 <TextField
                                     required
@@ -227,7 +249,7 @@ export default function BasicModal({ children }) {
                                     name="listingPrice"
                                     label="Price"
                                     onChange={handleChange}
-                                    value={formData.listingPrice || ''}>
+                                    value={formData.listingPrice || children.listingprice}>
                                 </TextField>
                                 <TextField
                                     required
@@ -235,7 +257,7 @@ export default function BasicModal({ children }) {
                                     name="stockAvailable"
                                     label="Stock"
                                     onChange={handleChange}
-                                    value={formData.stockAvailable || ''}>
+                                    value={formData.stockAvailable || children.stockavailable}>
                                 </TextField>
                             </Card>
                             <Card
@@ -251,7 +273,7 @@ export default function BasicModal({ children }) {
                                     name="weight"
                                     label="Weight"
                                     onChange={handleChange}
-                                    value={formData.weight || ''}>
+                                    value={formData.weight || children.stockavailable}>
                                 </TextField>
                                 <TextField
                                     required
@@ -259,7 +281,7 @@ export default function BasicModal({ children }) {
                                     name="parcelSize"
                                     label="Parcel size"
                                     onChange={handleChange}
-                                    value={formData.parcelSize || ''}>
+                                    value={formData.parcelSize || children.parcelsize}>
                                 </TextField>
                                 <TextField
                                     required
@@ -267,7 +289,7 @@ export default function BasicModal({ children }) {
                                     name="shippingProvider"
                                     label="Shipping provider"
                                     onChange={handleChange}
-                                    value={formData.shippingProvider || ''}>
+                                    value={formData.shippingProvider || children.shippingprovider}>
                                 </TextField>
                             </Card>
                         </div>
@@ -285,3 +307,5 @@ export default function BasicModal({ children }) {
         </div>
     );
 }
+
+export default EditListingModal;

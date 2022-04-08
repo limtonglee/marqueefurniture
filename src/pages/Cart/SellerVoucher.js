@@ -9,6 +9,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { format } from "date-fns";
 import { useEffect, useRef, useState } from "react";
 import MenuPopover from "../../components/MenuPopover";
 // utils
@@ -41,7 +42,9 @@ export const SellerVoucher = ({
     setSelectedIndex(item.id);
     setVoucherName(item.name);
     // if (containsVoucher(selectedVouchers, item.id)) {}
-    var filteredArray = selectedVouchers.filter((x) => x.itemId !== cartItem.id);
+    var filteredArray = selectedVouchers.filter(
+      (x) => x.itemId !== cartItem.id
+    );
     let appliedVoucher = { ...item, itemId: cartItem.id };
     // console.log(appliedVoucher);
     setSelectedVouchers([...filteredArray, appliedVoucher]);
@@ -50,9 +53,9 @@ export const SellerVoucher = ({
   useEffect(() => {
     const getSellerVouchers = async (shopId) => {
       const response = await getVouchers(shopId);
-      console.log("use effect called");
+      // console.log("use effect called");
 
-      console.log(response.data);
+      // console.log(response.data);
       setShopVouchers(JSON.parse(JSON.stringify(response.data)));
     };
     getSellerVouchers(shopId);
@@ -128,7 +131,10 @@ export const SellerVoucher = ({
                         >
                           Min. spend: ${item.minspend}
                         </Typography>
-                        {" — Do you have Paris recommendations? Have you ever…"}
+                        {`  — " valid till ${format(
+                          Date.parse(item.enddate),
+                          "dd/MM/yyyy"
+                        )}"`}
                       </>
                     }
                   />

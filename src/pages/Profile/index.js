@@ -1,12 +1,17 @@
 // @mui icons
-import React, { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
+import AddIcon from "@mui/icons-material/Add";
 import { Button } from "@mui/material";
+import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useNavigationType } from "react-router-dom";
+import * as socialMediaAPI from "../../services/SocialMedia";
 import { useStores } from "../../stores/RootStore";
+import FeedGrid from "../SocialMedia/FeedGrid/FeedGrid";
 import ProfileInfoCard from "./About/ProfileInfoCard";
 // Overview page components
 import Header from "./Header";

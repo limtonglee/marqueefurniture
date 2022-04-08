@@ -1,9 +1,8 @@
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
-import StorefrontIcon from "@mui/icons-material/Storefront";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import StorefrontIcon from "@mui/icons-material/Storefront";
 import { Divider, Tooltip } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
@@ -14,14 +13,15 @@ import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import CartButton from "../pages/Cart/CartButton";
+import NotificationButton from "../pages/Notifications/NotificationButton";
+import { getCart } from "../services/Cart";
 import { useStores } from "../stores/RootStore";
 import ControlledSwitches from "./SwitchNav";
-import NotificationButton from "../pages/Notifications/NotificationButton";
-import Stack from "@mui/material/Stack";
-import ChatButton from "../pages/Chat/ChatButton";
 
 // const pageLinks = [
 // 	{ text: "Seller Center", link: "/sellercenter" },
@@ -31,21 +31,33 @@ import ChatButton from "../pages/Chat/ChatButton";
 
 const AdminPageLinks = [{ text: "Admin Management", link: "/admin" }];
 
-const settings = [
+const sellerSettings = [
   { text: "Profile", link: "/profile" },
   { text: "Cart", link: "/cart" },
-  // { text: "Chat", link: "/chat" },
+  { text: "Orders", link: "/profile/orders" },
   { text: "Liked Listing", link: "/profile/likedListing" },
   { text: "Seller Center", link: "/sellercenter" },
 ];
 
+const normalSettings = [
+  { text: "Profile", link: "/profile" },
+  { text: "Cart", link: "/cart" },
+  { text: "Orders", link: "/profile/orders" },
+  { text: "Liked Listing", link: "/profile/likedListing" },
+];
+
 const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [cartCount, setCartCount] = useState(0);
+  const { userStore } = useStores();
+  const profilePic = userStore.profilePic;
 
   let navigate = useNavigate();
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
+    console.log("postlogin bar rerender");
+    updateCart();
   };
 
   const handleCloseUserMenu = () => {
@@ -61,6 +73,18 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
   const setLogout = (e) => {
     userStore.setIsLoggedOut();
     navigate("/marketplace");
+  };
+
+  const updateCart = () => {
+    const fetchCartData = async () => {
+      // console.log("userId" + userStore.id)
+      const response = await getCart(userStore.id);
+      const result = await response.data;
+      setCartCount(result.length);
+    };
+
+    fetchCartData().catch(console.error);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
   return (
@@ -157,45 +181,83 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <Link key={setting.link} to={setting.link}>
-                    <MenuItem key={setting.link} onClick={handleCloseUserMenu}>
-                      {setting.text === "Profile" && (
-                        <Tooltip title="Profile" placement="right">
-                          <AccountCircleOutlinedIcon
-                            sx={{ color: "common.black" }}
-                          />
-                        </Tooltip>
-                      )}
-                      {setting.text === "Cart" && (
-                        <>
-                          <Tooltip title="Cart" placement="right">
-                            <ShoppingCartCheckoutIcon
-                              sx={{ color: "common.black" }}
-                            />
-                          </Tooltip>
-                        </>
-                      )}
-                      {setting.text === "Chat" && (
-                        <Tooltip title="Chat" placement="right">
-                          <ChatBubbleOutlineIcon
-                            sx={{ color: "common.black" }}
-                          />
-                        </Tooltip>
-                      )}
-                      {setting.text === "Liked Listing" && (
-                        <Tooltip title="Liked Listing" placement="right">
-                          <FavoriteBorderIcon sx={{ color: "common.black" }} />
-                        </Tooltip>
-                      )}
-                      {setting.text === "Seller Center" && (
-                        <Tooltip title="Seller Center" placement="right">
-                          <StorefrontIcon sx={{ color: "common.black" }} />
-                        </Tooltip>
-                      )}
-                    </MenuItem>
-                  </Link>
-                ))}
+                {!userStore.isSeller
+                  ? normalSettings.map((setting) => (
+                      <Link key={setting.link} to={setting.link}>
+                        <MenuItem
+                          key={setting.link}
+                          onClick={handleCloseUserMenu}
+                        >
+                          {setting.text === "Profile" && (
+                            <Tooltip title="Profile" placement="right">
+                              <AccountCircleOutlinedIcon
+                                sx={{ color: "common.black" }}
+                              />
+                            </Tooltip>
+                          )}
+                          {setting.text === "Cart" && (
+                            <>
+                              <CartButton cartCount={cartCount} />
+                            </>
+                          )}
+                          {setting.text === "Orders" && (
+                            <Tooltip title="Orders" placement="right">
+                              <InventoryIcon sx={{ color: "common.black" }} />
+                            </Tooltip>
+                          )}
+                          {setting.text === "Liked Listing" && (
+                            <Tooltip title="Liked Listing" placement="right">
+                              <FavoriteBorderIcon
+                                sx={{ color: "common.black" }}
+                              />
+                            </Tooltip>
+                          )}
+                          {setting.text === "Seller Center" && (
+                            <Tooltip title="Seller Center" placement="right">
+                              <StorefrontIcon sx={{ color: "common.black" }} />
+                            </Tooltip>
+                          )}
+                        </MenuItem>
+                      </Link>
+                    ))
+                  : sellerSettings.map((setting) => (
+                      <Link key={setting.link} to={setting.link}>
+                        <MenuItem
+                          key={setting.link}
+                          onClick={handleCloseUserMenu}
+                        >
+                          {setting.text === "Profile" && (
+                            <Tooltip title="Profile" placement="right">
+                              <AccountCircleOutlinedIcon
+                                sx={{ color: "common.black" }}
+                              />
+                            </Tooltip>
+                          )}
+                          {setting.text === "Cart" && (
+                            <>
+                              <CartButton cartCount={cartCount} />
+                            </>
+                          )}
+                          {setting.text === "Orders" && (
+                            <Tooltip title="Orders" placement="right">
+                              <InventoryIcon sx={{ color: "common.black" }} />
+                            </Tooltip>
+                          )}
+                          {setting.text === "Liked Listing" && (
+                            <Tooltip title="Liked Listing" placement="right">
+                              <FavoriteBorderIcon
+                                sx={{ color: "common.black" }}
+                              />
+                            </Tooltip>
+                          )}
+                          {setting.text === "Seller Center" && (
+                            <Tooltip title="Seller Center" placement="right">
+                              <StorefrontIcon sx={{ color: "common.black" }} />
+                            </Tooltip>
+                          )}
+                        </MenuItem>
+                      </Link>
+                    ))}
                 <Divider sx={{ my: 0.5 }} />
                 <MenuItem onClick={setLogout}>
                   <Tooltip title="Logout" placement="right">

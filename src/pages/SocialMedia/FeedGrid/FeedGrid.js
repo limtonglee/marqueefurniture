@@ -8,7 +8,7 @@ import MoodboardModal from "../Moodboard/MoodboardModal";
 import Typography from "@mui/material/Typography";
 import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 
-const FeedGrid = ({ posts, refreshPosts, sourceMoodboardId }) => {
+const FeedGrid = ({ posts, refreshPosts, sourceMoodboardId, fromProfile }) => {
   const [isMobile, setIsMobile] = useState(false);
 
   //choose the screen size
@@ -112,7 +112,7 @@ const FeedGrid = ({ posts, refreshPosts, sourceMoodboardId }) => {
   return (
     <>
       <Box sx={{ maxWidth: 1200 }}>
-        {posts.length === 0 && (
+        {/* {posts.length === 0 && (
           <Box
             sx={{
               height: 300,
@@ -132,6 +132,50 @@ const FeedGrid = ({ posts, refreshPosts, sourceMoodboardId }) => {
                 Loading...
               </Typography>
             </Box>
+          </Box>
+        )} */}
+        {posts.length === 0 && !fromProfile && (
+          <Box
+            sx={{
+              height: 300,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Box sx={{ textAlign: "center" }}>
+              <HourglassBottomIcon />
+              <Typography
+                variant="h4"
+                gutterBottom
+                component="div"
+                sx={{ fontWeight: "normal", fontStyle: "italic" }}
+              >
+                Loading...
+              </Typography>
+            </Box>
+          </Box>
+        )}
+        {posts.length === 0 && fromProfile && (
+          <Box
+            sx={{
+              width: "100%",
+              height: 200,
+              border: "1px solid #DFE3E8",
+              borderRadius: 3,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              variant="h5"
+              gutterBottom
+              component="div"
+              sx={{ fontWeight: "normal", fontStyle: "italic" }}
+            >
+              No posts yet
+            </Typography>
           </Box>
         )}
         {isMobile ? (

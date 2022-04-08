@@ -180,7 +180,7 @@ function Profile() {
             >
               New Post
             </Button>
-            <FeedGrid posts={posts} />
+            <FeedGrid posts={posts} fromProfile={true} />
           </Box>
         </>
       )}

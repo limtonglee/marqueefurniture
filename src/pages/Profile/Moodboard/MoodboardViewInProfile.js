@@ -181,6 +181,28 @@ const MoodboardViewInProfile = () => {
           New Moodboard
         </Button>
       </Box>
+      {moodboards.length === 0 && (
+        <Box
+          sx={{
+            width: "100%",
+            height: 200,
+            border: "1px solid #DFE3E8",
+            borderRadius: 3,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            variant="h5"
+            gutterBottom
+            component="div"
+            sx={{ fontWeight: "normal", fontStyle: "italic" }}
+          >
+            No moodboards yet
+          </Typography>
+        </Box>
+      )}
       <Grid container spacing={3}>
         {moodboards.map((moodboard) => (
           <Grid item xs={6} md={4} key={moodboard.id}>

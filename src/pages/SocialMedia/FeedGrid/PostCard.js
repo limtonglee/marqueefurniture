@@ -201,7 +201,7 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
             checkedIcon={<PushPinIcon fontSize="small" />}
             sx={postCardStyles.checkboxes}
             // onChange={handleChangeForPin}
-            onClick={handleClick}
+            // onClick={handleClick} // 31 mar
             checked={postPinned}
           />
           <Checkbox
@@ -215,7 +215,7 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
         </CardActions>
       </Card>
 
-      <MoodboardModal
+      {/* <MoodboardModal
         open={open}
         closeMoodboardModal={closeMoodboardModal}
         post={post}
@@ -224,7 +224,7 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
         postPinned={postPinned}
         refreshPosts={refreshPosts}
         sourceMoodboardId={sourceMoodboardId}
-      />
+      /> */}
     </>
   );
 };

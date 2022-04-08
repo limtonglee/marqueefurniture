@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useNavigate } from "react-router-dom";
@@ -23,22 +23,20 @@ import UploadIcon from "@mui/icons-material/Upload";
 import Autocomplete from "@mui/material/Autocomplete";
 
 import Grid from "@mui/material/Grid";
+import { useStores } from "../../stores/RootStore";
+import * as socialMediaAPI from "../../services/SocialMedia";
 
 const RequestConsultation = () => {
+  const { userStore } = useStores();
   let navigate = useNavigate();
 
   const [moodboardValues, setMoodboardValues] = useState([]);
   const [designValues, setDesignValues] = useState([]);
   const [otherComments, setOtherComments] = useState("");
+  const [requestType, setRequestType] = useState("");
 
-  const moodboardTags = [
-    { id: 0, title: "Moodboard 1" },
-    { id: 1, title: "Moodboard 2" },
-    { id: 2, title: "Moodboard 3" },
-    { id: 3, title: "Moodboard 4" },
-    { id: 4, title: "Moodboard 5" },
-    { id: 5, title: "Moodboard 6" },
-  ];
+  // const moodboardTags = [{ id: 0, boardname: "Moodboard" }];
+  const [moodboardTags, setMoodboardTags] = useState([]);
 
   const designTags = [
     { id: 0, title: "Art Deco" },
@@ -60,6 +58,26 @@ const RequestConsultation = () => {
     { id: 16, title: "Transitional" },
   ];
 
+  const getUserMoodboards = async () => {
+    try {
+      const res = await socialMediaAPI.getUserMoodboards(userStore.id);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log("getUserMoodboards data", data);
+      const cleaned = data.map((item) => {
+        return { id: item.id, boardname: item.boardname };
+      });
+      console.log("cleaned", cleaned);
+      setMoodboardTags(cleaned);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getUserMoodboards();
+  }, []);
+
   const handleChangeForMoodboardTags = (event, value) => {
     setMoodboardValues(value);
   };
@@ -72,8 +90,12 @@ const RequestConsultation = () => {
     setOtherComments(event.target.value);
   };
 
+  const updateRequestType = (e) => {
+    setRequestType(e.target.value);
+  };
+
   const [roomRows, setRoomRows] = useState([
-    { id: 1, roomSize: "", roomType: "Bedroom" },
+    { id: 1, roomSize: "", roomType: "" },
   ]);
 
   const updateRoomSize = (index, event) => {
@@ -84,10 +106,24 @@ const RequestConsultation = () => {
   };
 
   const updateRoomType = (index, event) => {
-    console.log("roomRows", roomRows);
     const newRoomRows = [...roomRows];
     newRoomRows[index].roomType = event.target.value;
     setRoomRows(newRoomRows);
+  };
+
+  const handleSubmit = () => {
+    const styleRequests = designValues.map((item) => item["title"]);
+    const moodboardReferences = moodboardValues.map((item) => item["id"]);
+
+    const data = {
+      requestType: requestType,
+      roomGeometry: roomRows,
+      floorPlan: "",
+      styleRequests: styleRequests,
+      moodboardReferences: moodboardReferences,
+      otherComments: otherComments,
+    };
+    console.log("submit data", data);
   };
 
   return (
@@ -127,8 +163,9 @@ const RequestConsultation = () => {
                   <FormControl>
                     <RadioGroup
                       aria-labelledby="demo-radio-buttons-group-label"
-                      defaultValue="female"
                       name="radio-buttons-group"
+                      value={requestType}
+                      onChange={updateRequestType}
                     >
                       <FormControlLabel
                         value="designonly"
@@ -147,57 +184,6 @@ const RequestConsultation = () => {
                   <Typography variant="h4" gutterBottom component="div">
                     Geometry
                   </Typography>
-                  {/* <Stack direction="row" spacing={3}>
-                    <Typography variant="h6" gutterBottom component="div">
-                      Room 1
-                    </Typography>
-                    <Stack spacing={2}>
-                      <Stack direction="row" spacing={2}>
-                        <Box>
-                          <Typography
-                            variant="body1"
-                            gutterBottom
-                            component="div"
-                          >
-                            Room Size
-                          </Typography>
-                          <TextField
-                            id="outlined-textarea"
-                            placeholder="Enter area"
-                            type="number"
-                            InputProps={{
-                              endAdornment: (
-                                <InputAdornment>sq ft</InputAdornment>
-                              ),
-                            }}
-                          />
-                        </Box>
-                        <Box>
-                          <Typography
-                            variant="body1"
-                            gutterBottom
-                            component="div"
-                          >
-                            Room Type
-                          </Typography>
-                          <TextField
-                            required
-                            id="outlined-required"
-                            placeholder="Enter room type"
-                          />
-                        </Box>
-                      </Stack>
-                      <Box>
-                        <Button
-                          startIcon={<AddIcon />}
-                          variant="outlined"
-                          onClick={handleAddAnotherRoom}
-                        >
-                          Add another room
-                        </Button>
-                      </Box>
-                    </Stack>
-                  </Stack> */}
                   <FormControl>
                     <Stack spacing={2}>
                       {roomRows.map((room, i) => (
@@ -337,7 +323,7 @@ const RequestConsultation = () => {
                     limitTags={2}
                     id="room-type"
                     options={moodboardTags}
-                    getOptionLabel={(option) => option.title}
+                    getOptionLabel={(option) => option.boardname}
                     defaultValue={[]}
                     renderInput={(params) => (
                       <TextField
@@ -347,7 +333,7 @@ const RequestConsultation = () => {
                       />
                     )}
                     isOptionEqualToValue={(option, value) =>
-                      option.id === value.id
+                      option.id === parseInt(value.id)
                     }
                     onChange={handleChangeForMoodboardTags}
                     sx={{ width: 400 }}
@@ -368,7 +354,12 @@ const RequestConsultation = () => {
                   />
                 </Box>
                 <Box sx={{ pt: 2 }}>
-                  <Button variant="contained" size="large" sx={{ width: 200 }}>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    sx={{ width: 200 }}
+                    onClick={handleSubmit}
+                  >
                     Submit
                   </Button>
                 </Box>

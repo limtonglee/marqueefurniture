@@ -6,20 +6,43 @@ import { styled } from "@mui/material/styles";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import * as React from "react";
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { deleteCartItems } from "../../services/Cart";
-import { checkout } from "../../services/Checkout";
+import { checkout, payment } from "../../services/Checkout";
 import { getSellerInfo } from "../../services/Listings";
 import { useStores } from "../../stores/RootStore";
+import palette from "../../theme/palette";
 import { getCartTotal } from "../../utils/getCartTotal";
 import { getTotalPrice } from "../../utils/getTotalPrice";
 import { inSelectedIndex } from "../../utils/inSelectedIndex";
 import { getVoucherId, isVoucherPresent } from "../../utils/isVoucherPresent";
 import { SellerData } from "../Cart/SellerData";
+
+const CARD_OPTIONS = {
+  iconStyle: "solid",
+  hidePostalCode: true,
+  style: {
+    base: {
+      iconColor: palette.primary.main,
+      color: palette.common.black,
+      fontWeight: 500,
+      fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
+      fontSize: "16px",
+      fontSmoothing: "antialiased",
+      ":-webkit-autofill": { color: "#fce883" },
+      "::placeholder": { color: palette.primary.main },
+    },
+    invalid: {
+      iconColor: palette.error.main,
+      color: palette.error.main,
+    },
+  },
+};
 
 const notifyCheckout = () =>
   toast("checkout successful! Redirecting to orders page...", {
@@ -33,20 +56,23 @@ const Img = styled("img")({
   maxHeight: "100%",
 });
 
-export default function Checkout() {
-  const location = useLocation();
+export default function Checkout({
+  items,
+  count,
+  selectedItemsId,
+  selectedVouchers,
+}) {
   const navigate = useNavigate();
   const { userStore } = useStores();
+  // const [success, setSuccess] = useState(false);
+  const stripe = useStripe();
+  const elements = useElements();
 
-  const items = location.state.items;
-  const count = location.state.count;
-  const selectedItemsId = location.state.selectedItemsId;
-  const selectedVouchers = location.state.selectedVouchers;
   const [message, setMessage] = useState("no message");
 
   const [paymentMethod, setPaymentMethod] = useState("");
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     console.log("items");
 
     console.log(items);
@@ -54,8 +80,44 @@ export default function Checkout() {
       items.forEach(async (item) => {
         const result = await performCheckout(item);
       });
+      notifyCheckout();
     }
-    notifyCheckout();
+    if (paymentMethod === "CC") {
+      const { error, paymentMethod } = await stripe.createPaymentMethod({
+        type: "card",
+        card: elements.getElement(CardElement),
+      });
+
+      if (!error) {
+        try {
+          const { id } = paymentMethod;
+
+          const amount = getCartTotal(
+            items.filter((item) => inSelectedIndex(item, selectedItemsId)),
+            count,
+            selectedVouchers
+          );
+
+          const response = await payment(amount, id);
+
+          let result = "";
+
+          if (response.data.success) {
+            console.log("Successful payment");
+            items.forEach(async (item) => {
+              result = await performCheckout(item);
+            });
+            notifyCheckout();
+          }
+          console.log("Result: " + result);
+        } catch (error) {
+          console.log("Error", error);
+        }
+      } else {
+        console.log(error.message);
+      }
+    }
+
     const myTimeout = setTimeout(() => {
       navigate("/profile", { state: { redirect: "cart" } });
     }, 4000);
@@ -77,7 +139,8 @@ export default function Checkout() {
       userStore.id,
       item.id,
       voucherId,
-      count[item.id]
+      count[item.id],
+      paymentMethod
     );
     if (response.status === 200) {
       const deleteItem = await deleteCartItems(userStore.id, item.id);
@@ -278,8 +341,8 @@ export default function Checkout() {
           ))}
         </ImageList>
         <Grid container mt={1} spacing={1} direction="row">
-          <Grid item xs={2} m={1}>
-            <Typography variant="h5" component="div">
+          <Grid item xs={1.5} m={1}>
+            <Typography variant="subtitle2" component="div">
               Payment methods
             </Typography>
           </Grid>
@@ -290,11 +353,31 @@ export default function Checkout() {
               onChange={handleChange}
             >
               <ToggleButton value="COD">Cash on Delivery</ToggleButton>
-              <ToggleButton value="center">Credit card</ToggleButton>
-              <ToggleButton value="right">MF coins</ToggleButton>
+              <ToggleButton value="CC">Credit card</ToggleButton>
+              {/* <ToggleButton value="MFCoins">MF coins</ToggleButton> */}
             </ToggleButtonGroup>
           </Grid>
         </Grid>
+        {!!(paymentMethod === "CC") && (
+          <Grid container mt={1} spacing={1} direction="row">
+            <Grid item xs={1} m={1}>
+              <Typography variant="subtitle2" component="div">
+                C.C. Info
+              </Typography>
+            </Grid>
+            <Grid item xs={6} m={1}>
+              <CardElement options={CARD_OPTIONS} />
+            </Grid>
+          </Grid>
+        )}
+        <Grid container mt={1} spacing={1} direction="row">
+          <Grid item xs={1} m={1}>
+            <Typography variant="subtitle2" component="div">
+              Message
+            </Typography>
+          </Grid>
+        </Grid>
+
         <Grid container mt={1} spacing={1} direction="row-reverse">
           <Grid item xs={1} m={1}>
             <Button

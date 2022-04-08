@@ -46,7 +46,7 @@ export default function Cart({setCartCount}) {
         counts[x.listingid] = (counts[x.listingid] || 0) + 1;
       });
       setCount(counts);
-      for (let [key, value] of Object.entries(counts)) {
+      for (let [key] of Object.entries(counts)) {
         getListingDetail(key);
       }
     };
@@ -74,7 +74,7 @@ export default function Cart({setCartCount}) {
     const removeItems = async () => {
       const response = await deleteCartItems(userStore.id, itemId);
       const result = await response.data;
-      // console.log(result);
+      console.log(result);
     };
 
     removeItems();
@@ -96,7 +96,7 @@ export default function Cart({setCartCount}) {
     const removeItem = async () => {
       const response = await deleteCartItem(userStore.id, itemId);
       const result = await response.data;
-      // console.log(result);
+      console.log(result);
     };
 
     removeItem();
@@ -132,6 +132,7 @@ export default function Cart({setCartCount}) {
     const addItemToCart = async () => {
       const response = await addToCart(userStore.id, itemId);
       const result = await response.data;
+      console.log(result)
     };
 
     addItemToCart();

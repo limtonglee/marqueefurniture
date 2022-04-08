@@ -1,8 +1,7 @@
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import InventoryIcon from "@mui/icons-material/Inventory";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import { Divider, Tooltip } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
@@ -35,8 +34,8 @@ const AdminPageLinks = [{ text: "Admin Management", link: "/admin" }];
 
 const sellerSettings = [
   { text: "Profile", link: "/profile" },
-  // { text: "Cart", link: "/cart" },
-  // { text: "Chat", link: "/chat" },
+  { text: "Cart", link: "/cart" },
+  { text: "Orders", link: "/profile/orders" },
   { text: "Liked Listing", link: "/profile/likedListing" },
   { text: "Seller Center", link: "/sellercenter" },
 ];
@@ -44,7 +43,7 @@ const sellerSettings = [
 const normalSettings = [
   { text: "Profile", link: "/profile" },
   { text: "Cart", link: "/cart" },
-  // { text: "Chat", link: "/chat" },
+  { text: "Orders", link: "/profile/orders" },
   { text: "Liked Listing", link: "/profile/likedListing" },
 ];
 
@@ -196,11 +195,9 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
                               <CartButton cartCount={cartCount} />
                             </>
                           )}
-                          {setting.text === "Chat" && (
-                            <Tooltip title="Chat" placement="right">
-                              <ChatBubbleOutlineIcon
-                                sx={{ color: "common.black" }}
-                              />
+                          {setting.text === "Orders" && (
+                            <Tooltip title="Orders" placement="right">
+                              <InventoryIcon sx={{ color: "common.black" }} />
                             </Tooltip>
                           )}
                           {setting.text === "Liked Listing" && (
@@ -233,18 +230,12 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
                           )}
                           {setting.text === "Cart" && (
                             <>
-                              <Tooltip title="Cart" placement="right">
-                                <ShoppingCartCheckoutIcon
-                                  sx={{ color: "common.black" }}
-                                />
-                              </Tooltip>
+                              <CartButton cartCount={cartCount} />
                             </>
                           )}
-                          {setting.text === "Chat" && (
-                            <Tooltip title="Chat" placement="right">
-                              <ChatBubbleOutlineIcon
-                                sx={{ color: "common.black" }}
-                              />
+                          {setting.text === "Orders" && (
+                            <Tooltip title="Orders" placement="right">
+                              <InventoryIcon sx={{ color: "common.black" }} />
                             </Tooltip>
                           )}
                           {setting.text === "Liked Listing" && (

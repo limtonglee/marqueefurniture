@@ -1,7 +1,7 @@
-import React, { useState } from "react";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import { Tooltip } from "@mui/material";
 import Badge from "@mui/material/Badge";
-import IconButton from "@mui/material/IconButton";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const CartButton = ({ cartCount }) => {
@@ -10,10 +10,14 @@ const CartButton = ({ cartCount }) => {
   return (
     <>
       {cartCount === 0 ? (
-        <ShoppingCartCheckoutIcon sx={{ color: "common.black" }} />
+        <Tooltip title="Cart" placement="right">
+          <ShoppingCartCheckoutIcon sx={{ color: "common.black" }} />
+        </Tooltip>
       ) : (
         <Badge badgeContent={cartCount} color="error">
-          <ShoppingCartCheckoutIcon sx={{ color: "common.black" }} />
+          <Tooltip title="Cart" placement="right">
+            <ShoppingCartCheckoutIcon sx={{ color: "common.black" }} />
+          </Tooltip>
         </Badge>
       )}
     </>

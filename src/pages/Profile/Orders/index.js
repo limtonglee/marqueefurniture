@@ -29,7 +29,7 @@ export default function Orders() {
     const getListingDetail = async (listingId) => {
       const response = await getListingDetails(listingId);
       const result = await response.data[0];
-      console.log(result);
+      // console.log(result);
 
       setItems((items) => [...items, result]);
     };
@@ -48,15 +48,12 @@ export default function Orders() {
   }, []);
 
   const getItem = (listingId) => {
-    console.log(listingId)
-    let cartItem = {};
-    items.forEach((item) => {
-      console.log(item)
-      if (item.id === listingId) {
-        cartItem = item;
-      }
-    });
-    return cartItem;
+    const orderItem = items.find((item) => item.id === listingId);
+    if (orderItem !== undefined) {
+      return orderItem;
+    } else {
+      return {};
+    }
   };
 
   return (
@@ -84,10 +81,12 @@ export default function Orders() {
                 <Grid item>
                   <Link to={`/marketplace/${getItem(orderItem.listingid).id}`}>
                     <ButtonBase sx={{ width: 128, height: 128 }}>
-                      {getItem(orderItem.id).image !== undefined && (
+                      {getItem(orderItem.listingid).image !== undefined && (
                         <Img
-                          src={`/api/image/${getItem(orderItem.listingid).image}`}
-                          alt={getItem(orderItem.id).name}
+                          src={`/api/image/${
+                            getItem(orderItem.listingid).image
+                          }`}
+                          alt={getItem(orderItem.listingid).name}
                         />
                       )}
                     </ButtonBase>
@@ -109,14 +108,13 @@ export default function Orders() {
                       </Typography>
                       <Divider sx={{ marginBottom: "5px" }} />
                       <Grid container spacing={2} direction="row">
-                  
                         <Grid item>
                           <Typography variant="body2" gutterBottom></Typography>
                         </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
-        
+
                   <Grid item xs={2}>
                     <Grid item>
                       <Typography
@@ -124,25 +122,29 @@ export default function Orders() {
                         component="div"
                         align="center"
                       >
-                        Quantity: 
+                        Quantity:
                       </Typography>
                       <Typography
                         align="center"
                         variant="body2"
                         component="div"
-                      >{orderItem.quantity}</Typography>
+                      >
+                        {orderItem.quantity}
+                      </Typography>
                     </Grid>
                   </Grid>
                   <Grid item xs={1}>
                     <Grid item>
                       <Typography variant="body2" component="div">
-                        Item Total: 
+                        Item Total:
                       </Typography>
                       <Typography
                         variant="subtitle1"
                         align="center"
                         component="div"
-                      >{orderItem.price}</Typography>
+                      >
+                        {orderItem.price}
+                      </Typography>
                     </Grid>
                   </Grid>
                 </Grid>

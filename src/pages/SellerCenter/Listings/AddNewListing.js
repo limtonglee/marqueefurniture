@@ -83,6 +83,7 @@ export const AddNewListing = () => {
     event.preventDefault();
     const apiFormData = new FormData();
     apiFormData.append("image", file);
+    apiFormData.append("type", formData.type);
     apiFormData.append("name", formData.name);
     apiFormData.append("description", formData.description);
     apiFormData.append("category", formData.category);

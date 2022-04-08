@@ -20,6 +20,7 @@ class userStore {
 
   prevTabOnProfile = 0;
   prevViewOnMoodboard = true;
+  currentChatPerson = null;
 
   constructor() {
     makeAutoObservable(this, {
@@ -98,6 +99,10 @@ class userStore {
 
   setPrevViewOnMoodboard = (newView) => {
     this.prevViewOnMoodboard = newView;
+  };
+
+  setCurrentChatPerson = (newPersonId) => {
+    this.currentChatPerson = newPersonId;
   };
 }
 

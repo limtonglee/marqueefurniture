@@ -18,7 +18,6 @@ import Toolbar from "@mui/material/Toolbar";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CartButton from "../pages/Cart/CartButton";
-import ChatButton from "../pages/Chat/ChatButton";
 import NotificationButton from "../pages/Notifications/NotificationButton";
 import { getCart } from "../services/Cart";
 import { useStores } from "../stores/RootStore";
@@ -64,6 +63,12 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const { userStore } = useStores();
+
+  const { cartStore } = useStores(); // eslint-disable-line no-unused-vars
+
+  const profilePic = userStore.profilePic;
 
   const setLogout = (e) => {
     userStore.setIsLoggedOut();

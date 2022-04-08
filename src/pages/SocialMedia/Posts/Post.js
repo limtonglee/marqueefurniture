@@ -4,8 +4,6 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-// import { user } from "../../../data/currentUserData";
-import user from "../../../data/currentUserData2";
 import Checkbox from "@mui/material/Checkbox";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
@@ -15,26 +13,32 @@ import Stack from "@mui/material/Stack";
 import Comment from "./Comment";
 import Avatar from "@mui/material/Avatar";
 import SendIcon from "@mui/icons-material/Send";
-// import { postData } from "../../../data/postData";
-// import postData from "../../../data/postData2";
 import { useParams } from "react-router-dom";
 import MoodboardModal from "../Moodboard/MoodboardModal";
 import TextField from "@mui/material/TextField";
+import { useStores } from "../../../stores/RootStore";
 
 import * as socialMediaAPI from "../../../services/SocialMedia";
+import * as notificationAPI from "../../../services/Notification";
+
+import * as socket from "../../../services/socket";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
-const { username } = user;
+// const { username } = user;
 
 const Post = () => {
+  const { userStore } = useStores();
+  // const socket = useRef();
+
   const { postId } = useParams();
 
   const [moodboards, setMoodboards] = useState([]);
+  const [postPinned, setPostPinned] = useState(false);
 
   const getUserMoodboards = async () => {
     try {
-      const res = await socialMediaAPI.getUserMoodboards(user.id);
+      const res = await socialMediaAPI.getUserMoodboards(userStore.id);
       const data = JSON.parse(JSON.stringify(res)).data;
       return data;
     } catch (error) {
@@ -69,7 +73,16 @@ const Post = () => {
     await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
 
     Promise.all(promises).then((values) => {
+      console.log("getCompleteMoodboardData values", values);
       setMoodboards(values);
+
+      console.log(
+        "postInUserMoodboards(values)??",
+        postInUserMoodboards(values)
+      );
+
+      setPostPinned(postInUserMoodboards(values));
+
       return values;
     });
   };
@@ -78,11 +91,6 @@ const Post = () => {
     getCompleteMoodboardData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    getCompleteMoodboardData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [moodboards]);
 
   // help idk what to initialise this to
   const [post, setPost] = useState({
@@ -93,7 +101,7 @@ const Post = () => {
     likes: [],
     products: [],
     tags: [],
-    userid: 0,
+    userid: 1,
   });
 
   const getPostDetails = async (postId) => {
@@ -154,6 +162,8 @@ const Post = () => {
     let postDetails = await getPostDetails(postId);
     postDetails = { ...postDetails[0] };
 
+    console.log("postDetails line 165", postDetails);
+
     const postLikes = await getPostLikes(postId);
     const postProducts = await getPostProducts(postId);
     const postTags = await getPostTags(postId);
@@ -168,12 +178,21 @@ const Post = () => {
 
     console.log("completePost", completePost);
     setPost(completePost);
+
+    const postAuthor = await getAuthorUsername(postDetails.userid);
+    setAuthorUsername(postAuthor);
+
     return completePost;
   };
 
   useEffect(() => {
     getCompletePost();
-    getAuthorUsername();
+    // getAuthorUsername();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // socket.current = io("ws://localhost:8900");
+    socket.initiateSocket(userStore.id);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -182,8 +201,9 @@ const Post = () => {
   const [postLikesCount, setPostLikesCount] = useState(0);
 
   useEffect(() => {
-    setLikesChecked(post.likes.includes(username));
+    setLikesChecked(post.likes.includes(userStore.name));
     setPostLikesCount(post.likes.length);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post]);
 
   const postCardStyles = {
@@ -242,15 +262,75 @@ const Post = () => {
   };
 
   const likePost = async (postId, userId) => {
+    const description = "has liked your post";
+    const isunread = "1";
+    const link = `/ideas/${post.id}`;
+    const timestamp = new Date();
+    const triggeruserid = userStore.id;
+    const triggerusername = userStore.name;
+    const userid = post.userid;
+    console.log("post.userid", post.userid);
+    console.log("userid", userid);
+    console.log("author username", triggerusername);
+
+    console.log(` triggeruserid ${triggeruserid} userid ${userid}`);
+
+    // socket.current.emit("likePost", {
+    //   id: timestamp,
+    //   description: description,
+    //   isunread: isunread,
+    //   link: link,
+    //   timestamp: timestamp,
+    //   triggeruserid: triggeruserid,
+    //   triggerUsername: triggerusername,
+    //   userid: userid,
+    // });
+
+    if (post.userid !== userStore.id) {
+      socket.sendLikePost({
+        id: timestamp,
+        description: description,
+        isunread: isunread,
+        link: link,
+        timestamp: timestamp,
+        triggeruserid: triggeruserid,
+        triggerUsername: triggerusername,
+        userid: userid,
+      });
+    }
+
     try {
-      const res = await socialMediaAPI.likePost(postId, userId);
-      const data = JSON.parse(JSON.stringify(res)).data;
-      console.log(data);
+      const res1 = await socialMediaAPI.likePost(postId, userId);
+      const data1 = JSON.parse(JSON.stringify(res1)).data;
+      console.log(data1);
       getCompletePost();
+
+      if (post.userid !== userStore.id) {
+        const res2 = await notificationAPI.createNotification(
+          description,
+          isunread,
+          link,
+          triggeruserid,
+          userid
+        );
+        const data2 = JSON.parse(JSON.stringify(res2)).data;
+        console.log(data2);
+      }
     } catch (error) {
       console.error(error);
     }
   };
+
+  // const likePost = async (postId, userId) => {
+  //   try {
+  //     const res = await socialMediaAPI.likePost(postId, userId);
+  //     const data = JSON.parse(JSON.stringify(res)).data;
+  //     console.log(data);
+  //     getCompletePost();
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const unlikePost = async (postId, userId) => {
     try {
@@ -268,12 +348,12 @@ const Post = () => {
     console.log("no. of likes before clicking:", post.likes.length);
     console.log("liked by before clicking:", post.likes);
     console.log("post.id", post.id);
-    console.log("user.id", user.id);
+    console.log("user.id", userStore.id);
 
-    if (post.likes.includes(username)) {
-      unlikePost(post.id, user.id);
+    if (post.likes.includes(userStore.name)) {
+      unlikePost(post.id, userStore.id);
     } else {
-      likePost(post.id, user.id);
+      likePost(post.id, userStore.id);
     }
 
     console.log("no. of likes after clicking:", post.likes.length);
@@ -289,10 +369,11 @@ const Post = () => {
     setCommentActivated(true);
   };
 
-  const postInUserMoodboards = () => {
+  const postInUserMoodboards = (moodboards) => {
     const moodboardsWithThisPost = moodboards.filter((moodboard) => {
       for (let moodboardItem of moodboard.moodboardItems) {
-        if (moodboardItem.id === post.id) {
+        if (moodboardItem.id === parseInt(post.id)) {
+          console.log("equal", moodboardItem.id);
           return true;
         }
       }
@@ -301,14 +382,21 @@ const Post = () => {
     return moodboardsWithThisPost.length > 0;
   };
 
-  const [postPinned, setPostPinned] = useState(
-    postInUserMoodboards() ? true : false
-  );
+  // const [postPinned, setPostPinned] = useState(
+  //   postInUserMoodboards() ? true : false
+  // );
 
-  useEffect(() => {
-    setPostPinned(postInUserMoodboards() ? true : false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [moodboards]);
+  // useEffect(() => {
+  //   setPostPinned(postInUserMoodboards() ? true : false);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [moodboards]);
+
+  const refreshData = () => {
+    console.log("refreshData called");
+    getCompleteMoodboardData();
+    getCompletePost();
+    // setPostPinned(postInUserMoodboards() ? true : false);
+  };
 
   const [comment, setComment] = useState("");
 
@@ -320,7 +408,7 @@ const Post = () => {
     try {
       const res = await socialMediaAPI.createPostComment(
         comment,
-        user.id,
+        userStore.id,
         postId
       );
       const data = JSON.parse(JSON.stringify(res)).data;
@@ -343,11 +431,15 @@ const Post = () => {
 
   const [authorUsername, setAuthorUsername] = useState("");
 
-  const getAuthorUsername = async () => {
+  const getAuthorUsername = async (userId) => {
     try {
-      const res = await socialMediaAPI.getUsernameById(post.id);
-      let data = JSON.parse(JSON.stringify(res)).data[0].username;
-      setAuthorUsername(data);
+      console.log("line 434", post);
+      const res = await socialMediaAPI.getUsernameById(userId);
+      console.log("res", JSON.parse(JSON.stringify(res)).data[0]["username"]);
+      // let data = JSON.parse(JSON.stringify(res)).data[0].username;
+      let data = JSON.parse(JSON.stringify(res)).data[0]["username"];
+      console.log("getAuthorUsername", data);
+      // setAuthorUsername(data);
       return data;
     } catch (error) {
       console.error(error);
@@ -423,7 +515,10 @@ const Post = () => {
                 open={open}
                 closeMoodboardModal={closeMoodboardModal}
                 post={post}
+                moodboards={moodboards}
+                setMoodboards={setMoodboards}
                 postPinned={postPinned}
+                refreshPosts={refreshData}
               />
               <Box sx={{ pt: 1 }}>
                 <Stack direction="row" spacing={0.5}>

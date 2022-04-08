@@ -16,6 +16,11 @@ import ProfileInfoCard from "./About/ProfileInfoCard";
 // Overview page components
 import Header from "./Header";
 import MoodboardViewInProfile from "./Moodboard/MoodboardViewInProfile";
+import Divider from "@mui/material/Divider";
+import * as socialMediaAPI from "../../services/SocialMedia";
+import FeedGrid from "../SocialMedia/FeedGrid/FeedGrid";
+import AddIcon from "@mui/icons-material/Add";
+import { useNavigate, useNavigationType } from "react-router-dom";
 
 function Profile() {
   const [tabValue, setTabValue] = useState(0);
@@ -35,7 +40,7 @@ function Profile() {
   };
 
   const [posts, setPosts] = useState([]);
-  const [postsStore, setPostsStore] = useState([]);
+  const [postsStore, setPostsStore] = useState([]); // eslint-disable-line no-unused-vars
 
   const getUserPosts = async () => {
     try {
@@ -132,6 +137,7 @@ function Profile() {
     if (navigationType === "POP") {
       setTabValue(userStore.prevTabOnProfile);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCreatePost = () => {
@@ -179,7 +185,7 @@ function Profile() {
             >
               New Post
             </Button>
-            <FeedGrid posts={posts} />
+            <FeedGrid posts={posts} fromProfile={true} />
           </Box>
         </>
       )}

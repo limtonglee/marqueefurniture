@@ -7,9 +7,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
-// import { user } from "../../../data/currentUserData";
-import user from "../../../data/currentUserData2";
 import * as socialMediaAPI from "../../../services/SocialMedia";
+import { useStores } from "../../../stores/RootStore";
 
 const MoodboardDetailsModal = ({
   open,
@@ -20,6 +19,8 @@ const MoodboardDetailsModal = ({
   refreshData,
   handleClickSnackbar,
 }) => {
+  const { userStore } = useStores();
+
   const modalStyles = {
     wrapper: {
       position: "absolute",
@@ -63,7 +64,7 @@ const MoodboardDetailsModal = ({
       const res = await socialMediaAPI.createMoodboard(
         boardName,
         description,
-        user.id
+        userStore.id
       );
       const data = JSON.parse(JSON.stringify(res)).data;
       console.log(data);

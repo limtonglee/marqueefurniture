@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import { user } from "../../../data/currentUserData";
-import user from "../../../data/currentUserData2";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -41,7 +39,7 @@ const ViewMoodboard = () => {
 
   const getUserMoodboards = async () => {
     try {
-      const res = await socialMediaAPI.getUserMoodboards(user.id);
+      const res = await socialMediaAPI.getUserMoodboards(userStore.id);
       const data = JSON.parse(JSON.stringify(res)).data;
       return data;
     } catch (error) {
@@ -151,6 +149,7 @@ const ViewMoodboard = () => {
     if (navigationType === "POP") {
       setIsPostView(userStore.prevViewOnMoodboard);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const refreshData = () => {
@@ -387,7 +386,28 @@ const ViewMoodboard = () => {
         {currentMoodboard.moodboardItems ? (
           <>
             {currentMoodboard.moodboardItems.length === 0 ? (
-              <h1>no posts</h1>
+              <>
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: 200,
+                    border: "1px solid #DFE3E8",
+                    borderRadius: 3,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    variant="h5"
+                    gutterBottom
+                    component="div"
+                    sx={{ fontWeight: "normal", fontStyle: "italic" }}
+                  >
+                    {isPostView ? "No pins yet" : "No products tagged"}
+                  </Typography>
+                </Box>
+              </>
             ) : (
               <>
                 {isPostView && (

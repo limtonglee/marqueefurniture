@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -10,9 +10,9 @@ import ChatMenu from "./ChatMenu";
 import * as chatAPI from "../../services/Chat";
 import * as socialMediaAPI from "../../services/SocialMedia";
 
-import { useStores } from "../../stores/RootStore";
+import * as socket from "../../services/socket";
 
-import { io } from "socket.io-client";
+import { useStores } from "../../stores/RootStore";
 
 const Messenger = () => {
   const { userStore } = useStores();
@@ -25,17 +25,29 @@ const Messenger = () => {
     recipientProfilePic: "",
     chatMessages: [],
   });
-  const socket = useRef();
+  // const socket = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
 
   useEffect(() => {
-    socket.current = io("ws://localhost:8900");
-    socket.current.on("getMessage", (data) => {
-      setArrivalMessage({
-        userid: data.senderId,
-        text: data.text,
-        type: data.type,
-        timestamp: data.timestamp,
+    // socket.current = io("ws://localhost:8900");
+    // socket.current.on("getMessage", (data) => {
+    //   setArrivalMessage({
+    //     userid: data.senderId,
+    //     text: data.text,
+    //     type: data.type,
+    //     timestamp: data.timestamp,
+    //   });
+    // });
+
+    // socket.initiateSocket(userStore.id);
+    socket.subscribeToGetMessages((err, data) => {
+      setArrivalMessage((prev) => {
+        return {
+          userid: data.senderId,
+          text: data.text,
+          type: data.type,
+          timestamp: data.timestamp,
+        };
       });
     });
   }, []);
@@ -50,20 +62,21 @@ const Messenger = () => {
       });
 
     arrivalMessage && refreshUserChatsWithoutUpdatingCurrentChat();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [arrivalMessage]);
 
-  useEffect(() => {
-    socket.current.emit("addUser", userStore.id);
-    socket.current.on("getUsers", (users) => {
-      console.log("getUsers", users);
-    });
-  }, [userStore]);
+  // useEffect(() => {
+  //   socket.current.emit("addUser", userStore.id);
+  //   socket.current.on("getUsers", (users) => {
+  //     console.log("getUsers", users);
+  //   });
+  // }, [userStore]);
 
-  useEffect(() => {
-    socket.current.on("welcome", (message) => {
-      console.log(message);
-    });
-  }, [socket]);
+  // useEffect(() => {
+  //   socket.current.on("welcome", (message) => {
+  //     console.log(message);
+  //   });
+  // }, [socket]);
 
   //choose the screen size
   const handleResize = () => {
@@ -155,6 +168,10 @@ const Messenger = () => {
         recipientProfilePic: recipientProfilePic,
         chatMessages: chatMessages,
       };
+      console.log(
+        "chatWithRecipientUsername messenger",
+        chatWithRecipientUsername
+      );
 
       return chatWithRecipientUsername;
     });
@@ -164,6 +181,7 @@ const Messenger = () => {
     Promise.all(promises).then((values) => {
       console.log("cleaned data", values);
       setUserChats(values);
+      console.log("values messenger", values);
 
       // setCurrentChat(values[values.length - 1]);
 
@@ -222,6 +240,7 @@ const Messenger = () => {
     };
 
     setCurrentChat(updatedChatWithRecipientUsername);
+    refreshUserChatsWithoutUpdatingCurrentChat();
   };
 
   return (
@@ -243,6 +262,7 @@ const Messenger = () => {
                   userChats={userChats}
                   currentChatId={currentChat.id}
                   setCurrentChat={setCurrentChat}
+                  refreshData={refreshUserChatsWithoutUpdatingCurrentChat}
                 />
               </Box>
             </Grid>
@@ -251,8 +271,9 @@ const Messenger = () => {
                 {userChats.length > 0 ? (
                   <Chatbox
                     currentChat={currentChat}
+                    // refreshCurrentChat={refreshCurrentChat}
                     refreshCurrentChat={refreshCurrentChat}
-                    socket={socket}
+                    // socket={socket}
                   />
                 ) : (
                   <Box

@@ -1,11 +1,8 @@
 import { Layout } from "../Layout";
 import React, { useReducer, useState } from "react";
 import { Button, Card, TextField, MenuItem } from "@mui/material";
-import * as SellerCenterAPI from "../../../services/SellerCenter";
 import { useStores } from "../../../stores/RootStore";
-
 import axios from "axios";
-
 
 const style = {
   cardStyle: {
@@ -87,8 +84,16 @@ export const AddNewListing = () => {
     apiFormData.append("name", formData.name);
     apiFormData.append("description", formData.description);
     apiFormData.append("category", formData.category);
-    //change this to shop id
-    console.log('ZZZ', userStore.shop.id);
+    apiFormData.append("brand", formData.brand);
+    apiFormData.append("warrantyInfo", formData.warrantyInfo);
+    apiFormData.append("shippingProvider", formData.shippingProvider);
+    apiFormData.append("parcelSize", formData.parcelSize);
+    apiFormData.append("weight", formData.weight);
+    apiFormData.append("stockAvailable", formData.stockAvailable);
+    apiFormData.append("listingPrice", formData.listingPrice);
+    apiFormData.append("variations", formData.variations);
+    apiFormData.append("dimensions", formData.dimensions);
+    apiFormData.append("status", 'LIVE');
     apiFormData.append("shopId", userStore.shop.id);
 
     const result = await axios.post(
@@ -97,27 +102,6 @@ export const AddNewListing = () => {
       { headers: { "Content-Type": "multipart/form-data" } }
     );
 
-
-    /*
-        SellerCenterAPI.createListing(
-            formData.name,
-            formData.image,
-            formData.description,
-            formData.category,
-            formData.brand,
-            formData.warrantyInfo,
-            formData.shippingProvider,
-            formData.parcelSize,
-            formData.weight,
-            formData.stockAvailable,
-            formData.listingPrice,
-            formData.variations,
-            formData.dimensions,
-            'LIVE',
-            userStore.id,
-            formData.type,
-        );
-        */
     setTimeout(() => {
       setFormData({
         reset: true,

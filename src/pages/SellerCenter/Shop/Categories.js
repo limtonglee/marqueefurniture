@@ -61,20 +61,29 @@ export const ShopCategories = () => {
                     />
                 </Stack>
                 <Grid container>
-                    <Grid item xs={4}>
-                        Category Display Name
+                    <Grid item xs={5}>
+                        <Typography variant="h6">
+                            Category Display Name
+                        </Typography>
                     </Grid>
-                    <Grid item xs={2}>
-                        Created By
+                    <Grid item xs={3}>
+                        <Typography variant="h6">
+                            Created By
+                        </Typography>
                     </Grid>
-                    <Grid item xs={2}>
+                    {/* <Grid item xs={2}>
                         Product(s)
                     </Grid>
                     <Grid item xs={2}>
                         Display On/Off
-                    </Grid>
-                    <Grid item xs={2}>
-                        Actions
+                    </Grid> */}
+                    <Grid item xs={4}
+                        display="flex"
+                        justifyContent="center"
+                    >
+                        <Typography variant="h6">
+                            Actions
+                        </Typography>
                     </Grid>
                     <Grid item xs={12}>
                         {data.map((category) => (
@@ -88,20 +97,24 @@ export const ShopCategories = () => {
                                     paddingBottom: "18px",
                                 }}>
                                 <Grid container sx={{ paddingLeft: "12px" }}>
-                                    <Grid item xs={4}>
+                                    <Grid item xs={5}>
                                         {category.name}
                                     </Grid>
-                                    <Grid item xs={2}>
+                                    <Grid item xs={3}>
                                         Seller
                                     </Grid>
-                                    <Grid item xs={2}>
+                                    {/* <Grid item xs={2}>
                                         {category.products}
                                     </Grid>
                                     <Grid item xs={2}>
                                         <Switch {...label} defaultChecked />
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Stack direction="column" alignItems="center" justifyContent="space-between">
+                                    </Grid> */}
+                                    <Grid item xs={4}>
+                                        <Stack
+                                            direction="column"
+                                            alignItems="center"
+                                            justifyContent="space-between"
+                                        >
                                             <Link to={`/sellercenter/shop/categories/${category.id}`}
 
                                                 state={`${category.name}`}

@@ -13,7 +13,7 @@ import { useStores } from "../../../stores/RootStore";
 
 export const Income = () => {
     const [data, setData] = useState([]);
-    const [income, setIncome] = useState([]);
+    // const [income, setIncome] = useState([]);
     const [balance, setBalance] = useState([]);
     const { userStore } = useStores();
 
@@ -21,7 +21,7 @@ export const Income = () => {
         try {
             const res = await SellerCenterAPI.getIncome(userStore.id);
             setData(JSON.parse(JSON.stringify(res.data)));
-            setIncome(JSON.parse(JSON.stringify(res.data)));
+            // setIncome(JSON.parse(JSON.stringify(res.data)));
         } catch (error) {
             console.error(error);
         }

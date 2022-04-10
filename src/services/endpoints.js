@@ -95,10 +95,12 @@ export const URL_GET_SHOP_CATEGORIES = "/api/merchant/shopCategories";
 export const URL_CREATE_SHOP_CATEGORY = "/api/merchant/shopCategories/add";
 export const URL_EDIT_SHOP_CATEGORY = "/api/merchant/shopCategories/edit";
 export const URL_DELETE_SHOP_CATEGORY = "/api/merchant/shopCategories/delete";
-export const URL_GET_SHOP_CATEGORY_LISTINGS =
-  "/api/merchant/shopCategoryListings";
 export const URL_DELETE_SHOP_CATEGORY_LISTINGS =
   "/api/merchant/shopCategoryListings/delete";
+export const URL_GET_SHOP_CATEGORY_LISTINGS =
+  "/api/merchant/shopCategoryListings";
+export const URL_REMOVE_SHOP_CATEGORY_LISTING =
+  "/api/merchant/shopCategoryListing/remove";
 export const URL_ADD_SHOP_CATEGORY_LISTING =
   "/api/merchant/shopCategories/addListing";
 // rating

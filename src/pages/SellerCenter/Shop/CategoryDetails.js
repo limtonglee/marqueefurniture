@@ -27,7 +27,6 @@ export const ShopCategoryDetails = () => {
         try {
             const res = await SellerCenterAPI.getShopCategoryListings(param.categoryId);
             setData(JSON.parse(JSON.stringify(res.data)));
-            console.log('ZZZ', data);
         } catch (error) {
             console.error(error);
         }
@@ -37,9 +36,18 @@ export const ShopCategoryDetails = () => {
         getShopCategoryListings();
     }, []);
 
-    const handleRemove = (product) => {
-
+    const handleRemove = async (id) => {
+        try {
+            const res = await SellerCenterAPI.removeShopCategoryListing(param.categoryId, id);
+            refreshData();
+        } catch (error) {
+            console.error(error);
+        }
     }
+
+    const refreshData = () => {
+        getShopCategoryListings();
+    };
 
     return (
         <>
@@ -57,9 +65,9 @@ export const ShopCategoryDetails = () => {
                                 </Typography>
                             </Box>
                         </Grid>
-                        <Grid item xs={2}>
+                        {/* <Grid item xs={2}>
                             <Switch {...label} defaultChecked />
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </Card>
                 <Card sx={{ marginTop: "24px", padding: "18px" }}>
@@ -117,7 +125,7 @@ export const ShopCategoryDetails = () => {
                                                     height: '36px',
                                                 }}
                                                 onClick={e => {
-                                                    handleRemove(item);
+                                                    handleRemove(item.id);
                                                 }}
                                             >
                                                 Remove

@@ -103,6 +103,7 @@ export const URL_REMOVE_SHOP_CATEGORY_LISTING =
   "/api/merchant/shopCategoryListing/remove";
 export const URL_ADD_SHOP_CATEGORY_LISTING =
   "/api/merchant/shopCategories/addListing";
+
 // rating
 export const URL_GET_SHOP_RATINGS = "/api/merchant/product/review";
 export const URL_REPLY_REVIEW = "/api/merchant/replyReview";

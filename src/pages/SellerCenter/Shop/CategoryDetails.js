@@ -13,6 +13,7 @@ import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import CategoryAddProductModal from './CategoryAddProductModal';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 import { useLocation } from 'react-router-dom'
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
@@ -27,6 +28,7 @@ export const ShopCategoryDetails = () => {
         try {
             const res = await SellerCenterAPI.getShopCategoryListings(param.categoryId);
             setData(JSON.parse(JSON.stringify(res.data)));
+            getListingIds();
         } catch (error) {
             console.error(error);
         }
@@ -47,6 +49,13 @@ export const ShopCategoryDetails = () => {
 
     const refreshData = () => {
         getShopCategoryListings();
+    };
+
+    let listingIds = [];
+    const getListingIds = () => {
+        for(let i = 0; i < data.length; i++){
+            listingIds.push(data[i].id);
+        }
     };
 
     return (
@@ -78,7 +87,7 @@ export const ShopCategoryDetails = () => {
                             </Typography>
                         </Grid>
                         <Grid item xs={3}>
-                            <CategoryAddProductModal/>
+                            <CategoryAddProductModal refreshData={refreshData} listingIds={listingIds}/>
                         </Grid>
                     </Grid>
                     <Grid container spacing={2} sx={{ marginTop: "12px" }}>

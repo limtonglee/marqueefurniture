@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer, useState, useEffect } from 'react';
 import {
     Button,
     Box,
@@ -11,52 +11,55 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from "@mui/icons-material/Close";
-import { listingsData } from "../../../data/listingsData";
+import * as SellerCenterAPI from "../../../services/SellerCenter";
+import { useStores } from "../../../stores/RootStore";
 
-const style = {
-    wrapper: {
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        bgcolor: "background.paper",
-        boxShadow: 24,
-        p: 4,
-        borderRadius: 2,
-    },
-    contents: {
-        display: "flex",
-        flexDirection: "column",
-        marginTop: "20px",
-        marginBottom: "15px",
-        justifyContent: "flex-start",
-    },
-    buttons: {
-        display: "flex",
-        justifyContent: "end",
-    },
-};
+const CategoryAddProductModal = ({
+    listingIds,
+    refreshData,
+}) => {
+    const style = {
+        wrapper: {
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: "translate(-50%, -50%)",
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 2,
+        },
+        contents: {
+            display: "flex",
+            flexDirection: "column",
+            marginTop: "12px",
+            marginBottom: "12px",
+        },
+        buttons: {
+            display: "flex",
+            justifyContent: "end",
+        },
+    };
 
-const formReducer = (state, event) => {
-    if (event.reset) {
+    const formReducer = (state, event) => {
+        if (event.reset) {
+            return {
+                productType: '',
+                productName: '',
+                productDescription: '',
+                variation: '',
+                price: 0,
+                stock: 0,
+            }
+        }
         return {
-            productType: '',
-            productName: '',
-            productDescription: '',
-            variation: '',
-            price: 0,
-            stock: 0,
+            ...state,
+            [event.name]: event.value
         }
     }
-    return {
-        ...state,
-        [event.name]: event.value
-    }
-}
 
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+    const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-export default function BasicModal({ children }) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -64,7 +67,19 @@ export default function BasicModal({ children }) {
     const [formData, setFormData] = useReducer(formReducer, {});
     const [submitting, setSubmitting] = useState(false);
 
-    const [data, setData] = React.useState(listingsData);
+    const [listings, setListings] = useState([]);
+    const { userStore } = useStores();
+    const getListings = async () => {
+        try {
+            const res = await SellerCenterAPI.getListings(userStore.id);
+            setListings(JSON.parse(JSON.stringify(res.data)));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    useEffect(() => {
+        getListings();
+    }, []);
 
     const handleChange = (event) => {
 
@@ -73,10 +88,11 @@ export default function BasicModal({ children }) {
             value: event.target.value,
         });
     };
+
     const handleSubmit = event => {
         event.preventDefault();
-        setSubmitting(true);
 
+        refreshData();
         setTimeout(() => {
             setSubmitting(false);
             setFormData({
@@ -96,8 +112,6 @@ export default function BasicModal({ children }) {
             <Modal
                 open={open}
                 onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
             >
                 <Box sx={style.wrapper}>
                     <Box
@@ -122,59 +136,57 @@ export default function BasicModal({ children }) {
                         </IconButton>
                     </Box>
                     <form onSubmit={handleSubmit}>
-                        <Box sx={style.contents}>
+                        <Box
+                            sx={{
+                                overflow: 'scroll',
+                                overflowX: 'hidden',
+                                height: '100%',
+                                maxHeight: 480,
+                                marginBottom: '12px'
+                            }}>
                             <Grid container sx={{ padding: "12px" }}>
                                 <Grid item xs={1}>
+                                    {/* {item.id  ? (
                                     <Checkbox {...label} defaultChecked />
+                                ) : (
+                                    <Checkbox {...label} defaultChecked />
+                                )} */}
                                 </Grid>
                                 <Grid item xs={4}>
                                     Product Details
                                 </Grid>
-                                <Grid item xs={2}>
+                                <Grid item xs={3}>
                                     Price
                                 </Grid>
-                                <Grid item xs={2}>
+                                <Grid item xs={3}>
                                     Status
                                 </Grid>
-                                <Grid item xs={2}>
+                                <Grid item xs={1}>
                                     Stock
                                 </Grid>
-                                <Grid item xs={1}>
-                                    Sales
-                                </Grid>
-                                <Grid item xs={12}>
-                                    {data.map((item) => (
-                                        <Card key={item.id}
-                                            sx={{
-                                                marginTop: '10px',
-                                                marginBottom: '10px',
-                                                border: 1,
-                                            }}>
+                                <Grid item xs={12} >
+                                    {listings.map((item) => (
+                                        <Card key={item.id} sx={style.contents}>
                                             <Grid container>
                                                 <Grid item xs={1}>
                                                     <Checkbox {...label} defaultChecked />
                                                 </Grid>
                                                 <Grid item xs={4}>
                                                     <img
-                                                        src={`${item.img}?w=124&fit=crop&auto=format`}
-                                                        srcSet={`${item.img}?w=124&fit=crop&auto=format&dpr=2 2x`}
+                                                        src={`/api/image/${item.image}`}
                                                         alt={item.title}
-                                                        loading="lazy"
                                                     />
-                                                    <div>{item.productName}</div>
-                                                    <div>Variation: {item.variation}</div>
+                                                    <div>{item.name}</div>
+                                                    <div>Variation: {item.variations}</div>
                                                 </Grid>
-                                                <Grid item xs={2}>
-                                                    S${item.price}
+                                                <Grid item xs={3}>
+                                                    ${item.listingprice}
                                                 </Grid>
-                                                <Grid item xs={2}>
+                                                <Grid item xs={3}>
                                                     {item.status}
                                                 </Grid>
-                                                <Grid item xs={2}>
-                                                    {item.stock}
-                                                </Grid>
                                                 <Grid item xs={1}>
-                                                    {item.sales}
+                                                    {item.stockavailable}
                                                 </Grid>
                                             </Grid>
                                         </Card>
@@ -198,3 +210,4 @@ export default function BasicModal({ children }) {
         </>
     );
 }
+export default CategoryAddProductModal;

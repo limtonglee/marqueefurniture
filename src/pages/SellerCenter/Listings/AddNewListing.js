@@ -1,6 +1,6 @@
 import { Layout } from "../Layout";
 import React, { useReducer, useState } from "react";
-import { Button, Card, TextField, MenuItem } from "@mui/material";
+import { Button, Card, TextField, MenuItem, Box } from "@mui/material";
 import { useStores } from "../../../stores/RootStore";
 import axios from "axios";
 
@@ -112,161 +112,319 @@ export const AddNewListing = () => {
     <Layout>
       <h2>Add New Listing</h2>
       <form onSubmit={handleSubmit}>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <Card
-            component="form"
-            sx={style.cardStyle}
-            noValidate
-            autoComplete="off"
-          >
-            Basic Information
-            <TextField
-              id="outlined-select-product-type"
-              select
-              label="Product type"
-              name="type"
-              onChange={handleChange}
-              value={formData.type || ""}
-              helperText=""
-            >
-              {type.map((option) => (
-                <MenuItem value={option.value}>{option.label}</MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              required
-              id="outlined-required"
-              name="name"
-              label="Product name"
-              onChange={handleChange}
-              value={formData.name || ""}
-            />
-            <TextField
-              id="outlined-multiline-static"
-              multiline
-              rows={4}
-              name="description"
-              label="Product description"
-              onChange={handleChange}
-              value={formData.description || ""}
-            />
-            <input
-              onChange={fileSelected}
-              type="file"
-              accept="image/*"
-              style={{ paddingLeft: '8px'}}
-            ></input>
-          </Card>
-          <Card
-            component="form"
-            sx={style.cardStyle}
-            noValidate
-            autoComplete="off"
-          >
-            Specification
-            <TextField
-              required
-              id="outlined-required"
-              name="category"
-              label="Category"
-              onChange={handleChange}
-              value={formData.category || ""}
-            ></TextField>
-            <TextField
-              required
-              id="outlined-required"
-              name="brand"
-              label="Brand"
-              onChange={handleChange}
-              value={formData.brand || ""}
-            ></TextField>
-            <TextField
-              required
-              id="outlined-required"
-              name="dimensions"
-              label="Dimensions"
-              onChange={handleChange}
-              value={formData.dimensions || ""}
-            ></TextField>
-            <TextField
-              required
-              id="outlined-required"
-              name="warrantyInfo"
-              label="Warranty"
-              onChange={handleChange}
-              value={formData.warrantyInfo || ""}
-            ></TextField>
-          </Card>
-        </div>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <Card
-            component="form"
-            sx={style.cardStyle}
-            noValidate
-            autoComplete="off"
-          >
-            Sales Information
-            <TextField
-              required
-              id="outlined-required"
-              name="variations"
-              label="Variation"
-              onChange={handleChange}
-              value={formData.variations || ""}
-            ></TextField>
-            <TextField
-              required
-              id="outlined-required"
-              name="listingPrice"
-              label="Price"
-              onChange={handleChange}
-              value={formData.listingPrice || ""}
-            ></TextField>
-            <TextField
-              required
-              id="outlined-required"
-              name="stockAvailable"
-              label="Stock"
-              onChange={handleChange}
-              value={formData.stockAvailable || ""}
-            ></TextField>
-          </Card>
-          <Card
-            component="form"
-            sx={style.cardStyle}
-            noValidate
-            autoComplete="off"
-          >
-            Shipping
-            <TextField
-              required
-              id="outlined-required"
-              name="weight"
-              label="Weight"
-              onChange={handleChange}
-              value={formData.weight || ""}
-            ></TextField>
-            <TextField
-              required
-              id="outlined-required"
-              name="parcelSize"
-              label="Parcel size"
-              onChange={handleChange}
-              value={formData.parcelSize || ""}
-            ></TextField>
-            <TextField
-              required
-              id="outlined-required"
-              name="shippingProvider"
-              label="Shipping provider"
-              onChange={handleChange}
-              value={formData.shippingProvider || ""}
-            ></TextField>
-          </Card>
-        </div>
-        <Button type="submit" value="Submit" variant="contained" sx={{ m: 2 }}>
-          Save and Publish
-        </Button>
+        <TextField
+          id="outlined-select-product-type"
+          select
+          label="Product type"
+          name="type"
+          onChange={handleChange}
+          value={formData.type || ""}
+          helperText=""
+          sx={{width: '200px', marginTop: '24px', marginBottom: '12px'}}
+        >
+          {type.map((option) => (
+            <MenuItem value={option.value}>{option.label}</MenuItem>
+          ))}
+        </TextField>
+        {formData.type === "Furniture" &&
+          <Box>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <Card
+                component="form"
+                sx={style.cardStyle}
+                noValidate
+                autoComplete="off"
+              >
+                Basic Information
+
+                <TextField
+                  required
+                  id="outlined-required"
+                  name="name"
+                  label="Product name"
+                  onChange={handleChange}
+                  value={formData.name || ""}
+                />
+                <TextField
+                  id="outlined-multiline-static"
+                  multiline
+                  rows={4}
+                  name="description"
+                  label="Product description"
+                  onChange={handleChange}
+                  value={formData.description || ""}
+                />
+                <input
+                  onChange={fileSelected}
+                  type="file"
+                  accept="image/*"
+                  style={{ paddingLeft: '8px' }}
+                ></input>
+              </Card>
+              <Card
+                component="form"
+                sx={style.cardStyle}
+                noValidate
+                autoComplete="off"
+              >
+                Specification
+                <TextField
+                  required
+                  id="outlined-required"
+                  name="category"
+                  label="Category"
+                  onChange={handleChange}
+                  value={formData.category || ""}
+                ></TextField>
+                <TextField
+                  required
+                  id="outlined-required"
+                  name="brand"
+                  label="Brand"
+                  onChange={handleChange}
+                  value={formData.brand || ""}
+                ></TextField>
+                <TextField
+                  required
+                  id="outlined-required"
+                  name="dimensions"
+                  label="Dimensions"
+                  onChange={handleChange}
+                  value={formData.dimensions || ""}
+                ></TextField>
+                <TextField
+                  required
+                  id="outlined-required"
+                  name="warrantyInfo"
+                  label="Warranty"
+                  onChange={handleChange}
+                  value={formData.warrantyInfo || ""}
+                ></TextField>
+              </Card>
+            </div>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <Card
+                component="form"
+                sx={style.cardStyle}
+                noValidate
+                autoComplete="off"
+              >
+                Sales Information
+                <TextField
+                  required
+                  id="outlined-required"
+                  name="variations"
+                  label="Variation"
+                  onChange={handleChange}
+                  value={formData.variations || ""}
+                ></TextField>
+                <TextField
+                  required
+                  id="outlined-required"
+                  name="listingPrice"
+                  label="Price"
+                  onChange={handleChange}
+                  value={formData.listingPrice || ""}
+                ></TextField>
+                <TextField
+                  required
+                  id="outlined-required"
+                  name="stockAvailable"
+                  label="Stock"
+                  onChange={handleChange}
+                  value={formData.stockAvailable || ""}
+                ></TextField>
+              </Card>
+              <Card
+                component="form"
+                sx={style.cardStyle}
+                noValidate
+                autoComplete="off"
+              >
+                Shipping
+                <TextField
+                  required
+                  id="outlined-required"
+                  name="weight"
+                  label="Weight"
+                  onChange={handleChange}
+                  value={formData.weight || ""}
+                ></TextField>
+                <TextField
+                  required
+                  id="outlined-required"
+                  name="parcelSize"
+                  label="Parcel size"
+                  onChange={handleChange}
+                  value={formData.parcelSize || ""}
+                ></TextField>
+                <TextField
+                  required
+                  id="outlined-required"
+                  name="shippingProvider"
+                  label="Shipping provider"
+                  onChange={handleChange}
+                  value={formData.shippingProvider || ""}
+                ></TextField>
+              </Card>
+            </div>
+            <Button type="submit" value="Submit" variant="contained" sx={{ m: 2 }}>
+              Save and Publish
+            </Button>
+          </Box>
+        }
+
+        {formData.type === "Service" &&
+          <Box>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <Card
+                component="form"
+                sx={style.cardStyle}
+                noValidate
+                autoComplete="off"
+              >
+                Basic Information
+
+                <TextField
+                  required
+                  id="outlined-required"
+                  name="name"
+                  label="Product name"
+                  onChange={handleChange}
+                  value={formData.name || ""}
+                />
+                <TextField
+                  id="outlined-multiline-static"
+                  multiline
+                  rows={4}
+                  name="description"
+                  label="Product description"
+                  onChange={handleChange}
+                  value={formData.description || ""}
+                />
+                <input
+                  onChange={fileSelected}
+                  type="file"
+                  accept="image/*"
+                  style={{ paddingLeft: '8px' }}
+                ></input>
+              </Card>
+              <Card
+                component="form"
+                sx={style.cardStyle}
+                noValidate
+                autoComplete="off"
+              >
+                Specification
+                <TextField
+                  required
+                  id="outlined-required"
+                  name="category"
+                  label="Category"
+                  onChange={handleChange}
+                  value={formData.category || ""}
+                ></TextField>
+              </Card>
+            </div>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <Card
+                component="form"
+                sx={style.cardStyle}
+                noValidate
+                autoComplete="off"
+              >
+                Sales Information
+                <TextField
+                  required
+                  id="outlined-required"
+                  name="listingPrice"
+                  label="Price"
+                  onChange={handleChange}
+                  value={formData.listingPrice || ""}
+                ></TextField>
+              </Card>
+            </div>
+            <Button type="submit" value="Submit" variant="contained" sx={{ m: 2 }}>
+              Save and Publish
+            </Button>
+          </Box>
+        }
+        {formData.type === "Design" &&
+          <Box>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <Card
+                component="form"
+                sx={style.cardStyle}
+                noValidate
+                autoComplete="off"
+              >
+                Basic Information
+
+                <TextField
+                  required
+                  id="outlined-required"
+                  name="name"
+                  label="Product name"
+                  onChange={handleChange}
+                  value={formData.name || ""}
+                />
+                <TextField
+                  id="outlined-multiline-static"
+                  multiline
+                  rows={4}
+                  name="description"
+                  label="Product description"
+                  onChange={handleChange}
+                  value={formData.description || ""}
+                />
+                <input
+                  onChange={fileSelected}
+                  type="file"
+                  accept="image/*"
+                  style={{ paddingLeft: '8px' }}
+                ></input>
+              </Card>
+              <Card
+                component="form"
+                sx={style.cardStyle}
+                noValidate
+                autoComplete="off"
+              >
+                Specification
+                <TextField
+                  required
+                  id="outlined-required"
+                  name="category"
+                  label="Category"
+                  onChange={handleChange}
+                  value={formData.category || ""}
+                ></TextField>
+              </Card>
+            </div>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <Card
+                component="form"
+                sx={style.cardStyle}
+                noValidate
+                autoComplete="off"
+              >
+                Sales Information
+                <TextField
+                  required
+                  id="outlined-required"
+                  name="listingPrice"
+                  label="Price"
+                  onChange={handleChange}
+                  value={formData.listingPrice || ""}
+                ></TextField>
+              </Card>
+            </div>
+
+            <Button type="submit" value="Submit" variant="contained" sx={{ m: 2 }}>
+              Save and Publish
+            </Button>
+          </Box>
+        }
       </form>
     </Layout>
   );

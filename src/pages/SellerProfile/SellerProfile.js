@@ -21,7 +21,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import mark from "../../assets/images/mark.jpeg";
 import jack from "../../assets/images/jack.jpg";
-import Moodboard from "../SocialMedia/Moodboard/ViewMoodboard";
+import Moodboard from "../Profile/Moodboard/MoodboardViewInProfile";
 import Post from "../SocialMedia/Ideas";
 
 

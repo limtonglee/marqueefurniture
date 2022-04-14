@@ -21,6 +21,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import * as socialMediaAPI from "../../../services/SocialMedia";
 import { useStores } from "../../../stores/RootStore";
+import PostToNewMbModal from "./PostToNewMbModal";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -102,9 +103,6 @@ const MoodboardModal = ({
     Promise.all(promises).then((values) => {
       setMoodboards(values);
 
-      // !
-      console.log("bijj values", values);
-
       values.forEach((moodboard) => {
         for (let moodboardItem of moodboard.moodboardItems) {
           console.log(
@@ -121,8 +119,6 @@ const MoodboardModal = ({
       });
       console.log("checked line 132", checked);
       setPrevChecked(checked);
-
-      // !
 
       return values;
     });
@@ -195,7 +191,6 @@ const MoodboardModal = ({
     }
   };
 
-  // !
   const addPostToMoodboard = () => {
     for (let moodboardId of checked) {
       console.log(`adding post.id ${post.id} to moodboardId ${moodboardId}`);
@@ -218,6 +213,7 @@ const MoodboardModal = ({
   const addPostToNewMoodboard = () => {
     console.log("addPostToNewMoodboard");
     console.log("not done");
+    setOpenMDM(true);
   };
 
   const updatePostPinnedLocations = () => {
@@ -298,8 +294,22 @@ const MoodboardModal = ({
     setOpenDialog(false);
   };
 
+  const [openMDM, setOpenMDM] = React.useState(false);
+
+  const closeMDM = () => {
+    setOpenMDM(false);
+  };
+
   return (
     <>
+      <PostToNewMbModal
+        open={openMDM}
+        closeMoodboardModal={closeMoodboardModal}
+        closeMDM={closeMDM}
+        post={post}
+        refreshPosts={refreshPosts}
+        // refreshData={refreshData}
+      />
       <Snackbar
         open={openSnackbar}
         autoHideDuration={2500}

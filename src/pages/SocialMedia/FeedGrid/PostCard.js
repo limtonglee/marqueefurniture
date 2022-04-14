@@ -23,6 +23,7 @@ const PostCard = ({
   setOpen,
   setPost,
   updatePostPinned,
+  mbs,
 }) => {
   const { userStore } = useStores();
 
@@ -91,6 +92,14 @@ const PostCard = ({
     updateIfPostIsLikedByUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // ! new
+  useEffect(() => {
+    getCompleteMoodboardData();
+    setPostPinned(postInUserMoodboards() ? true : false);
+    updateIfPostIsLikedByUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mbs]);
 
   const postInUserMoodboards = () => {
     const moodboardsWithThisPost = moodboards.filter((moodboard) => {

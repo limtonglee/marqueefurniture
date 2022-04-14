@@ -80,6 +80,10 @@ const FeedGrid = ({ posts, refreshPosts, sourceMoodboardId, fromProfile }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const refreshData = () => {
+    getCompleteMoodboardData();
+  };
+
   const postInUserMoodboards = (post) => {
     const moodboardsWithThisPost = moodboards.filter((moodboard) => {
       for (let moodboardItem of moodboard.moodboardItems) {
@@ -238,6 +242,7 @@ const FeedGrid = ({ posts, refreshPosts, sourceMoodboardId, fromProfile }) => {
                     setOpen={setOpen}
                     setPost={setPost}
                     updatePostPinned={updatePostPinned}
+                    mbs={moodboards}
                   />
                 ))}
               </Masonry>
@@ -252,7 +257,7 @@ const FeedGrid = ({ posts, refreshPosts, sourceMoodboardId, fromProfile }) => {
         moodboards={moodboards}
         setMoodboards={setMoodboards}
         postPinned={postPinned}
-        refreshPosts={refreshPosts}
+        refreshPosts={refreshData}
         sourceMoodboardId={sourceMoodboardId}
       />
     </>

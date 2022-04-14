@@ -185,7 +185,7 @@ export const editMoodboard = (moodBoardId, boardName, description) => {
 
 export const deleteMoodboard = (moodboardId) => {
   const params = {
-    moodBoardId: moodboardId,
+    moodboardId: moodboardId,
   };
   return remove(URL_DELETE_MOODBOARD, params);
 };

@@ -165,7 +165,9 @@ const ViewMoodboard = () => {
 
   const handleDeleteMoodboard = async () => {
     try {
-      const res = await socialMediaAPI.deleteMoodboard(currentMoodboard.id);
+      const res = await socialMediaAPI.deleteMoodboard(
+        parseInt(currentMoodboard.id)
+      );
       const data = JSON.parse(JSON.stringify(res)).data;
       console.log(data);
 

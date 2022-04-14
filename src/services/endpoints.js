@@ -24,8 +24,8 @@ export const URL_DELETE_CART_ITEMS = "/api/cart/deleteItems";
 
 //checkout management
 export const URL_CHECKOUT = "/api/checkout";
-export const URL_PAYMENT = "/api/payment"
-export const URL_GET_ORDERS = "/api/user/orders"
+export const URL_PAYMENT = "/api/payment";
+export const URL_GET_ORDERS = "/api/user/orders";
 
 //liked listings management
 export const URL_LISTING_LIKE = "/api/listing/like"; // user liking a post
@@ -46,6 +46,8 @@ export const URL_DELETE_POST_COMMENT = "/api/post/deleteComment"; // delete comm
 export const URL_GET_POST_LISTINGS = "/api/post/listings"; // get listings for indiv post
 
 export const URL_CREATE_POST = "/api/post/create"; // create post
+export const URL_CREATE_POST_LISTINGS = "/api/postListings/create";
+export const URL_CREATE_POST_TAGS = "/api/postTags/create";
 
 // get username by id
 export const URL_GET_USERNAME_BY_ID = "/api/user"; // new

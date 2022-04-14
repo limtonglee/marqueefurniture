@@ -11,6 +11,8 @@ import {
   URL_DELETE_POST_COMMENT,
   URL_GET_POST_LISTINGS,
   URL_CREATE_POST,
+  URL_CREATE_POST_LISTINGS,
+  URL_CREATE_POST_TAGS,
   URL_GET_USERNAME_BY_ID,
   URL_GET_PROFILEPIC_BY_ID,
   URL_LIKE_POST,
@@ -88,14 +90,30 @@ export const getPostListings = (id) => {
   return get(URL_GET_POST_LISTINGS, params);
 };
 
-export const createPost = (image, description, tags, products) => {
+export const createPost = (image, description, userId) => {
   const body = {
     image: image,
     description: description,
-    tags: tags,
-    products: products,
+    isPrivate: "0",
+    userId: userId,
   };
   return postAsFormInput(URL_CREATE_POST, body);
+};
+
+export const createPostListings = (postId, listingId) => {
+  const body = {
+    postId: postId,
+    listingId: listingId,
+  };
+  return postAsFormInput(URL_CREATE_POST_LISTINGS, body);
+};
+
+export const createPostTags = (postId, postTagsId) => {
+  const body = {
+    postId: postId,
+    postTagsId: postTagsId,
+  };
+  return postAsFormInput(URL_CREATE_POST_TAGS, body);
 };
 
 export const getUsernameById = (userId) => {

@@ -19,14 +19,22 @@ const Input = styled("input")({
 });
 
 const CreateNewPost = () => {
-  const [fileUploaded, setFileUploaded] = useState("");
+  // const [fileUploaded, setFileUploaded] = useState("");
 
-  const updateFile = (event) => {
-    console.log(event.target.value);
-    // setFileUploaded(event.target.value);
-    setFileUploaded(
-      "https://d1hy6t2xeg0mdl.cloudfront.net/image/483605/dd9938c2cc/standard"
-    ); // mock only; for demo purpose
+  // const updateFile = (event) => {
+  //   console.log(event.target.value);
+  //   // setFileUploaded(event.target.value);
+  //   setFileUploaded(
+  //     "https://d1hy6t2xeg0mdl.cloudfront.net/image/483605/dd9938c2cc/standard"
+  //   ); // mock only; for demo purpose
+  // };
+
+  const [file, setFile] = useState();
+
+  const fileSelected = (event) => {
+    const file = event.target.files[0];
+    console.log("file", file);
+    setFile(file);
   };
 
   const [selectedProductsValues, setSelectedProductsValues] = useState([]);
@@ -79,13 +87,14 @@ const CreateNewPost = () => {
 
   const createPost = () => {
     console.log("createPost");
-    console.log(fileUploaded);
+    // console.log(fileUploaded);
+    console.log(file);
     console.log(selectedProductsValues);
     console.log(filterRoomValues);
     console.log(filterDesignValues);
     console.log(boardDescription);
 
-    navigate("/ideas");
+    // navigate("/ideas");
   };
 
   useEffect(() => {}, []);
@@ -126,7 +135,7 @@ const CreateNewPost = () => {
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
             <Grid item md={6} xs={12} sx={{ px: 2 }}>
-              {fileUploaded.length === 0 ? (
+              {!file ? (
                 <Box
                   sx={{
                     width: "100%",
@@ -139,7 +148,7 @@ const CreateNewPost = () => {
                   }}
                 >
                   <label htmlFor="contained-button-file">
-                    <Input
+                    {/* <Input
                       accept="image/*"
                       id="contained-button-file"
                       multiple
@@ -153,7 +162,12 @@ const CreateNewPost = () => {
                       size="large"
                     >
                       Upload
-                    </Button>
+                    </Button> */}
+                    <input
+                      onChange={fileSelected}
+                      type="file"
+                      accept="image/*"
+                    ></input>
                   </label>
                 </Box>
               ) : (
@@ -165,7 +179,7 @@ const CreateNewPost = () => {
                     component="img"
                     width="100%"
                     objectfit="scale-down"
-                    image={fileUploaded}
+                    image={file}
                     alt="post picture"
                   />
                 </Card>

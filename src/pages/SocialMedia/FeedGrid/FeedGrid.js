@@ -243,6 +243,7 @@ const FeedGrid = ({ posts, refreshPosts, sourceMoodboardId, fromProfile }) => {
                     setPost={setPost}
                     updatePostPinned={updatePostPinned}
                     mbs={moodboards}
+                    mbspium={postInUserMoodboards}
                   />
                 ))}
               </Masonry>
@@ -258,6 +259,7 @@ const FeedGrid = ({ posts, refreshPosts, sourceMoodboardId, fromProfile }) => {
         setMoodboards={setMoodboards}
         postPinned={postPinned}
         refreshPosts={refreshData}
+        refreshPosts2={refreshPosts}
         sourceMoodboardId={sourceMoodboardId}
       />
     </>

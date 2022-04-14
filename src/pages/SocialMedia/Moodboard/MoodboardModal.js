@@ -33,6 +33,7 @@ const MoodboardModal = ({
   post,
   postPinned,
   refreshPosts,
+  refreshPosts2,
   sourceMoodboardId,
 }) => {
   const { userStore } = useStores();
@@ -203,6 +204,10 @@ const MoodboardModal = ({
       refreshPosts();
     }
 
+    if (refreshPosts2) {
+      refreshPosts2();
+    }
+
     closeMoodboardModal();
     setPrevChecked(checked);
     handleClickSnackbar();
@@ -294,6 +299,8 @@ const MoodboardModal = ({
 
   const closeMDM = () => {
     setOpenMDM(false);
+    setChecked([]);
+    setPrevChecked([]);
   };
 
   return (
@@ -304,6 +311,7 @@ const MoodboardModal = ({
         closeMDM={closeMDM}
         post={post}
         refreshPosts={refreshPosts}
+        refreshMb={getCompleteMoodboardData}
         // refreshData={refreshData}
       />
       <Snackbar

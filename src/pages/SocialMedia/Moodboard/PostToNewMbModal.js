@@ -19,6 +19,7 @@ const PostToNewMbModal = ({
   closeMDM,
   post,
   refreshPosts,
+  refreshMb,
 }) => {
   const { userStore } = useStores();
 
@@ -108,6 +109,7 @@ const PostToNewMbModal = ({
         refreshPosts();
       }
 
+      refreshMb();
       prepareTextFields();
       closeMDM();
       closeMoodboardModal();
@@ -137,7 +139,8 @@ const PostToNewMbModal = ({
         open={open}
         onClose={() => {
           prepareTextFields();
-          closeMoodboardModal();
+          // closeMoodboardModal();
+          closeMDM();
         }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"

@@ -24,6 +24,7 @@ const PostCard = ({
   setPost,
   updatePostPinned,
   mbs,
+  mbspium,
 }) => {
   const { userStore } = useStores();
 
@@ -95,9 +96,11 @@ const PostCard = ({
 
   // ! new
   useEffect(() => {
-    getCompleteMoodboardData();
-    setPostPinned(postInUserMoodboards() ? true : false);
-    updateIfPostIsLikedByUser();
+    mbspium && setPostPinned(mbspium(post));
+
+    !mbspium &&
+      getCompleteMoodboardData() &&
+      setPostPinned(postInUserMoodboards() ? true : false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mbs]);
 

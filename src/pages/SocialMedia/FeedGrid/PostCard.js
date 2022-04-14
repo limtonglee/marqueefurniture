@@ -16,7 +16,14 @@ const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 // const { username } = user;
 
-const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
+const PostCard = ({
+  post,
+  refreshPosts,
+  sourceMoodboardId,
+  setOpen,
+  setPost,
+  updatePostPinned,
+}) => {
   const { userStore } = useStores();
 
   const [moodboards, setMoodboards] = useState([]);
@@ -166,14 +173,16 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
     console.log("liked by after clicking:", post.likes);
   };
 
-  const [open, setOpen] = React.useState(false);
+  // const [open, setOpen] = React.useState(false);
 
-  const closeMoodboardModal = () => {
-    getCompleteMoodboardData();
-    setOpen(false);
-  };
+  // const closeMoodboardModal = () => {
+  //   getCompleteMoodboardData();
+  //   setOpen(false);
+  // };
 
   const handleClick = (event) => {
+    updatePostPinned(post);
+    setPost(post);
     setOpen(true);
   };
 
@@ -201,7 +210,7 @@ const PostCard = ({ post, refreshPosts, sourceMoodboardId }) => {
             checkedIcon={<PushPinIcon fontSize="small" />}
             sx={postCardStyles.checkboxes}
             // onChange={handleChangeForPin}
-            // onClick={handleClick} // 31 mar
+            onClick={handleClick} // 31 mar
             checked={postPinned}
           />
           <Checkbox

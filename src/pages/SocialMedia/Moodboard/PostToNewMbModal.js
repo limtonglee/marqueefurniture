@@ -103,6 +103,11 @@ const PostToNewMbModal = ({
       setBoardName("");
       setBoardDescription("");
 
+      if (refreshPosts) {
+        console.log("PostToNewMbModal.js refreshPosts triggered");
+        refreshPosts();
+      }
+
       prepareTextFields();
       closeMDM();
       closeMoodboardModal();
@@ -112,10 +117,6 @@ const PostToNewMbModal = ({
         position: toast.POSITION.TOP_CENTER,
         autoClose: 3000,
       });
-
-      if (refreshPosts) {
-        refreshPosts();
-      }
     }
   };
 

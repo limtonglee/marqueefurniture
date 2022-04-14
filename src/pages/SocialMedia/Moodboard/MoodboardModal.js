@@ -103,22 +103,18 @@ const MoodboardModal = ({
     Promise.all(promises).then((values) => {
       setMoodboards(values);
 
+      const newChecked = [...checked];
+
       values.forEach((moodboard) => {
         for (let moodboardItem of moodboard.moodboardItems) {
-          console.log(
-            `moodboardItem.id ${moodboardItem.id} post.id ${post.id}`
-          );
-          console.log(
-            `typeof moodboardItem.id ${typeof moodboardItem.id} typeof post.id ${typeof post.id}`
-          );
           if (moodboardItem.id === parseInt(post.id)) {
-            console.log("bij line 110");
-            checked.push(moodboard.id);
+            newChecked.push(moodboard.id);
           }
         }
       });
-      console.log("checked line 132", checked);
-      setPrevChecked(checked);
+      setChecked(newChecked);
+      // setPrevChecked(checked);
+      setPrevChecked(newChecked);
 
       return values;
     });
@@ -139,19 +135,21 @@ const MoodboardModal = ({
   const [prevChecked, setPrevChecked] = useState([]);
 
   useEffect(() => {
-    console.log("heree line 124");
+    const newChecked = [...checked];
     moodboards.forEach((moodboard) => {
       for (let moodboardItem of moodboard.moodboardItems) {
         if (moodboardItem.id === parseInt(post.id)) {
-          checked.push(moodboard.id);
+          newChecked.push(moodboard.id);
         }
       }
     });
-    console.log("checked line 132", checked);
-    setPrevChecked(checked);
+    console.log("checked line 132", newChecked);
+    setChecked(newChecked);
+    // setPrevChecked(checked);
+    setPrevChecked(newChecked);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [moodboards]);
+  }, [moodboards, post]);
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -211,8 +209,6 @@ const MoodboardModal = ({
   };
 
   const addPostToNewMoodboard = () => {
-    console.log("addPostToNewMoodboard");
-    console.log("not done");
     setOpenMDM(true);
   };
 
@@ -350,7 +346,9 @@ const MoodboardModal = ({
           open={open}
           onClose={() => {
             closeMoodboardModal();
-            setChecked(prevChecked);
+            // setChecked(prevChecked);
+            setChecked([]);
+            setPrevChecked([]);
           }}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
@@ -374,52 +372,56 @@ const MoodboardModal = ({
             <Box sx={modalStyles.contents}>
               <Box sx={{ maxHeight: 250, overflowY: "scroll" }}>
                 <List dense sx={{ height: "20 !important" }}>
-                  {moodboards.map((moodboard, index) => {
-                    const moodboardName = moodboard.boardname;
-                    const moodboardId = moodboard.id;
-                    const labelId = `checkbox-list-secondary-label-${moodboardName}`;
-                    return (
-                      <ListItem
-                        key={moodboardId}
-                        secondaryAction={
-                          <Checkbox
-                            edge="end"
-                            onChange={handleToggle(moodboardId)}
-                            checked={checked.indexOf(moodboardId) !== -1}
-                            inputProps={{
-                              "aria-labelledby": labelId,
-                            }}
-                          />
-                        }
-                        disablePadding
-                      >
-                        <ListItemButton sx={{ pl: 0 }}>
-                          <ListItemAvatar>
-                            <Avatar
-                              alt={`${moodboardName} Moodboard`}
-                              src={
-                                moodboard.moodboardItems.length > 0
-                                  ? moodboard.moodboardItems[0].image
-                                  : null
-                              }
-                              // src={`/api/image/${
-                              //   moodboard.moodboardItems.length > 0
-                              //     ? moodboard.moodboardItems[0].image
-                              //     : null
-                              // }`}
-                              sx={{
-                                borderRadius: "10%",
+                  {moodboards
+                    .sort((a, b) =>
+                      ("" + a.boardname).localeCompare(b.boardname)
+                    )
+                    .map((moodboard, index) => {
+                      const moodboardName = moodboard.boardname;
+                      const moodboardId = moodboard.id;
+                      const labelId = `checkbox-list-secondary-label-${moodboardName}`;
+                      return (
+                        <ListItem
+                          key={moodboardId}
+                          secondaryAction={
+                            <Checkbox
+                              edge="end"
+                              onChange={handleToggle(moodboardId)}
+                              checked={checked.indexOf(moodboardId) !== -1}
+                              inputProps={{
+                                "aria-labelledby": labelId,
                               }}
                             />
-                          </ListItemAvatar>
-                          <ListItemText
-                            id={moodboardId}
-                            primary={moodboardName}
-                          />
-                        </ListItemButton>
-                      </ListItem>
-                    );
-                  })}
+                          }
+                          disablePadding
+                        >
+                          <ListItemButton sx={{ pl: 0 }}>
+                            <ListItemAvatar>
+                              <Avatar
+                                alt={`${moodboardName} Moodboard`}
+                                src={
+                                  moodboard.moodboardItems.length > 0
+                                    ? moodboard.moodboardItems[0].image
+                                    : null
+                                }
+                                // src={`/api/image/${
+                                //   moodboard.moodboardItems.length > 0
+                                //     ? moodboard.moodboardItems[0].image
+                                //     : null
+                                // }`}
+                                sx={{
+                                  borderRadius: "10%",
+                                }}
+                              />
+                            </ListItemAvatar>
+                            <ListItemText
+                              id={moodboardId}
+                              primary={moodboardName}
+                            />
+                          </ListItemButton>
+                        </ListItem>
+                      );
+                    })}
                 </List>
               </Box>
             </Box>
@@ -456,7 +458,9 @@ const MoodboardModal = ({
           open={open}
           onClose={() => {
             closeMoodboardModal();
-            setChecked(prevChecked);
+            // setChecked(prevChecked);
+            setChecked([]);
+            setPrevChecked([]);
           }}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
@@ -480,53 +484,57 @@ const MoodboardModal = ({
             <Box sx={modalStyles.contents}>
               <Box sx={{ maxHeight: 250, overflow: "scroll" }}>
                 <List dense>
-                  {moodboards.map((moodboard, index) => {
-                    const moodboardName = moodboard.boardname;
-                    const moodboardId = moodboard.id;
-                    const labelId = `checkbox-list-secondary-label-${moodboardName}`;
-                    return (
-                      <ListItem
-                        key={moodboardId}
-                        secondaryAction={
-                          <Checkbox
-                            edge="end"
-                            onChange={handleToggle(moodboardId)}
-                            checked={checked.indexOf(moodboardId) !== -1}
-                            inputProps={{
-                              "aria-labelledby": labelId,
-                            }}
-                          />
-                        }
-                        disablePadding
-                      >
-                        <ListItemButton sx={{ pl: 0 }}>
-                          <ListItemAvatar>
-                            <Avatar
-                              alt={`${moodboardName} Moodboard`}
-                              src={
-                                moodboard.moodboardItems.length > 0
-                                  ? moodboard.moodboardItems[0].image
-                                  : null
-                              }
-                              // src={`/api/image/ \n
-                              // ${
-                              //   moodboard.moodboardItems.length > 0
-                              //     ? moodboard.moodboardItems[0].image
-                              //     : null
-                              // }`}
-                              sx={{
-                                borderRadius: "10%",
+                  {moodboards
+                    .sort((a, b) =>
+                      ("" + a.boardname).localeCompare(b.boardname)
+                    )
+                    .map((moodboard, index) => {
+                      const moodboardName = moodboard.boardname;
+                      const moodboardId = moodboard.id;
+                      const labelId = `checkbox-list-secondary-label-${moodboardName}`;
+                      return (
+                        <ListItem
+                          key={moodboardId}
+                          secondaryAction={
+                            <Checkbox
+                              edge="end"
+                              onChange={handleToggle(moodboardId)}
+                              checked={checked.indexOf(moodboardId) !== -1}
+                              inputProps={{
+                                "aria-labelledby": labelId,
                               }}
                             />
-                          </ListItemAvatar>
-                          <ListItemText
-                            id={moodboardId}
-                            primary={moodboardName}
-                          />
-                        </ListItemButton>
-                      </ListItem>
-                    );
-                  })}
+                          }
+                          disablePadding
+                        >
+                          <ListItemButton sx={{ pl: 0 }}>
+                            <ListItemAvatar>
+                              <Avatar
+                                alt={`${moodboardName} Moodboard`}
+                                src={
+                                  moodboard.moodboardItems.length > 0
+                                    ? moodboard.moodboardItems[0].image
+                                    : null
+                                }
+                                // src={`/api/image/ \n
+                                // ${
+                                //   moodboard.moodboardItems.length > 0
+                                //     ? moodboard.moodboardItems[0].image
+                                //     : null
+                                // }`}
+                                sx={{
+                                  borderRadius: "10%",
+                                }}
+                              />
+                            </ListItemAvatar>
+                            <ListItemText
+                              id={moodboardId}
+                              primary={moodboardName}
+                            />
+                          </ListItemButton>
+                        </ListItem>
+                      );
+                    })}
                 </List>
               </Box>
             </Box>

@@ -9,6 +9,8 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import * as socialMediaAPI from "../../../services/SocialMedia";
 import { useStores } from "../../../stores/RootStore";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PostToNewMbModal = ({
   open,
@@ -106,6 +108,11 @@ const PostToNewMbModal = ({
       closeMoodboardModal();
       // handleClickSnackbar("Created new moodboard");
 
+      toast("Added post to new moodboard", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+      });
+
       if (refreshPosts) {
         refreshPosts();
       }
@@ -124,6 +131,7 @@ const PostToNewMbModal = ({
 
   return (
     <>
+      <ToastContainer />
       <Modal
         open={open}
         onClose={() => {

@@ -1,6 +1,7 @@
 // for social media - ideas, moodboards
 
 import { get, remove, update, postAsFormInput } from "./api";
+import axios from "axios";
 import {
   URL_GET_POSTS,
   URL_GET_POST_DETAILS,
@@ -26,6 +27,7 @@ import {
   URL_EDIT_MOODBOARD,
   URL_DELETE_MOODBOARD,
   URL_GET_USERS_POSTS,
+  URL_UPLOAD_PHOTO,
 } from "../services/endpoints";
 
 export const getAllPosts = () => {
@@ -114,6 +116,18 @@ export const createPostTags = (postId, postTagsId) => {
     postTagsId: postTagsId,
   };
   return postAsFormInput(URL_CREATE_POST_TAGS, body);
+};
+
+// !
+export const sendPictureToDb = async (image) => {
+  const formData = new FormData();
+  formData.append("image", image);
+  console.log("sendPictureToDb", formData.get("image"));
+
+  const result = await axios.post(URL_UPLOAD_PHOTO, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return result;
 };
 
 export const getUsernameById = (userId) => {

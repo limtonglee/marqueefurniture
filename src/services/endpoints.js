@@ -76,6 +76,9 @@ export const URL_CREATE_MOODBOARD_WITH_POST =
 export const URL_EDIT_MOODBOARD = "/api/user/moodboard/edit"; // new
 export const URL_DELETE_MOODBOARD = "/api/user/moodboard/delete";
 
+// upload images
+export const URL_UPLOAD_PHOTO = "/api/user/uploadPhoto";
+
 // sellercenter
 // orders
 export const URL_GET_SHOP_ORDERS = "/api/merchant/orders";

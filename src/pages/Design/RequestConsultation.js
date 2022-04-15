@@ -38,25 +38,25 @@ const RequestConsultation = () => {
   // const moodboardTags = [{ id: 0, boardname: "Moodboard" }];
   const [moodboardTags, setMoodboardTags] = useState([]);
 
-  const designTags = [
-    { id: 0, title: "Art Deco" },
-    { id: 1, title: "Asian Zen" },
-    { id: 2, title: "Bohemian" },
-    { id: 3, title: "Coastal" },
-    { id: 4, title: "Contemporary" },
-    { id: 5, title: "Eclectic" },
-    { id: 6, title: "French Country" },
-    { id: 7, title: "Industrial" },
-    { id: 8, title: "Meditarranean" },
-    { id: 9, title: "Minimalist" },
-    { id: 10, title: "Modern" },
-    { id: 11, title: "Modern Farmhouse" },
-    { id: 12, title: "Rustic" },
-    { id: 13, title: "Scandinavian" },
-    { id: 14, title: "Shabby Chic" },
-    { id: 15, title: "Traditional" },
-    { id: 16, title: "Transitional" },
-  ];
+  const [designTags, setDesignTags] = useState([]);
+
+  const getPostTags = async () => {
+    try {
+      const res = await socialMediaAPI.getAllTags();
+      const data = JSON.parse(JSON.stringify(res)).data;
+
+      const designTags = data.filter((item) => item.tagtype === "Design");
+      setDesignTags(designTags);
+
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getPostTags();
+  }, []);
 
   const getUserMoodboards = async () => {
     try {
@@ -297,7 +297,7 @@ const RequestConsultation = () => {
                     limitTags={2}
                     id="design-type"
                     options={designTags}
-                    getOptionLabel={(option) => option.title}
+                    getOptionLabel={(option) => option.tagname}
                     defaultValue={[]}
                     renderInput={(params) => (
                       <TextField

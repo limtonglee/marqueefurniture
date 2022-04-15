@@ -126,8 +126,35 @@ const CreateNewPost = () => {
   const createPostAPI = async (image, description, userId) => {
     try {
       const res = await socialMediaAPI.createPost(image, description, userId);
-      const data = JSON.parse(JSON.stringify(res)).data[0]["id"];
-      console.log(data);
+      const newPostId = JSON.parse(JSON.stringify(res)).data[0]["id"];
+      console.log("createPostAPI data", newPostId);
+
+      const listingsToSubmit = selectedProductsValues.map((item) =>
+        parseInt(item.id)
+      );
+      console.log("listings to submit", listingsToSubmit);
+
+      for (let listingId in listingsToSubmit) {
+        console.log(`newPostId listingId ${newPostId} ${listingId}`);
+        await createPostListingsAPI(newPostId, listingId);
+      }
+
+      const roomsToSubmit = filterRoomValues.map((item) => item.id);
+      const designsToSubmit = filterDesignValues.map((item) => item.id);
+      const allTagsToSubmit = [roomsToSubmit, designsToSubmit].flat();
+      console.log("all tags to submit", allTagsToSubmit);
+
+      for (let tagId in allTagsToSubmit) {
+        console.log(`newPostId tagId ${newPostId} ${tagId}`);
+        await createPostTagsAPI(newPostId, tagId);
+      }
+
+      toast("Post created!", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+      });
+
+      navigate(`/ideas/${newPostId}`);
 
       // await addPostToMoodboardAPI(post.id, data);
 
@@ -141,39 +168,8 @@ const CreateNewPost = () => {
 
   const createPost = async () => {
     console.log("createPost");
-    // console.log(fileUploaded);
-    // console.log(file);
-    // console.log(selectedProductsValues);
-    // console.log(filterRoomValues);
-    // console.log(filterDesignValues);
-    // console.log(boardDescription);
 
-    const newPostId = await createPostAPI(file, boardDescription, userStore.id);
-
-    const listingsToSubmit = selectedProductsValues.map((item) =>
-      parseInt(item.id)
-    );
-    console.log("listings to submit", listingsToSubmit);
-
-    for (let listingId in listingsToSubmit) {
-      createPostListingsAPI(newPostId, listingId);
-    }
-
-    const roomsToSubmit = filterRoomValues.map((item) => item.id);
-    const designsToSubmit = filterDesignValues.map((item) => item.id);
-    const allTagsToSubmit = [roomsToSubmit, designsToSubmit].flat();
-    console.log("all tags to submit", allTagsToSubmit);
-
-    for (let tagId in allTagsToSubmit) {
-      createPostTagsAPI(newPostId, tagId);
-    }
-
-    toast("Post created!", {
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 3000,
-    });
-
-    // navigate(`/ideas/${newPostId}`);
+    await createPostAPI(file, boardDescription, userStore.id);
   };
 
   const [open, setOpen] = React.useState(false);

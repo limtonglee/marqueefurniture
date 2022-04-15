@@ -5,7 +5,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
 import DesignItemCard from "./DesignItemCard";
 import TextField from "@mui/material/TextField";
@@ -14,6 +14,11 @@ import UploadIcon from "@mui/icons-material/Upload";
 
 const ReviewDesign = () => {
   let navigate = useNavigate();
+
+  const location = useLocation();
+  const design = location.state ? location.state.design : null;
+
+  console.log(design);
 
   const [otherComments, setOtherComments] = useState("");
 
@@ -40,7 +45,11 @@ const ReviewDesign = () => {
                 Review Design
               </Typography>
               <Box sx={{ width: "100%", mt: 3 }}>
-                <DesignItemCard completed={false} hideButton={true} />
+                <DesignItemCard
+                  design={design}
+                  completed={false}
+                  hideButton={true}
+                />
               </Box>
               <Stack spacing={4} sx={{ mt: 4 }}>
                 <Box>
@@ -78,7 +87,7 @@ const ReviewDesign = () => {
           </Grid>
         </Grid>
       </Container>
-      <Box
+      {/* <Box
         sx={{
           position: "fixed",
           bottom: 0,
@@ -94,7 +103,7 @@ const ReviewDesign = () => {
         <Button variant="contained" size="large" sx={{ width: "100%" }}>
           Submit
         </Button>
-      </Box>
+      </Box> */}
     </>
   );
 };

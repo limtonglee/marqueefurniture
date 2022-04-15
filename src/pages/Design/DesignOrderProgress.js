@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useNavigationType } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
 
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
@@ -21,6 +22,8 @@ import TabUnstyled, { tabUnstyledClasses } from "@mui/base/TabUnstyled";
 import DesignItemCard from "./DesignItemCard";
 import LogItem from "./LogItem";
 import DesignRequirements from "./DesignRequirements";
+import { useStores } from "../../stores/RootStore";
+import AddIcon from "@mui/icons-material/Add";
 
 const primary = {
   50: "#f0fcf9",
@@ -86,11 +89,100 @@ const TabsList = styled(TabsListUnstyled)`
 
 const DesignOrderProgress = () => {
   let navigate = useNavigate();
+  const { userStore } = useStores();
 
   const [tabValue, setTabValue] = useState(0);
   const handleSetTabValue = (event, newValue) => {
     setTabValue(newValue);
+    userStore.setPrevTabOnDesignOrder(newValue);
   };
+
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    console.log("navigationType", navigationType);
+    if (navigationType === "POP") {
+      setTabValue(userStore.prevTabOnDesignOrder);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const logs = [
+    {
+      id: 1,
+      timestamp: "2022-03-19 02:58:55.425662",
+      description: "Requested for consultation",
+      role: "Customer",
+    },
+    {
+      id: 2,
+      timestamp: "2022-03-19 02:58:55.425662",
+      description: "Issued quotation",
+      role: "Designer",
+    },
+    {
+      id: 3,
+      timestamp: "2022-03-19 02:58:55.425662",
+      description: "Edited quotation",
+      role: "Designer",
+    },
+    {
+      id: 4,
+      timestamp: "2022-03-19 02:58:55.425662",
+      description: "Paid for quotation",
+      role: "Customer",
+    },
+    {
+      id: 5,
+      timestamp: "2022-03-19 02:58:55.425662",
+      description: "Issued quotation for design package",
+      role: "Designer",
+    },
+    {
+      id: 6,
+      timestamp: "2022-03-19 02:58:55.425662",
+      description: "Paid for quotation",
+      role: "Customer",
+    },
+  ];
+
+  const designItems = [
+    {
+      id: 1,
+      timestamp: "2022-03-19 02:58:55.425662",
+      title: "First draft",
+      designImages: [
+        "d5905def5a6366ae4a3b3cadced8cbd2",
+        "dd1f03dcab86c065cc069e07a1931d98",
+        "c7befb8cdc6dc9623673a57ee78e6447",
+      ],
+      taggedProducts: [2, 3, 4],
+      isCompleted: "1",
+      customerReview: {
+        pictureComments: [
+          "d5905def5a6366ae4a3b3cadced8cbd2",
+          "dd1f03dcab86c065cc069e07a1931d98",
+          "c7befb8cdc6dc9623673a57ee78e6447",
+        ],
+        otherComments: "other comments hereee",
+      },
+    },
+    {
+      id: 2,
+      timestamp: "2022-03-19 02:58:55.425662",
+      title: "Second draft",
+      designImages: [
+        "c7befb8cdc6dc9623673a57ee78e6447",
+        "dd1f03dcab86c065cc069e07a1931d98",
+      ],
+      taggedProducts: [5, 7, 9],
+      isCompleted: "0",
+      customerReview: {
+        pictureComments: [],
+        otherComments: "",
+      },
+    },
+  ];
 
   return (
     <>
@@ -137,21 +229,30 @@ const DesignOrderProgress = () => {
                       </Box>
                       <TabPanel value={0}>
                         <Box sx={{ pt: 1 }}>
-                          <LogItem completed={false} />
-                          <LogItem completed={true} />
+                          {logs.reverse().map((log, i) => (
+                            <LogItem log={log} completed={false} key={i} />
+                          ))}
                         </Box>
                       </TabPanel>
                       <TabPanel value={1}>
-                        <>
-                          <h3>customer</h3>
-                          do ltr after, easy to do, builds on from All tab
-                        </>
+                        <Box sx={{ pt: 1 }}>
+                          {logs
+                            .reverse()
+                            .filter((log) => log.role === "Customer")
+                            .map((log, i) => (
+                              <LogItem log={log} completed={false} key={i} />
+                            ))}
+                        </Box>
                       </TabPanel>
                       <TabPanel value={2}>
-                        <>
-                          <h3>designer</h3>
-                          do ltr after, easy to do, builds on from All tab
-                        </>
+                        <Box sx={{ pt: 1 }}>
+                          {logs
+                            .reverse()
+                            .filter((log) => log.role === "Designer")
+                            .map((log, i) => (
+                              <LogItem log={log} completed={false} key={i} />
+                            ))}
+                        </Box>
                       </TabPanel>
                     </TabsUnstyled>
                   </Box>
@@ -164,9 +265,23 @@ const DesignOrderProgress = () => {
               )}
               {tabValue === 2 && (
                 <>
-                  <Box sx={{ mt: 5 }}>
-                    <DesignItemCard completed={false} />
-                    <DesignItemCard completed={true} />
+                  <Box sx={{ mt: 3 }}>
+                    {userStore.isDesigner && (
+                      <Button
+                        startIcon={<AddIcon />}
+                        variant="contained"
+                        sx={{ mb: 2 }}
+                      >
+                        Add Design Package
+                      </Button>
+                    )}
+                    {designItems.reverse().map((design, i) => (
+                      <DesignItemCard
+                        design={design}
+                        completed={false}
+                        key={i}
+                      />
+                    ))}
                   </Box>
                 </>
               )}

@@ -177,9 +177,8 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
   // };
 
   const getCurrUserType = () => {
-    if (userStore.isSeller) {
-      return "seller";
-    } else if (userStore.isDesigner) {
+    console.log(userStore.isDesigner);
+    if (userStore.isDesigner) {
       return "designer";
     } else {
       return "user";
@@ -212,7 +211,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
         setIsDesignCustomerRs(true);
         // todo: call API to check if there's engagement going on
         // todo: update below accordingly
-        setDesignOrderStatus("Requested");
+        setDesignOrderStatus("Designing");
       } else {
         setIsDesignCustomerRs(false);
       }

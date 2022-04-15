@@ -66,7 +66,7 @@ const RequestConsultation = () => {
       const cleaned = data.map((item) => {
         return { id: item.id, boardname: item.boardname };
       });
-      console.log("cleaned", cleaned);
+      // console.log("cleaned", cleaned);
       setMoodboardTags(cleaned);
       return data;
     } catch (error) {
@@ -99,7 +99,6 @@ const RequestConsultation = () => {
   ]);
 
   const updateRoomSize = (index, event) => {
-    console.log("roomRows", roomRows);
     const newRoomRows = [...roomRows];
     newRoomRows[index].roomSize = event.target.value;
     setRoomRows(newRoomRows);
@@ -112,7 +111,7 @@ const RequestConsultation = () => {
   };
 
   const handleSubmit = () => {
-    const styleRequests = designValues.map((item) => item["title"]);
+    const styleRequests = designValues.map((item) => item["id"]);
     const moodboardReferences = moodboardValues.map((item) => item["id"]);
 
     const data = {
@@ -187,7 +186,7 @@ const RequestConsultation = () => {
                   <FormControl>
                     <Stack spacing={2}>
                       {roomRows.map((room, i) => (
-                        <>
+                        <Box key={i}>
                           <Stack
                             direction="row"
                             spacing={3}
@@ -209,7 +208,9 @@ const RequestConsultation = () => {
                                     type="number"
                                     InputProps={{
                                       endAdornment: (
-                                        <InputAdornment>sq ft</InputAdornment>
+                                        <InputAdornment position="end">
+                                          sq ft
+                                        </InputAdornment>
                                       ),
                                     }}
                                     value={room.roomSize}
@@ -250,7 +251,7 @@ const RequestConsultation = () => {
                               </Stack>
                             </Stack>
                           </Stack>
-                        </>
+                        </Box>
                       ))}
                     </Stack>
                   </FormControl>

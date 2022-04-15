@@ -10,6 +10,7 @@ class userStore {
   id = "";
   isLoggedIn = false;
   isSeller = false;
+  isDesigner = false;
   isAdmin = false;
   address = "";
   description = "";
@@ -28,6 +29,7 @@ class userStore {
       id: observable,
       isLoggedIn: observable,
       isSeller: observable,
+      isDesigner: observable,
       isAdmin: observable,
       address: observable,
       description: observable,
@@ -39,6 +41,7 @@ class userStore {
       "id",
       "isLoggedIn",
       "isSeller",
+      "isDesigner",
       "isAdmin",
       "address",
       "description",
@@ -68,6 +71,7 @@ class userStore {
     this.name = null;
     this.isSeller = false;
     this.isAdmin = false;
+    this.isDesigner = false;
     this.address = null;
     this.description = null;
     this.shop = null;
@@ -75,6 +79,10 @@ class userStore {
   };
   setIsSeller = () => {
     this.isSeller = true;
+  };
+
+  setIsDesigner = () => {
+    this.isDesigner = true;
   };
 
   setIsAdmin = () => {

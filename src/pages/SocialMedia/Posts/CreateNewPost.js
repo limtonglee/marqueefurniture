@@ -249,7 +249,7 @@ const CreateNewPost = () => {
                 <>
                   <Card
                     sx={{ width: "100%", position: "relative" }}
-                    onClick={() => console.log("hi")}
+                    // onClick={() => console.log("hi")}
                   >
                     <CardMedia
                       component="img"

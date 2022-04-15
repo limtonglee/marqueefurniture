@@ -25,6 +25,9 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Grid from "@mui/material/Grid";
 import { useStores } from "../../stores/RootStore";
 import * as socialMediaAPI from "../../services/SocialMedia";
+import CircularProgress from "@mui/material/CircularProgress";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
 
 const RequestConsultation = () => {
   const { userStore } = useStores();
@@ -62,7 +65,7 @@ const RequestConsultation = () => {
     try {
       const res = await socialMediaAPI.getUserMoodboards(userStore.id);
       const data = JSON.parse(JSON.stringify(res)).data;
-      console.log("getUserMoodboards data", data);
+      // console.log("getUserMoodboards data", data);
       const cleaned = data.map((item) => {
         return { id: item.id, boardname: item.boardname };
       });
@@ -109,6 +112,41 @@ const RequestConsultation = () => {
     newRoomRows[index].roomType = event.target.value;
     setRoomRows(newRoomRows);
   };
+
+  //! FILEE --------------------------------------------------
+  //! FILEE --------------------------------------------------
+
+  const [file, setFile] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fileSelected = async (event) => {
+    setIsLoading(true);
+    console.log("event.target.files", event.target.files);
+    const file = event.target.files[0];
+    console.log("file", file);
+    // setFile(file);
+
+    const result = await sendPictureToDbAPI(file);
+    console.log("file result", result);
+
+    if (result.image !== undefined) {
+      setFile(result.image);
+    }
+    setIsLoading(false);
+  };
+
+  const sendPictureToDbAPI = async (image) => {
+    try {
+      const res = await socialMediaAPI.sendPictureToDb(image);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //! FILEE --------------------------------------------------
+  //! FILEE --------------------------------------------------
 
   const handleSubmit = () => {
     const styleRequests = designValues.map((item) => item["id"]);
@@ -281,12 +319,97 @@ const RequestConsultation = () => {
                   <Typography variant="h4" gutterBottom component="div">
                     Floor plan
                   </Typography>
-                  <Button variant="outlined" sx={{ height: 60, width: 80 }}>
+                  {/* <Button variant="outlined" sx={{ height: 60, width: 80 }}>
                     <Box>
                       <UploadIcon fontSize="small" sx={{ mb: -1 }} />
                       Upload
                     </Box>
-                  </Button>
+                  </Button> */}
+                  {file.length === 0 ? (
+                    <>
+                      {!isLoading && (
+                        <Button
+                          variant="outlined"
+                          component="label"
+                          fontSize="small"
+                          sx={{
+                            height: 60,
+                            width: 80,
+                            margin: "0 auto",
+                          }}
+                        >
+                          <Box sx={{ mb: -0.5 }}>
+                            <Box
+                              sx={{ display: "flex", justifyContent: "center" }}
+                            >
+                              <UploadIcon fontSize="small" />
+                            </Box>
+                            Upload
+                          </Box>
+                          <input
+                            onChange={fileSelected}
+                            type="file"
+                            accept="image/*"
+                            hidden
+                          />
+                        </Button>
+                      )}
+                      {isLoading && (
+                        <Box sx={{ display: "flex" }}>
+                          <CircularProgress />
+                        </Box>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <Card
+                        sx={{ width: 130, position: "relative" }}
+                        onClick={() => console.log("hi")}
+                      >
+                        <CardMedia
+                          component="img"
+                          width="100%"
+                          objectfit="scale-down"
+                          image={`/api/image/${file}`}
+                          sx={{ opacity: isLoading ? 0.3 : 1 }}
+                          alt="post picture"
+                        />
+                        <Box
+                          sx={{
+                            position: "absolute",
+                            left: "50%",
+                            top: "50%",
+                            // transform: "(50%,-50%)",
+                            // transform: `translate(${50}%, ${-50}%)`,
+                            transform: "translate(-50%, -50%)",
+                          }}
+                        >
+                          {isLoading && (
+                            <Box sx={{ display: "flex" }}>
+                              <CircularProgress />
+                            </Box>
+                          )}
+                        </Box>
+                      </Card>
+                      {!isLoading && (
+                        <Button
+                          variant="contained"
+                          component="label"
+                          startIcon={<UploadIcon />}
+                          size="small"
+                          sx={{ mt: 2 }}
+                        >
+                          Re-upload
+                          <input
+                            onChange={fileSelected}
+                            type="file"
+                            accept="image/*"
+                            hidden
+                          />
+                        </Button>
+                      )}
+                    </>
+                  )}
                 </Box>
                 <Box>
                   <Typography variant="h4" gutterBottom component="div">

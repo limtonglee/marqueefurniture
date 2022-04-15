@@ -396,9 +396,9 @@ const NotificationButton = () => {
                   >
                     No unread notifications
                   </Typography>
-                  <Box sx={{ display: "flex", justifyContent: "center" }}>
+                  {/* <Box sx={{ display: "flex", justifyContent: "center" }}>
                     <Button variant="contained">View past notifications</Button>
-                  </Box>
+                  </Box> */}
                 </Box>
               </Box>
             )}
@@ -411,7 +411,7 @@ const NotificationButton = () => {
             ))}
           </List>
           <Divider />
-          {notificationData.filter((noti) => noti.isunread === "1").length >
+          {/* {notificationData.filter((noti) => noti.isunread === "1").length >
             0 && (
             <Box
               sx={{
@@ -422,16 +422,7 @@ const NotificationButton = () => {
             >
               <Button sx={{ width: "100%" }}>View all</Button>
             </Box>
-          )}
-          {/* <Box
-            sx={{
-              minWidth: 450,
-              px: 3,
-              py: 1,
-            }}
-          >
-            <Button sx={{ width: "100%" }}>View all</Button>
-          </Box> */}
+          )} */}
         </Box>
       </Popover>
     </>

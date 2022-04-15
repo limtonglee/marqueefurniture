@@ -12,6 +12,7 @@ export const SellerData = ({ listingId }) => {
 
   useEffect(() => {
     const getSellerData = async (listingId) => {
+      console.log("listingId" + listingId);
       const response = await getSellerInfo(listingId);
       // console.log(response.data);
       setShopName(response.data[0].shopname);
@@ -22,9 +23,13 @@ export const SellerData = ({ listingId }) => {
   return (
     <Link to={`/SellerProfile`} style={{ textDecoration: "none" }}>
       <Typography variant="body2"  color="primary.main">
+        { (shopName !== "") && <>
       <StorefrontIcon/>
         {shopName}
-      </Typography>
+      </>
+    }
+          </Typography>
+
     </Link>
   );
 };

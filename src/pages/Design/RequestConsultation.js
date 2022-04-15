@@ -25,6 +25,10 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Grid from "@mui/material/Grid";
 import { useStores } from "../../stores/RootStore";
 import * as socialMediaAPI from "../../services/SocialMedia";
+import * as designEngagementAPI from "../../services/DesignEngagement";
+import CircularProgress from "@mui/material/CircularProgress";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
 
 const RequestConsultation = () => {
   const { userStore } = useStores();
@@ -38,35 +42,35 @@ const RequestConsultation = () => {
   // const moodboardTags = [{ id: 0, boardname: "Moodboard" }];
   const [moodboardTags, setMoodboardTags] = useState([]);
 
-  const designTags = [
-    { id: 0, title: "Art Deco" },
-    { id: 1, title: "Asian Zen" },
-    { id: 2, title: "Bohemian" },
-    { id: 3, title: "Coastal" },
-    { id: 4, title: "Contemporary" },
-    { id: 5, title: "Eclectic" },
-    { id: 6, title: "French Country" },
-    { id: 7, title: "Industrial" },
-    { id: 8, title: "Meditarranean" },
-    { id: 9, title: "Minimalist" },
-    { id: 10, title: "Modern" },
-    { id: 11, title: "Modern Farmhouse" },
-    { id: 12, title: "Rustic" },
-    { id: 13, title: "Scandinavian" },
-    { id: 14, title: "Shabby Chic" },
-    { id: 15, title: "Traditional" },
-    { id: 16, title: "Transitional" },
-  ];
+  const [designTags, setDesignTags] = useState([]);
+
+  const getPostTags = async () => {
+    try {
+      const res = await socialMediaAPI.getAllTags();
+      const data = JSON.parse(JSON.stringify(res)).data;
+
+      const designTags = data.filter((item) => item.tagtype === "Design");
+      setDesignTags(designTags);
+
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getPostTags();
+  }, []);
 
   const getUserMoodboards = async () => {
     try {
       const res = await socialMediaAPI.getUserMoodboards(userStore.id);
       const data = JSON.parse(JSON.stringify(res)).data;
-      console.log("getUserMoodboards data", data);
+      // console.log("getUserMoodboards data", data);
       const cleaned = data.map((item) => {
         return { id: item.id, boardname: item.boardname };
       });
-      console.log("cleaned", cleaned);
+      // console.log("cleaned", cleaned);
       setMoodboardTags(cleaned);
       return data;
     } catch (error) {
@@ -99,7 +103,6 @@ const RequestConsultation = () => {
   ]);
 
   const updateRoomSize = (index, event) => {
-    console.log("roomRows", roomRows);
     const newRoomRows = [...roomRows];
     newRoomRows[index].roomSize = event.target.value;
     setRoomRows(newRoomRows);
@@ -111,18 +114,181 @@ const RequestConsultation = () => {
     setRoomRows(newRoomRows);
   };
 
+  //! FILEE --------------------------------------------------
+  //! FILEE --------------------------------------------------
+
+  // const [file, setFile] = useState("");
+  const [files, setFiles] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fileSelected = async (event) => {
+    setIsLoading(true);
+    // console.log("event.target.files", event.target.files);
+    // const file = event.target.files[0];
+    // console.log("file", file);
+    // // setFile(file);
+
+    // const result = await sendPictureToDbAPI(file);
+    // console.log("file result", result);
+
+    // if (result.image !== undefined) {
+    //   setFile(result.image);
+    // }
+
+    const uploadedFiles = event.target.files;
+    console.log("uploadedFiles", uploadedFiles);
+    const newFiles = [];
+
+    for (let i = 0; i < 3; i++) {
+      const file = uploadedFiles[i];
+      console.log("file", file);
+      const result = await sendPictureToDbAPI(file);
+      console.log("file result", result);
+
+      if (result.image !== undefined) {
+        newFiles.push(result.image);
+      }
+    }
+    console.log(newFiles);
+    setFiles(newFiles);
+
+    setIsLoading(false);
+  };
+
+  const sendPictureToDbAPI = async (image) => {
+    try {
+      const res = await socialMediaAPI.sendPictureToDb(image);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //! FILEE --------------------------------------------------
+  //! FILEE --------------------------------------------------
+
+  const createDesignRequirementRoomAPI = async (
+    roomSize,
+    roomType,
+    requirementId
+  ) => {
+    try {
+      const res = await designEngagementAPI.createDesignRequirementRoom(
+        roomSize,
+        roomType,
+        requirementId
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const createDesignRequirementTagsAPI = async (
+    requirementId,
+    requirementTagsId
+  ) => {
+    try {
+      const res = await designEngagementAPI.createDesignRequirementTags(
+        requirementId,
+        requirementTagsId
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const createDesignRequirementMbAPI = async (moodBoardId, requirementId) => {
+    try {
+      const res = await designEngagementAPI.createDesignRequirementMb(
+        moodBoardId,
+        requirementId
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const createDesignRequirementAPI = async ({
+    requestType,
+    roomGeometry,
+    floorPlan,
+    styleRequests,
+    moodboardReferences,
+    otherComments,
+  }) => {
+    try {
+      console.log("requestType", requestType);
+      console.log("roomGeometry", roomGeometry);
+      console.log("floorPlan", floorPlan);
+      console.log("styleRequests", styleRequests);
+      console.log("moodboardReferences", moodboardReferences);
+      console.log("otherComments", otherComments);
+      const res = await designEngagementAPI.createDesignRequirement(
+        requestType,
+        floorPlan[0],
+        floorPlan[1],
+        floorPlan[2],
+        otherComments,
+        userStore.id
+      );
+      const requirementId = JSON.parse(JSON.stringify(res)).data[0]["id"];
+      console.log(requirementId);
+
+      for (let room in roomGeometry) {
+        await createDesignRequirementRoomAPI(
+          room.roomSize,
+          room.roomType,
+          requirementId
+        );
+      }
+
+      for (let requirementTagsId in styleRequests) {
+        await createDesignRequirementTagsAPI(requirementId, requirementTagsId);
+      }
+
+      for (let moodboardId in moodboardReferences) {
+        await createDesignRequirementMbAPI(moodboardId, requirementId);
+      }
+
+      //refreshData(); // function to refresh data?
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleSubmit = () => {
-    const styleRequests = designValues.map((item) => item["title"]);
+    const styleRequests = designValues.map((item) => item["id"]);
     const moodboardReferences = moodboardValues.map((item) => item["id"]);
+
+    let floorplan = [];
+    if (files.length > 3) {
+      floorplan = files.slice(3);
+    } else if (files.length === 3) {
+      floorplan = files;
+    } else if (files.length == 2) {
+      floorplan = [files, ""].flat();
+    } else if (files.length == 1) {
+      floorplan = [files, "", ""].flat();
+    } else {
+      floorplan = ["", "", ""];
+    }
 
     const data = {
       requestType: requestType,
       roomGeometry: roomRows,
-      floorPlan: "",
+      floorPlan: floorplan,
       styleRequests: styleRequests,
       moodboardReferences: moodboardReferences,
       otherComments: otherComments,
     };
+    createDesignRequirementAPI(data);
     console.log("submit data", data);
   };
 
@@ -152,8 +318,7 @@ const RequestConsultation = () => {
                     component="div"
                     sx={{ fontWeight: "normal" }}
                   >
-                    Please confirm your requirements (retrieved from your
-                    records)
+                    Please enter your design requirements
                   </Typography>
                 </Box>
                 <Box>
@@ -187,7 +352,7 @@ const RequestConsultation = () => {
                   <FormControl>
                     <Stack spacing={2}>
                       {roomRows.map((room, i) => (
-                        <>
+                        <Box key={i}>
                           <Stack
                             direction="row"
                             spacing={3}
@@ -209,7 +374,9 @@ const RequestConsultation = () => {
                                     type="number"
                                     InputProps={{
                                       endAdornment: (
-                                        <InputAdornment>sq ft</InputAdornment>
+                                        <InputAdornment position="end">
+                                          sq ft
+                                        </InputAdornment>
                                       ),
                                     }}
                                     value={room.roomSize}
@@ -250,7 +417,7 @@ const RequestConsultation = () => {
                               </Stack>
                             </Stack>
                           </Stack>
-                        </>
+                        </Box>
                       ))}
                     </Stack>
                   </FormControl>
@@ -277,15 +444,111 @@ const RequestConsultation = () => {
                   </Box>
                 </Box>
                 <Box>
-                  <Typography variant="h4" gutterBottom component="div">
+                  <Typography variant="h4" component="div">
                     Floor plan
                   </Typography>
-                  <Button variant="outlined" sx={{ height: 60, width: 80 }}>
+                  <Typography
+                    variant="subtitle1"
+                    gutterBottom
+                    sx={{
+                      fontWeight: "normal",
+                      mb: 1,
+                      color: "primary.darker",
+                    }}
+                  >
+                    Maximum of 3 photos
+                  </Typography>
+                  {/* <Button variant="outlined" sx={{ height: 60, width: 80 }}>
                     <Box>
                       <UploadIcon fontSize="small" sx={{ mb: -1 }} />
                       Upload
                     </Box>
-                  </Button>
+                  </Button> */}
+                  {files.length === 0 ? (
+                    <>
+                      {!isLoading && (
+                        <Button
+                          variant="outlined"
+                          component="label"
+                          fontSize="small"
+                          sx={{
+                            height: 60,
+                            width: 80,
+                            margin: "0 auto",
+                          }}
+                        >
+                          <Box sx={{ mb: -0.5 }}>
+                            <Box
+                              sx={{ display: "flex", justifyContent: "center" }}
+                            >
+                              <UploadIcon fontSize="small" />
+                            </Box>
+                            Upload
+                          </Box>
+                          <input
+                            onChange={fileSelected}
+                            type="file"
+                            accept="image/*"
+                            hidden
+                            multiple
+                          />
+                        </Button>
+                      )}
+                      {isLoading && (
+                        <Box sx={{ display: "flex" }}>
+                          <CircularProgress />
+                        </Box>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {!isLoading && (
+                        <>
+                          <Stack direction="row" spacing={2}>
+                            {files.map((file, i) => (
+                              <Card
+                                key={i}
+                                sx={{
+                                  width: 130,
+                                  position: "relative",
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <CardMedia
+                                  component="img"
+                                  width="100%"
+                                  objectfit="scale-down"
+                                  image={`/api/image/${file}`}
+                                  alt="post picture"
+                                />
+                              </Card>
+                            ))}
+                          </Stack>
+                          <Button
+                            variant="contained"
+                            component="label"
+                            startIcon={<UploadIcon />}
+                            size="small"
+                            sx={{ mt: 2 }}
+                          >
+                            Re-upload
+                            <input
+                              onChange={fileSelected}
+                              type="file"
+                              accept="image/*"
+                              hidden
+                            />
+                          </Button>
+                        </>
+                      )}
+                      {isLoading && (
+                        <Box sx={{ display: "flex" }}>
+                          <CircularProgress />
+                        </Box>
+                      )}
+                    </>
+                  )}
                 </Box>
                 <Box>
                   <Typography variant="h4" gutterBottom component="div">
@@ -297,7 +560,7 @@ const RequestConsultation = () => {
                     limitTags={2}
                     id="design-type"
                     options={designTags}
-                    getOptionLabel={(option) => option.title}
+                    getOptionLabel={(option) => option.tagname}
                     defaultValue={[]}
                     renderInput={(params) => (
                       <TextField

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -16,7 +16,10 @@ import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 
-import { itemData } from "../../../data/itemData";
+// import { itemData } from "../../../data/itemData";
+
+import * as listingsAPI from "../../../services/Listings";
+import * as socialMediaAPI from "../../../services/SocialMedia";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -53,9 +56,56 @@ const TagProductsModal = ({
     },
   };
 
+  const [listingsData, setListingsData] = useState([]);
+
+  const getAllListings = async () => {
+    try {
+      const res = await listingsAPI.getListings();
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getUsernameById = async (userId) => {
+    try {
+      const res = await socialMediaAPI.getUsernameById(userId);
+      let data = JSON.parse(JSON.stringify(res)).data[0]["username"];
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getCompleteListingData = async () => {
+    const allListings = await getAllListings();
+
+    var promises = allListings.map(async (listing) => {
+      const shopUsername = await getUsernameById(listing.shopid);
+
+      const completeListing = {
+        ...listing,
+        shopusername: shopUsername,
+      };
+      return completeListing;
+    });
+
+    await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
+
+    Promise.all(promises).then((values) => {
+      console.log("cleaned listing data", values);
+      setListingsData(values);
+      return values;
+    });
+  };
+
+  useEffect(() => {
+    getCompleteListingData();
+  }, []);
+
   const handleChangeForSelectedProducts = (event, value) => {
     setSelectedProductsValues(value);
-    console.log(selectedProductsValues);
   };
 
   const deselectItem = (itemId) => {
@@ -98,9 +148,9 @@ const TagProductsModal = ({
               limitTags={2}
               multiple
               id="checkboxes-tags-demo"
-              options={itemData}
+              options={listingsData}
               disableCloseOnSelect
-              getOptionLabel={(option) => option.title}
+              getOptionLabel={(option) => option.name}
               renderOption={(props, option, { selected }) => (
                 <li {...props} key={option.id}>
                   <Checkbox
@@ -131,14 +181,14 @@ const TagProductsModal = ({
                               gutterBottom
                               component="div"
                             >
-                              {option.title}
+                              {option.name}
                             </Typography>
                             <Typography
                               variant="caption"
                               display="block"
                               gutterBottom
                             >
-                              {`${option.price}, ${option.author}`}
+                              {`${option.listingprice}, ${option.shopusername}`}
                             </Typography>
                           </Box>
                         </Grid>
@@ -146,7 +196,8 @@ const TagProductsModal = ({
                           <CardMedia
                             component="img"
                             height="100"
-                            image={option.img}
+                            // image={option.image}
+                            image={`/api/image/${option.image}`}
                             alt="green iguana"
                             sx={{
                               borderRadius: 1,
@@ -208,7 +259,8 @@ const TagProductsModal = ({
                         <CardMedia
                           component="img"
                           height="100"
-                          image={item.img}
+                          // image={item.image}
+                          image={`/api/image/${item.image}`}
                           alt="green iguana"
                         />
                         <Grid
@@ -226,13 +278,13 @@ const TagProductsModal = ({
                               }}
                             >
                               <Typography variant="subtitle2" component="div">
-                                {item.title}
+                                {item.name}
                               </Typography>
                               <Typography variant="caption" display="block">
-                                {item.author}
+                                {item.shopusername}
                               </Typography>
                               <Typography variant="caption" display="block">
-                                {item.price}
+                                {item.listingprice}
                               </Typography>
                             </Box>
                           </Grid>

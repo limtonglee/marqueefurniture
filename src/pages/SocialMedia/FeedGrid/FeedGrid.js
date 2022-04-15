@@ -80,7 +80,11 @@ const FeedGrid = ({ posts, refreshPosts, sourceMoodboardId, fromProfile }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const postInUserMoodboards = () => {
+  const refreshData = () => {
+    getCompleteMoodboardData();
+  };
+
+  const postInUserMoodboards = (post) => {
     const moodboardsWithThisPost = moodboards.filter((moodboard) => {
       for (let moodboardItem of moodboard.moodboardItems) {
         if (moodboardItem.id === post.id) {
@@ -90,6 +94,10 @@ const FeedGrid = ({ posts, refreshPosts, sourceMoodboardId, fromProfile }) => {
       return false;
     });
     return moodboardsWithThisPost.length > 0;
+  };
+
+  const updatePostPinned = (post) => {
+    setPostPinned(postInUserMoodboards(post) ? true : false);
   };
 
   // ! -------
@@ -188,9 +196,14 @@ const FeedGrid = ({ posts, refreshPosts, sourceMoodboardId, fromProfile }) => {
                 sourceMoodboardId={sourceMoodboardId}
                 onClick={() => {
                   setPost(post);
-                  setPostPinned(postInUserMoodboards() ? true : false);
+                  setPostPinned(postInUserMoodboards(post) ? true : false);
                   handleClick();
                 }}
+                setOpen={setOpen}
+                setPost={setPost}
+                updatePostPinned={updatePostPinned}
+                mbs={moodboards}
+                mbspium={postInUserMoodboards}
               />
             ))}
           </Masonry>
@@ -204,6 +217,16 @@ const FeedGrid = ({ posts, refreshPosts, sourceMoodboardId, fromProfile }) => {
                     post={post}
                     refreshPosts={refreshPosts}
                     sourceMoodboardId={sourceMoodboardId}
+                    onClick={() => {
+                      setPost(post);
+                      setPostPinned(postInUserMoodboards(post) ? true : false);
+                      handleClick();
+                    }}
+                    setOpen={setOpen}
+                    setPost={setPost}
+                    updatePostPinned={updatePostPinned}
+                    mbs={moodboards}
+                    mbspium={postInUserMoodboards}
                   />
                 ))}
               </Masonry>
@@ -215,6 +238,16 @@ const FeedGrid = ({ posts, refreshPosts, sourceMoodboardId, fromProfile }) => {
                     post={post}
                     refreshPosts={refreshPosts}
                     sourceMoodboardId={sourceMoodboardId}
+                    onClick={() => {
+                      setPost(post);
+                      setPostPinned(postInUserMoodboards(post) ? true : false);
+                      handleClick();
+                    }}
+                    setOpen={setOpen}
+                    setPost={setPost}
+                    updatePostPinned={updatePostPinned}
+                    mbs={moodboards}
+                    mbspium={postInUserMoodboards}
                   />
                 ))}
               </Masonry>
@@ -229,7 +262,8 @@ const FeedGrid = ({ posts, refreshPosts, sourceMoodboardId, fromProfile }) => {
         moodboards={moodboards}
         setMoodboards={setMoodboards}
         postPinned={postPinned}
-        refreshPosts={refreshPosts}
+        refreshPosts={refreshData}
+        refreshPosts2={refreshPosts}
         sourceMoodboardId={sourceMoodboardId}
       />
     </>

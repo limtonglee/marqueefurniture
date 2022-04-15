@@ -57,7 +57,7 @@ const NotificationButton = () => {
           ...noti,
           triggerUsername: triggerUsername,
         };
-        console.log("completeNoti", completeNoti);
+        // console.log("completeNoti", completeNoti);
         return completeNoti;
       } else {
         return noti;
@@ -113,11 +113,6 @@ const NotificationButton = () => {
     arrivalNotification &&
       userStore.id === arrivalNotification.userid &&
       setNotificationData((prev) => [...notificationData, arrivalNotification]);
-
-    console.log("[...notificationData, arrivalNotification]", [
-      ...notificationData,
-      arrivalNotification,
-    ]);
 
     // setNotificationData(async (prev) => {
     //   const triggerusername = await getUsernameById(

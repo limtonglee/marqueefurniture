@@ -154,7 +154,7 @@ export const Listings = () => {
     } else {
       updateData(value);
       const filteredListing = data.filter((filterList) =>
-        filterList.description.toLowerCase().includes(lowercasedCriteria)
+        filterList.name.toLowerCase().includes(lowercasedCriteria)
       );
       setData(filteredListing);
     }

@@ -49,6 +49,7 @@ export const ItemDetails = () => {
   const [shopName, setShopName] = useState("");
   const [images, setImages] = useState("");
   const [sellerId, setSellerId] = useState(""); //! new by chinn
+  const [shopUserId, setShopUserId] = useState("");
 
   const notifyCart = () =>
     toast("Item added to cart!", {
@@ -67,6 +68,7 @@ export const ItemDetails = () => {
       setSellerId(response.data[0].userid); //! new by chinn
       setShopName(response.data[0].shopname);
       setImages(response.data[0].images);
+      setShopUserId(response.data[0].userid);
     };
 
     getListingDetails(param.itemId)
@@ -350,7 +352,7 @@ export const ItemDetails = () => {
 
       <CardHeader
         avatar={
-          <Link to={`/SellerProfile`} style={{ textDecoration: "none" }}>
+          <Link to={`/SellerProfile/${shopUserId}`} style={{ textDecoration: "none" }}>
             {images !== "" && (
               <Avatar
                 src={`/api/image/${images}`}

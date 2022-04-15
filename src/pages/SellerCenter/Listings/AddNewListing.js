@@ -6,14 +6,18 @@ import axios from "axios";
 
 const style = {
   cardStyle: {
-    "& .MuiTextField-root": { m: 1, width: "25ch" },
+    "& .MuiTextField-root": { m: 1, width: "36ch" },
     display: "flex",
     flexDirection: "column",
     padding: 2,
     marginBottom: 2,
     marginRight: 2,
-    width: "360px",
+    width: "400px",
   },
+  buttons: {
+    display: "flex",
+    justifyContent: "end",
+},
 };
 
 const type = [
@@ -120,7 +124,7 @@ export const AddNewListing = () => {
           onChange={handleChange}
           value={formData.type || ""}
           helperText=""
-          sx={{width: '200px', marginTop: '24px', marginBottom: '12px'}}
+          sx={{ width: '200px', marginTop: '24px', marginBottom: '12px' }}
         >
           {type.map((option) => (
             <MenuItem value={option.value}>{option.label}</MenuItem>
@@ -268,9 +272,11 @@ export const AddNewListing = () => {
                 ></TextField>
               </Card>
             </div>
-            <Button type="submit" value="Submit" variant="contained" sx={{ m: 2 }}>
-              Save and Publish
-            </Button>
+            <Box sx={style.buttons}>
+              <Button type="submit" value="Submit" variant="contained" sx={{ marginBottom: '24px' }}>
+                Save and Publish
+              </Button>
+            </Box>
           </Box>
         }
 
@@ -344,9 +350,11 @@ export const AddNewListing = () => {
                 ></TextField>
               </Card>
             </div>
-            <Button type="submit" value="Submit" variant="contained" sx={{ m: 2 }}>
-              Save and Publish
-            </Button>
+            <Box sx={style.buttons}>
+              <Button type="submit" value="Submit" variant="contained" sx={{ marginBottom: '24px' }}>
+                Save and Publish
+              </Button>
+            </Box>
           </Box>
         }
         {formData.type === "Design" &&
@@ -419,10 +427,11 @@ export const AddNewListing = () => {
                 ></TextField>
               </Card>
             </div>
-
-            <Button type="submit" value="Submit" variant="contained" sx={{ m: 2 }}>
-              Save and Publish
-            </Button>
+            <Box sx={style.buttons}>
+              <Button type="submit" value="Submit" variant="contained" sx={{ marginBottom: '24px' }}>
+                Save and Publish
+              </Button>
+            </Box>
           </Box>
         }
       </form>

@@ -1,6 +1,6 @@
 import { Layout } from "../Layout";
 import React, { useReducer, useState } from "react";
-import { Button, Card, TextField, MenuItem, Box } from "@mui/material";
+import { Button, Card, TextField, MenuItem, Box, Typography } from "@mui/material";
 import { useStores } from "../../../stores/RootStore";
 import axios from "axios";
 
@@ -17,7 +17,7 @@ const style = {
   buttons: {
     display: "flex",
     justifyContent: "end",
-},
+  },
 };
 
 const type = [
@@ -114,7 +114,9 @@ export const AddNewListing = () => {
   };
   return (
     <Layout>
-      <h2>Add New Listing</h2>
+      <Typography variant="h4" gutterBottom>
+        Add New Listing
+      </Typography>
       <form onSubmit={handleSubmit}>
         <TextField
           id="outlined-select-product-type"

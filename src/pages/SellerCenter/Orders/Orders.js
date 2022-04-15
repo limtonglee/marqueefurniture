@@ -124,7 +124,7 @@ export const Orders = () => {
                         onChange={(event) => handleSearch(event.target.value)}
                     />
                 </Stack>
-                <Card style={{ overflow: 'visible', padding: '12px' }}>
+                <Card style={{ overflow: 'visible' }}>
                     <div className='page' style={{ height: '100%' }}>
                         <Box sx={{ width: '100%' }}>
                             <Tabs

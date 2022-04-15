@@ -8,7 +8,7 @@ import StorefrontIcon from '@mui/icons-material/Storefront';
 
 export const SellerData = ({ listingId }) => {
   const [shopName, setShopName] = useState("");
-  const [images, setImages] = useState("");
+  // const [images, setImages] = useState("");
 
   useEffect(() => {
     const getSellerData = async (listingId) => {

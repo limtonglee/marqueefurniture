@@ -1,4 +1,4 @@
-import { Container, Divider, Grid, ImageList } from "@mui/material";
+import { Container, Divider, Grid, ImageList, Tab, Tabs } from "@mui/material";
 import ButtonBase from "@mui/material/ButtonBase";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
@@ -24,6 +24,8 @@ export default function Orders() {
   const { userStore } = useStores();
   const [items, setItems] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [data, setData] = useState([]);
+  const [value, setValue] = useState(0);
 
   useEffect(() => {
     const getListingDetail = async (listingId) => {
@@ -41,6 +43,8 @@ export default function Orders() {
         getListingDetail(x.listingid);
       });
       setOrders(orderResult);
+      setData(orderResult);
+
     };
 
     fetchOrderData().catch(console.error);
@@ -54,6 +58,32 @@ export default function Orders() {
     } else {
       return {};
     }
+  };
+
+  let tabData = orders;
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    updateData(newValue);
+};
+
+  const updateData = (value) => {
+    if (value === 1) {
+      tabData = orders.filter((order) => order.order_status === "UNPAID");
+    } else if (value === 2) {
+      tabData = orders.filter((order) => order.order_status === "PAID");
+    } else if (value === 3) {
+      tabData = orders.filter((order) => order.order_status === "SHIPPING");
+    } else if (value === 4) {
+      tabData = orders.filter((order) => order.order_status === "DELIVERED");
+    } else if (value === 5) {
+      tabData = orders.filter((order) => order.order_status === "CANCELLED");
+    } else if (value === 6) {
+      tabData = orders.filter(
+        (order) => order.order_status === "RETURN/REFUND"
+      );
+    }
+    setData(tabData);
   };
 
   return (
@@ -72,12 +102,21 @@ export default function Orders() {
             theme.palette.mode === "dark" ? "#1A2027" : "#fff",
         }}
       >
+        <Tabs value={value} onChange={handleChange}>
+          <Tab label="All" />
+          <Tab label="Unpaid" />
+          <Tab label="Paid" />
+          <Tab label="Shipping" />
+          <Tab label="Delivered" />
+          <Tab label="Cancelled" />
+          <Tab label="Return/Refund" />
+        </Tabs>
         <Divider />
         <br />
         <ImageList cols={1} gap={15}>
-          {orders.map((orderItem) => (
+          {data.map((orderItem) => (
             <div key={orderItem.id}>
-              <Grid container spacing={2}>
+              <Grid container alignItems="center" spacing={2}>
                 <Grid item>
                   <Link to={`/marketplace/${getItem(orderItem.listingid).id}`}>
                     <ButtonBase sx={{ width: 128, height: 128 }}>
@@ -95,7 +134,7 @@ export default function Orders() {
                 <Grid item xs={12} sm container>
                   <Grid item xs container direction="column" spacing={2}>
                     <Grid item xs>
-                      {/* <SellerData listingId={getItem(orderItem.id).id} /> */}
+                      <SellerData listingId={getItem(orderItem.listingid).id} />
 
                       <Typography variant="body2" gutterBottom>
                         {getItem(orderItem.listingid).name}

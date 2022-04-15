@@ -129,3 +129,21 @@ export const URL_MARK_NOTIFICATION_AS_READ = "/api/user/notifications/readone";
 export const URL_MARK_ALL_NOTIFICATIONS_AS_READ =
   "/api/user/notifications/readall";
 export const URL_CREATE_NOTIFICATION = "/api/user/notifications/create";
+
+// create design requirements
+export const URL_CREATE_DESIGN_REQUIREMENT = "/api/design/requirements/create";
+export const URL_CREATE_DESIGN_REQUIREMENT_ROOM =
+  "/api/design/requirementNumOfRooms/create";
+export const URL_CREATE_DESIGN_REQUIREMENT_TAGS =
+  "/api/design/requirementTagsJoinTable/create";
+export const URL_CREATE_DESIGN_REQUIREMENT_MB =
+  "/api/design/moodboardRequirementJoinTable/create";
+
+// edit design requirements
+export const URL_EDIT_DESIGN_REQUIREMENT = "/api/design/requirements/edit";
+export const URL_EDIT_DESIGN_REQUIREMENT_ROOM =
+  "/api/design/requirementNumOfRooms/edit";
+export const URL_EDIT_DESIGN_REQUIREMENT_TAGS =
+  "/api/design/requirementTagsJoinTable/edit";
+export const URL_EDIT_DESIGN_REQUIREMENT_MB =
+  "/api/design/moodboardRequirementJoinTable/edit";

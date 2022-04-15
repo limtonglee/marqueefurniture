@@ -25,6 +25,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Grid from "@mui/material/Grid";
 import { useStores } from "../../stores/RootStore";
 import * as socialMediaAPI from "../../services/SocialMedia";
+import * as designEngagementAPI from "../../services/DesignEngagement";
 import CircularProgress from "@mui/material/CircularProgress";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
@@ -167,18 +168,127 @@ const RequestConsultation = () => {
   //! FILEE --------------------------------------------------
   //! FILEE --------------------------------------------------
 
+  const createDesignRequirementRoomAPI = async (
+    roomSize,
+    roomType,
+    requirementId
+  ) => {
+    try {
+      const res = await designEngagementAPI.createDesignRequirementRoom(
+        roomSize,
+        roomType,
+        requirementId
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const createDesignRequirementTagsAPI = async (
+    requirementId,
+    requirementTagsId
+  ) => {
+    try {
+      const res = await designEngagementAPI.createDesignRequirementTags(
+        requirementId,
+        requirementTagsId
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const createDesignRequirementMbAPI = async (moodBoardId, requirementId) => {
+    try {
+      const res = await designEngagementAPI.createDesignRequirementMb(
+        moodBoardId,
+        requirementId
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const createDesignRequirementAPI = async ({
+    requestType,
+    roomGeometry,
+    floorPlan,
+    styleRequests,
+    moodboardReferences,
+    otherComments,
+  }) => {
+    try {
+      console.log("requestType", requestType);
+      console.log("roomGeometry", roomGeometry);
+      console.log("floorPlan", floorPlan);
+      console.log("styleRequests", styleRequests);
+      console.log("moodboardReferences", moodboardReferences);
+      console.log("otherComments", otherComments);
+      const res = await designEngagementAPI.createDesignRequirement(
+        requestType,
+        floorPlan[0],
+        floorPlan[1],
+        floorPlan[2],
+        otherComments,
+        userStore.id
+      );
+      const requirementId = JSON.parse(JSON.stringify(res)).data[0]["id"];
+      console.log(requirementId);
+
+      for (let room in roomGeometry) {
+        await createDesignRequirementRoomAPI(
+          room.roomSize,
+          room.roomType,
+          requirementId
+        );
+      }
+
+      for (let requirementTagsId in styleRequests) {
+        await createDesignRequirementTagsAPI(requirementId, requirementTagsId);
+      }
+
+      for (let moodboardId in moodboardReferences) {
+        await createDesignRequirementMbAPI(moodboardId, requirementId);
+      }
+
+      //refreshData(); // function to refresh data?
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleSubmit = () => {
     const styleRequests = designValues.map((item) => item["id"]);
     const moodboardReferences = moodboardValues.map((item) => item["id"]);
 
+    let floorplan = [];
+    if (files.length > 3) {
+      floorplan = files.slice(3);
+    } else if (files.length === 3) {
+      floorplan = files;
+    } else if (files.length == 2) {
+      floorplan = [files, ""].flat();
+    } else if (files.length == 1) {
+      floorplan = [files, "", ""].flat();
+    } else {
+      floorplan = ["", "", ""];
+    }
+
     const data = {
       requestType: requestType,
       roomGeometry: roomRows,
-      floorPlan: files,
+      floorPlan: floorplan,
       styleRequests: styleRequests,
       moodboardReferences: moodboardReferences,
       otherComments: otherComments,
     };
+    createDesignRequirementAPI(data);
     console.log("submit data", data);
   };
 
@@ -208,8 +318,7 @@ const RequestConsultation = () => {
                     component="div"
                     sx={{ fontWeight: "normal" }}
                   >
-                    Please confirm your requirements (retrieved from your
-                    records)
+                    Please enter your design requirements
                   </Typography>
                 </Box>
                 <Box>

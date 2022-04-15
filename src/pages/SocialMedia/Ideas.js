@@ -121,14 +121,14 @@ const Ideas = () => {
 
     var promises = allPosts.map(async (post) => {
       const postLikes = await getPostLikes(post);
-      const postProducts = await getPostProducts(post);
+      // const postProducts = await getPostProducts(post); // can remove
       const postTags = await getPostTags(post);
-      const postComments = await getPostComments(post);
+      // const postComments = await getPostComments(post); // can remove
       const completePost = {
         ...post,
-        comments: postComments,
+        // comments: postComments,
         likes: postLikes,
-        products: postProducts,
+        // products: postProducts,
         tags: postTags,
       };
 

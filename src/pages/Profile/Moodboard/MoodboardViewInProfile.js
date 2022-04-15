@@ -20,7 +20,8 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const MoodboardViewInProfile = () => {
   const { userStore } = useStores();
-  let currentSort = "popular";
+  // let currentSort = "ascending";
+  const [currentSort, setCurrentSort] = useState("ascending");
 
   const [username, setUsername] = useState(useParams().username); // eslint-disable-line no-unused-vars
 
@@ -78,44 +79,45 @@ const MoodboardViewInProfile = () => {
     getCompleteMoodboardData();
   };
 
-  const sortFeed = () => {
-    if (currentSort === "ascending") {
-      console.log("ascending");
-      // sorting by ascending boardname
-      let newMoodboards = [...moodboards];
-      setMoodboards(
-        newMoodboards.sort((a, b) =>
-          ("" + a.boardname).localeCompare(b.boardname)
-        )
-      );
-    }
-    if (currentSort === "descending") {
-      console.log("descending");
-      // sorting by descending boardname
-      let newMoodboards = [...moodboards];
-      console.log(newMoodboards.reverse());
-      setMoodboards(
-        newMoodboards.sort((a, b) =>
-          ("" + b.boardname).localeCompare(a.boardname)
-        )
-      );
-    }
-    if (currentSort === "recent") {
-      console.log("recent");
-      // sort by descending boardname for now; to be updated
-      let newMoodboards = [...moodboards];
-      console.log(newMoodboards.reverse());
-      setMoodboards(
-        newMoodboards.sort((a, b) =>
-          ("" + b.boardname).localeCompare(a.boardname)
-        )
-      );
-    }
-  };
+  // const sortFeed = () => {
+  //   if (currentSort === "ascending") {
+  //     console.log("ascending");
+  //     // sorting by ascending boardname
+  //     let newMoodboards = [...moodboards];
+  //     setMoodboards(
+  //       newMoodboards.sort((a, b) =>
+  //         ("" + a.boardname).localeCompare(b.boardname)
+  //       )
+  //     );
+  //   }
+  //   if (currentSort === "descending") {
+  //     console.log("descending");
+  //     // sorting by descending boardname
+  //     let newMoodboards = [...moodboards];
+  //     console.log(newMoodboards.reverse());
+  //     setMoodboards(
+  //       newMoodboards.sort((a, b) =>
+  //         ("" + b.boardname).localeCompare(a.boardname)
+  //       )
+  //     );
+  //   }
+  //   if (currentSort === "recent") {
+  //     console.log("recent");
+  //     // sort by descending boardname for now; to be updated
+  //     let newMoodboards = [...moodboards];
+  //     console.log(newMoodboards.reverse());
+  //     setMoodboards(
+  //       newMoodboards.sort((a, b) =>
+  //         ("" + b.boardname).localeCompare(a.boardname)
+  //       )
+  //     );
+  //   }
+  // };
 
   const handleSort = (sortType) => {
-    currentSort = sortType;
-    sortFeed();
+    // currentSort = sortType;
+    setCurrentSort(sortType);
+    // sortFeed();
   };
 
   const [open, setOpen] = React.useState(false);
@@ -204,30 +206,37 @@ const MoodboardViewInProfile = () => {
         </Box>
       )}
       <Grid container spacing={3}>
-        {moodboards.map((moodboard) => (
-          <Grid item xs={6} md={4} key={moodboard.id}>
-            <Box>
-              <Link
-                to={`/moodboard/${userStore.name}/${moodboard.id}`}
-                style={{ textDecoration: "none", color: "black" }}
-              >
-                <Typography
-                  variant="h4"
-                  sx={{ fontWeight: "normal" }}
-                  component="div"
+        {moodboards
+          .sort((a, b) => {
+            console.log("currentSort", currentSort);
+            return currentSort === "ascending"
+              ? ("" + a.boardname).localeCompare(b.boardname)
+              : ("" + b.boardname).localeCompare(a.boardname);
+          })
+          .map((moodboard) => (
+            <Grid item xs={6} md={4} key={moodboard.id}>
+              <Box>
+                <Link
+                  to={`/moodboard/${userStore.name}/${moodboard.id}`}
+                  style={{ textDecoration: "none", color: "black" }}
                 >
-                  {moodboard.boardname}
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                  {`${moodboard.moodboardItems.length} pin${
-                    moodboard.moodboardItems.length !== 1 ? "s" : ""
-                  }`}
-                </Typography>
-                <MoodboardPreview moodboard={moodboard} />
-              </Link>
-            </Box>
-          </Grid>
-        ))}
+                  <Typography
+                    variant="h4"
+                    sx={{ fontWeight: "normal" }}
+                    component="div"
+                  >
+                    {moodboard.boardname}
+                  </Typography>
+                  <Typography variant="body1" gutterBottom>
+                    {`${moodboard.moodboardItems.length} pin${
+                      moodboard.moodboardItems.length !== 1 ? "s" : ""
+                    }`}
+                  </Typography>
+                  <MoodboardPreview moodboard={moodboard} />
+                </Link>
+              </Box>
+            </Grid>
+          ))}
       </Grid>
     </>
   );

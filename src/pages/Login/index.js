@@ -133,6 +133,10 @@ const Login = () => {
     if (type === "Seller") {
       userStore.setIsSeller();
     }
+    if (type === "Designer") {
+      userStore.setIsSeller();
+      userStore.setIsDesigner();
+    }
     if (type === "Admin") {
       userStore.setIsAdmin();
     }

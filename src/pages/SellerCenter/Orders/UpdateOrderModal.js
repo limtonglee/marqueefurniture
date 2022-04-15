@@ -72,6 +72,7 @@ const UpdateOrderModal = ({
         if (event.reset) {
             return {
                 orderStatus: '',
+                trackingNumber: '',
             }
         }
         return {
@@ -96,6 +97,7 @@ const UpdateOrderModal = ({
     const handleSubmit = event => {
         event.preventDefault();
         SellerCenterAPI.updateOrderStatus(formData.orderStatus, children.id);
+        SellerCenterAPI.updateTrackingNumber(formData.trackingNumber, children.id);
         refreshData();
         handleClose();
         setTimeout(() => {
@@ -141,9 +143,9 @@ const UpdateOrderModal = ({
                     </Box>
                     <form onSubmit={handleSubmit}>
                         <Box sx={style.contents}>
+                            Order Status
                             <TextField
                                 select
-                                label="Order Status"
                                 name="orderStatus"
                                 onChange={handleChange}
                                 value={formData.orderStatus || children.order_status}
@@ -153,6 +155,15 @@ const UpdateOrderModal = ({
                                         {option.label}
                                     </MenuItem>
                                 ))}
+                            </TextField>
+                        </Box>
+                        <Box sx={style.contents}>
+                            Tracking Number
+                            <TextField
+                                name="trackingNumber"
+                                onChange={handleChange}
+                                value={formData.trackingNumber || children.trackingnumber}
+                            >
                             </TextField>
                         </Box>
                         <Box sx={style.buttons}>

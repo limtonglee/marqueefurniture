@@ -161,6 +161,9 @@ export const Orders = () => {
                                             {item.username}
                                         </div>
                                         <div>
+                                            Tracking Number: {item.trackingnumber}
+                                        </div>
+                                        <div>
                                             Order ID {item.id}
                                         </div>
                                     </div>

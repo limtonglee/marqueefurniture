@@ -79,6 +79,7 @@ export const URL_DELETE_MOODBOARD = "/api/user/moodboard/delete";
 export const URL_GET_SHOP_ORDERS = "/api/merchant/orders";
 export const URL_GET_SHOP_ORDER_DETAIL = "/api/merchant/order/individual";
 export const URL_UPDATE_SHOP_ORDER = "/api/merchant/updateOrder";
+export const URL_UPDATE_TRACKING_NUMBER = "/api/merchant/updateTrackingNumber";
 // listings
 export const URL_GET_SHOP_LISTINGS = "/api/merchant/listings";
 export const URL_GET_SHOP_LISTING_DETAIL = "/api/merchant/listing/individual";

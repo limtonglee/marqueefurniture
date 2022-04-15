@@ -4,6 +4,7 @@ import { get, remove, update, postAsFormInput } from "./api";
 import { URL_GET_SHOP_ORDERS } from "../services/endpoints";
 import { URL_GET_SHOP_ORDER_DETAIL } from "../services/endpoints";
 import { URL_UPDATE_SHOP_ORDER } from "../services/endpoints";
+import { URL_UPDATE_TRACKING_NUMBER } from "../services/endpoints";
 // listings
 import { URL_GET_SHOP_LISTINGS } from "../services/endpoints";
 import { URL_CREATE_SHOP_LISTING } from "../services/endpoints";
@@ -54,6 +55,13 @@ export const updateOrderStatus = (order_status, orderId) => {
     orderId: orderId,
   };
   return update(URL_UPDATE_SHOP_ORDER, body);
+};
+export const updateTrackingNumber = (trackingNumber, orderId) => {
+  const body = {
+    trackingNumber: trackingNumber,
+    orderId: orderId,
+  };
+  return update(URL_UPDATE_TRACKING_NUMBER, body);
 };
 
 

@@ -116,22 +116,41 @@ const RequestConsultation = () => {
   //! FILEE --------------------------------------------------
   //! FILEE --------------------------------------------------
 
-  const [file, setFile] = useState("");
+  // const [file, setFile] = useState("");
+  const [files, setFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const fileSelected = async (event) => {
     setIsLoading(true);
-    console.log("event.target.files", event.target.files);
-    const file = event.target.files[0];
-    console.log("file", file);
-    // setFile(file);
+    // console.log("event.target.files", event.target.files);
+    // const file = event.target.files[0];
+    // console.log("file", file);
+    // // setFile(file);
 
-    const result = await sendPictureToDbAPI(file);
-    console.log("file result", result);
+    // const result = await sendPictureToDbAPI(file);
+    // console.log("file result", result);
 
-    if (result.image !== undefined) {
-      setFile(result.image);
+    // if (result.image !== undefined) {
+    //   setFile(result.image);
+    // }
+
+    const uploadedFiles = event.target.files;
+    console.log("uploadedFiles", uploadedFiles);
+    const newFiles = [];
+
+    for (let i = 0; i < 3; i++) {
+      const file = uploadedFiles[i];
+      console.log("file", file);
+      const result = await sendPictureToDbAPI(file);
+      console.log("file result", result);
+
+      if (result.image !== undefined) {
+        newFiles.push(result.image);
+      }
     }
+    console.log(newFiles);
+    setFiles(newFiles);
+
     setIsLoading(false);
   };
 
@@ -155,7 +174,7 @@ const RequestConsultation = () => {
     const data = {
       requestType: requestType,
       roomGeometry: roomRows,
-      floorPlan: "",
+      floorPlan: files,
       styleRequests: styleRequests,
       moodboardReferences: moodboardReferences,
       otherComments: otherComments,
@@ -316,8 +335,19 @@ const RequestConsultation = () => {
                   </Box>
                 </Box>
                 <Box>
-                  <Typography variant="h4" gutterBottom component="div">
+                  <Typography variant="h4" component="div">
                     Floor plan
+                  </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    gutterBottom
+                    sx={{
+                      fontWeight: "normal",
+                      mb: 1,
+                      color: "primary.darker",
+                    }}
+                  >
+                    Maximum of 3 photos
                   </Typography>
                   {/* <Button variant="outlined" sx={{ height: 60, width: 80 }}>
                     <Box>
@@ -325,7 +355,7 @@ const RequestConsultation = () => {
                       Upload
                     </Box>
                   </Button> */}
-                  {file.length === 0 ? (
+                  {files.length === 0 ? (
                     <>
                       {!isLoading && (
                         <Button
@@ -351,6 +381,7 @@ const RequestConsultation = () => {
                             type="file"
                             accept="image/*"
                             hidden
+                            multiple
                           />
                         </Button>
                       )}
@@ -362,51 +393,50 @@ const RequestConsultation = () => {
                     </>
                   ) : (
                     <>
-                      <Card
-                        sx={{ width: 130, position: "relative" }}
-                        onClick={() => console.log("hi")}
-                      >
-                        <CardMedia
-                          component="img"
-                          width="100%"
-                          objectfit="scale-down"
-                          image={`/api/image/${file}`}
-                          sx={{ opacity: isLoading ? 0.3 : 1 }}
-                          alt="post picture"
-                        />
-                        <Box
-                          sx={{
-                            position: "absolute",
-                            left: "50%",
-                            top: "50%",
-                            // transform: "(50%,-50%)",
-                            // transform: `translate(${50}%, ${-50}%)`,
-                            transform: "translate(-50%, -50%)",
-                          }}
-                        >
-                          {isLoading && (
-                            <Box sx={{ display: "flex" }}>
-                              <CircularProgress />
-                            </Box>
-                          )}
-                        </Box>
-                      </Card>
                       {!isLoading && (
-                        <Button
-                          variant="contained"
-                          component="label"
-                          startIcon={<UploadIcon />}
-                          size="small"
-                          sx={{ mt: 2 }}
-                        >
-                          Re-upload
-                          <input
-                            onChange={fileSelected}
-                            type="file"
-                            accept="image/*"
-                            hidden
-                          />
-                        </Button>
+                        <>
+                          <Stack direction="row" spacing={2}>
+                            {files.map((file, i) => (
+                              <Card
+                                key={i}
+                                sx={{
+                                  width: 130,
+                                  position: "relative",
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <CardMedia
+                                  component="img"
+                                  width="100%"
+                                  objectfit="scale-down"
+                                  image={`/api/image/${file}`}
+                                  alt="post picture"
+                                />
+                              </Card>
+                            ))}
+                          </Stack>
+                          <Button
+                            variant="contained"
+                            component="label"
+                            startIcon={<UploadIcon />}
+                            size="small"
+                            sx={{ mt: 2 }}
+                          >
+                            Re-upload
+                            <input
+                              onChange={fileSelected}
+                              type="file"
+                              accept="image/*"
+                              hidden
+                            />
+                          </Button>
+                        </>
+                      )}
+                      {isLoading && (
+                        <Box sx={{ display: "flex" }}>
+                          <CircularProgress />
+                        </Box>
                       )}
                     </>
                   )}

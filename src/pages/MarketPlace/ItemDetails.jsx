@@ -48,6 +48,7 @@ export const ItemDetails = () => {
   const [item, setItems] = useState([]);
   const [shopName, setShopName] = useState("");
   const [images, setImages] = useState("");
+  const [sellerId, setSellerId] = useState(""); //! new by chinn
 
   const notifyCart = () =>
     toast("Item added to cart!", {
@@ -63,6 +64,7 @@ export const ItemDetails = () => {
   useEffect(() => {
     const getSellerData = async (listingId) => {
       const response = await getSellerInfo(listingId);
+      setSellerId(response.data[0].userid); //! new by chinn
       setShopName(response.data[0].shopname);
       setImages(response.data[0].images);
     };
@@ -296,14 +298,24 @@ export const ItemDetails = () => {
                       <ToastContainer />
                     </>
                   )}
-                  <Button
+                  {/* <Button
                     variant="outlined"
                     startIcon={<ChatIcon />}
                     disableElevation
                     href="http://localhost:3000/chat"
                   >
                     Chat
+                  </Button> */}
+                  <Link to="/chat" state={{ sellerId: sellerId }}>
+                    <Button
+                    variant="outlined"
+                    startIcon={<ChatIcon />}
+                    disableElevation
+                    size="large"
+                  >
+                    Chat
                   </Button>
+                  </Link>
                 </>
               ) : (
                 <Button

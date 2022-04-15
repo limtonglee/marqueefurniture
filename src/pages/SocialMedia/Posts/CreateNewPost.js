@@ -13,55 +13,73 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Autocomplete from "@mui/material/Autocomplete";
 import TagProductsModal from "./TagProductsModal";
 import { useNavigate } from "react-router-dom";
+import * as socialMediaAPI from "../../../services/SocialMedia";
+import { useStores } from "../../../stores/RootStore";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Input = styled("input")({
   display: "none",
 });
 
 const CreateNewPost = () => {
-  const [fileUploaded, setFileUploaded] = useState("");
+  // const [fileUploaded, setFileUploaded] = useState("");
 
-  const updateFile = (event) => {
-    console.log(event.target.value);
-    // setFileUploaded(event.target.value);
-    setFileUploaded(
-      "https://d1hy6t2xeg0mdl.cloudfront.net/image/483605/dd9938c2cc/standard"
-    ); // mock only; for demo purpose
+  // const updateFile = (event) => {
+  //   console.log(event.target.value);
+  //   // setFileUploaded(event.target.value);
+  //   setFileUploaded(
+  //     "https://d1hy6t2xeg0mdl.cloudfront.net/image/483605/dd9938c2cc/standard"
+  //   ); // mock only; for demo purpose
+  // };
+
+  const { userStore } = useStores();
+  const [file, setFile] = useState("");
+
+  const fileSelected = async (event) => {
+    setIsLoading(true);
+
+    const file = event.target.files[0];
+    console.log("file", file);
+    // setFile(file);
+
+    const result = await sendPictureToDbAPI(file);
+    console.log("file result", result);
+
+    if (result.image !== undefined) {
+      setFile(result.image);
+    }
+    setIsLoading(false);
   };
 
   const [selectedProductsValues, setSelectedProductsValues] = useState([]);
   const [boardDescription, setBoardDescription] = useState("");
+  const [roomTags, setRoomTags] = useState([]);
+  const [designTags, setDesignTags] = useState([]);
   const [filterRoomValues, setfilterRoomValues] = useState([]);
   const [filterDesignValues, setfilterDesignValues] = useState([]);
 
-  const roomTags = [
-    { id: 0, title: "Living Room" },
-    { id: 1, title: "Kitchen" },
-    { id: 2, title: "Balcony" },
-    { id: 3, title: "Bedroom" },
-    { id: 4, title: "Study Room" },
-    { id: 5, title: "Service Yard" },
-  ];
+  const getPostTags = async () => {
+    try {
+      const res = await socialMediaAPI.getAllTags();
+      const data = JSON.parse(JSON.stringify(res)).data;
 
-  const designTags = [
-    { id: 0, title: "Art Deco" },
-    { id: 1, title: "Asian Zen" },
-    { id: 2, title: "Bohemian" },
-    { id: 3, title: "Coastal" },
-    { id: 4, title: "Contemporary" },
-    { id: 5, title: "Eclectic" },
-    { id: 6, title: "French Country" },
-    { id: 7, title: "Industrial" },
-    { id: 8, title: "Meditarranean" },
-    { id: 9, title: "Minimalist" },
-    { id: 10, title: "Modern" },
-    { id: 11, title: "Modern Farmhouse" },
-    { id: 12, title: "Rustic" },
-    { id: 13, title: "Scandinavian" },
-    { id: 14, title: "Shabby Chic" },
-    { id: 15, title: "Traditional" },
-    { id: 16, title: "Transitional" },
-  ];
+      const roomTags = data.filter((item) => item.tagtype === "Room");
+      const designTags = data.filter((item) => item.tagtype === "Design");
+
+      setRoomTags(roomTags);
+      setDesignTags(designTags);
+
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getPostTags();
+  }, []);
 
   const handleChangeForFilterRoom = (event, value) => {
     setfilterRoomValues(value);
@@ -75,20 +93,84 @@ const CreateNewPost = () => {
     setBoardDescription(event.target.value);
   };
 
-  let navigate = useNavigate();
-
-  const createPost = () => {
-    console.log("createPost");
-    console.log(fileUploaded);
-    console.log(selectedProductsValues);
-    console.log(filterRoomValues);
-    console.log(filterDesignValues);
-    console.log(boardDescription);
-
-    navigate("/ideas");
+  const sendPictureToDbAPI = async (image) => {
+    try {
+      const res = await socialMediaAPI.sendPictureToDb(image);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  useEffect(() => {}, []);
+  const createPostListingsAPI = async (postId, listingId) => {
+    try {
+      const res = await socialMediaAPI.createPostListings(postId, listingId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const createPostTagsAPI = async (postId, postTagsId) => {
+    try {
+      const res = await socialMediaAPI.createPostTags(postId, postTagsId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const createPostAPI = async (image, description, userId) => {
+    try {
+      const res = await socialMediaAPI.createPost(image, description, userId);
+      const newPostId = JSON.parse(JSON.stringify(res)).data[0]["id"];
+      console.log("createPostAPI data", newPostId);
+
+      const listingsToSubmit = selectedProductsValues.map((item) =>
+        parseInt(item.id)
+      );
+      console.log("listings to submit", listingsToSubmit);
+
+      for (let listingId in listingsToSubmit) {
+        console.log(`newPostId listingId ${newPostId} ${listingId}`);
+        await createPostListingsAPI(newPostId, listingId);
+      }
+
+      const roomsToSubmit = filterRoomValues.map((item) => item.id);
+      const designsToSubmit = filterDesignValues.map((item) => item.id);
+      const allTagsToSubmit = [roomsToSubmit, designsToSubmit].flat();
+      console.log("all tags to submit", allTagsToSubmit);
+
+      for (let tagId in allTagsToSubmit) {
+        console.log(`newPostId tagId ${newPostId} ${tagId}`);
+        await createPostTagsAPI(newPostId, tagId);
+      }
+
+      toast("Post created!", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+      });
+
+      navigate(`/ideas/${newPostId}`);
+
+      // await addPostToMoodboardAPI(post.id, data);
+
+      //refreshData(); // function to refresh data?
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  let navigate = useNavigate();
+
+  const createPost = async () => {
+    console.log("createPost");
+
+    await createPostAPI(file, boardDescription, userStore.id);
+  };
 
   const [open, setOpen] = React.useState(false);
 
@@ -100,8 +182,11 @@ const CreateNewPost = () => {
     setOpen(true);
   };
 
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <>
+      <ToastContainer />
       <Container sx={{ pt: 2 }}>
         <Box
           sx={{
@@ -126,7 +211,7 @@ const CreateNewPost = () => {
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
             <Grid item md={6} xs={12} sx={{ px: 2 }}>
-              {fileUploaded.length === 0 ? (
+              {file.length === 0 ? (
                 <Box
                   sx={{
                     width: "100%",
@@ -138,37 +223,97 @@ const CreateNewPost = () => {
                     borderRadius: 3,
                   }}
                 >
-                  <label htmlFor="contained-button-file">
-                    <Input
-                      accept="image/*"
-                      id="contained-button-file"
-                      multiple
-                      type="file"
-                      onChange={updateFile}
-                    />
+                  {!isLoading && (
                     <Button
                       variant="contained"
-                      component="span"
+                      component="label"
                       startIcon={<PhotoCamera />}
                       size="large"
                     >
                       Upload
+                      <input
+                        onChange={fileSelected}
+                        type="file"
+                        accept="image/*"
+                        hidden
+                      />
                     </Button>
-                  </label>
+                  )}
+                  {isLoading && (
+                    <Box sx={{ display: "flex" }}>
+                      <CircularProgress />
+                    </Box>
+                  )}
                 </Box>
               ) : (
-                <Card
-                  sx={{ width: "100%", position: "relative" }}
-                  onClick={() => console.log("hi")}
-                >
-                  <CardMedia
-                    component="img"
-                    width="100%"
-                    objectfit="scale-down"
-                    image={fileUploaded}
-                    alt="post picture"
-                  />
-                </Card>
+                <>
+                  <Card
+                    sx={{ width: "100%", position: "relative" }}
+                    // onClick={() => console.log("hi")}
+                  >
+                    <CardMedia
+                      component="img"
+                      width="100%"
+                      objectfit="scale-down"
+                      image={`/api/image/${file}`}
+                      sx={{ opacity: isLoading ? 0.3 : 1 }}
+                      alt="post picture"
+                    />
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        left: "50%",
+                        top: "50%",
+                        // transform: "(50%,-50%)",
+                        // transform: `translate(${50}%, ${-50}%)`,
+                        transform: "translate(-50%, -50%)",
+                      }}
+                    >
+                      {!isLoading && (
+                        <Button
+                          variant="contained"
+                          component="label"
+                          startIcon={<PhotoCamera />}
+                          size="large"
+                        >
+                          Re-upload
+                          <input
+                            onChange={fileSelected}
+                            type="file"
+                            accept="image/*"
+                            hidden
+                          />
+                        </Button>
+                      )}
+                      {isLoading && (
+                        <Box sx={{ display: "flex" }}>
+                          <CircularProgress />
+                        </Box>
+                      )}
+                    </Box>
+                  </Card>
+                  {/* {!isLoading && (
+                    <Button
+                      variant="contained"
+                      component="label"
+                      startIcon={<PhotoCamera />}
+                      size="large"
+                    >
+                      Re-upload
+                      <input
+                        onChange={fileSelected}
+                        type="file"
+                        accept="image/*"
+                        hidden
+                      />
+                    </Button>
+                  )}
+                  {isLoading && (
+                    <Box sx={{ display: "flex" }}>
+                      <CircularProgress />
+                    </Box>
+                  )} */}
+                </>
               )}
             </Grid>
             <Grid item md={6} xs={12} sx={{ px: 2 }}>
@@ -258,7 +403,7 @@ const CreateNewPost = () => {
                   limitTags={2}
                   id="room-type"
                   options={roomTags}
-                  getOptionLabel={(option) => option.title}
+                  getOptionLabel={(option) => option.tagname}
                   defaultValue={[]}
                   renderInput={(params) => (
                     <TextField
@@ -284,7 +429,7 @@ const CreateNewPost = () => {
                   limitTags={2}
                   id="design-type"
                   options={designTags}
-                  getOptionLabel={(option) => option.title}
+                  getOptionLabel={(option) => option.tagname}
                   defaultValue={[]}
                   renderInput={(params) => (
                     <TextField

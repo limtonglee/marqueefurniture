@@ -1,6 +1,7 @@
 // for social media - ideas, moodboards
 
 import { get, remove, update, postAsFormInput } from "./api";
+import axios from "axios";
 import {
   URL_GET_POSTS,
   URL_GET_POST_DETAILS,
@@ -11,6 +12,8 @@ import {
   URL_DELETE_POST_COMMENT,
   URL_GET_POST_LISTINGS,
   URL_CREATE_POST,
+  URL_CREATE_POST_LISTINGS,
+  URL_CREATE_POST_TAGS,
   URL_GET_USERNAME_BY_ID,
   URL_GET_PROFILEPIC_BY_ID,
   URL_LIKE_POST,
@@ -24,6 +27,7 @@ import {
   URL_EDIT_MOODBOARD,
   URL_DELETE_MOODBOARD,
   URL_GET_USERS_POSTS,
+  URL_UPLOAD_PHOTO,
 } from "../services/endpoints";
 
 export const getAllPosts = () => {
@@ -88,14 +92,42 @@ export const getPostListings = (id) => {
   return get(URL_GET_POST_LISTINGS, params);
 };
 
-export const createPost = (image, description, tags, products) => {
+export const createPost = (image, description, userId) => {
   const body = {
     image: image,
     description: description,
-    tags: tags,
-    products: products,
+    isPrivate: "0",
+    userId: userId,
   };
   return postAsFormInput(URL_CREATE_POST, body);
+};
+
+export const createPostListings = (postId, listingId) => {
+  const body = {
+    postId: postId,
+    listingId: listingId,
+  };
+  return postAsFormInput(URL_CREATE_POST_LISTINGS, body);
+};
+
+export const createPostTags = (postId, postTagsId) => {
+  const body = {
+    postId: postId,
+    postTagsId: postTagsId,
+  };
+  return postAsFormInput(URL_CREATE_POST_TAGS, body);
+};
+
+// !
+export const sendPictureToDb = async (image) => {
+  const formData = new FormData();
+  formData.append("image", image);
+  console.log("sendPictureToDb", formData.get("image"));
+
+  const result = await axios.post(URL_UPLOAD_PHOTO, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return result;
 };
 
 export const getUsernameById = (userId) => {
@@ -185,7 +217,7 @@ export const editMoodboard = (moodBoardId, boardName, description) => {
 
 export const deleteMoodboard = (moodboardId) => {
   const params = {
-    moodBoardId: moodboardId,
+    moodboardId: moodboardId,
   };
   return remove(URL_DELETE_MOODBOARD, params);
 };

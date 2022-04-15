@@ -194,7 +194,7 @@ const Post = () => {
     socket.initiateSocket(userStore.id);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [postId]);
 
   const [likesChecked, setLikesChecked] = useState(false);
 

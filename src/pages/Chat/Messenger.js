@@ -14,8 +14,14 @@ import * as socket from "../../services/socket";
 
 import { useStores } from "../../stores/RootStore";
 
+import { useLocation } from "react-router-dom";
+
 const Messenger = () => {
   const { userStore } = useStores();
+
+  const location = useLocation();
+  const sellerId = location.state ? location.state.sellerId : null;
+  console.log("sellerId", sellerId);
 
   const [isMobile, setIsMobile] = useState(false);
   const [userChats, setUserChats] = useState([]);
@@ -185,6 +191,8 @@ const Messenger = () => {
 
       // setCurrentChat(values[values.length - 1]);
 
+      // TODO: variable current chat - if redirect from seller side, set current chat as seller chat
+
       if (values.length > 0) {
         setCurrentChat(values[values.length - 1]);
       }
@@ -226,7 +234,27 @@ const Messenger = () => {
     });
   };
 
+  // !
+  const createNewChat = async (senderId, receiverId) => {
+    try {
+      const res = await chatAPI.createChat(senderId, receiverId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log(data);
+      getUserChatsWithUsername();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  // !
+
   useEffect(() => {
+    // TODO: check if redirected from seller side. if yes + seller chat alr exists -> set current chat to seller chat (see above todo.) else need to create new chat first
+    // if (sellerId) {
+    //   createNewChat(userStore.id, sellerId);
+    // } else {
+    //   getUserChatsWithUsername();
+    // }
+
     getUserChatsWithUsername();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

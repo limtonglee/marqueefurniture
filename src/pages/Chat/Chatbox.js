@@ -24,10 +24,15 @@ import * as accountsAPI from "../../services/Accounts";
 
 import * as socket from "../../services/socket";
 
+import DesignAction from "./DesignAction";
+import DesignAnnouncement from "./DesignAnnouncement";
+import { DesignOrderDict } from "../../data/designOrderDict";
+
 import { useStores } from "../../stores/RootStore";
 
 const Chatbox = ({ currentChat, refreshCurrentChat }) => {
   // console.log("currentChat", currentChat);
+
   const { userStore } = useStores();
 
   const [message, setMessage] = useState("");
@@ -77,6 +82,106 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
     }
   };
 
+  // const designOrderDict = {
+  //   Nothing: {
+  //     user: {
+  //       action: "Request for consultation",
+  //       statusbarText: "",
+  //     },
+  //     designer: {
+  //       action: "",
+  //       statusbarText: "",
+  //     },
+  //   },
+  //   Requested: {
+  //     user: {
+  //       action: "Consultation request has been submitted",
+  //       statusbarText: "",
+  //     },
+  //     designer: {
+  //       action: "Issue quotation",
+  //       statusbarText: "Customer has submitted consultation request",
+  //     },
+  //   },
+  //   ConsultedQuoted: {
+  //     user: {
+  //       action: "Review and pay",
+  //       statusbarText: "Quotation has been issued",
+  //     },
+  //     designer: {
+  //       action: "",
+  //       statusbarText: "Quotation has been issued, pending customer payment",
+  //     },
+  //   },
+  //   Paid: {
+  //     user: {
+  //       action: "",
+  //       statusbarText: "Consultation confirmed",
+  //     },
+  //     designer: {
+  //       action: "Issue quotation for design package",
+  //       statusbarText: "Consultation confirmed",
+  //     },
+  //   },
+  //   PackageQuoted: {
+  //     user: {
+  //       action: "Review and pay",
+  //       statusbarText: "Seller has issued quotation for design package",
+  //     },
+  //     designer: {
+  //       action: "Edit quotation",
+  //       statusbarText:
+  //         "Quotation for design package issued, pending customer payment",
+  //     },
+  //   },
+  //   Designing: {
+  //     user: {
+  //       action: "",
+  //       statusbarText: "Design package confirmed, Pending design",
+  //     },
+  //     designer: {
+  //       action: "Add design package",
+  //       statusbarText: "Design package confirmed",
+  //     },
+  //   },
+  //   InReview: {
+  //     user: {
+  //       action: "Review design",
+  //       statusbarText: "New design submmited, Pending your review",
+  //     },
+  //     designer: {
+  //       action: "",
+  //       statusbarText: "Design submitted, pending customer review",
+  //     },
+  //   },
+  //   Rejected: {
+  //     user: {
+  //       action: "",
+  //       statusbarText: "Review submitted, Pending next design",
+  //     },
+  //     designer: {
+  //       action: "Add design package",
+  //       statusbarText: "Design rejected, Pending your design edits",
+  //     },
+  //   },
+  //   Completed: {
+  //     user: {
+  //       action: "",
+  //       statusbarText: "Design engagement completed",
+  //     },
+  //     designer: {
+  //       action: "",
+  //       statusbarText: "Design engagement completed",
+  //     },
+  //   },
+  // };
+
+  const [isDesignCustomerRs, setIsDesignCustomerRs] = useState(false);
+  const [designOrderStatus, setDesignOrderStatus] = useState("Nothing");
+  const [currUserType, setCurrUserType] = useState("user"); // todo: update
+
+  console.log(DesignOrderDict["Completed"]);
+
   const getUserType = async () => {
     try {
       console.log(currentChat);
@@ -88,6 +193,16 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
       const data = JSON.parse(JSON.stringify(res)).data[0]["type"];
       console.log("data from getuserType", data);
       setUserType(data);
+
+      // todo: if current user === designer & recipient === customer
+      // todo: or if current user === customer & recipient === seller
+      // todo: then use api to check if there's any engagement going on
+
+      // todo: update below accordingly
+      setIsDesignCustomerRs(true);
+      setDesignOrderStatus("Nothing");
+      // todo: ----------------------------------------------------------
+
       return data;
     } catch (error) {
       console.error(error);
@@ -202,7 +317,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
             </Box>
           </Box>
           <Divider />
-          <Box sx={{ px: 3, py: 3, backgroundColor: "grey.100" }}>
+          {/* <Box sx={{ px: 3, py: 3, backgroundColor: "grey.100" }}>
             <Stack direction="row" spacing={3}>
               <Button
                 variant="contained"
@@ -248,7 +363,19 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
             </Box>
             <ArrowForwardIosIcon size="small" />
           </Box>
-          <Divider />
+          <Divider /> */}
+          {designOrderStatus !== "" && (
+            <>
+              <DesignAction
+                designOrderStatus={designOrderStatus}
+                currUserType={currUserType}
+              />
+              <DesignAnnouncement
+                designOrderStatus={designOrderStatus}
+                currUserType={currUserType}
+              />
+            </>
+          )}
         </Box>
         <Box
           sx={{

@@ -24,8 +24,8 @@ export const URL_DELETE_CART_ITEMS = "/api/cart/deleteItems";
 
 //checkout management
 export const URL_CHECKOUT = "/api/checkout";
-export const URL_PAYMENT = "/api/payment"
-export const URL_GET_ORDERS = "/api/user/orders"
+export const URL_PAYMENT = "/api/payment";
+export const URL_GET_ORDERS = "/api/user/orders";
 
 //liked listings management
 export const URL_LISTING_LIKE = "/api/listing/like"; // user liking a post
@@ -46,6 +46,8 @@ export const URL_DELETE_POST_COMMENT = "/api/post/deleteComment"; // delete comm
 export const URL_GET_POST_LISTINGS = "/api/post/listings"; // get listings for indiv post
 
 export const URL_CREATE_POST = "/api/post/create"; // create post
+export const URL_CREATE_POST_LISTINGS = "/api/postListings/create";
+export const URL_CREATE_POST_TAGS = "/api/postTags/create";
 
 // get username by id
 export const URL_GET_USERNAME_BY_ID = "/api/user"; // new
@@ -73,6 +75,9 @@ export const URL_CREATE_MOODBOARD_WITH_POST =
   "/api/user/moodboard/createWithPost";
 export const URL_EDIT_MOODBOARD = "/api/user/moodboard/edit"; // new
 export const URL_DELETE_MOODBOARD = "/api/user/moodboard/delete";
+
+// upload images
+export const URL_UPLOAD_PHOTO = "/api/user/uploadPhoto";
 
 // sellercenter
 // orders
@@ -124,3 +129,21 @@ export const URL_MARK_NOTIFICATION_AS_READ = "/api/user/notifications/readone";
 export const URL_MARK_ALL_NOTIFICATIONS_AS_READ =
   "/api/user/notifications/readall";
 export const URL_CREATE_NOTIFICATION = "/api/user/notifications/create";
+
+// create design requirements
+export const URL_CREATE_DESIGN_REQUIREMENT = "/api/design/requirements/create";
+export const URL_CREATE_DESIGN_REQUIREMENT_ROOM =
+  "/api/design/requirementNumOfRooms/create";
+export const URL_CREATE_DESIGN_REQUIREMENT_TAGS =
+  "/api/design/requirementTagsJoinTable/create";
+export const URL_CREATE_DESIGN_REQUIREMENT_MB =
+  "/api/design/moodboardRequirementJoinTable/create";
+
+// edit design requirements
+export const URL_EDIT_DESIGN_REQUIREMENT = "/api/design/requirements/edit";
+export const URL_EDIT_DESIGN_REQUIREMENT_ROOM =
+  "/api/design/requirementNumOfRooms/edit";
+export const URL_EDIT_DESIGN_REQUIREMENT_TAGS =
+  "/api/design/requirementTagsJoinTable/edit";
+export const URL_EDIT_DESIGN_REQUIREMENT_MB =
+  "/api/design/moodboardRequirementJoinTable/edit";

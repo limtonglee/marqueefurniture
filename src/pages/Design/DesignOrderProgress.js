@@ -20,6 +20,7 @@ import TabUnstyled, { tabUnstyledClasses } from "@mui/base/TabUnstyled";
 
 import DesignItemCard from "./DesignItemCard";
 import LogItem from "./LogItem";
+import DesignRequirements from "./DesignRequirements";
 
 const primary = {
   50: "#f0fcf9",
@@ -156,12 +157,11 @@ const DesignOrderProgress = () => {
                   </Box>
                 </>
               )}
-              {/* {tabValue === 1 && (
+              {tabValue === 1 && (
                 <>
-                  <h1>requirements</h1>
-                  copy from requirements section after it's done
+                  <DesignRequirements />
                 </>
-              )} */}
+              )}
               {tabValue === 2 && (
                 <>
                   <Box sx={{ mt: 5 }}>

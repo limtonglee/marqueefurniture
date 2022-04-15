@@ -176,9 +176,19 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
   //   },
   // };
 
+  const getCurrUserType = () => {
+    if (userStore.isSeller) {
+      return "seller";
+    } else if (userStore.isDesigner) {
+      return "designer";
+    } else {
+      return "user";
+    }
+  };
+
   const [isDesignCustomerRs, setIsDesignCustomerRs] = useState(false);
   const [designOrderStatus, setDesignOrderStatus] = useState("Nothing");
-  const [currUserType, setCurrUserType] = useState("user"); // todo: update
+  const currUserType = getCurrUserType(); // status of this current user
 
   console.log(DesignOrderDict["Completed"]);
 
@@ -194,14 +204,18 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
       console.log("data from getuserType", data);
       setUserType(data);
 
-      // todo: if current user === designer & recipient === customer
-      // todo: or if current user === customer & recipient === seller
-      // todo: then use api to check if there's any engagement going on
-
-      // todo: update below accordingly
-      setIsDesignCustomerRs(true);
-      setDesignOrderStatus("Nothing");
-      // todo: ----------------------------------------------------------
+      if (
+        (currUserType === "user" && data === "Designer") ||
+        (currUserType === "designer" && data === "Customer")
+      ) {
+        console.log(`currUserType data ${currUserType} ${data}`);
+        setIsDesignCustomerRs(true);
+        // todo: call API to check if there's engagement going on
+        // todo: update below accordingly
+        setDesignOrderStatus("Requested");
+      } else {
+        setIsDesignCustomerRs(false);
+      }
 
       return data;
     } catch (error) {
@@ -364,7 +378,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
             <ArrowForwardIosIcon size="small" />
           </Box>
           <Divider /> */}
-          {designOrderStatus !== "" && (
+          {isDesignCustomerRs && (
             <>
               <DesignAction
                 designOrderStatus={designOrderStatus}

@@ -156,7 +156,7 @@ export const MyListings = () => {
                             Product Details
                         </Grid>
                         <Grid item xs={1}>
-                            SKU
+                            
                         </Grid>
                         <Grid item xs={1}>
                             Price
@@ -192,7 +192,7 @@ export const MyListings = () => {
                                             <div>Variation: {item.variations}</div>
                                         </Grid>
                                         <Grid item xs={1}>
-                                            {item.id}
+                                            
                                         </Grid>
                                         <Grid item xs={1}>
                                             S${item.listingprice}

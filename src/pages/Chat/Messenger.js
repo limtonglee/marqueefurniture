@@ -15,7 +15,7 @@ const Messenger = () => {
   const { userStore } = useStores();
   const location = useLocation();
   const sellerId = location.state ? location.state.sellerId : null;
-  console.log("sellerId", sellerId);
+  // console.log("sellerId", sellerId);
 
   const [isMobile, setIsMobile] = useState(false);
   const [userChats, setUserChats] = useState([]);
@@ -32,7 +32,11 @@ const Messenger = () => {
     // TODO: check if redirected from seller side. if yes + seller chat alr exists -> set current chat to seller chat (see above todo.) else need to create new chat first
     console.log("use effect called");
     if (sellerId) {
-      createNewChat(userStore.id, sellerId);
+      const res = createNewChat(userStore.id, sellerId);
+      if (res === "chat already created") {
+        //do nothing LOL
+      }
+
     } else {
       getUserChatsWithUsername();
     }
@@ -181,10 +185,10 @@ const Messenger = () => {
         recipientProfilePic: recipientProfilePic,
         chatMessages: chatMessages,
       };
-      console.log(
-        "chatWithRecipientUsername messenger",
-        chatWithRecipientUsername
-      );
+      // console.log(
+      //   "chatWithRecipientUsername messenger",
+      //   chatWithRecipientUsername
+      // );
 
       return chatWithRecipientUsername;
     });
@@ -192,9 +196,9 @@ const Messenger = () => {
     await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
 
     Promise.all(promises).then((values) => {
-      console.log("cleaned data", values);
+      // console.log("cleaned data", values);
       setUserChats(values);
-      console.log("values messenger", values);
+      // console.log("values messenger", values);
 
       // setCurrentChat(values[values.length - 1]);
 
@@ -234,7 +238,7 @@ const Messenger = () => {
     await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
 
     Promise.all(promises).then((values) => {
-      console.log("cleaned data", values);
+      // console.log("cleaned data", values);
       setUserChats(values);
 
       return values;
@@ -242,14 +246,16 @@ const Messenger = () => {
   };
 
   const createNewChat = async (senderId, receiverId) => {
+    let message = "";
     try {
       const res = await chatAPI.createChat(senderId, receiverId);
       const data = JSON.parse(JSON.stringify(res)).data;
-      console.log(data);
+      message = data;
       getUserChatsWithUsername();
     } catch (error) {
       console.error(error);
     }
+    return message
   };
 
   const refreshCurrentChat = async () => {

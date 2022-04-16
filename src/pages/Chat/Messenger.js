@@ -19,6 +19,7 @@ import { useLocation } from "react-router-dom";
 const Messenger = () => {
   const { userStore } = useStores();
 
+
   const location = useLocation();
   const sellerId = location.state ? location.state.sellerId : null;
   console.log("sellerId", sellerId);
@@ -249,11 +250,11 @@ const Messenger = () => {
 
   useEffect(() => {
     // TODO: check if redirected from seller side. if yes + seller chat alr exists -> set current chat to seller chat (see above todo.) else need to create new chat first
-    // if (sellerId) {
-    //   createNewChat(userStore.id, sellerId);
-    // } else {
-    //   getUserChatsWithUsername();
-    // }
+    if (sellerId) {
+      createNewChat(userStore.id, sellerId);
+    } else {
+      getUserChatsWithUsername();
+    }
 
     getUserChatsWithUsername();
     // eslint-disable-next-line react-hooks/exhaustive-deps

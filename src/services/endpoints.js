@@ -178,3 +178,7 @@ export const URL_UPDATE_DESIGN_ORDER_STATUS =
   "/api/design/designOrderStatus/edit";
 
 // quotations
+export const URL_UPDATE_CONSULTATION_QUOTATION =
+  "/api/design/designOrder/consultQuotation/create";
+export const URL_UPDATE_PACKAGE_QUOTATION =
+  "/api/design/designOrder/packageQuotation/create";

@@ -291,30 +291,33 @@ const DesignOrderProgress = () => {
               {tabValue === 2 && (
                 <>
                   <Box sx={{ mt: 3 }}>
-                    {userStore.isDesigner && (
-                      // <Button
-                      //   startIcon={<AddIcon />}
-                      //   variant="contained"
-                      //   sx={{ mb: 2 }}
-                      // >
-                      //   Add Design Package
-                      // </Button>
-                      <Link
-                        to="/designOrder/newDesign"
-                        state={{
-                          designOrderStatus: designOrderStatus, //todo: update
-                          // onlyNavigateBackOne: true,
-                        }}
-                      >
-                        <Button
-                          startIcon={<AddIcon />}
-                          variant="contained"
-                          sx={{ mb: 2 }}
+                    {userStore.isDesigner &&
+                      (designOrderStatus.design_order_status === "Designing" ||
+                        designOrderStatus.design_order_status ===
+                          "Rejected") && (
+                        // <Button
+                        //   startIcon={<AddIcon />}
+                        //   variant="contained"
+                        //   sx={{ mb: 2 }}
+                        // >
+                        //   Add Design Package
+                        // </Button>
+                        <Link
+                          to="/designOrder/newDesign"
+                          state={{
+                            designOrderStatus: designOrderStatus, //todo: update
+                            // onlyNavigateBackOne: true,
+                          }}
                         >
-                          Add Design Package
-                        </Button>
-                      </Link>
-                    )}
+                          <Button
+                            startIcon={<AddIcon />}
+                            variant="contained"
+                            sx={{ mb: 2 }}
+                          >
+                            Add Design Package
+                          </Button>
+                        </Link>
+                      )}
                     {designOrderStatus.designItems
                       .reverse()
                       .map((design, i) => (

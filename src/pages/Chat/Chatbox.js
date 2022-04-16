@@ -225,8 +225,9 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
         buyerId
       );
 
-      const initialDesignOrder = JSON.parse(JSON.stringify(res)).data[0];
-      console.log("initialDesignOrder", initialDesignOrder);
+      const initialDesignOrder = JSON.parse(JSON.stringify(res)).data[0]
+        ? JSON.parse(JSON.stringify(res)).data[0]
+        : JSON.parse(JSON.stringify(res)).data;
 
       if (initialDesignOrder.design_order_status !== "Nothing") {
         const designOrderId = initialDesignOrder["id"];
@@ -389,6 +390,10 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const refreshDesignOrderStatus = () => {
+    getUserType();
   };
 
   useEffect(() => {
@@ -556,6 +561,13 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
               <DesignAction
                 designOrderStatus={designOrderStatus}
                 currUserType={currUserType}
+                buyerId={
+                  userStore.isDesigner
+                    ? currentChat.firstuserid === userStore.id
+                      ? currentChat.seconduserid
+                      : currentChat.firstuserid
+                    : userStore.id
+                }
                 sellerId={
                   userStore.isDesigner
                     ? userStore.id
@@ -563,6 +575,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
                     ? currentChat.seconduserid
                     : currentChat.firstuserid
                 }
+                refreshDesignOrderStatus={refreshDesignOrderStatus}
               />
               <DesignAnnouncement
                 designOrderStatus={designOrderStatus}
@@ -573,6 +586,13 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
                       ? currentChat.seconduserid
                       : currentChat.firstuserid
                     : userStore.id
+                }
+                sellerId={
+                  userStore.isDesigner
+                    ? userStore.id
+                    : currentChat.firstuserid === userStore.id
+                    ? currentChat.seconduserid
+                    : currentChat.firstuserid
                 }
               />
             </>

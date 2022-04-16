@@ -19,6 +19,9 @@ const QuotationModal = ({
   isEditing,
   quotation,
   setQuotation,
+  buyerId,
+  sellerId,
+  refreshDesignOrderStatus,
 }) => {
   const { userStore } = useStores();
 
@@ -55,48 +58,14 @@ const QuotationModal = ({
     setQuotation(event.target.value);
   };
 
-  // todo: uncomment + do updateQuotationAPI
-  // todo: for updateQuotationAPI - need check isit for consult or package
-  // const createQuotationAPI = async (boardName, description) => {
-  //   try {
-  //     const res = await designEngagementAPI.createQuotation(
-  //       parseInt(quotation),
-  //       userStore.id
-  //     );
-  //     const data = JSON.parse(JSON.stringify(res)).data;
-  //     console.log(data);
-  //     refreshData(); // function to refresh data?
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-  // todo: logs
-
   const displayQuotationError = () => {
     setQuotationError(true);
     setQuotationHelperText("Please fill in the quotation");
   };
 
-  const createQuotation = () => {
-    // console.log("createMoodboard");
-
-    if (quotation.length === 0) {
-      displayQuotationError();
-    } else {
-      // todo: uncomment
-      // createQuotationAPI(quotation);
-
-      setQuotation("");
-
-      prepareTextFields();
-      closeQuotationModal();
-      createToast("Created quotation");
-    }
-  };
-
   const prepareToUpdate = () => {
-    setQuotation(`${designOrderStatus.consultQuotation}`);
-    setQuotation(`${designOrderStatus.packageQuotation}`);
+    setQuotation(`${designOrderStatus.consultquotation}`);
+    setQuotation(`${designOrderStatus.packagequotation}`);
   };
 
   const prepareToCreate = () => {
@@ -119,22 +88,159 @@ const QuotationModal = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [designOrderStatus]);
 
-  const updateQuotation = () => {
-    if (quotation.length === 0) {
-      displayQuotationError();
-    } else {
-      // todo: uncomment
-      // updateQuotationAPI(quotation);
-
-      prepareTextFields();
-      closeQuotationModal();
-      createToast("Updated successfully");
+  const updateConsultationQuotationAPI = async (consultQuotation) => {
+    console.log("QM108 designOrderStatus.id", designOrderStatus.id);
+    try {
+      const res = await designEngagementAPI.updateConsultationQuotation(
+        designOrderStatus.id,
+        consultQuotation
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log("updateConsultationQuotationAPI data", data);
+      return data;
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  const payQuotation = () => {
+  const updatePackageQuotationAPI = async (packageQuotation) => {
+    console.log("QM123 designOrderStatus.id", designOrderStatus.id);
+    try {
+      const res = await designEngagementAPI.updatePackageQuotation(
+        designOrderStatus.id,
+        packageQuotation
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log("updatePackageQuotationAPI data", data);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const createDesignLogAPI = async (dateTime, description, role, orderId) => {
+    try {
+      const res = await designEngagementAPI.createDesignLog(
+        dateTime,
+        description,
+        role,
+        orderId
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateDesignOrderStatusAPI = async (newStatus) => {
+    try {
+      const res = await designEngagementAPI.updateDesignOrderStatus(
+        buyerId,
+        sellerId,
+        newStatus
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const createQuotation = async () => {
+    // console.log("createMoodboard");
+
+    if (quotation.length === 0) {
+      displayQuotationError();
+    } else {
+      const timestamp = new Date();
+      if (designOrderStatus.design_order_status === "Requested") {
+        await updateConsultationQuotationAPI(quotation);
+        await updateDesignOrderStatusAPI("ConsultQuoted");
+        await createDesignLogAPI(
+          timestamp,
+          "Issued consultation quotation",
+          "Designer",
+          designOrderStatus.id
+        );
+      } else {
+        await updatePackageQuotationAPI(quotation);
+        await updateDesignOrderStatusAPI("PackageQuoted");
+        await createDesignLogAPI(
+          timestamp,
+          "Issued package quotation",
+          "Designer",
+          designOrderStatus.id
+        );
+      }
+
+      prepareTextFields();
+      closeQuotationModal();
+      createToast("Created quotation");
+      refreshDesignOrderStatus();
+    }
+  };
+
+  const updateQuotation = async () => {
+    if (quotation.length === 0) {
+      displayQuotationError();
+    } else {
+      // todo: pay updatequotation -> change designOrderStatus
+      // todo: logs
+
+      const timestamp = new Date();
+      if (designOrderStatus.design_order_status === "ConsultQuoted") {
+        await updateConsultationQuotationAPI(quotation);
+        await updateDesignOrderStatusAPI("ConsultQuoted");
+        await createDesignLogAPI(
+          timestamp,
+          "Updated consultation quotation",
+          "Designer",
+          designOrderStatus.id
+        );
+      } else {
+        await updatePackageQuotationAPI(quotation);
+        await updateDesignOrderStatusAPI("PackageQuoted");
+        await createDesignLogAPI(
+          timestamp,
+          "Updated package quotation",
+          "Designer",
+          designOrderStatus.id
+        );
+      }
+
+      prepareTextFields();
+      closeQuotationModal();
+      createToast("Updated quotation");
+      refreshDesignOrderStatus();
+    }
+  };
+
+  const payQuotation = async () => {
     // todo: pay quotation -> change designOrderStatus
     // todo: logs
+    const timestamp = new Date();
+    if (designOrderStatus.design_order_status === "ConsultQuoted") {
+      await updateDesignOrderStatusAPI("Paid");
+      await createDesignLogAPI(
+        timestamp,
+        "Paid for consultation quotation",
+        "Customer",
+        designOrderStatus.id
+      );
+    } else {
+      await updateDesignOrderStatusAPI("Designing");
+      await createDesignLogAPI(
+        timestamp,
+        "Paid for package quotation",
+        "Customer",
+        designOrderStatus.id
+      );
+    }
+    prepareTextFields();
+    closeQuotationModal();
+    createToast("Paid quotation");
+    refreshDesignOrderStatus();
   };
 
   const quotationDict = {
@@ -181,7 +287,8 @@ const QuotationModal = ({
             <Stack spacing={2} sx={{ mt: 2 }}>
               <Box>
                 <Typography variant="subtitle1" gutterBottom component="div">
-                  Quotation for {quotationDict[designOrderStatus.status]}
+                  Quotation for{" "}
+                  {quotationDict[designOrderStatus.design_order_status]}
                 </Typography>
                 <TextField
                   id="outlined--static"
@@ -253,7 +360,8 @@ const QuotationModal = ({
             <Stack spacing={2} sx={{ mt: 2 }}>
               <Box>
                 <Typography variant="subtitle1" gutterBottom component="div">
-                  Quotation for {quotationDict[designOrderStatus.status]}
+                  Quotation for{" "}
+                  {quotationDict[designOrderStatus.design_order_status]}
                 </Typography>
                 <TextField
                   id="outlined--static"

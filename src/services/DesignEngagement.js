@@ -16,6 +16,8 @@ import {
   URL_GET_DESIGN_REQUIREMENT_ROOM,
   URL_GET_DESIGN_REQUIREMENT_TAGS,
   URL_GET_DESIGN_REQUIREMENT_MB,
+  URL_UPDATE_CONSULTATION_QUOTATION,
+  URL_UPDATE_PACKAGE_QUOTATION,
 } from "../services/endpoints";
 
 export const createDesignRequirement = (
@@ -162,4 +164,23 @@ export const getDesignRequirementMb = (id) => {
     requirementId: id,
   };
   return get(URL_GET_DESIGN_REQUIREMENT_MB, params);
+};
+
+export const updateConsultationQuotation = (
+  designOrderId,
+  consultQuotation
+) => {
+  const body = {
+    designOrderId: designOrderId,
+    consultQuotation: consultQuotation,
+  };
+  return update(URL_UPDATE_CONSULTATION_QUOTATION, body);
+};
+
+export const updatePackageQuotation = (designOrderId, packageQuotation) => {
+  const body = {
+    designOrderId: designOrderId,
+    packageQuotation: packageQuotation,
+  };
+  return update(URL_UPDATE_PACKAGE_QUOTATION, body);
 };

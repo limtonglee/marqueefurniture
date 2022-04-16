@@ -334,11 +334,17 @@ const RequestConsultation = () => {
       }
 
       for (let requirementTagsId in styleRequests) {
-        await createDesignRequirementTagsAPI(requirementId, requirementTagsId);
+        await createDesignRequirementTagsAPI(
+          requirementId,
+          styleRequests[requirementTagsId]
+        );
       }
 
       for (let moodboardId in moodboardReferences) {
-        await createDesignRequirementMbAPI(moodboardId, requirementId);
+        await createDesignRequirementMbAPI(
+          moodboardReferences[moodboardId],
+          requirementId
+        );
       }
 
       // todo: use the designorder id to create log

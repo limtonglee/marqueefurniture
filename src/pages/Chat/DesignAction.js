@@ -9,7 +9,13 @@ import QuotationModal from "./QuotationModal";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const DesignAction = ({ designOrderStatus, currUserType, sellerId }) => {
+const DesignAction = ({
+  designOrderStatus,
+  currUserType,
+  buyerId,
+  sellerId,
+  refreshDesignOrderStatus,
+}) => {
   console.log("designOrderStatus", designOrderStatus);
   console.log(
     "designOrderStatus.design_order_status",
@@ -80,6 +86,9 @@ const DesignAction = ({ designOrderStatus, currUserType, sellerId }) => {
         isEditing={quotationIsEditing}
         quotation={quotation}
         setQuotation={setQuotation}
+        buyerId={buyerId}
+        sellerId={sellerId}
+        refreshDesignOrderStatus={refreshDesignOrderStatus}
       />
       {DesignOrderDict[designOrderStatus.design_order_status][currUserType][
         "action"

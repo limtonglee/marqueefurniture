@@ -6,7 +6,12 @@ import Divider from "@mui/material/Divider";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { DesignOrderDict } from "../../data/designOrderDict";
 
-const DesignAnnouncement = ({ designOrderStatus, currUserType, buyerId }) => {
+const DesignAnnouncement = ({
+  designOrderStatus,
+  currUserType,
+  buyerId,
+  sellerId,
+}) => {
   return (
     <>
       {DesignOrderDict[designOrderStatus.design_order_status][currUserType][

@@ -14,12 +14,36 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import RemoveIcon from "@mui/icons-material/Remove";
 import BlockIcon from "@mui/icons-material/Block";
 import EditIcon from "@mui/icons-material/Edit";
-
+import { banUser, unbanUser } from "../../../services/Admin";
 // ----------------------------------------------------------------------
 
-export default function UserMoreMenu({status}) {
+export default function UserMoreMenu({
+  userId,
+  status,
+  customers,
+  setFetchUsers,
+}) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  // console.log(status)
+
+  const handleBan = async () => {
+    // console.log("clicked");
+    const response = await banUser(userId);
+    if (response.status === 200) {
+      setFetchUsers(true);
+      setIsOpen(false);
+    }
+  };
+
+  const handleUnban = async () => {
+    const response = await unbanUser(userId);
+    if (response.status === 200) {
+      setFetchUsers(true);
+      setIsOpen(false);
+    }
+  };
 
   return (
     <>
@@ -46,38 +70,32 @@ export default function UserMoreMenu({status}) {
             primaryTypographyProps={{ variant: "body2" }}
           />
         </MenuItem>
-        {status === "banned" ? (
-          <>
-            <MenuItem
-              component={RouterLink}
-              to="#"
-              sx={{ color: "text.secondary" }}
-            >
-              <ListItemIcon>
-                <BlockIcon width={24} height={24} />
-              </ListItemIcon>
-              <ListItemText
-                primary="Unban"
-                primaryTypographyProps={{ variant: "body2" }}
-              />
-            </MenuItem>
-          </>
+        {status === "1" ? (
+          <MenuItem
+            sx={{ color: "primary.main" }}
+            onClick={() => handleUnban()}
+          >
+            <ListItemIcon>
+              <BlockIcon width={24} height={24} />
+            </ListItemIcon>
+            <ListItemText
+              primary="Unban"
+              primaryTypographyProps={{ variant: "body2" }}
+            />
+          </MenuItem>
         ) : (
-          <>
-            <MenuItem
-              component={RouterLink}
-              to="#"
-              sx={{ color: "text.secondary" }}
-            >
-              <ListItemIcon>
-                <BlockIcon width={24} height={24} />
-              </ListItemIcon>
-              <ListItemText
-                primary="Ban"
-                primaryTypographyProps={{ variant: "body2" }}
-              />
-            </MenuItem>
-          </>
+          <MenuItem
+            sx={{ color: "text.secondary" }}
+            onClick={() => handleBan()}
+          >
+            <ListItemIcon>
+              <BlockIcon width={24} height={24} />
+            </ListItemIcon>
+            <ListItemText
+              primary="Ban"
+              primaryTypographyProps={{ variant: "body2" }}
+            />
+          </MenuItem>
         )}
       </Menu>
     </>

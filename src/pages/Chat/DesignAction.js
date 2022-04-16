@@ -132,8 +132,8 @@ const DesignAction = ({ designOrderStatus, currUserType }) => {
                   </Button>
                 </Link>
               )}
-              {!designOrderStatus.status === "Designing" &&
-                !designOrderStatus.status === "InReview" && (
+              {designOrderStatus.status !== "Designing" &&
+                designOrderStatus.status !== "InReview" && (
                   <Button
                     variant="contained"
                     sx={{

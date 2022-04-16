@@ -138,12 +138,3 @@ export const URL_CREATE_DESIGN_REQUIREMENT_TAGS =
   "/api/design/requirementTagsJoinTable/create";
 export const URL_CREATE_DESIGN_REQUIREMENT_MB =
   "/api/design/moodboardRequirementJoinTable/create";
-
-// edit design requirements
-export const URL_EDIT_DESIGN_REQUIREMENT = "/api/design/requirements/edit";
-export const URL_EDIT_DESIGN_REQUIREMENT_ROOM =
-  "/api/design/requirementNumOfRooms/edit";
-export const URL_EDIT_DESIGN_REQUIREMENT_TAGS =
-  "/api/design/requirementTagsJoinTable/edit";
-export const URL_EDIT_DESIGN_REQUIREMENT_MB =
-  "/api/design/moodboardRequirementJoinTable/edit";

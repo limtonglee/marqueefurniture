@@ -239,7 +239,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
         // todo: call API to check if there's engagement going on
         // todo: update below accordingly
         setDesignOrderStatus({
-          status: "Designing",
+          status: "InReview",
           consultQuotation: 1,
           packageQuotation: 2,
           designItems: [

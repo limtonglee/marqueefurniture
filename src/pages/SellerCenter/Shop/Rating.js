@@ -66,19 +66,17 @@ export const ShopRating = () => {
     const [value1, setValue1] = useState(0);
     const [value2, setValue2] = useState(0);
 
-    const handleTab1 = (event, newValue) => {
-        setValue1(newValue);
-        updateData();
+    const handleTab1 = (event, newValue1) => {
+        setValue1(newValue1);
+        updateData(newValue1, value2);
     };
-    const handleTab2 = (event, newValue) => {
-        setValue2(newValue);
-        updateData();
+    const handleTab2 = (event, newValue2) => {
+        setValue2(newValue2);
+        updateData(value1, newValue2);
     };
-    const updateData = () => {
-        console.log('ZZZ value1', value1);
-        console.log('ZZZ value2', value2);
+    const updateData = (value1, value2) => {
         if (value1 === 1) {
-            tabData = ratings.filter((ratings) => ratings.sellerreply === '');
+            tabData = ratings.filter((ratings) => !ratings.sellerreply);
         } else if (value1 === 2) {
             tabData = ratings.filter((ratings) => ratings.sellerreply !== '');
         }
@@ -121,9 +119,9 @@ export const ShopRating = () => {
                         value={value1}
                         onChange={handleTab1}
                     >
-                        <Tab label="All" value="0" />
-                        <Tab label="To Reply" value="1" />
-                        <Tab label="Replied" value="2"/>
+                        <Tab label="All" />
+                        <Tab label="To Reply"/>
+                        <Tab label="Replied"/>
                     </Tabs>
                 </Box>
                 <Box sx={{ border: 1, borderColor: 'divider', margin: '10px' }}>
@@ -131,12 +129,12 @@ export const ShopRating = () => {
                         value={value2}
                         onChange={handleTab2}
                     >
-                        <Tab label="All" value="0"/>
-                        <Tab label="5 Star" value="1"/>
-                        <Tab label="4 Star" value="2"/>
-                        <Tab label="3 Star" value="3"/>
-                        <Tab label="2 Star" value="4"/>
-                        <Tab label="1 Star" value="5"/>
+                        <Tab label="All"/>
+                        <Tab label="5 Star"/>
+                        <Tab label="4 Star"/>
+                        <Tab label="3 Star"/>
+                        <Tab label="2 Star"/>
+                        <Tab label="1 Star"/>
                     </Tabs>
                 </Box>
                 <Grid container spacing={2} >

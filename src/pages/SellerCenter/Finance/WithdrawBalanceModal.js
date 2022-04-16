@@ -4,7 +4,6 @@ import {
     Box,
     Modal,
     TextField,
-    MenuItem,
     Typography,
     IconButton,
 
@@ -12,8 +11,9 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 
-const UpdateOrderModal = ({
-    children,
+const WithdrawBalanceModal = ({
+    balance,
+    shopId,
     refreshData,
 }) => {
     const style = {
@@ -41,38 +41,10 @@ const UpdateOrderModal = ({
         },
     };
 
-    const orderStatus = [
-        {
-            value: 'UNPAID',
-            label: 'UNPAID',
-        },
-        {
-            value: 'PAID',
-            label: 'PAID',
-        },
-        {
-            value: 'SHIPPING',
-            label: 'SHIPPING',
-        },
-        {
-            value: 'DELIVERED',
-            label: 'DELIVERED',
-        },
-        {
-            value: 'CANCELLED',
-            label: 'CANCELLED',
-        },
-        {
-            value: 'RETURN/REFUND',
-            label: 'RETURN/REFUND',
-        },
-    ];
-
     const formReducer = (state, event) => {
         if (event.reset) {
             return {
-                orderStatus: '',
-                trackingNumber: '',
+                withdrawAmount: 0,
             }
         }
         return {
@@ -84,11 +56,15 @@ const UpdateOrderModal = ({
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
     const [formData, setFormData] = useReducer(formReducer, {});
+    const [withdrawAmount, setWithdrawAmount] = React.useState({});
 
     const handleChange = (event) => {
-
+        // if (event.target.value <= balance) {
+        //     setWithdrawAmount({ helperText: '', error: false });
+        // } else {
+        //     setWithdrawAmount({ helperText: 'Invalid amount', error: true });
+        // }
         setFormData({
             name: event.target.name,
             value: event.target.value,
@@ -96,10 +72,9 @@ const UpdateOrderModal = ({
     };
     const handleSubmit = event => {
         event.preventDefault();
-        SellerCenterAPI.updateOrderStatus(formData.orderStatus, children.id);
-        SellerCenterAPI.updateTrackingNumber(formData.trackingNumber, children.id);
-        refreshData();
+        SellerCenterAPI.withdrawBalance(formData.withdrawAmount, shopId);
         handleClose();
+        refreshData();
         setTimeout(() => {
             setFormData({
                 reset: true
@@ -107,11 +82,13 @@ const UpdateOrderModal = ({
         }, 1000);
     }
 
-
     return (
         <>
-            <Button onClick={handleOpen}>
-                Update Order Status
+            <Button
+                variant="contained"
+                onClick={handleOpen}
+            >
+                Withdraw
             </Button>
             <Modal
                 open={open}
@@ -132,7 +109,7 @@ const UpdateOrderModal = ({
                             variant="h6"
                             component="h2"
                         >
-                            Update Order Status
+                            Withdraw from balance
                         </Typography>
                         <IconButton
                             aria-label="delete"
@@ -143,26 +120,16 @@ const UpdateOrderModal = ({
                     </Box>
                     <form onSubmit={handleSubmit}>
                         <Box sx={style.contents}>
-                            Order Status
+                            Amount
                             <TextField
-                                select
-                                name="orderStatus"
+                                required
+                                id="outlined-number"
+                                name="withdrawAmount"
+                                type="number"
+                                // helperText={withdrawAmount.helperText}
+                                // error={withdrawAmount.state.error}
                                 onChange={handleChange}
-                                value={formData.orderStatus || children.order_status}
-                            >
-                                {orderStatus.map((option) => (
-                                    <MenuItem value={option.value}>
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Box>
-                        <Box sx={style.contents}>
-                            Tracking Number
-                            <TextField
-                                name="trackingNumber"
-                                onChange={handleChange}
-                                value={formData.trackingNumber || children.trackingnumber}
+                                value={formData.withdrawAmount || ''}
                             >
                             </TextField>
                         </Box>
@@ -183,4 +150,4 @@ const UpdateOrderModal = ({
     );
 }
 
-export default UpdateOrderModal;
+export default WithdrawBalanceModal;

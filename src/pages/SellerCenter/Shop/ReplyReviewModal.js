@@ -4,16 +4,14 @@ import {
     Box,
     Modal,
     TextField,
-    MenuItem,
     Typography,
     IconButton,
-
 } from '@mui/material';
 import CloseIcon from "@mui/icons-material/Close";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 
-const UpdateOrderModal = ({
-    children,
+const ReplyReviewModal = ({
+    reviewId,
     refreshData,
 }) => {
     const style = {
@@ -41,38 +39,10 @@ const UpdateOrderModal = ({
         },
     };
 
-    const orderStatus = [
-        {
-            value: 'UNPAID',
-            label: 'UNPAID',
-        },
-        {
-            value: 'PAID',
-            label: 'PAID',
-        },
-        {
-            value: 'SHIPPING',
-            label: 'SHIPPING',
-        },
-        {
-            value: 'DELIVERED',
-            label: 'DELIVERED',
-        },
-        {
-            value: 'CANCELLED',
-            label: 'CANCELLED',
-        },
-        {
-            value: 'RETURN/REFUND',
-            label: 'RETURN/REFUND',
-        },
-    ];
-
     const formReducer = (state, event) => {
         if (event.reset) {
             return {
-                orderStatus: '',
-                trackingNumber: '',
+                reply: '',
             }
         }
         return {
@@ -80,6 +50,7 @@ const UpdateOrderModal = ({
             [event.name]: event.value
         }
     }
+
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -96,8 +67,7 @@ const UpdateOrderModal = ({
     };
     const handleSubmit = event => {
         event.preventDefault();
-        SellerCenterAPI.updateOrderStatus(formData.orderStatus, children.id);
-        SellerCenterAPI.updateTrackingNumber(formData.trackingNumber, children.id);
+        SellerCenterAPI.replyReview(reviewId, formData.reply);
         refreshData();
         handleClose();
         setTimeout(() => {
@@ -107,11 +77,10 @@ const UpdateOrderModal = ({
         }, 1000);
     }
 
-
     return (
         <>
             <Button onClick={handleOpen}>
-                Update Order Status
+                Reply to Customer Review
             </Button>
             <Modal
                 open={open}
@@ -132,7 +101,7 @@ const UpdateOrderModal = ({
                             variant="h6"
                             component="h2"
                         >
-                            Update Order Status
+                            Reply to Customer Review
                         </Typography>
                         <IconButton
                             aria-label="delete"
@@ -143,26 +112,15 @@ const UpdateOrderModal = ({
                     </Box>
                     <form onSubmit={handleSubmit}>
                         <Box sx={style.contents}>
-                            Order Status
                             <TextField
-                                select
-                                name="orderStatus"
+                                required
+                                id="outlined-multiline-static"
+                                multiline
+                                rows={4}
+                                name="reply"
+                                placeholder='Enter your reply'
                                 onChange={handleChange}
-                                value={formData.orderStatus || children.order_status}
-                            >
-                                {orderStatus.map((option) => (
-                                    <MenuItem value={option.value}>
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Box>
-                        <Box sx={style.contents}>
-                            Tracking Number
-                            <TextField
-                                name="trackingNumber"
-                                onChange={handleChange}
-                                value={formData.trackingNumber || children.trackingnumber}
+                                value={formData.reply || ""}
                             >
                             </TextField>
                         </Box>
@@ -183,4 +141,4 @@ const UpdateOrderModal = ({
     );
 }
 
-export default UpdateOrderModal;
+export default ReplyReviewModal;

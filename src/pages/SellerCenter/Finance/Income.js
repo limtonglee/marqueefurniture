@@ -5,13 +5,15 @@ import {
     Card,
     Typography,
     Grid,
+    Stack,
 } from '@mui/material';
+import WithdrawBalanceModal from "./WithdrawBalanceModal";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 import { useStores } from "../../../stores/RootStore";
 
 export const Income = () => {
     const [data, setData] = useState([]);
-    const [income, setIncome] = useState([]);
+    // const [income, setIncome] = useState([]);
     const [balance, setBalance] = useState([]);
     const { userStore } = useStores();
 
@@ -19,7 +21,7 @@ export const Income = () => {
         try {
             const res = await SellerCenterAPI.getIncome(userStore.id);
             setData(JSON.parse(JSON.stringify(res.data)));
-            setIncome(JSON.parse(JSON.stringify(res.data)));
+            // setIncome(JSON.parse(JSON.stringify(res.data)));
         } catch (error) {
             console.error(error);
         }
@@ -27,21 +29,22 @@ export const Income = () => {
 
     const getBalance = async () => {
         try {
-            const res = await SellerCenterAPI.getBalance(userStore.id);
+            const res = await SellerCenterAPI.getBalance(userStore.shop.id);
             setBalance(JSON.parse(JSON.stringify(res.data))[0]);
+            console.log(balance);
         } catch (error) {
             console.error(error);
         }
     };
-
-    const initialLoad = () => {
+    
+    useEffect(() => {
         getIncome();
         getBalance();
-    }
-
-    useEffect(() => {
-        initialLoad();
     }, []);
+
+    const refreshData = () => {
+        getBalance();
+    };
 
     return (
         <Layout>
@@ -58,9 +61,16 @@ export const Income = () => {
                             <Typography variant="h7" gutterBottom>
                                 Total
                             </Typography>
-                            <Typography variant="h3" gutterBottom>
-                                $ {balance.balance}
-                            </Typography>
+                            <Stack direction="column">
+                                <Typography variant="h3" gutterBottom>
+                                    $ {balance.balance}
+                                </Typography>
+                                <WithdrawBalanceModal
+                                    refreshData={refreshData}
+                                    shopId={userStore.shop.id}
+                                    balance={balance.balance}
+                                />
+                            </Stack>
                         </Card>
                     </Grid>
                 </Grid>
@@ -82,7 +92,7 @@ export const Income = () => {
                     </Grid>
                     <Grid item xs={12} >
                         {data.map((item) => (
-                            <Card 
+                            <Card
                                 sx={{
                                     marginTop: '10px',
                                     marginBottom: '10px',

@@ -15,7 +15,6 @@ import { Income } from "./pages/SellerCenter/Finance/Income";
 import { AddNewListing } from "./pages/SellerCenter/Listings/AddNewListing";
 import { MyListings } from "./pages/SellerCenter/Listings/MyListings";
 import { Orders } from "./pages/SellerCenter/Orders/Orders";
-import { OrderDetails } from "./pages/SellerCenter/Orders/OrderDetails";
 import { ShopCategories } from "./pages/SellerCenter/Shop/Categories";
 import { ShopCategoryDetails } from "./pages/SellerCenter/Shop/CategoryDetails";
 import { ShopProfile } from "./pages/SellerCenter/Shop/Profile";
@@ -65,7 +64,6 @@ const PostLogin = ({checked, setChecked, handleChange}) => {
         <Route path="/sellercenter" element={<SellerCenter />}>
           <Route path="" element={<Orders />} />
           <Route path="orders" element={<Orders />} />
-          <Route path="orders/:orderId" element={<OrderDetails />} />
           <Route path="listings" element={<MyListings />} />
           <Route path="listings/mylistings" element={<MyListings />} />
           <Route path="listings/addNewListing" element={<AddNewListing />} />

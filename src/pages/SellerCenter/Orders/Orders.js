@@ -11,11 +11,10 @@ import {
     TextField,
     MenuItem,
     Grid,
-    Button,
     Avatar
 } from '@mui/material';
-import { Link } from "react-router-dom";
 import UpdateOrderModal from './UpdateOrderModal';
+import OrderDetailsModal from './OrderDetailsModal';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 import { useStores } from "../../../stores/RootStore";
 
@@ -209,12 +208,8 @@ export const Orders = () => {
                                                     {item.order_status}
                                                 </Grid>
                                                 <Grid item xs={2}>
-                                                    {/* <Link to={`/sellercenter/orders/${item.id}`}>
-                                                        <Button>
-                                                            View Order Details
-                                                        </Button>
-                                                    </Link> */}
                                                     <UpdateOrderModal refreshData={refreshData}>{item}</UpdateOrderModal>
+                                                    <OrderDetailsModal>{item}</OrderDetailsModal>
                                                 </Grid>
                                             </Grid>
                                         </Card>

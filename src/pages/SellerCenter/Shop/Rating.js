@@ -46,7 +46,9 @@ export const ShopRating = () => {
             sum += ratings[i].rating;
         }
         setAverage((sum / ratings.length).toFixed(1));
-        console.log(average);
+        console.log('ZZZ', sum);
+        console.log('ZZZ', ratings.length);
+        console.log('ZZZ', average);
     };
 
     useEffect(() => {
@@ -166,7 +168,7 @@ export const ShopRating = () => {
                                                     Variation: {item.variations}
                                                 </Typography>
                                                 <Typography variant="body2" color="text.secondary">
-                                                    ID: {item.listingid}
+                                                    Listing ID: {item.listingid}
                                                 </Typography>
                                             </Grid>
                                         </Grid>
@@ -225,7 +227,7 @@ export const ShopRating = () => {
                                                     {/* ABC Furniture Shop */}
                                                 </Typography>
                                                 {item.sellerreply === '' ? (
-                                                    <ReplyReviewModal 
+                                                    <ReplyReviewModal
                                                         reviewId={item.id}
                                                         refreshData={refreshData}
                                                     />

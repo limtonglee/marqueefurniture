@@ -101,12 +101,12 @@ export const ShopProfile = () => {
                                     <Typography gutterBottom variant="h5" component="div">
                                         {shop.shopname}
                                     </Typography>
-                                    <Typography variant="body2" color="text.secondary">
+                                    {/* <Typography variant="body2" color="text.secondary">
                                         Products: 10
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
                                         Shop Rating: 4.5
-                                    </Typography>
+                                    </Typography> */}
                                 </CardContent>
                             </Card>
                         </Grid>

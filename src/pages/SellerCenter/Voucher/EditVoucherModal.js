@@ -90,13 +90,19 @@ const EditVoucherModal = ({
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        formData.voucherName = !formData.voucherName ? children.name : formData.voucherName;
+        formData.minSpend = !formData.minSpend ? children.minspend : formData.minSpend;
+        formData.discountAmount = !formData.discountAmount ? children.discountamount : formData.discountAmount;
+        formData.voucherStatus = !formData.voucherStatus ? children.status : formData.voucherStatus;
+
         const response = await SellerCenterAPI.editVoucher(
             voucherId,
             formData.voucherName,
             formData.minSpend,
             formData.discountAmount,
-            '2022-07-01',
-            '2022-07-01',
+            '2021-09-01',
+            '2022-09-01',
             formData.voucherStatus,
         );
         if (response.data === "Voucher has been successfully updated!") {

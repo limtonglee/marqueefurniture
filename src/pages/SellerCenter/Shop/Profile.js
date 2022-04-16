@@ -56,6 +56,11 @@ export const ShopProfile = () => {
     };
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        formData.shopName = !formData.shopName ? shop.shopname : formData.shopName;
+        formData.shopWebsite = !formData.shopWebsite ? shop.website : formData.shopWebsite;
+        formData.shopDescription = !formData.shopDescription ? shop.description : formData.shopDescription;
+
         const response = await SellerCenterAPI.editShopProfile(
             formData.shopName,
             formData.shopWebsite,

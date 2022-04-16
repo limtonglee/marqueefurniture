@@ -156,6 +156,13 @@ export const URL_CREATE_DESIGN_REQUIREMENT_TAGS =
 export const URL_CREATE_DESIGN_REQUIREMENT_MB =
   "/api/design/moodboardRequirementJoinTable/create";
 
+// get design requirements
+export const URL_GET_DESIGN_REQUIREMENT = "/api/design/requirements";
+export const URL_GET_DESIGN_REQUIREMENT_ROOM =
+  "/api/design/requirementNumOfRooms";
+export const URL_GET_DESIGN_REQUIREMENT_TAGS = "/api/design/requirementTags";
+export const URL_GET_DESIGN_REQUIREMENT_MB = "/api/design/requirementMoodboard";
+
 // design logs
 export const URL_GET_DESIGN_LOGS = "/api/design/designLogs";
 export const URL_CREATE_DESIGN_LOG = "/api/design/designLogs/create";

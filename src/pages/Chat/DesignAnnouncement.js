@@ -6,7 +6,7 @@ import Divider from "@mui/material/Divider";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { DesignOrderDict } from "../../data/designOrderDict";
 
-const DesignAnnouncement = ({ designOrderStatus, currUserType }) => {
+const DesignAnnouncement = ({ designOrderStatus, currUserType, buyerId }) => {
   return (
     <>
       {DesignOrderDict[designOrderStatus.design_order_status][currUserType][
@@ -14,7 +14,7 @@ const DesignAnnouncement = ({ designOrderStatus, currUserType }) => {
       ].length > 0 && (
         <Link
           to="/designOrderProgress"
-          state={{ designOrderStatus: designOrderStatus }}
+          state={{ designOrderStatus: designOrderStatus, buyerId: buyerId }}
         >
           <Box
             sx={{

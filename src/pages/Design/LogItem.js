@@ -6,7 +6,6 @@ import Button from "@mui/material/Button";
 import { format } from "date-fns";
 
 const LogItem = ({ log }) => {
-  console.log("log", log);
   return (
     <>
       <Grid container spacing={2} sx={{ mb: 2 }}>

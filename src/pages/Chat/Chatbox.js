@@ -557,7 +557,9 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
                 designOrderStatus={designOrderStatus}
                 currUserType={currUserType}
                 sellerId={
-                  currentChat.firstuserid === userStore.id
+                  userStore.isDesigner
+                    ? userStore.id
+                    : currentChat.firstuserid === userStore.id
                     ? currentChat.seconduserid
                     : currentChat.firstuserid
                 }
@@ -565,6 +567,13 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
               <DesignAnnouncement
                 designOrderStatus={designOrderStatus}
                 currUserType={currUserType}
+                buyerId={
+                  userStore.isDesigner
+                    ? currentChat.firstuserid === userStore.id
+                      ? currentChat.seconduserid
+                      : currentChat.firstuserid
+                    : userStore.id
+                }
               />
             </>
           )}

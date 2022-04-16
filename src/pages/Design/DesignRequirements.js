@@ -23,7 +23,7 @@ import * as designEngagementAPI from "../../services/DesignEngagement";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 
-const DesignRequirements = () => {
+const DesignRequirements = ({ designOrderStatus, buyerId }) => {
   const { userStore } = useStores();
 
   const [moodboardValues, setMoodboardValues] = useState([]);
@@ -32,72 +32,163 @@ const DesignRequirements = () => {
   const [requestType, setRequestType] = useState("");
   const [files, setFiles] = useState([]);
 
-  //! dummy ------------------------
-  const dummy = {
-    requestType: "designonly",
-    roomGeometry: [
-      { id: 1, roomSize: "142", roomType: "Kitchen" },
-      { id: 2, roomSize: "111", roomType: "Bedroom" },
-    ],
-    floorPlan: [
-      "d5905def5a6366ae4a3b3cadced8cbd2",
-      "dd1f03dcab86c065cc069e07a1931d98",
-      "c7befb8cdc6dc9623673a57ee78e6447",
-    ],
-    styleRequests: [5, 10],
-    moodboardReferences: [3, 1],
-    otherComments: "comment goes here",
+  const [designRequirements, setDesignRequirements] = useState({});
+
+  const getDesignRequirementRoom = async (requirementId) => {
+    try {
+      const res = await designEngagementAPI.getDesignRequirementRoom(
+        requirementId
+      );
+      let data = JSON.parse(JSON.stringify(res)).data;
+      console.log("getDesignRequirementRoom data", data);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  const getDesignRequirementTags = async (requirementId) => {
+    try {
+      const res = await designEngagementAPI.getDesignRequirementTags(
+        requirementId
+      );
+      let data = JSON.parse(JSON.stringify(res)).data;
+      console.log("getDesignRequirementTags data", data);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getDesignRequirementMb = async (requirementId) => {
+    try {
+      const res = await designEngagementAPI.getDesignRequirementMb(
+        requirementId
+      );
+      let data = JSON.parse(JSON.stringify(res)).data;
+      console.log("getDesignRequirementMb data", data);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getDesignRequirement = async (userId) => {
+    try {
+      console.log("userId", userId);
+      const res = await designEngagementAPI.getDesignRequirement(userId);
+      let data = JSON.parse(JSON.stringify(res)).data[0];
+      console.log("getDesignRequirement data", data);
+
+      const designOrderId = data.id;
+
+      const roomGeometry = await getDesignRequirementRoom(designOrderId);
+      const styleRequests = await getDesignRequirementTags(designOrderId);
+      const moodboardReferences = await getDesignRequirementMb(designOrderId);
+
+      const newDesignRequirement = {
+        ...data,
+        roomGeometry: roomGeometry,
+        styleRequests: styleRequests,
+        moodboardReferences: moodboardReferences,
+      };
+
+      console.log("newDesignRequirement", newDesignRequirement);
+
+      setDesignRequirements(newDesignRequirement);
+      setDesignValues(styleRequests);
+      setMoodboardValues(moodboardReferences);
+
+      // initialisation
+      const newFiles = [];
+      newDesignRequirement.floorplan1 !== "" &&
+        newFiles.push(newDesignRequirement.floorplan1);
+      newDesignRequirement.floorplan2 !== "" &&
+        newFiles.push(newDesignRequirement.floorplan2);
+      newDesignRequirement.floorplan3 !== "" &&
+        newFiles.push(newDesignRequirement.floorplan3);
+
+      setFiles(newFiles);
+      setRoomRows(newDesignRequirement.roomGeometry);
+      setRequestType(newDesignRequirement.requesttype);
+      setOtherComments(newDesignRequirement.comments);
+
+      // return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    setFiles(dummy.floorPlan);
-    setRoomRows(dummy.roomGeometry);
-    setRequestType(dummy.requestType);
-    setOtherComments(dummy.otherComments);
+    getDesignRequirement(buyerId);
   }, []);
+
+  //! dummy ------------------------
+  // const dummy = {
+  //   requestType: "designonly",
+  //   roomGeometry: [
+  //     { id: 1, roomSize: "142", roomType: "Kitchen" },
+  //     { id: 2, roomSize: "111", roomType: "Bedroom" },
+  //   ],
+  //   floorPlan: [
+  //     "d5905def5a6366ae4a3b3cadced8cbd2",
+  //     "dd1f03dcab86c065cc069e07a1931d98",
+  //     "c7befb8cdc6dc9623673a57ee78e6447",
+  //   ],
+  //   styleRequests: [5, 10],
+  //   moodboardReferences: [3, 1],
+  //   otherComments: "comment goes here",
+  // };
+  // useEffect(() => {
+  //   setFiles(dummy.floorPlan);
+  //   setRoomRows(dummy.roomGeometry);
+  //   setRequestType(dummy.requestType);
+  //   setOtherComments(dummy.otherComments);
+  // }, []);
 
   // ! ------------------------------
 
-  const getPostTags = async () => {
-    try {
-      const res = await socialMediaAPI.getAllTags();
-      const data = JSON.parse(JSON.stringify(res)).data;
+  // const getPostTags = async () => {
+  //   try {
+  //     const res = await socialMediaAPI.getAllTags();
+  //     const data = JSON.parse(JSON.stringify(res)).data;
 
-      const designTags = data
-        .filter((item) => item.tagtype === "Design")
-        .filter((item) => dummy.styleRequests.includes(item.id));
-      setDesignValues(designTags);
+  //     const designTags = data
+  //       .filter((item) => item.tagtype === "Design")
+  //       .filter((item) => dummy.styleRequests.includes(item.id));
+  //     setDesignValues(designTags);
 
-      return data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //     return data;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    getPostTags();
-  }, []);
+  // useEffect(() => {
+  //   getPostTags();
+  // }, []);
 
-  const getUserMoodboards = async () => {
-    try {
-      const res = await socialMediaAPI.getUserMoodboards(userStore.id);
-      const data = JSON.parse(JSON.stringify(res)).data;
-      // console.log("getUserMoodboards data", data);
-      const cleaned = data
-        .map((item) => {
-          return { id: item.id, boardname: item.boardname };
-        })
-        .filter((item) => dummy.moodboardReferences.includes(item.id));
-      // console.log("cleaned", cleaned);
-      setMoodboardValues(cleaned);
-      return data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const getUserMoodboards = async () => {
+  //   try {
+  //     const res = await socialMediaAPI.getUserMoodboards(userStore.id);
+  //     const data = JSON.parse(JSON.stringify(res)).data;
+  //     // console.log("getUserMoodboards data", data);
+  //     const cleaned = data
+  //       .map((item) => {
+  //         return { id: item.id, boardname: item.boardname };
+  //       })
+  //       .filter((item) => dummy.moodboardReferences.includes(item.id));
+  //     // console.log("cleaned", cleaned);
+  //     setMoodboardValues(cleaned);
+  //     return data;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    getUserMoodboards();
-  }, []);
+  // useEffect(() => {
+  //   getUserMoodboards();
+  // }, []);
 
   const handleChangeForMoodboardTags = (event, value) => {
     setMoodboardValues(value);
@@ -116,18 +207,18 @@ const DesignRequirements = () => {
   };
 
   const [roomRows, setRoomRows] = useState([
-    { id: 1, roomSize: "", roomType: "" },
+    { id: 1, roomsize: "", roomtype: "" },
   ]);
 
   const updateRoomSize = (index, event) => {
     const newRoomRows = [...roomRows];
-    newRoomRows[index].roomSize = event.target.value;
+    newRoomRows[index].roomsize = event.target.value;
     setRoomRows(newRoomRows);
   };
 
   const updateRoomType = (index, event) => {
     const newRoomRows = [...roomRows];
-    newRoomRows[index].roomType = event.target.value;
+    newRoomRows[index].roomtype = event.target.value;
     setRoomRows(newRoomRows);
   };
 
@@ -191,7 +282,7 @@ const DesignRequirements = () => {
                                   </InputAdornment>
                                 ),
                               }}
-                              value={room.roomSize}
+                              value={room.roomsize}
                               onChange={(event) => updateRoomSize(i, event)}
                               disabled
                             />
@@ -201,7 +292,7 @@ const DesignRequirements = () => {
                               required
                               id="outlined-required"
                               placeholder="Enter room type"
-                              value={room.roomType}
+                              value={room.roomtype}
                               onChange={(event) => updateRoomType(i, event)}
                               disabled
                             />

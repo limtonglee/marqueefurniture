@@ -12,6 +12,10 @@ import {
   URL_GET_DESIGN_ORDER_DESIGNS,
   URL_GET_DESIGN_ORDER_PRODUCTS,
   URL_UPDATE_DESIGN_ORDER_STATUS,
+  URL_GET_DESIGN_REQUIREMENT,
+  URL_GET_DESIGN_REQUIREMENT_ROOM,
+  URL_GET_DESIGN_REQUIREMENT_TAGS,
+  URL_GET_DESIGN_REQUIREMENT_MB,
 } from "../services/endpoints";
 
 export const createDesignRequirement = (
@@ -130,4 +134,32 @@ export const updateDesignOrderStatus = (
     designOrderStatus: designOrderStatus,
   };
   return update(URL_UPDATE_DESIGN_ORDER_STATUS, body);
+};
+
+export const getDesignRequirement = (id) => {
+  const params = {
+    userId: id,
+  };
+  return get(URL_GET_DESIGN_REQUIREMENT, params);
+};
+
+export const getDesignRequirementRoom = (id) => {
+  const params = {
+    requirementId: id,
+  };
+  return get(URL_GET_DESIGN_REQUIREMENT_ROOM, params);
+};
+
+export const getDesignRequirementTags = (id) => {
+  const params = {
+    requirementId: id,
+  };
+  return get(URL_GET_DESIGN_REQUIREMENT_TAGS, params);
+};
+
+export const getDesignRequirementMb = (id) => {
+  const params = {
+    requirementId: id,
+  };
+  return get(URL_GET_DESIGN_REQUIREMENT_MB, params);
 };

@@ -100,6 +100,8 @@ const DesignOrderProgress = () => {
     ? location.state.designOrderStatus
     : null;
 
+  const buyerId = location.state ? location.state.buyerId : null;
+
   let navigate = useNavigate();
   const { userStore } = useStores();
 
@@ -280,7 +282,10 @@ const DesignOrderProgress = () => {
               )}
               {tabValue === 1 && (
                 <>
-                  <DesignRequirements />
+                  <DesignRequirements
+                    designOrderStatus={designOrderStatus}
+                    buyerId={buyerId}
+                  />
                 </>
               )}
               {tabValue === 2 && (
@@ -319,6 +324,28 @@ const DesignOrderProgress = () => {
                           key={i}
                         />
                       ))}
+                    {designOrderStatus.designItems.length === 0 && (
+                      <Box
+                        sx={{
+                          width: "100%",
+                          height: 200,
+                          border: "1px solid #DFE3E8",
+                          borderRadius: 3,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Typography
+                          variant="h5"
+                          gutterBottom
+                          component="div"
+                          sx={{ fontWeight: "normal", fontStyle: "italic" }}
+                        >
+                          No designs yet
+                        </Typography>
+                      </Box>
+                    )}
                   </Box>
                 </>
               )}

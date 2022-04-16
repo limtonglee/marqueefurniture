@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import { Link ,useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // Images
 import { useStores } from "../../../stores/RootStore";
 
@@ -17,27 +17,36 @@ function Header({ name, profilePic }) {
   const [active, setActive] = useState(true);
 
   const handleProfileClick = () => {
-    setActive(!active)
-    navigate('/profile/orders')
-  }
+    setActive(!active);
+    navigate("/profile/orders");
+  };
 
   return (
     <Box position="relative">
-      <Grid
-        container
-        alignItems="center"
-        justifyContent={"space-between"}
-      >
+      <Grid container alignItems="center" justifyContent={"space-between"}>
         <Grid item mt={1} ml={1} p={1} xs={6}>
           <Grid container alignItems="center">
             <Grid item spacing={1} p={1}>
-              <Avatar
-                src={`/api/image/${profilePic}`}
-                alt="profile-image"
-                variant="rounded"
-                size="xl"
-                shadow="sm"
-              />
+              {profilePic !== null ? (
+                <>
+                  <Avatar
+                    src={`/api/image/${profilePic}`}
+                    alt="profile-image"
+                    variant="rounded"
+                    size="xl"
+                    shadow="sm"
+                  />
+                </>
+              ) : (
+                <>
+                  <Avatar
+                    alt="profile-image"
+                    variant="rounded"
+                    size="xl"
+                    shadow="sm"
+                  />
+                </>
+              )}
             </Grid>
             <Grid item>
               <Box height="100%" mt={0.5} lineHeight={1}>
@@ -78,7 +87,9 @@ function Header({ name, profilePic }) {
             </Button>
             <Button
               disabled={!active}
-              onClick={() => {handleProfileClick() }}
+              onClick={() => {
+                handleProfileClick();
+              }}
               sx={[
                 {
                   "&.MuiButton-root": {

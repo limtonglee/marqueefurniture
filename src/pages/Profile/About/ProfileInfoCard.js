@@ -83,7 +83,7 @@ function ProfileInfoCard({
       address: data.get("address"),
     });
 
-    if (result.profilePic !== undefined) {
+    if (result.profilePic !== null) {
       setProfilePic(result.profilePic);
 
       userStore.setProfilePic(result.profilePic);

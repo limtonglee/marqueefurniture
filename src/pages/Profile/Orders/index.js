@@ -21,6 +21,8 @@ import { getListingDetails } from "../../../services/Listings";
 import { SellerData } from "../../Cart/SellerData";
 import { updateOrderStatus } from "../../../services/SellerCenter";
 import { format } from "date-fns";
+import { ReviewDialog } from "./ReviewDialog";
+import { toast, ToastContainer } from "react-toastify";
 
 
 const Img = styled("img")({
@@ -38,6 +40,14 @@ export default function Orders() {
   const [orders, setOrders] = useState([]);
   const [data, setData] = useState([]);
   const [tabValue, setTabValue] = useState(0);
+  const [currentData, setCurrentData] = useState(null);
+  const [start, setStart] = useState(false);
+
+  const notifyReview = () =>
+  toast("Review added!", {
+    position: toast.POSITION.TOP_CENTER,
+    autoClose: 1500,
+  });
 
   useEffect(() => {
     const getListingDetail = async (listingId) => {
@@ -133,9 +143,16 @@ export default function Orders() {
     }
   };
 
+  const handleRate = (item) => {
+    console.log(item);
+    setCurrentData(item);
+    setStart(true);
+  };
 
   return (
     <Container>
+      <ToastContainer />
+
       <Typography variant="h3" fontWeight="bold">
         My Orders
       </Typography>
@@ -203,7 +220,11 @@ export default function Orders() {
                           Order Status: {orderItem.order_status}
                         </Typography>
                         <Typography variant="body2">
-                          Order time: {format(Date.parse(orderItem.datetime), "dd/MM/yyyy HH:MM")}
+                          Order time:{" "}
+                          {format(
+                            Date.parse(orderItem.datetime),
+                            "dd/MM/yyyy HH:MM"
+                          )}
                         </Typography>
                         <Grid
                           item
@@ -230,9 +251,7 @@ export default function Orders() {
                                 <Button
                                   variant="outlined"
                                   sx={{ width: "150px" }}
-                                  onClick={() =>
-                                    handleRefund(orderItem.id)
-                                  }
+                                  onClick={() => handleRefund(orderItem.id)}
                                 >
                                   Refund
                                 </Button>
@@ -245,6 +264,7 @@ export default function Orders() {
                                 <Button
                                   variant="contained"
                                   sx={{ width: "150px" }}
+                                  onClick={() => handleRate(orderItem)}
                                 >
                                   Rate
                                 </Button>
@@ -263,7 +283,7 @@ export default function Orders() {
                               </Grid>
                             </>
                           )}
-                              {orderItem.order_status === "RETURN/REFUND" && (
+                          {orderItem.order_status === "RETURN/REFUND" && (
                             <>
                               <Grid item>
                                 <Button
@@ -294,7 +314,7 @@ export default function Orders() {
                         </Grid>
                       </Grid>
                     </Grid>
-                    <Grid item xs={2} >
+                    <Grid item xs={2}>
                       <Grid item>
                         <Typography
                           variant="body2"
@@ -333,6 +353,12 @@ export default function Orders() {
             ))}
         </ImageList>
       </Paper>
+      <ReviewDialog
+        start={start}
+        setStart={setStart}
+        currentData={currentData}
+        setShowReview={notifyReview}
+      ></ReviewDialog>
     </Container>
   );
 }

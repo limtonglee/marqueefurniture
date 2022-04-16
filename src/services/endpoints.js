@@ -33,7 +33,10 @@ export const URL_DELETE_CART_ITEMS = "/api/cart/deleteItems";
 //checkout management
 export const URL_CHECKOUT = "/api/checkout";
 export const URL_PAYMENT = "/api/payment";
+
+//order management
 export const URL_GET_ORDERS = "/api/user/orders";
+export const URL_RATE_ORDER = "/api/user/rate";
 
 //liked listings management
 export const URL_LISTING_LIKE = "/api/listing/like"; // user liking a post

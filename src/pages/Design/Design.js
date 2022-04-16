@@ -18,6 +18,10 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import TextField from "@mui/material/TextField";
 import ProductViewInDesign from "./ProductViewInDesign";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
 
 const Design = () => {
   let navigate = useNavigate();
@@ -25,6 +29,11 @@ const Design = () => {
 
   const location = useLocation();
   const design = location.state ? location.state.design : null;
+  const designOrderStatus = location.state
+    ? location.state.designOrderStatus
+    : null;
+  const buyerId = location.state ? location.state.buyerId : null;
+  const sellerId = location.state ? location.state.sellerId : null;
   const onlyNavigateBackOne = location.state
     ? location.state.onlyNavigateBackOne
     : null;
@@ -57,24 +66,26 @@ const Design = () => {
               thumbnail: `/api/image/${design.designimages3}`,
             },
           ];
+        } else {
+          images = [
+            {
+              original: `/api/image/${design.designimages1}`,
+              thumbnail: `/api/image/${design.designimages1}`,
+            },
+            {
+              original: `/api/image/${design.designimages2}`,
+              thumbnail: `/api/image/${design.designimages2}`,
+            },
+          ];
         }
+      } else {
         images = [
           {
             original: `/api/image/${design.designimages1}`,
             thumbnail: `/api/image/${design.designimages1}`,
           },
-          {
-            original: `/api/image/${design.designimages2}`,
-            thumbnail: `/api/image/${design.designimages2}`,
-          },
         ];
       }
-      images = [
-        {
-          original: `/api/image/${design.designimages1}`,
-          thumbnail: `/api/image/${design.designimages1}`,
-        },
-      ];
     }
     // images = [
     //   {
@@ -125,7 +136,15 @@ const Design = () => {
               justifyContent: "flex-end",
             }}
           >
-            <Link to="/designOrder/design/review" state={{ design: design }}>
+            <Link
+              to="/designOrder/design/review"
+              state={{
+                design: design,
+                designOrderStatus: designOrderStatus,
+                buyerId: buyerId,
+                sellerId: sellerId,
+              }}
+            >
               <Button
                 variant="contained"
                 size="large"
@@ -302,12 +321,66 @@ const Design = () => {
                         <Typography variant="h4" component="div">
                           Picture comments
                         </Typography>
-                        {design.customerReview.pictureComments.length === 0 ? (
+                        {design.userpicturecomment1 === "" ? (
                           <>No files</>
                         ) : (
                           <>
                             <Stack direction="row" spacing={3} sx={{ mt: 3 }}>
-                              {design.customerReview.pictureComments.map(
+                              {design.userpicturecomment1 && (
+                                <Card
+                                  sx={{
+                                    width: 300,
+                                    position: "relative",
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <CardMedia
+                                    component="img"
+                                    width="100%"
+                                    objectfit="scale-down"
+                                    image={`/api/image/${design.userpicturecomment1}`}
+                                    alt="post picture"
+                                  />
+                                </Card>
+                              )}
+                              {design.userpicturecomment2 && (
+                                <Card
+                                  sx={{
+                                    width: 300,
+                                    position: "relative",
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <CardMedia
+                                    component="img"
+                                    width="100%"
+                                    objectfit="scale-down"
+                                    image={`/api/image/${design.userpicturecomment2}`}
+                                    alt="post picture"
+                                  />
+                                </Card>
+                              )}
+                              {design.userpicturecomment3 && (
+                                <Card
+                                  sx={{
+                                    width: 300,
+                                    position: "relative",
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <CardMedia
+                                    component="img"
+                                    width="100%"
+                                    objectfit="scale-down"
+                                    image={`/api/image/${design.userpicturecomment3}`}
+                                    alt="post picture"
+                                  />
+                                </Card>
+                              )}
+                              {/* {design.customerReview.pictureComments.map(
                                 (file, i) => (
                                   <Card
                                     key={i}
@@ -327,7 +400,7 @@ const Design = () => {
                                     />
                                   </Card>
                                 )
-                              )}
+                              )} */}
                             </Stack>
                           </>
                         )}
@@ -341,9 +414,34 @@ const Design = () => {
                           multiline
                           rows={4}
                           sx={{ width: 600 }}
-                          value={design.customerReview.otherComments}
+                          value={design.userothercomment}
                           disabled
                         />
+                      </Box>
+                      <Box sx={{ mt: 5 }}>
+                        <Typography variant="h4" gutterBottom component="div">
+                          Do you approve this design?
+                        </Typography>
+                        <FormControl>
+                          <RadioGroup
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            name="radio-buttons-group"
+                            value={design.iscompleted}
+                          >
+                            <FormControlLabel
+                              value="1"
+                              control={<Radio />}
+                              label="Yes"
+                              disabled
+                            />
+                            <FormControlLabel
+                              value="0"
+                              control={<Radio />}
+                              label="No"
+                              disabled
+                            />
+                          </RadioGroup>
+                        </FormControl>
                       </Box>
                     </>
                   )}

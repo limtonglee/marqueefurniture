@@ -17,16 +17,33 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+
 const ReviewDesign = () => {
   let navigate = useNavigate();
 
   const location = useLocation();
   const design = location.state ? location.state.design : null;
+  const designOrderStatus = location.state
+    ? location.state.designOrderStatus
+    : null;
+  const buyerId = location.state ? location.state.buyerId : null;
+  const sellerId = location.state ? location.state.sellerId : null;
+
+  console.log("design", design);
 
   const [otherComments, setOtherComments] = useState("");
+  const [isCompleted, setIsCompleted] = useState("");
 
   const handleChangeOtherComments = (event) => {
     setOtherComments(event.target.value);
+  };
+
+  const updateIsCompleted = (e) => {
+    setIsCompleted(e.target.value);
   };
 
   const [files, setFiles] = useState([]);
@@ -65,6 +82,91 @@ const ReviewDesign = () => {
     }
   };
 
+  const createDesignLogAPI = async (dateTime, description, role, orderId) => {
+    try {
+      const res = await designEngagementAPI.createDesignLog(
+        dateTime,
+        description,
+        role,
+        orderId
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateDesignOrderStatusAPI = async (newStatus) => {
+    console.log(
+      `updateDesignOrderStatusAPI buyerId sellerId ${buyerId} ${sellerId}`
+    );
+    try {
+      const res = await designEngagementAPI.updateDesignOrderStatus(
+        buyerId,
+        sellerId,
+        newStatus
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const createDesignReviewAPI = async ({
+    designPackageId,
+    photoReviews,
+    userOtherComment,
+    isCompleted,
+  }) => {
+    console.log("line 260 createDesignRequirementAPI");
+    try {
+      const res = await designEngagementAPI.createDesignReview(
+        designPackageId,
+        photoReviews[0],
+        photoReviews[1],
+        photoReviews[2],
+        userOtherComment,
+        isCompleted
+      );
+      const data = JSON.parse(JSON.stringify(res)).data[0]["id"];
+
+      const timestamp = new Date();
+
+      if (isCompleted === "1") {
+        // todo: use the designorder id to create log
+        await createDesignLogAPI(
+          timestamp,
+          "Approved design",
+          "Customer",
+          designOrderStatus.id
+        );
+
+        // todo: update designorder status
+        await updateDesignOrderStatusAPI("Completed");
+      } else {
+        // todo: use the designorder id to create log
+        await createDesignLogAPI(
+          timestamp,
+          "Rejected design",
+          "Customer",
+          designOrderStatus.id
+        );
+
+        // todo: update designorder status
+        await updateDesignOrderStatusAPI("Rejected");
+      }
+
+      // todo: navigate back to chat
+      navigate("/chat");
+
+      // return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleSubmitReview = () => {
     console.log("handleSubmitReview");
 
@@ -82,10 +184,18 @@ const ReviewDesign = () => {
     }
 
     console.log("data to submit", {
+      designPackageId: design.id,
       photoReviews: photoReviews,
-      otherComments: otherComments,
+      userOtherComment: otherComments,
+      isCompleted: isCompleted,
     });
 
+    createDesignReviewAPI({
+      designPackageId: design.id,
+      photoReviews: photoReviews,
+      userOtherComment: otherComments,
+      isCompleted: isCompleted,
+    });
     // call API to submit
   };
 
@@ -225,6 +335,30 @@ const ReviewDesign = () => {
                     value={otherComments}
                     onChange={handleChangeOtherComments}
                   />
+                </Box>
+                <Box>
+                  <Typography variant="h4" gutterBottom component="div">
+                    Do you approve this design?
+                  </Typography>
+                  <FormControl>
+                    <RadioGroup
+                      aria-labelledby="demo-radio-buttons-group-label"
+                      name="radio-buttons-group"
+                      value={isCompleted}
+                      onChange={updateIsCompleted}
+                    >
+                      <FormControlLabel
+                        value="1"
+                        control={<Radio />}
+                        label="Yes"
+                      />
+                      <FormControlLabel
+                        value="0"
+                        control={<Radio />}
+                        label="No"
+                      />
+                    </RadioGroup>
+                  </FormControl>
                 </Box>
                 <Box sx={{ pt: 2 }}>
                   <Button

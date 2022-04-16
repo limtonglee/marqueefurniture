@@ -10,7 +10,7 @@ import { format } from "date-fns";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 const DesignItemCard = ({ design, hideButton }) => {
-  console.log("design", design);
+  console.log("DesignItemCard design", design);
   let navigate = useNavigate();
 
   const handleViewDesign = () => {
@@ -103,7 +103,7 @@ const DesignItemCard = ({ design, hideButton }) => {
                 <Stack spacing={1.5} sx={{ textAlign: "right" }}>
                   {!hideButton && (
                     <>
-                      {design.isCompleted === "1" ? (
+                      {design.isreviewed === "1" ? (
                         <Button
                           variant="outlined"
                           sx={{

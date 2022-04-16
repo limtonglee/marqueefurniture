@@ -11,7 +11,7 @@ const LogItem = ({ log }) => {
       <Grid container spacing={2} sx={{ mb: 2 }}>
         <Grid item xs={3} md={2}>
           <Typography variant="h6" gutterBottom component="div">
-            {format(Date.parse(log.datetime), "dd MMM yy hh:mm")}
+            {format(Date.parse(log.datetime), "dd MMM yy HH:mm")}
           </Typography>
         </Grid>
         <Grid item xs={5} md={5}>

@@ -207,6 +207,7 @@ export const createDesignPackage = (
     designImages3: designImages3,
     designerComment: designerComment,
     isCompleted: "0",
+    isReviewed: "0",
     designOrderId: designOrderId,
   };
   return postAsFormInput(URL_CREATE_DESIGN_PACKAGE, body);
@@ -228,6 +229,7 @@ export const createDesignReview = (
   userOtherComment,
   isCompleted
 ) => {
+  console.log("createDesignReview service");
   const body = {
     designPackageId: designPackageId,
     userPictureComment1: userPictureComment1,
@@ -235,6 +237,7 @@ export const createDesignReview = (
     userPictureComment3: userPictureComment3,
     userOtherComment: userOtherComment,
     isCompleted: isCompleted,
+    isReviewed: "1",
   };
   return postAsFormInput(URL_CREATE_DESIGN_REVIEW, body);
 };

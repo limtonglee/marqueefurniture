@@ -160,7 +160,38 @@ const DesignAction = ({
                       designOrderStatus.designItems[
                         designOrderStatus.designItems.length - 1
                       ],
+                    designOrderStatus: designOrderStatus,
                     onlyNavigateBackOne: true,
+                    buyerId: buyerId,
+                    sellerId: sellerId,
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "white",
+                      color: "primary.main",
+                      "&:hover": {
+                        backgroundColor: "grey.200",
+                      },
+                    }}
+                    onClick={handleActionClick}
+                  >
+                    {
+                      DesignOrderDict[designOrderStatus.design_order_status][
+                        currUserType
+                      ]["action"]
+                    }
+                  </Button>
+                </Link>
+              )}
+              {designOrderStatus.design_order_status === "Rejected" && (
+                <Link
+                  to="/designOrder/newDesign"
+                  state={{
+                    designOrderStatus: designOrderStatus, //todo: update
+                    buyerId: buyerId,
+                    sellerId: sellerId,
                   }}
                 >
                   <Button
@@ -184,7 +215,8 @@ const DesignAction = ({
               )}
               {designOrderStatus.design_order_status !== "Nothing" &&
                 designOrderStatus.design_order_status !== "Designing" &&
-                designOrderStatus.design_order_status !== "InReview" && (
+                designOrderStatus.design_order_status !== "InReview" &&
+                designOrderStatus.design_order_status !== "Rejected" && (
                   <Button
                     variant="contained"
                     sx={{

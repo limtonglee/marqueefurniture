@@ -174,10 +174,10 @@ const Messenger = () => {
         recipientProfilePic: recipientProfilePic,
         chatMessages: chatMessages,
       };
-      console.log(
-        "chatWithRecipientUsername messenger",
-        chatWithRecipientUsername
-      );
+      // console.log(
+      //   "chatWithRecipientUsername messenger",
+      //   chatWithRecipientUsername
+      // );
 
       return chatWithRecipientUsername;
     });
@@ -185,9 +185,9 @@ const Messenger = () => {
     await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
 
     Promise.all(promises).then((values) => {
-      console.log("cleaned data", values);
+      // console.log("cleaned data", values);
       setUserChats(values);
-      console.log("values messenger", values);
+      // console.log("values messenger", values);
 
       // setCurrentChat(values[values.length - 1]);
 

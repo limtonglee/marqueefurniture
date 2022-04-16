@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
@@ -9,7 +9,18 @@ import QuotationModal from "./QuotationModal";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const DesignAction = ({ designOrderStatus, currUserType }) => {
+const DesignAction = ({ designOrderStatus, currUserType, sellerId }) => {
+  console.log("designOrderStatus", designOrderStatus);
+  console.log(
+    "designOrderStatus.design_order_status",
+    designOrderStatus.design_order_status
+  );
+
+  useEffect(() => {
+    "useEffect";
+    console.log(designOrderStatus);
+  }, [designOrderStatus]);
+
   let navigate = useNavigate();
 
   const [openQuotationModal, setOpenQuotationModal] = React.useState(false);
@@ -30,33 +41,33 @@ const DesignAction = ({ designOrderStatus, currUserType }) => {
   };
 
   const handleActionClick = () => {
-    if (designOrderStatus.status === "Nothing") {
+    if (designOrderStatus.design_order_status === "Nothing") {
       navigate("/designConsultation");
-    } else if (designOrderStatus.status === "Requested") {
+    } else if (designOrderStatus.design_order_status === "Requested") {
       console.log("todo: handle issue quotation");
       setOpenQuotationModal(true);
-    } else if (designOrderStatus.status === "ConsultQuoted") {
+    } else if (designOrderStatus.design_order_status === "ConsultQuoted") {
       console.log("todo: handle update quotation");
-      if (designOrderStatus.consultQuotation) {
+      if (designOrderStatus.consultquotation) {
         setQuotationIsEditing(true);
-        setQuotation(`${designOrderStatus.consultQuotation}`);
+        setQuotation(`${designOrderStatus.consultquotation}`);
       }
       setOpenQuotationModal(true);
-    } else if (designOrderStatus.status === "Paid") {
+    } else if (designOrderStatus.design_order_status === "Paid") {
       console.log("todo: handle issue quotation for design package");
       setOpenQuotationModal(true);
-    } else if (designOrderStatus.status === "PackageQuoted") {
+    } else if (designOrderStatus.design_order_status === "PackageQuoted") {
       console.log("todo: handle edit quotation");
-      if (designOrderStatus.packageQuotation) {
+      if (designOrderStatus.packagequotation) {
         setQuotationIsEditing(true);
-        setQuotation(`${designOrderStatus.packageQuotation}`);
+        setQuotation(`${designOrderStatus.packagequotation}`);
       }
       setOpenQuotationModal(true);
     }
   };
 
-  console.log("designOrderStatus", designOrderStatus);
-  console.log("designOrderStatus.designItems", designOrderStatus.designItems);
+  // console.log("designOrderStatus", designOrderStatus);
+  // console.log("designOrderStatus.designItems", designOrderStatus.designItems);
 
   return (
     <>
@@ -70,12 +81,39 @@ const DesignAction = ({ designOrderStatus, currUserType }) => {
         quotation={quotation}
         setQuotation={setQuotation}
       />
-      {DesignOrderDict[designOrderStatus.status][currUserType]["action"]
-        .length > 0 && (
+      {DesignOrderDict[designOrderStatus.design_order_status][currUserType][
+        "action"
+      ].length > 0 && (
         <>
           <Box sx={{ px: 3, py: 3, backgroundColor: "grey.100" }}>
             <Stack direction="row" spacing={3}>
-              {designOrderStatus.status === "Designing" && (
+              {designOrderStatus.design_order_status === "Nothing" && (
+                <Link
+                  to="/designConsultation"
+                  state={{
+                    sellerId: sellerId,
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "white",
+                      color: "primary.main",
+                      "&:hover": {
+                        backgroundColor: "grey.200",
+                      },
+                    }}
+                    onClick={handleActionClick}
+                  >
+                    {
+                      DesignOrderDict[designOrderStatus.design_order_status][
+                        currUserType
+                      ]["action"]
+                    }
+                  </Button>
+                </Link>
+              )}
+              {designOrderStatus.design_order_status === "Designing" && (
                 <Link
                   to="/designOrder/newDesign"
                   state={{
@@ -95,14 +133,14 @@ const DesignAction = ({ designOrderStatus, currUserType }) => {
                     onClick={handleActionClick}
                   >
                     {
-                      DesignOrderDict[designOrderStatus.status][currUserType][
-                        "action"
-                      ]
+                      DesignOrderDict[designOrderStatus.design_order_status][
+                        currUserType
+                      ]["action"]
                     }
                   </Button>
                 </Link>
               )}
-              {designOrderStatus.status === "InReview" && (
+              {designOrderStatus.design_order_status === "InReview" && (
                 <Link
                   to="/designOrder/design"
                   state={{
@@ -125,15 +163,16 @@ const DesignAction = ({ designOrderStatus, currUserType }) => {
                     onClick={handleActionClick}
                   >
                     {
-                      DesignOrderDict[designOrderStatus.status][currUserType][
-                        "action"
-                      ]
+                      DesignOrderDict[designOrderStatus.design_order_status][
+                        currUserType
+                      ]["action"]
                     }
                   </Button>
                 </Link>
               )}
-              {designOrderStatus.status !== "Designing" &&
-                designOrderStatus.status !== "InReview" && (
+              {designOrderStatus.design_order_status !== "Nothing" &&
+                designOrderStatus.design_order_status !== "Designing" &&
+                designOrderStatus.design_order_status !== "InReview" && (
                   <Button
                     variant="contained"
                     sx={{
@@ -146,9 +185,9 @@ const DesignAction = ({ designOrderStatus, currUserType }) => {
                     onClick={handleActionClick}
                   >
                     {
-                      DesignOrderDict[designOrderStatus.status][currUserType][
-                        "action"
-                      ]
+                      DesignOrderDict[designOrderStatus.design_order_status][
+                        currUserType
+                      ]["action"]
                     }
                   </Button>
                 )}

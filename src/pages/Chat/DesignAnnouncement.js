@@ -9,7 +9,7 @@ import { DesignOrderDict } from "../../data/designOrderDict";
 const DesignAnnouncement = ({ designOrderStatus, currUserType }) => {
   return (
     <>
-      {DesignOrderDict[designOrderStatus.status][currUserType][
+      {DesignOrderDict[designOrderStatus.design_order_status][currUserType][
         "statusbarTitleText"
       ].length > 0 && (
         <Link
@@ -30,9 +30,9 @@ const DesignAnnouncement = ({ designOrderStatus, currUserType }) => {
             <Box>
               <Typography variant="h6" component="div">
                 {
-                  DesignOrderDict[designOrderStatus.status][currUserType][
-                    "statusbarTitleText"
-                  ]
+                  DesignOrderDict[designOrderStatus.design_order_status][
+                    currUserType
+                  ]["statusbarTitleText"]
                 }
               </Typography>
               <Typography
@@ -41,9 +41,9 @@ const DesignAnnouncement = ({ designOrderStatus, currUserType }) => {
                 sx={{ fontWeight: "normal" }}
               >
                 {
-                  DesignOrderDict[designOrderStatus.status][currUserType][
-                    "statusbarSubText"
-                  ]
+                  DesignOrderDict[designOrderStatus.design_order_status][
+                    currUserType
+                  ]["statusbarSubText"]
                 }
               </Typography>
             </Box>

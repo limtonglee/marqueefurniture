@@ -143,8 +143,13 @@ export const URL_CREATE_DESIGN_REQUIREMENT_MB =
 export const URL_GET_DESIGN_LOGS = "/api/design/designLogs";
 export const URL_CREATE_DESIGN_LOG = "/api/design/designLogs/create";
 
-// update design order status
+export const URL_CREATE_DESIGN_ORDER = "/api/design/designOrder/create";
+
+// design order status
 export const URL_GET_DESIGN_ORDER_STATUS = "/api/design/designOrderStatus";
+export const URL_GET_DESIGN_ORDER_DESIGNS = "/api/design/designPackage";
+export const URL_GET_DESIGN_ORDER_PRODUCTS =
+  "/api/design/designPackage/listings";
 export const URL_UPDATE_DESIGN_ORDER_STATUS =
   "/api/design/designOrderStatus/edit";
 

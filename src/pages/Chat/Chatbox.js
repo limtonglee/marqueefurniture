@@ -20,6 +20,7 @@ import ChatAnnouncement from "./ChatAnnouncement";
 import { useNavigate } from "react-router-dom";
 
 import * as chatAPI from "../../services/Chat";
+import * as designEngagementAPI from "../../services/DesignEngagement";
 import * as accountsAPI from "../../services/Accounts";
 
 import * as socket from "../../services/socket";
@@ -177,7 +178,6 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
   // };
 
   const getCurrUserType = () => {
-    console.log(userStore.isDesigner);
     if (userStore.isDesigner) {
       return "designer";
     } else {
@@ -188,9 +188,9 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
   const [isDesignCustomerRs, setIsDesignCustomerRs] = useState(false);
   // const [designOrderStatus, setDesignOrderStatus] = useState("Nothing");
   const [designOrderStatus, setDesignOrderStatus] = useState({
-    status: "Nothing",
-    consultQuotation: null,
-    packageQuotation: null,
+    design_order_status: "Nothing",
+    consultquotation: null,
+    packagequotation: null,
     designItems: [
       {
         id: 1,
@@ -216,7 +216,74 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
   });
   const currUserType = getCurrUserType(); // status of this current user
 
-  console.log(DesignOrderDict["Completed"]);
+  // console.log(DesignOrderDict["Completed"]);
+
+  const getDesignOrderStatus = async (sellerId, buyerId) => {
+    try {
+      const res = await designEngagementAPI.getDesignOrderStatus(
+        sellerId,
+        buyerId
+      );
+
+      const initialDesignOrder = JSON.parse(JSON.stringify(res)).data[0];
+
+      if (initialDesignOrder.status !== "Nothing") {
+        const designOrderId = initialDesignOrder["id"];
+
+        const allDesigns = await getDesignOrderDesigns(designOrderId);
+
+        var promises = allDesigns.map(async (design) => {
+          const designProducts = await getDesignPackageDesigns(design.id);
+          const completeDesign = {
+            ...design,
+            taggedProducts: designProducts,
+          };
+
+          // console.log("completePost", completePost); // works
+          return completeDesign;
+        });
+
+        await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
+
+        Promise.all(promises).then((values) => {
+          const completeDesignOrder = {
+            ...initialDesignOrder,
+            designItems: values,
+          };
+          console.log("completeDesignOrder", completeDesignOrder);
+          setDesignOrderStatus(completeDesignOrder);
+        });
+      } else {
+        setDesignOrderStatus(initialDesignOrder);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getDesignOrderDesigns = async (designOrderId) => {
+    try {
+      const res = await designEngagementAPI.getDesignOrderDesigns(
+        designOrderId
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      // console.log("getDesignOrderDesigns data", data);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getDesignPackageDesigns = async (packageId) => {
+    try {
+      const res = await designEngagementAPI.getDesignPackageDesigns(packageId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log("getDesignPackageDesigns data", data);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const getUserType = async () => {
     try {
@@ -227,59 +294,83 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
           : currentChat.firstuserid
       );
       const data = JSON.parse(JSON.stringify(res)).data[0]["type"];
-      console.log("data from getuserType", data);
+      // console.log("data from getuserType", data);
       setUserType(data);
 
       if (
         (currUserType === "user" && data === "Designer") ||
         (currUserType === "designer" && data === "Customer")
       ) {
-        console.log(`currUserType data ${currUserType} ${data}`);
+        // console.log(`currUserType data ${currUserType} ${data}`);
         setIsDesignCustomerRs(true);
+
         // todo: call API to check if there's engagement going on
-        // todo: update below accordingly
-        setDesignOrderStatus({
-          status: "InReview",
-          consultQuotation: 1,
-          packageQuotation: 2,
-          designItems: [
-            {
-              id: 1,
-              timestamp: "2022-03-19 02:58:55.425662",
-              title: "First draft",
-              designImages: [
-                "d5905def5a6366ae4a3b3cadced8cbd2",
-                "dd1f03dcab86c065cc069e07a1931d98",
-                "c7befb8cdc6dc9623673a57ee78e6447",
-              ],
-              taggedProducts: [2, 3, 4],
-              isCompleted: "1",
-              customerReview: {
-                pictureComments: [
-                  "d5905def5a6366ae4a3b3cadced8cbd2",
-                  "dd1f03dcab86c065cc069e07a1931d98",
-                  "c7befb8cdc6dc9623673a57ee78e6447",
-                ],
-                otherComments: "other comments hereee",
-              },
-            },
-            {
-              id: 2,
-              timestamp: "2022-03-19 02:58:55.425662",
-              title: "Second draft",
-              designImages: [
-                "c7befb8cdc6dc9623673a57ee78e6447",
-                "dd1f03dcab86c065cc069e07a1931d98",
-              ],
-              taggedProducts: [5, 7, 9],
-              isCompleted: "0",
-              customerReview: {
-                pictureComments: [],
-                otherComments: "",
-              },
-            },
-          ],
-        });
+        getDesignOrderStatus(
+          currentChat.firstuserid === userStore.id
+            ? currentChat.seconduserid
+            : currentChat.firstuserid,
+          userStore.id
+        );
+
+        // // todo: update below accordingly
+        // setDesignOrderStatus({
+        //   designOrderId: 1,
+        //   status: "InReview",
+        //   consultQuotation: 1,
+        //   packageQuotation: 2,
+        //   designItems: [
+        //     // {
+        //     //   id: 1,
+        //     //   timestamp: "2022-03-19 02:58:55.425662",
+        //     //   title: "First draft",
+        //     //   designImages1: "d5905def5a6366ae4a3b3cadced8cbd2",
+        //     //   designImages2: "dd1f03dcab86c065cc069e07a1931d98",
+        //     //   designImages3: "c7befb8cdc6dc9623673a57ee78e6447",
+        //     //   taggedProducts: [2, 3, 4], // similar to product listings
+        //     //   designerComment: "Long comment here",
+        //     //   isCompleted: "1",
+        //     //   userPictureComments1: "d5905def5a6366ae4a3b3cadced8cbd2",
+        //     //   userPictureComments2: "dd1f03dcab86c065cc069e07a1931d98",
+        //     //   userPictureComments3: "c7befb8cdc6dc9623673a57ee78e6447",
+        //     //   userOtherComment: "other comments hereee",
+        //     // },
+        //     {
+        //       id: 1,
+        //       timestamp: "2022-03-19 02:58:55.425662",
+        //       title: "First draft",
+        //       designImages: [
+        //         "d5905def5a6366ae4a3b3cadced8cbd2",
+        //         "dd1f03dcab86c065cc069e07a1931d98",
+        //         "c7befb8cdc6dc9623673a57ee78e6447",
+        //       ],
+        //       taggedProducts: [2, 3, 4],
+        //       isCompleted: "1",
+        //       customerReview: {
+        //         pictureComments: [
+        //           "d5905def5a6366ae4a3b3cadced8cbd2",
+        //           "dd1f03dcab86c065cc069e07a1931d98",
+        //           "c7befb8cdc6dc9623673a57ee78e6447",
+        //         ],
+        //         otherComments: "other comments hereee",
+        //       },
+        //     },
+        //     {
+        //       id: 2,
+        //       timestamp: "2022-03-19 02:58:55.425662",
+        //       title: "Second draft",
+        //       designImages: [
+        //         "c7befb8cdc6dc9623673a57ee78e6447",
+        //         "dd1f03dcab86c065cc069e07a1931d98",
+        //       ],
+        //       taggedProducts: [5, 7, 9],
+        //       isCompleted: "0",
+        //       customerReview: {
+        //         pictureComments: [],
+        //         otherComments: "",
+        //       },
+        //     },
+        //   ],
+        // });
       } else {
         setIsDesignCustomerRs(false);
       }
@@ -294,6 +385,11 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
     getUserType();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentChat]);
+
+  useEffect(() => {
+    getUserType();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [openMoreMenu, setOpenMoreMenu] = React.useState(false); // eslint-disable-line no-unused-vars
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -450,6 +546,11 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
               <DesignAction
                 designOrderStatus={designOrderStatus}
                 currUserType={currUserType}
+                sellerId={
+                  currentChat.firstuserid === userStore.id
+                    ? currentChat.seconduserid
+                    : currentChat.firstuserid
+                }
               />
               <DesignAnnouncement
                 designOrderStatus={designOrderStatus}

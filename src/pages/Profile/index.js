@@ -26,7 +26,6 @@ function Profile() {
 
   //username in header component does not update
   const [userName, setUserName] = useState(userStore.name);
-  const [shopName, setShopName] = useState(userStore.shop);
 
   const handleSetTabValue = (event, newValue) => {
     setTabValue(newValue);
@@ -144,7 +143,7 @@ function Profile() {
 
   return (
     <Container maxWidth="xl">
-      <Header name={userName} shopName={shopName} profilePic={profilePic} />
+      <Header name={userName} profilePic={profilePic} />
       <Grid item xs={12} md={12} lg={12} sx={{ ml: "auto" }}>
         <Box sx={{ width: "auto", bgcolor: "background" }}>
           <Tabs
@@ -193,7 +192,6 @@ function Profile() {
               website="Address"
               userName={userName}
               setUserName={setUserName}
-              setShopName={setShopName}
               setProfilePic={setProfilePic}
             />
           </Grid>

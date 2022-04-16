@@ -1,5 +1,5 @@
 import { Container } from "@mui/material";
-import MFUsers from "../mfusers";
+import MFUsers from "../MFUsers";
 
 const AdminHome = () => {
   return (

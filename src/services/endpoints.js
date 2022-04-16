@@ -2,6 +2,14 @@
 export const URL_LOGIN = "/api/user/login";
 export const URL_EDIT_PFP = "/api/profile/images";
 
+//admin management
+export const URL_GET_ALL_USERS = "/api/admin/users";
+export const URL_BAN_USER = "/api/admin/banuser";
+export const URL_UNBAN_USER = "/api/admin/unbanuser";
+export const URL_DELIST_LISTING = "/api/admin/delist";
+export const URL_GET_DISPUTE_REPORT = "/api/admin/disputes";
+export const URL_CLOSE_DISPUTE_REPORT = "/api/admin/close/dispute";
+
 //export const URL_LOGOUT = '/logout';
 export const URL_SIGNUP = "/api/user/signup";
 export const URL_FORGOT_PASSWORD = "/api/user/forgot";
@@ -25,7 +33,10 @@ export const URL_DELETE_CART_ITEMS = "/api/cart/deleteItems";
 //checkout management
 export const URL_CHECKOUT = "/api/checkout";
 export const URL_PAYMENT = "/api/payment";
+
+//order management
 export const URL_GET_ORDERS = "/api/user/orders";
+export const URL_RATE_ORDER = "/api/user/rate";
 
 //liked listings management
 export const URL_LISTING_LIKE = "/api/listing/like"; // user liking a post
@@ -84,6 +95,7 @@ export const URL_UPLOAD_PHOTO = "/api/user/uploadPhoto";
 export const URL_GET_SHOP_ORDERS = "/api/merchant/orders";
 export const URL_GET_SHOP_ORDER_DETAIL = "/api/merchant/order/individual";
 export const URL_UPDATE_SHOP_ORDER = "/api/merchant/updateOrder";
+export const URL_UPDATE_TRACKING_NUMBER = "/api/merchant/updateTrackingNumber";
 // listings
 export const URL_GET_SHOP_LISTINGS = "/api/merchant/listings";
 export const URL_GET_SHOP_LISTING_DETAIL = "/api/merchant/listing/individual";
@@ -102,8 +114,13 @@ export const URL_EDIT_SHOP_CATEGORY = "/api/merchant/shopCategories/edit";
 export const URL_DELETE_SHOP_CATEGORY = "/api/merchant/shopCategories/delete";
 export const URL_DELETE_SHOP_CATEGORY_LISTINGS =
   "/api/merchant/shopCategoryListings/delete";
-export const URL_ADD_LISTING_SHOP_CATEGORY =
+export const URL_GET_SHOP_CATEGORY_LISTINGS =
+  "/api/merchant/shopCategoryListings";
+export const URL_REMOVE_SHOP_CATEGORY_LISTING =
+  "/api/merchant/shopCategoryListing/remove";
+export const URL_ADD_SHOP_CATEGORY_LISTING =
   "/api/merchant/shopCategories/addListing";
+
 // rating
 export const URL_GET_SHOP_RATINGS = "/api/merchant/product/review";
 export const URL_REPLY_REVIEW = "/api/merchant/replyReview";
@@ -113,7 +130,7 @@ export const URL_EDIT_SELLER_PROFILE = "/api/user/editSellerAccount";
 // income & balance
 export const URL_GET_INCOME = "/api/merchant/income";
 export const URL_GET_BALANCE = "/api/merchant/balance";
-export const URL_GET_BALANCE_WITHDRAW = "/api/merchant/balance/withdraw";
+export const URL_UPDATE_BALANCE_WITHDRAW = "/api/merchant/balance/withdraw";
 export const URL_GET_MERCHANT_ORDER = "/api/merchant/orders";
 
 // chat

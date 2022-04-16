@@ -24,7 +24,7 @@ export const Voucher = () => {
 
     const getVouchers = async () => {
         try {
-            const res = await SellerCenterAPI.getVouchers(userStore.id);
+            const res = await SellerCenterAPI.getVouchers(userStore.shop.id);
             setData(JSON.parse(JSON.stringify(res.data)));
             setVouchers(JSON.parse(JSON.stringify(res.data)));
         } catch (error) {
@@ -34,6 +34,7 @@ export const Voucher = () => {
 
     useEffect(() => {
         getVouchers();
+        console.log('ZZZ', userStore.shop.id);
     }, []);
 
     let tabData = vouchers;

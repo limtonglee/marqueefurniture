@@ -4,6 +4,7 @@ import { get, remove, update, postAsFormInput } from "./api";
 import { URL_GET_SHOP_ORDERS } from "../services/endpoints";
 import { URL_GET_SHOP_ORDER_DETAIL } from "../services/endpoints";
 import { URL_UPDATE_SHOP_ORDER } from "../services/endpoints";
+import { URL_UPDATE_TRACKING_NUMBER } from "../services/endpoints";
 // listings
 import { URL_GET_SHOP_LISTINGS } from "../services/endpoints";
 import { URL_CREATE_SHOP_LISTING } from "../services/endpoints";
@@ -20,6 +21,10 @@ import { URL_CREATE_SHOP_CATEGORY } from "../services/endpoints";
 import { URL_EDIT_SHOP_CATEGORY } from "../services/endpoints";
 import { URL_DELETE_SHOP_CATEGORY } from "../services/endpoints";
 import { URL_DELETE_SHOP_CATEGORY_LISTINGS } from "../services/endpoints";
+import { URL_GET_SHOP_CATEGORY_LISTINGS } from "../services/endpoints";
+import { URL_REMOVE_SHOP_CATEGORY_LISTING } from "../services/endpoints";
+import { URL_ADD_SHOP_CATEGORY_LISTING } from "../services/endpoints";
+
 // profile
 import { URL_GET_SELLER_PROFILE } from "../services/endpoints";
 import { URL_EDIT_SELLER_PROFILE } from "../services/endpoints";
@@ -29,6 +34,7 @@ import { URL_REPLY_REVIEW } from "../services/endpoints";
 // finance
 import { URL_GET_INCOME } from "../services/endpoints";
 import { URL_GET_BALANCE } from "../services/endpoints";
+import { URL_UPDATE_BALANCE_WITHDRAW } from "../services/endpoints";
 
 // orders
 export const getOrders = (id) => {
@@ -49,6 +55,13 @@ export const updateOrderStatus = (order_status, orderId) => {
     orderId: orderId,
   };
   return update(URL_UPDATE_SHOP_ORDER, body);
+};
+export const updateTrackingNumber = (trackingNumber, orderId) => {
+  const body = {
+    trackingNumber: trackingNumber,
+    orderId: orderId,
+  };
+  return update(URL_UPDATE_TRACKING_NUMBER, body);
 };
 
 
@@ -171,16 +184,36 @@ export const editShopCategory = (name, shopCategoryId) => {
   return update(URL_EDIT_SHOP_CATEGORY, body);
 };
 export const deleteShopCategory = (shopCategoryId) => {
-  const body = {
+  const params = {
     shopCategoryId: shopCategoryId,
   };
-  return remove(URL_DELETE_SHOP_CATEGORY, body);
+  return remove(URL_DELETE_SHOP_CATEGORY, params);
 };
 export const deleteShopCategoryListings = (shopCategoryId) => {
-  const body = {
+  const params = {
     shopCategoryId: shopCategoryId,
   };
-  return remove(URL_DELETE_SHOP_CATEGORY_LISTINGS, body);
+  return remove(URL_DELETE_SHOP_CATEGORY_LISTINGS, params);
+};
+export const getShopCategoryListings = (shopCategoryId) => {
+  const params = {
+    shopCategoryId: shopCategoryId
+  };
+  return get(URL_GET_SHOP_CATEGORY_LISTINGS, params);
+};
+export const addShopCategoryListing = (shopCategoryId, listingId) => {
+  const body = {
+    shopCategoryId: shopCategoryId,
+    listingId: listingId,
+  };
+  return postAsFormInput(URL_ADD_SHOP_CATEGORY_LISTING, body);
+};
+export const removeShopCategoryListing = (shopCategoryId, listingId) => {
+  const params = {
+    shopCategoryId: shopCategoryId,
+    listingId: listingId,
+  };
+  return remove(URL_REMOVE_SHOP_CATEGORY_LISTING, params);
 };
 
 // profile
@@ -227,4 +260,11 @@ export const getBalance = (shopId) => {
     shopId: shopId
   };
   return get(URL_GET_BALANCE, params);
+};
+export const withdrawBalance = (withdrawalAmount, shopId) => {
+  const body = {
+    withdrawalAmount: withdrawalAmount,
+    shopId: shopId,
+  };
+  return update(URL_UPDATE_BALANCE_WITHDRAW, body);
 };

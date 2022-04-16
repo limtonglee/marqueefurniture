@@ -1,7 +1,15 @@
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import EditIcon from "@mui/icons-material/Edit";
-import { Button, Container, Divider, Grid, ImageList } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  ImageList,
+} from "@mui/material";
 import ButtonBase from "@mui/material/ButtonBase";
+import CircularProgress from "@mui/material/CircularProgress";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
@@ -26,7 +34,7 @@ import { SellerData } from "../Cart/SellerData";
 import { CARD_OPTIONS } from "./CardOptions";
 
 const notifyCheckout = () =>
-  toast("SUCCESS! Redirecting to orders page...", {
+  toast("SUCCESS! Redirecting to orders...", {
     position: toast.POSITION.TOP_CENTER,
     autoClose: 3000,
   });
@@ -53,9 +61,10 @@ export default function Checkout({
   const [editAddress, setEditAddress] = useState(false);
   const [address, setAddress] = useState(userStore.address);
   const [paymentMethod, setPaymentMethod] = useState("");
+  const [checkoutSpinner, setCheckoutSpinner] = useState(false);
 
   const handleConfirm = async () => {
-    console.log("items");
+    setCheckoutSpinner(true);
 
     // console.log(items);
     if (paymentMethod === "COD") {
@@ -99,6 +108,7 @@ export default function Checkout({
         console.log(error.message);
       }
     }
+    setCheckoutSpinner(false);
 
     setTimeout(() => {
       navigate("/profile/orders", { state: { redirect: "cart" } });
@@ -113,6 +123,7 @@ export default function Checkout({
     const voucherId = getVoucherId(item.id, selectedVouchers);
     const sellerResponse = await getSellerInfo(item.id);
     const sellerId = sellerResponse.data[0].userid;
+    console.log(sellerResponse.data[0]);
     const response = await checkout(
       address,
       message,
@@ -427,7 +438,17 @@ export default function Checkout({
         </Grid>
 
         <Grid container mt={1} spacing={1} direction="row-reverse">
-          <Grid item xs={1} m={1}>
+          {!!checkoutSpinner && (
+            <>
+              <Grid item xs={1}>
+                <Box sx={{ display: "flex" }}>
+                  <CircularProgress />
+                </Box>
+              </Grid>
+            </>
+          )}
+
+          <Grid item xs={1}>
             <Button
               size="small"
               align="right"

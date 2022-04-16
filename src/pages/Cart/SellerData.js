@@ -8,10 +8,11 @@ import StorefrontIcon from '@mui/icons-material/Storefront';
 
 export const SellerData = ({ listingId }) => {
   const [shopName, setShopName] = useState("");
-  const [images, setImages] = useState("");
+  // const [images, setImages] = useState("");
 
   useEffect(() => {
     const getSellerData = async (listingId) => {
+      console.log("listingId" + listingId);
       const response = await getSellerInfo(listingId);
       // console.log(response.data);
       setShopName(response.data[0].shopname);
@@ -22,9 +23,13 @@ export const SellerData = ({ listingId }) => {
   return (
     <Link to={`/SellerProfile`} style={{ textDecoration: "none" }}>
       <Typography variant="body2"  color="primary.main">
+        { (shopName !== "") && <>
       <StorefrontIcon/>
         {shopName}
-      </Typography>
+      </>
+    }
+          </Typography>
+
     </Link>
   );
 };

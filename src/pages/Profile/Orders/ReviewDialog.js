@@ -1,7 +1,5 @@
 // react-routers components
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Typography } from "@mui/material";
-import Avatar from "@mui/material/Avatar";
 // Soft UI Dashboard PRO React components
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -10,27 +8,38 @@ import Card from "@mui/material/Card";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Grid from "@mui/material/Grid";
+import Rating from "@mui/material/Rating";
 import TextField from "@mui/material/TextField";
+import { useState } from "react";
+import { rateOrder } from "../../../services/Orders";
 import { useStores } from "../../../stores/RootStore";
 
 
-export const StartSellingDialog = ({ start, setStart ,setShopName }) => {
+export const ReviewDialog = ({ start, setStart, currentData, setShowReview }) => {
   //this part is for the start selling form
+  const [value, setValue] = useState(5);
 
   const { userStore } = useStores();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
 
-    // setShopName(data.get("shopname"))
-    // userStore.setShop(data.get("shopname"));
-    // userStore.setIsSeller();
-    // userStore.setUserWebLink(data.get("website"));
+    const response =  await rateOrder(
+      userStore.id,
+      currentData.id,
+      value,
+      data.get("comments")
+    );
+
+    if(response.status === 200) {
+      console.log(response);
+      setShowReview();
+    }
+
     handleStop();
   };
 
@@ -39,70 +48,47 @@ export const StartSellingDialog = ({ start, setStart ,setShopName }) => {
   };
 
   return (
-    <Box component="form" noValidate sx={{ mt: 3 }}>
+    <Box component="form" noValidate>
       <Card sx={{ height: "100%" }}>
-        <Dialog open={start} onClose={handleStop}>
+        <Dialog open={start} onClose={handleStop} sx={{ mt: 15 }}>
           <DialogContent>
             <Container component="main" maxWidth="xs">
               <CssBaseline />
               <Box
                 sx={{
-                  marginTop: 8,
+                  marginTop: 2,
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                 }}
               >
-                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                  <LockOutlinedIcon />
-                </Avatar>
                 <Typography component="h1" variant="h5">
-                  Create Shop Profile
+                  Rate Product
                 </Typography>
-                <Box
-                  component="form"
-                  noValidate
-                  onSubmit={handleSubmit}
-                  sx={{ mt: 10 }}
-                >
+                <Box component="form" noValidate onSubmit={handleSubmit}>
                   <Grid container spacing={2}>
-                    <Typography variant="h6">Shop Name</Typography>
+                    <Typography variant="h6" mt={5}>
+                      Rating
+                    </Typography>
                     <Grid item xs={12}>
-                      <TextField
-                        required
-                        fullWidth
-                        id="shopname"
-                        label="Shop Name"
-                        name="shopname"
-                        autoComplete="shopname"
+                      <Rating
+                        name="simple-controlled"
+                        value={value}
+                        onChange={(event, newValue) => {
+                          setValue(newValue);
+                        }}
                       />
                     </Grid>
                     <Typography variant="h6" mt={5}>
-                      Shop Website
+                      Comments
                     </Typography>
                     <Grid item xs={12}>
                       <TextField
                         required
                         fullWidth
-                        id="web"
-                        label="Shop Website"
-                        name="web"
-                        autoComplete="website"
-                      />
-                    </Grid>
-                    <Typography variant="h6" mt={5}>
-                      Shop Description
-                    </Typography>
-                    <Grid item xs={12}>
-                      <TextField
-                        required
-                        fullWidth
-                        multiline
-                        rows={4}
-                        name="description"
-                        label="Shop Description"
-                        id="description"
-                        autoComplete="description"
+                        id="comments"
+                        // label="comments"
+                        name="comments"
                       />
                     </Grid>
                   </Grid>
@@ -110,17 +96,14 @@ export const StartSellingDialog = ({ start, setStart ,setShopName }) => {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 5, mb: 8 }}
+                    sx={{ mt: 5, mb: 2 }}
                   >
-                    Sign Up
+                    Submit
                   </Button>
                 </Box>
               </Box>
             </Container>
           </DialogContent>
-          <DialogActions>
-            <Button onClick={handleStop}>Cancel</Button>
-          </DialogActions>
         </Dialog>
       </Card>
     </Box>

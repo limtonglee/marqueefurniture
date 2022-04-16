@@ -1,5 +1,5 @@
 // react-routers components
-import { Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 // Soft UI Dashboard PRO React components
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -104,221 +104,235 @@ function ProfileInfoCard({
 
   return (
     <>
-      {!!showEdit && (
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Card sx={{ height: "100%" }}>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              pt={2}
-              px={2}
-            >
-              <Typography
-                variant="h6"
-                fontWeight="medium"
-                textTransform="capitalize"
+      <Container maxWidth="md">
+        {!!showEdit && (
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
+            <Card sx={{ height: "100%" }}>
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                pt={2}
+                px={2}
               >
-                Profile Pic
-              </Typography>
-            </Box>
-            <Box ml={2} mb={2} lineHeight={1}>
-              <input
-                onChange={fileSelected}
-                type="file"
-                accept="image/*"
-              ></input>
-            </Box>
-
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              pt={2}
-              px={2}
-            >
-              <Typography
-                variant="h6"
-                fontWeight="medium"
-                textTransform="capitalize"
-              >
-                {title}
-              </Typography>
-            </Box>
-
-            <Box p={2}>
-              <Box mb={2} lineHeight={1}>
-                <TextField
-                  variant="outlined"
-                  id="username"
-                  name="username"
-                  defaultValue={userName}
-                  required
-                ></TextField>
+                <Typography
+                  variant="h6"
+                  fontWeight="medium"
+                  textTransform="capitalize"
+                >
+                  Profile Pic
+                </Typography>
               </Box>
-              <Box opacity={0.3}>
-                <Divider />
+              <Box ml={2} mb={2} lineHeight={1}>
+                <input
+                  onChange={fileSelected}
+                  type="file"
+                  accept="image/*"
+                ></input>
               </Box>
 
-              <Typography
-                variant="h6"
-                fontWeight="medium"
-                textTransform="capitalize"
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                pt={2}
+                px={2}
               >
-                {description}
-              </Typography>
-
-              <Box mb={2} lineHeight={1}>
-                <TextField
-                  variant="outlined"
-                  multiline
-                  minRows={1}
-                  maxRows={4}
-                  fullWidth
-                  defaultValue={bio}
-                  required
-                  id="bio"
-                  name="bio"
-                ></TextField>
+                <Typography
+                  variant="h6"
+                  fontWeight="medium"
+                  textTransform="capitalize"
+                >
+                  {title}
+                </Typography>
               </Box>
 
-              <Typography
-                variant="h6"
-                fontWeight="medium"
-                textTransform="capitalize"
-              >
-                {website}
-              </Typography>
-
-              <Box mb={2} lineHeight={1}>
-                <TextField
-                  variant="outlined"
-                  defaultValue={address}
-                  required
-                  id="address"
-                  name="address"
-                ></TextField>
-              </Box>
-            </Box>
-
-            <Box
-              sx={{
-                marginTop: 0,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-                Save
-              </Button>
-              {!!isLoading && (
-                <Box sx={{ display: "flex" }}>
-                  <CircularProgress />
+              <Box p={2}>
+                <Box mb={2} lineHeight={1}>
+                  <TextField
+                    variant="outlined"
+                    id="username"
+                    name="username"
+                    defaultValue={userName}
+                    required
+                  ></TextField>
                 </Box>
-              )}
 
-              <Button variant="contained" sx={{ mt: 3, mb: 2 }}>
-                Cancel Changes
-              </Button>
-            </Box>
-          </Card>
-        </Box>
-      )}
-      {!showEdit && (
-        <Box component="form" noValidate sx={{ mt: 3 }}>
-          <Card sx={{ height: "100%" }}>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              pt={2}
-              px={2}
-            >
-              <Typography
-                variant="h6"
-                fontWeight="medium"
-                textTransform="capitalize"
-              >
-                {title}
-              </Typography>
-            </Box>
-
-            <Box p={2}>
-              <Box mb={2} lineHeight={1}>
-                <Typography variant="button" color="text" fontWeight="regular">
-                  {userName}
+                <Typography
+                  variant="h6"
+                  fontWeight="medium"
+                  textTransform="capitalize"
+                >
+                  {description}
                 </Typography>
-              </Box>
-              <Box opacity={0.3}>
-                <Divider />
-              </Box>
 
-              <Typography
-                variant="h6"
-                fontWeight="medium"
-                textTransform="capitalize"
-              >
-                {description}
-              </Typography>
+                <Box mb={2} lineHeight={1}>
+                  <TextField
+                    variant="outlined"
+                    multiline
+                    minRows={1}
+                    maxRows={4}
+                    defaultValue={bio}
+                    required
+                    id="bio"
+                    name="bio"
+                  ></TextField>
+                </Box>
 
-              <Box mb={2} lineHeight={1}>
-                <Typography variant="button" color="text" fontWeight="regular">
-                  {bio}
+                <Typography
+                  variant="h6"
+                  fontWeight="medium"
+                  textTransform="capitalize"
+                >
+                  {website}
                 </Typography>
+
+                <Box mb={2} lineHeight={1}>
+                  <TextField
+                    variant="outlined"
+                    defaultValue={address}
+                    required
+                    id="address"
+                    name="address"
+                  ></TextField>
+                </Box>
               </Box>
 
-              <Typography
-                variant="h6"
-                fontWeight="medium"
-                textTransform="capitalize"
-              >
-                {website}
-              </Typography>
-
-              <Box mb={2} lineHeight={1}>
-                <Typography variant="button" color="text" fontWeight="regular">
-                  {address}
-                </Typography>
-              </Box>
-            </Box>
-
-            <Box
-              sx={{
-                marginTop: 2,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Button
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                onClick={() => {
-                  setShowEdit(!showEdit);
+              <Box
+                sx={{
+                  marginTop: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
                 }}
               >
-                Edit Profile
-              </Button>
+                <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+                  Save
+                </Button>
+                {!!isLoading && (
+                  <Box sx={{ display: "flex" }}>
+                    <CircularProgress />
+                  </Box>
+                )}
 
-              <Button
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                onClick={handleStart}
+                <Button variant="contained" sx={{ mt: 3, mb: 2 }}>
+                  Cancel Changes
+                </Button>
+              </Box>
+            </Card>
+          </Box>
+        )}
+        {!showEdit && (
+          <Box component="form" noValidate sx={{ mt: 3 }}>
+            <Card sx={{ height: "100%" }}>
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                pt={2}
+                px={2}
               >
-                Start Selling
-              </Button>
-            </Box>
-          </Card>
-        </Box>
-      )}
-      <ToastContainer />
+                <Typography
+                  variant="h6"
+                  fontWeight="medium"
+                  textTransform="capitalize"
+                >
+                  {title}
+                </Typography>
+              </Box>
 
-      <StartSellingDialog
-        start={start}
-        setStart={setStart}
-        setShopName={setShopName}
-      ></StartSellingDialog>
+              <Box p={2}>
+                <Box mb={2} lineHeight={1}>
+                  <Typography
+                    variant="button"
+                    color="text"
+                    fontWeight="regular"
+                  >
+                    {userName}
+                  </Typography>
+                </Box>
+   
+
+                <Typography
+                  variant="h6"
+                  fontWeight="medium"
+                  textTransform="capitalize"
+                >
+                  {description}
+                </Typography>
+
+                <Box mb={2} lineHeight={1}>
+                  <Typography
+                    variant="button"
+                    color="text"
+                    fontWeight="regular"
+                  >
+                    {bio}
+                  </Typography>
+                </Box>
+
+                <Typography
+                  variant="h6"
+                  fontWeight="medium"
+                  textTransform="capitalize"
+                >
+                  {website}
+                </Typography>
+
+                <Box mb={2} lineHeight={1}>
+                  <Typography
+                    variant="button"
+                    color="text"
+                    fontWeight="regular"
+                  >
+                    {address}
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Box
+                sx={{
+                  marginTop: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  onClick={() => {
+                    setShowEdit(!showEdit);
+                  }}
+                >
+                  Edit Profile
+                </Button>
+
+                <Button
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  onClick={handleStart}
+                >
+                  Start Selling
+                </Button>
+              </Box>
+            </Card>
+          </Box>
+        )}
+        <ToastContainer />
+        {!userStore.isSeller && !userStore.isDesigner && (
+          <StartSellingDialog
+            start={start}
+            setStart={setStart}
+            setShopName={setShopName}
+          ></StartSellingDialog>
+        )}
+      </Container>
     </>
   );
 }

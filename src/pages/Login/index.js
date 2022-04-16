@@ -146,6 +146,7 @@ const Login = () => {
     if (type === "Designer") {
       userStore.setIsSeller();
       userStore.setIsDesigner();
+      getShop();
     }
     if (type === "Admin") {
       userStore.setIsAdmin();

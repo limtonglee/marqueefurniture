@@ -2,6 +2,14 @@
 export const URL_LOGIN = "/api/user/login";
 export const URL_EDIT_PFP = "/api/profile/images";
 
+//admin management
+export const URL_GET_ALL_USERS = "/api/admin/users";
+export const URL_BAN_USER = "/api/admin/banuser";
+export const URL_UNBAN_USER = "/api/admin/unbanuser";
+export const URL_DELIST_LISTING = "/api/admin/delist";
+export const URL_GET_DISPUTE_REPORT = "/api/admin/disputes";
+export const URL_CLOSE_DISPUTE_REPORT = "/api/admin/close/dispute";
+
 //export const URL_LOGOUT = '/logout';
 export const URL_SIGNUP = "/api/user/signup";
 export const URL_FORGOT_PASSWORD = "/api/user/forgot";
@@ -25,7 +33,10 @@ export const URL_DELETE_CART_ITEMS = "/api/cart/deleteItems";
 //checkout management
 export const URL_CHECKOUT = "/api/checkout";
 export const URL_PAYMENT = "/api/payment";
+
+//order management
 export const URL_GET_ORDERS = "/api/user/orders";
+export const URL_RATE_ORDER = "/api/user/rate";
 
 //liked listings management
 export const URL_LISTING_LIKE = "/api/listing/like"; // user liking a post

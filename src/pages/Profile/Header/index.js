@@ -10,7 +10,7 @@ import { Link ,useNavigate} from "react-router-dom";
 // Images
 import { useStores } from "../../../stores/RootStore";
 
-function Header({ name, shopName , profilePic }) {
+function Header({ name, profilePic }) {
   const navigate = useNavigate();
 
   const { userStore } = useStores();
@@ -48,11 +48,6 @@ function Header({ name, shopName , profilePic }) {
                 >
                   {name}
                 </Typography>
-                <Link to="/sellerCenter" style={{ textDecoration: 'none' }}>
-                  <Typography  color="common.black" fontWeight="medium">
-                    {!!userStore.isSeller && shopName}
-                  </Typography>
-                </Link>
               </Box>
             </Grid>
           </Grid>

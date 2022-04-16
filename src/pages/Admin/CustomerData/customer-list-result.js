@@ -25,7 +25,7 @@ import { pink } from "@mui/material/colors";
 import UserMoreMenu from "./UserMoreMenu";
 import SearchNotFound from "../../../components/SearchNotFound";
 
-export const CustomerListResults = ({ customers, filterName, ...rest }) => {
+export const CustomerListResults = ({ customers, setFetchUsers, filterName }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
@@ -80,7 +80,7 @@ export const CustomerListResults = ({ customers, filterName, ...rest }) => {
   const isUserNotFound = customers.length === 0;
 
   return (
-    <Card {...rest}>
+    <Card>
       <PerfectScrollbar>
         <Box sx={{ minWidth: 1050 }}>
           <Table>
@@ -97,11 +97,11 @@ export const CustomerListResults = ({ customers, filterName, ...rest }) => {
                     onChange={handleSelectAll}
                   />
                 </TableCell>
-                <TableCell>Name</TableCell>
+                <TableCell>Username</TableCell>
                 <TableCell>Email</TableCell>
                 <TableCell>Location</TableCell>
-                <TableCell>Phone</TableCell>
-                <TableCell>Registration date</TableCell>
+                <TableCell>Phone No</TableCell>
+                {/* <TableCell>Registration date</TableCell> */}
                 <TableCell>Status</TableCell>
                 <TableCell>Actions</TableCell>
               </TableRow>
@@ -127,29 +127,29 @@ export const CustomerListResults = ({ customers, filterName, ...rest }) => {
                         display: "flex",
                       }}
                     >
-                      <Avatar src={customer.avatarUrl} sx={{ mr: 2 }}>
-                        {customer.name}
+                      <Avatar src={`/api/image/${customer.profilepic}`} sx={{ mr: 2 }}>
+                        {customer.username}
                       </Avatar>
                       <Typography color="textPrimary" variant="body1">
-                        {customer.name}
+                        {customer.username}
                       </Typography>
                     </Box>
                   </TableCell>
                   <TableCell>{customer.email}</TableCell>
                   <TableCell>{`${customer.address}`}</TableCell>
-                  <TableCell>{customer.phone}</TableCell>
-                  <TableCell>
+                  <TableCell>{customer.contactnum}</TableCell>
+                  {/* <TableCell>
                     {format(customer.createdAt, "dd/MM/yyyy")}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell align="left">
-                    {customer.status === "banned" ? (
+                    {customer.isbanned === "1" ? (
                       <BlockIcon sx={{ color: pink[500] }} />
                     ) : (
                       <CheckCircleOutlineIcon color="success" />
                     )}
                   </TableCell>
                   <TableCell align="right">
-                    <UserMoreMenu status={customer.status} />
+                    <UserMoreMenu userId={customer.id} status={customer.isbanned} customers={customers} setFetchUsers={setFetchUsers} />
                   </TableCell>
                 </TableRow>
               ))}

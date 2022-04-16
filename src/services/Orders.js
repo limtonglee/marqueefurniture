@@ -1,4 +1,4 @@
-import {URL_GET_ORDERS, URL_RATE_ORDER} from "./endpoints"
+import {URL_GET_ORDERS, URL_RATE_ORDER, URL_RAISE_DISPUTE} from "./endpoints"
 import { get, postAsJson } from "./api";
 
 export const getOrders = (id) => {
@@ -17,4 +17,17 @@ export const rateOrder = (userId, orderId, rating, comments) => {
   };
   
   return postAsJson(URL_RATE_ORDER, body)
+}
+
+
+
+export const raiseDispute = (userId, sellerId, orderId, message) => {
+  const body = {
+    userId: userId,
+    sellerId: sellerId,
+    orderId: orderId,
+    message: message
+  };
+  
+  return postAsJson(URL_RAISE_DISPUTE, body)
 }

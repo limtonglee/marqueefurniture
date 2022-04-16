@@ -27,10 +27,10 @@ export const StartSellingDialog = ({ start, setStart ,setShopName }) => {
 
     const data = new FormData(event.currentTarget);
 
-    setShopName(data.get("shopname"))
-    userStore.setShop(data.get("shopname"));
-    userStore.setIsSeller();
-    userStore.setUserWebLink(data.get("website"));
+    // setShopName(data.get("shopname"))
+    // userStore.setShop(data.get("shopname"));
+    // userStore.setIsSeller();
+    // userStore.setUserWebLink(data.get("website"));
     handleStop();
   };
 

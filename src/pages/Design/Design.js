@@ -17,6 +17,7 @@ import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import TextField from "@mui/material/TextField";
+import ProductViewInDesign from "./ProductViewInDesign";
 
 const Design = () => {
   let navigate = useNavigate();
@@ -32,12 +33,63 @@ const Design = () => {
 
   let images = [];
   if (design !== null) {
-    images = design.designImages.map((image) => {
-      return {
-        original: `/api/image/${image}`,
-        thumbnail: `/api/image/${image}`,
-      };
-    });
+    // images = design.designImages.map((image) => {
+    //   return {
+    //     original: `/api/image/${image}`,
+    //     thumbnail: `/api/image/${image}`,
+    //   };
+    // });
+
+    if (design.designimages1) {
+      if (design.designimages2) {
+        if (design.designimages3) {
+          images = [
+            {
+              original: `/api/image/${design.designimages1}`,
+              thumbnail: `/api/image/${design.designimages1}`,
+            },
+            {
+              original: `/api/image/${design.designimages2}`,
+              thumbnail: `/api/image/${design.designimages2}`,
+            },
+            {
+              original: `/api/image/${design.designimages3}`,
+              thumbnail: `/api/image/${design.designimages3}`,
+            },
+          ];
+        }
+        images = [
+          {
+            original: `/api/image/${design.designimages1}`,
+            thumbnail: `/api/image/${design.designimages1}`,
+          },
+          {
+            original: `/api/image/${design.designimages2}`,
+            thumbnail: `/api/image/${design.designimages2}`,
+          },
+        ];
+      }
+      images = [
+        {
+          original: `/api/image/${design.designimages1}`,
+          thumbnail: `/api/image/${design.designimages1}`,
+        },
+      ];
+    }
+    // images = [
+    //   {
+    //     original: `/api/image/${design.designimages1}`,
+    //     thumbnail: `/api/image/${design.designimages1}`,
+    //   },
+    //   {
+    //     original: `/api/image/${design.designimages2}`,
+    //     thumbnail: `/api/image/${design.designimages2}`,
+    //   },
+    //   {
+    //     original: `/api/image/${design.designimages3}`,
+    //     thumbnail: `/api/image/${design.designimages3}`,
+    //   },
+    // ];
     // images = [
     //   {
     //     original: "https://picsum.photos/id/1018/1000/600/",
@@ -209,13 +261,15 @@ const Design = () => {
               )}
               {tabValue === 1 && (
                 <>
-                  <Box sx={{ width: "100%", mt: 3 }}>
-                    <Typography variant="h4" gutterBottom component="div">
+                  <Box sx={{ width: "100%", mt: 5 }}>
+                    {/* <Typography variant="h4" gutterBottom component="div">
                       Product List
                     </Typography>
-                    will be inserted when BE data is in
+                    will be inserted when BE data is in */}
+                    <ProductViewInDesign
+                      taggedProducts={design.taggedProducts}
+                    />
                   </Box>
-                  {/* <DesignProductView /> */}
                 </>
               )}
               {tabValue === 2 && (

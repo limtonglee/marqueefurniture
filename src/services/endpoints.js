@@ -190,3 +190,6 @@ export const URL_CREATE_DESIGN_LISTINGS =
 
 // create review for design
 export const URL_CREATE_DESIGN_REVIEW = "/api/design/designPackageReview";
+
+export const URL_GET_PRODUCT_BY_ID =
+  "/api/design/designPackage/listings/getdetails";

@@ -21,6 +21,7 @@ import {
   URL_CREATE_DESIGN_PACKAGE,
   URL_CREATE_DESIGN_LISTINGS,
   URL_CREATE_DESIGN_REVIEW,
+  URL_GET_PRODUCT_BY_ID,
 } from "../services/endpoints";
 
 export const createDesignRequirement = (
@@ -236,4 +237,11 @@ export const createDesignReview = (
     isCompleted: isCompleted,
   };
   return postAsFormInput(URL_CREATE_DESIGN_REVIEW, body);
+};
+
+export const getProduct = (id) => {
+  const params = {
+    listingId: id,
+  };
+  return get(URL_GET_PRODUCT_BY_ID, params);
 };

@@ -180,7 +180,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
   const [designOrderStatus, setDesignOrderStatus] = useState("Nothing");
   const [currUserType, setCurrUserType] = useState("user"); // todo: update
 
-  console.log(DesignOrderDict["Completed"]);
+  // console.log(DesignOrderDict["Completed"]);
 
   const getUserType = async () => {
     try {
@@ -191,7 +191,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
           : currentChat.firstuserid
       );
       const data = JSON.parse(JSON.stringify(res)).data[0]["type"];
-      console.log("data from getuserType", data);
+      // console.log("data from getuserType", data);
       setUserType(data);
 
       // todo: if current user === designer & recipient === customer

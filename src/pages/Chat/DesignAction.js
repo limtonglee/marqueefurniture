@@ -5,44 +5,126 @@ import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { DesignOrderDict } from "../../data/designOrderDict";
+import QuotationModal from "./QuotationModal";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DesignAction = ({ designOrderStatus, currUserType }) => {
   let navigate = useNavigate();
 
+  const [openQuotationModal, setOpenQuotationModal] = React.useState(false);
+  const [quotationIsEditing, setQuotationIsEditing] = React.useState(false);
+  const [quotation, setQuotation] = React.useState("");
+
+  const closeQuotationModal = () => {
+    setQuotationIsEditing(false);
+    setOpenQuotationModal(false);
+  };
+
+  const createToast = (message) => {
+    // todo
+    toast(message, {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 3000,
+    });
+  };
+
   const handleActionClick = () => {
-    if (designOrderStatus === "Nothing") {
+    if (designOrderStatus.status === "Nothing") {
       navigate("/designConsultation");
-    } else if (designOrderStatus === "Requested") {
+    } else if (designOrderStatus.status === "Requested") {
       console.log("todo: handle issue quotation");
-    } else if (designOrderStatus === "Paid") {
+      setOpenQuotationModal(true);
+    } else if (designOrderStatus.status === "ConsultQuoted") {
+      console.log("todo: handle update quotation");
+      if (designOrderStatus.consultQuotation) {
+        setQuotationIsEditing(true);
+        setQuotation(`${designOrderStatus.consultQuotation}`);
+      }
+      setOpenQuotationModal(true);
+    } else if (designOrderStatus.status === "Paid") {
       console.log("todo: handle issue quotation for design package");
-    } else if (designOrderStatus === "PackageQuoted") {
+      setOpenQuotationModal(true);
+    } else if (designOrderStatus.status === "PackageQuoted") {
       console.log("todo: handle edit quotation");
-    } else if (designOrderStatus === "Designing") {
+      if (designOrderStatus.packageQuotation) {
+        setQuotationIsEditing(true);
+        setQuotation(`${designOrderStatus.packageQuotation}`);
+      }
+      setOpenQuotationModal(true);
+    } else if (designOrderStatus.status === "Designing") {
       console.log("todo: handle add design package");
     }
   };
 
+  console.log("designOrderStatus", designOrderStatus);
+  console.log("designOrderStatus.designItems", designOrderStatus.designItems);
+
   return (
     <>
-      {DesignOrderDict[designOrderStatus][currUserType]["action"].length >
-        0 && (
+      <ToastContainer />
+      <QuotationModal
+        open={openQuotationModal}
+        closeQuotationModal={closeQuotationModal}
+        createToast={createToast}
+        designOrderStatus={designOrderStatus}
+        isEditing={quotationIsEditing}
+        quotation={quotation}
+        setQuotation={setQuotation}
+      />
+      {DesignOrderDict[designOrderStatus.status][currUserType]["action"]
+        .length > 0 && (
         <>
           <Box sx={{ px: 3, py: 3, backgroundColor: "grey.100" }}>
             <Stack direction="row" spacing={3}>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "white",
-                  color: "primary.main",
-                  "&:hover": {
-                    backgroundColor: "grey.200",
-                  },
-                }}
-                onClick={handleActionClick}
-              >
-                {DesignOrderDict[designOrderStatus][currUserType]["action"]}
-              </Button>
+              {designOrderStatus.status === "InReview" ? (
+                <Link
+                  to="/designOrder/design"
+                  state={{
+                    design:
+                      designOrderStatus.designItems[
+                        designOrderStatus.designItems.length - 1
+                      ],
+                    onlyNavigateBackOne: true,
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "white",
+                      color: "primary.main",
+                      "&:hover": {
+                        backgroundColor: "grey.200",
+                      },
+                    }}
+                    onClick={handleActionClick}
+                  >
+                    {
+                      DesignOrderDict[designOrderStatus.status][currUserType][
+                        "action"
+                      ]
+                    }
+                  </Button>
+                </Link>
+              ) : (
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "white",
+                    color: "primary.main",
+                    "&:hover": {
+                      backgroundColor: "grey.200",
+                    },
+                  }}
+                  onClick={handleActionClick}
+                >
+                  {
+                    DesignOrderDict[designOrderStatus.status][currUserType][
+                      "action"
+                    ]
+                  }
+                </Button>
+              )}
             </Stack>
           </Box>
           <Divider />

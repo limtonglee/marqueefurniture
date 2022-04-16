@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { useNavigate, useNavigationType } from "react-router-dom";
+import { useNavigate, useNavigationType, useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
@@ -87,7 +87,13 @@ const TabsList = styled(TabsListUnstyled)`
   align-content: space-between;
 `;
 
-const DesignOrderProgress = () => {
+const DesignOrderProgress = ({ designOrderStatus }) => {
+  const location = useLocation();
+
+  const design_order_status = designOrderStatus
+    ? designOrderStatus
+    : location.state.designOrderStatus;
+
   let navigate = useNavigate();
   const { userStore } = useStores();
 
@@ -146,43 +152,43 @@ const DesignOrderProgress = () => {
     },
   ];
 
-  const designItems = [
-    {
-      id: 1,
-      timestamp: "2022-03-19 02:58:55.425662",
-      title: "First draft",
-      designImages: [
-        "d5905def5a6366ae4a3b3cadced8cbd2",
-        "dd1f03dcab86c065cc069e07a1931d98",
-        "c7befb8cdc6dc9623673a57ee78e6447",
-      ],
-      taggedProducts: [2, 3, 4],
-      isCompleted: "1",
-      customerReview: {
-        pictureComments: [
-          "d5905def5a6366ae4a3b3cadced8cbd2",
-          "dd1f03dcab86c065cc069e07a1931d98",
-          "c7befb8cdc6dc9623673a57ee78e6447",
-        ],
-        otherComments: "other comments hereee",
-      },
-    },
-    {
-      id: 2,
-      timestamp: "2022-03-19 02:58:55.425662",
-      title: "Second draft",
-      designImages: [
-        "c7befb8cdc6dc9623673a57ee78e6447",
-        "dd1f03dcab86c065cc069e07a1931d98",
-      ],
-      taggedProducts: [5, 7, 9],
-      isCompleted: "0",
-      customerReview: {
-        pictureComments: [],
-        otherComments: "",
-      },
-    },
-  ];
+  // const designItems = [
+  //   {
+  //     id: 1,
+  //     timestamp: "2022-03-19 02:58:55.425662",
+  //     title: "First draft",
+  //     designImages: [
+  //       "d5905def5a6366ae4a3b3cadced8cbd2",
+  //       "dd1f03dcab86c065cc069e07a1931d98",
+  //       "c7befb8cdc6dc9623673a57ee78e6447",
+  //     ],
+  //     taggedProducts: [2, 3, 4],
+  //     isCompleted: "1",
+  //     customerReview: {
+  //       pictureComments: [
+  //         "d5905def5a6366ae4a3b3cadced8cbd2",
+  //         "dd1f03dcab86c065cc069e07a1931d98",
+  //         "c7befb8cdc6dc9623673a57ee78e6447",
+  //       ],
+  //       otherComments: "other comments hereee",
+  //     },
+  //   },
+  //   {
+  //     id: 2,
+  //     timestamp: "2022-03-19 02:58:55.425662",
+  //     title: "Second draft",
+  //     designImages: [
+  //       "c7befb8cdc6dc9623673a57ee78e6447",
+  //       "dd1f03dcab86c065cc069e07a1931d98",
+  //     ],
+  //     taggedProducts: [5, 7, 9],
+  //     isCompleted: "0",
+  //     customerReview: {
+  //       pictureComments: [],
+  //       otherComments: "",
+  //     },
+  //   },
+  // ];
 
   return (
     <>
@@ -275,13 +281,15 @@ const DesignOrderProgress = () => {
                         Add Design Package
                       </Button>
                     )}
-                    {designItems.reverse().map((design, i) => (
-                      <DesignItemCard
-                        design={design}
-                        completed={false}
-                        key={i}
-                      />
-                    ))}
+                    {design_order_status.designItems
+                      .reverse()
+                      .map((design, i) => (
+                        <DesignItemCard
+                          design={design}
+                          completed={false}
+                          key={i}
+                        />
+                      ))}
                   </Box>
                 </>
               )}

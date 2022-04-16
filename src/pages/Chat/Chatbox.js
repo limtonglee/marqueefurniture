@@ -186,7 +186,34 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
   };
 
   const [isDesignCustomerRs, setIsDesignCustomerRs] = useState(false);
-  const [designOrderStatus, setDesignOrderStatus] = useState("Nothing");
+  // const [designOrderStatus, setDesignOrderStatus] = useState("Nothing");
+  const [designOrderStatus, setDesignOrderStatus] = useState({
+    status: "Nothing",
+    consultQuotation: null,
+    packageQuotation: null,
+    designItems: [
+      {
+        id: 1,
+        timestamp: "2022-03-19 02:58:55.425662",
+        title: "First draft",
+        designImages: [
+          "d5905def5a6366ae4a3b3cadced8cbd2",
+          "dd1f03dcab86c065cc069e07a1931d98",
+          "c7befb8cdc6dc9623673a57ee78e6447",
+        ],
+        taggedProducts: [2, 3, 4],
+        isCompleted: "1",
+        customerReview: {
+          pictureComments: [
+            "d5905def5a6366ae4a3b3cadced8cbd2",
+            "dd1f03dcab86c065cc069e07a1931d98",
+            "c7befb8cdc6dc9623673a57ee78e6447",
+          ],
+          otherComments: "other comments hereee",
+        },
+      },
+    ],
+  });
   const currUserType = getCurrUserType(); // status of this current user
 
   console.log(DesignOrderDict["Completed"]);
@@ -211,7 +238,48 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
         setIsDesignCustomerRs(true);
         // todo: call API to check if there's engagement going on
         // todo: update below accordingly
-        setDesignOrderStatus("Requested");
+        setDesignOrderStatus({
+          status: "Designing",
+          consultQuotation: 1,
+          packageQuotation: 2,
+          designItems: [
+            {
+              id: 1,
+              timestamp: "2022-03-19 02:58:55.425662",
+              title: "First draft",
+              designImages: [
+                "d5905def5a6366ae4a3b3cadced8cbd2",
+                "dd1f03dcab86c065cc069e07a1931d98",
+                "c7befb8cdc6dc9623673a57ee78e6447",
+              ],
+              taggedProducts: [2, 3, 4],
+              isCompleted: "1",
+              customerReview: {
+                pictureComments: [
+                  "d5905def5a6366ae4a3b3cadced8cbd2",
+                  "dd1f03dcab86c065cc069e07a1931d98",
+                  "c7befb8cdc6dc9623673a57ee78e6447",
+                ],
+                otherComments: "other comments hereee",
+              },
+            },
+            {
+              id: 2,
+              timestamp: "2022-03-19 02:58:55.425662",
+              title: "Second draft",
+              designImages: [
+                "c7befb8cdc6dc9623673a57ee78e6447",
+                "dd1f03dcab86c065cc069e07a1931d98",
+              ],
+              taggedProducts: [5, 7, 9],
+              isCompleted: "0",
+              customerReview: {
+                pictureComments: [],
+                otherComments: "",
+              },
+            },
+          ],
+        });
       } else {
         setIsDesignCustomerRs(false);
       }

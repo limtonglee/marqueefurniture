@@ -24,6 +24,9 @@ const Design = () => {
 
   const location = useLocation();
   const design = location.state ? location.state.design : null;
+  const onlyNavigateBackOne = location.state
+    ? location.state.onlyNavigateBackOne
+    : null;
 
   console.log(design);
 
@@ -113,7 +116,9 @@ const Design = () => {
           </Box> */}
           <Grid item xs={12} md={1}>
             <IconButton
-              onClick={() => navigate(-2)}
+              onClick={() =>
+                onlyNavigateBackOne ? navigate(-1) : navigate(-2)
+              }
               sx={{ position: "fixed", backgroundColor: "white" }}
               size="small"
             >

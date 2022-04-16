@@ -9,8 +9,9 @@ import { DesignOrderDict } from "../../data/designOrderDict";
 const DesignAnnouncement = ({ designOrderStatus, currUserType }) => {
   return (
     <>
-      {DesignOrderDict[designOrderStatus][currUserType]["statusbarTitleText"]
-        .length > 0 && (
+      {DesignOrderDict[designOrderStatus.status][currUserType][
+        "statusbarTitleText"
+      ].length > 0 && (
         <Link
           to="/designOrderProgress"
           state={{ designOrderStatus: designOrderStatus }}
@@ -29,7 +30,7 @@ const DesignAnnouncement = ({ designOrderStatus, currUserType }) => {
             <Box>
               <Typography variant="h6" component="div">
                 {
-                  DesignOrderDict[designOrderStatus][currUserType][
+                  DesignOrderDict[designOrderStatus.status][currUserType][
                     "statusbarTitleText"
                   ]
                 }
@@ -40,7 +41,7 @@ const DesignAnnouncement = ({ designOrderStatus, currUserType }) => {
                 sx={{ fontWeight: "normal" }}
               >
                 {
-                  DesignOrderDict[designOrderStatus][currUserType][
+                  DesignOrderDict[designOrderStatus.status][currUserType][
                     "statusbarSubText"
                   ]
                 }

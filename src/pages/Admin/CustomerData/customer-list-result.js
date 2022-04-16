@@ -1,31 +1,31 @@
-import { useState } from "react";
-import PerfectScrollbar from "react-perfect-scrollbar";
-import PropTypes from "prop-types";
-import { format } from "date-fns";
+//import { getInitials } from '../../utils/get-initials';
+import BlockIcon from "@mui/icons-material/Block";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import {
   Avatar,
   Box,
   Card,
-  Checkbox,
-  Icon,
-  Table,
+  Checkbox, Table,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
   TableRow,
-  Typography,
+  Typography
 } from "@mui/material";
-//import { getInitials } from '../../utils/get-initials';
-
-import BlockIcon from "@mui/icons-material/Block";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { pink } from "@mui/material/colors";
-
-import UserMoreMenu from "./UserMoreMenu";
+import PropTypes from "prop-types";
+import { useState } from "react";
+import PerfectScrollbar from "react-perfect-scrollbar";
 import SearchNotFound from "../../../components/SearchNotFound";
+import UserMoreMenu from "./UserMoreMenu";
 
-export const CustomerListResults = ({ customers, setFetchUsers, filterName }) => {
+
+export const CustomerListResults = ({
+  customers,
+  setFetchUsers,
+  filterName,
+}) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
@@ -127,7 +127,10 @@ export const CustomerListResults = ({ customers, setFetchUsers, filterName }) =>
                         display: "flex",
                       }}
                     >
-                      <Avatar src={`/api/image/${customer.profilepic}`} sx={{ mr: 2 }}>
+                      <Avatar
+                        src={`/api/image/${customer.profilepic}`}
+                        sx={{ mr: 2 }}
+                      >
                         {customer.username}
                       </Avatar>
                       <Typography color="textPrimary" variant="body1">
@@ -149,7 +152,12 @@ export const CustomerListResults = ({ customers, setFetchUsers, filterName }) =>
                     )}
                   </TableCell>
                   <TableCell align="right">
-                    <UserMoreMenu userId={customer.id} status={customer.isbanned} customers={customers} setFetchUsers={setFetchUsers} />
+                    <UserMoreMenu
+                      userId={customer.id}
+                      status={customer.isbanned}
+                      customers={customers}
+                      setFetchUsers={setFetchUsers}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
@@ -158,7 +166,7 @@ export const CustomerListResults = ({ customers, setFetchUsers, filterName }) =>
               <TableBody>
                 <TableRow>
                   <TableCell align="center" colSpan={8} sx={{ py: 3 }}>
-                    <SearchNotFound searchQuery={filterName}/>
+                    <SearchNotFound searchQuery={filterName} />
                   </TableCell>
                 </TableRow>
               </TableBody>

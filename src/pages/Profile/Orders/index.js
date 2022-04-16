@@ -271,18 +271,6 @@ export default function Orders() {
                               </Grid>
                             </>
                           )}
-                          {orderItem.order_status === "CANCELLED" && (
-                            <>
-                              <Grid item>
-                                <Button
-                                  variant="contained"
-                                  sx={{ width: "150px" }}
-                                >
-                                  Cancelled details
-                                </Button>
-                              </Grid>
-                            </>
-                          )}
                           {orderItem.order_status === "RETURN/REFUND" && (
                             <>
                               <Grid item>
@@ -299,9 +287,12 @@ export default function Orders() {
                             </>
                           )}
                           <Grid item>
+                          <Link to="/Chat" state={{ sellerId: orderItem.sellerid }}>
+
                             <Button variant="outlined" sx={{ width: "150px" }}>
                               Contact Seller
                             </Button>
+                            </Link>
                           </Grid>
                         </Grid>
                         <Grid container spacing={2} direction="row">

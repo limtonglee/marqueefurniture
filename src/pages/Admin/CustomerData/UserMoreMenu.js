@@ -1,19 +1,15 @@
-import { useRef, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import BlockIcon from "@mui/icons-material/Block";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import RemoveIcon from "@mui/icons-material/Remove";
 // material
 import {
-  Menu,
-  MenuItem,
   IconButton,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
 } from "@mui/material";
-// component
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import RemoveIcon from "@mui/icons-material/Remove";
-import BlockIcon from "@mui/icons-material/Block";
-import EditIcon from "@mui/icons-material/Edit";
+import { useRef, useState } from "react";
 import { banUser, unbanUser } from "../../../services/Admin";
 // ----------------------------------------------------------------------
 

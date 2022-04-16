@@ -15,6 +15,7 @@ import * as SellerCenterAPI from "../../../services/SellerCenter";
 const EditVoucherModal = ({
     children,
     refreshData,
+    notifyUpdate,
 }) => {
     const style = {
         wrapper: {
@@ -87,9 +88,9 @@ const EditVoucherModal = ({
 
     const voucherId = children.id;
 
-    const handleSubmit = event => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        SellerCenterAPI.editVoucher(
+        const response = await SellerCenterAPI.editVoucher(
             voucherId,
             formData.voucherName,
             formData.minSpend,
@@ -98,13 +99,14 @@ const EditVoucherModal = ({
             '2022-07-01',
             formData.voucherStatus,
         );
-        refreshData();
-        handleClose();
-        setTimeout(() => {
+        if (response.data === "Voucher has been successfully updated!") {
+            notifyUpdate();
+            refreshData();
             setFormData({
                 reset: true
             })
-        }, 3000);
+        }
+        handleClose();
     }
     return (
         <div>

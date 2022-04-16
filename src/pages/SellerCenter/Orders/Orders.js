@@ -11,12 +11,14 @@ import {
     TextField,
     MenuItem,
     Grid,
-    Avatar
+    Avatar,
 } from '@mui/material';
 import UpdateOrderModal from './UpdateOrderModal';
 import OrderDetailsModal from './OrderDetailsModal';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 import { useStores } from "../../../stores/RootStore";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Orders = () => {
     const [value, setValue] = useState(0);
@@ -98,6 +100,14 @@ export const Orders = () => {
             setData(filteredListing);
         }
     };
+
+    const notifyUpdate = () => {
+        toast("Order status updated successfully!", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1500,
+        });
+    }
+
     return (
         <>
             <Layout>
@@ -208,13 +218,20 @@ export const Orders = () => {
                                                     {item.order_status}
                                                 </Grid>
                                                 <Grid item xs={2}>
-                                                    <UpdateOrderModal refreshData={refreshData}>{item}</UpdateOrderModal>
+                                                    <UpdateOrderModal
+                                                        refreshData={refreshData}
+                                                        notifyUpdate={notifyUpdate}
+                                                    >
+                                                        {item}
+                                                    </UpdateOrderModal>
+                                                    
                                                     <OrderDetailsModal>{item}</OrderDetailsModal>
                                                 </Grid>
                                             </Grid>
                                         </Card>
                                     ))}
                                 </Grid>
+                                <ToastContainer />
                             </Grid>
                         </Box>
                     </div>

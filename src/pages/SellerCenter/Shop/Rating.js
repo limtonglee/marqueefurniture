@@ -12,10 +12,13 @@ import {
     Grid,
     ButtonBase,
     Avatar,
+    Rating,
 } from "@mui/material";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 import { useStores } from "../../../stores/RootStore";
 import ReplyReviewModal from './ReplyReviewModal';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Img = styled("img")({
     margin: "auto",
@@ -34,26 +37,25 @@ export const ShopRating = () => {
             const res = await SellerCenterAPI.getShopRatings(userStore.id);
             setData(JSON.parse(JSON.stringify(res.data)));
             setRatings(JSON.parse(JSON.stringify(res.data)));
+            if (res !== null) {
+                calculateAverage();
+            }
         } catch (error) {
             console.error(error);
         }
     };
 
-    const [average, setAverage] = useState(0);
+    let average = 3.7;
     const calculateAverage = () => {
         var sum = 0;
         for (var i = 0; i < ratings.length; i++) {
             sum += ratings[i].rating;
         }
-        setAverage((sum / ratings.length).toFixed(1));
-        console.log('ZZZ', sum);
-        console.log('ZZZ', ratings.length);
-        console.log('ZZZ', average);
+        average = (sum / ratings.length).toFixed(1);
     };
 
     useEffect(() => {
         getRatings();
-        calculateAverage();
     }, []);
 
     const refreshData = () => {
@@ -73,16 +75,14 @@ export const ShopRating = () => {
         updateData();
     };
     const updateData = () => {
-        console.log('ZZZ', value1);
-        console.log('ZZZ', value2);
+        console.log('ZZZ value1', value1);
+        console.log('ZZZ value2', value2);
         if (value1 === 1) {
             tabData = ratings.filter((ratings) => ratings.sellerreply === '');
         } else if (value1 === 2) {
             tabData = ratings.filter((ratings) => ratings.sellerreply !== '');
-        } else {
-            tabData = ratings;
         }
-        console.log('ZZZ1', tabData);
+
         if (value2 === 1) {
             tabData = tabData.filter((ratings) => ratings.rating === 5);
         } else if (value2 === 2) {
@@ -94,9 +94,16 @@ export const ShopRating = () => {
         } else if (value2 === 5) {
             tabData = tabData.filter((ratings) => ratings.rating === 1);
         }
-        console.log('ZZZ2', tabData);
+
         setData(tabData);
     };
+
+    const notifyReply = () => {
+        toast("Reply posted successfully!", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1500,
+        });
+    }
 
     return (
         <>
@@ -114,22 +121,22 @@ export const ShopRating = () => {
                         value={value1}
                         onChange={handleTab1}
                     >
-                        <Tab label="All" />
-                        <Tab label="To Reply" />
-                        <Tab label="Replied" />
+                        <Tab label="All" value="0" />
+                        <Tab label="To Reply" value="1" />
+                        <Tab label="Replied" value="2"/>
                     </Tabs>
                 </Box>
                 <Box sx={{ border: 1, borderColor: 'divider', margin: '10px' }}>
-                    <Tabs
+                    <Tabs 
                         value={value2}
                         onChange={handleTab2}
                     >
-                        <Tab label="All" />
-                        <Tab label="5 Star" />
-                        <Tab label="4 Star" />
-                        <Tab label="3 Star" />
-                        <Tab label="2 Star" />
-                        <Tab label="1 Star" />
+                        <Tab label="All" value="0"/>
+                        <Tab label="5 Star" value="1"/>
+                        <Tab label="4 Star" value="2"/>
+                        <Tab label="3 Star" value="3"/>
+                        <Tab label="2 Star" value="4"/>
+                        <Tab label="1 Star" value="5"/>
                     </Tabs>
                 </Box>
                 <Grid container spacing={2} >
@@ -196,11 +203,12 @@ export const ShopRating = () => {
                                                     {item.username}
                                                 </Typography>
                                                 <Typography variant="body2" gutterBottom>
-                                                    {item.description}
+                                                    <Rating name="read-only" value={item.rating} readOnly />
                                                 </Typography>
                                                 <Typography variant="body2" gutterBottom>
-                                                    Rating: {item.rating}/5
+                                                    {item.description}
                                                 </Typography>
+                                                
                                             </Grid>
                                         </Grid>
                                         <Grid item>
@@ -226,10 +234,11 @@ export const ShopRating = () => {
                                                 <Typography gutterBottom variant="subtitle1" component="div">
                                                     {/* ABC Furniture Shop */}
                                                 </Typography>
-                                                {item.sellerreply === '' ? (
+                                                {!item.sellerreply ? (
                                                     <ReplyReviewModal
                                                         reviewId={item.id}
                                                         refreshData={refreshData}
+                                                        notifyReply={notifyReply}
                                                     />
                                                 ) : (
                                                     <Typography variant="body2" gutterBottom>
@@ -249,6 +258,7 @@ export const ShopRating = () => {
                         </Grid>
                     </Grid>
                 ))}
+                <ToastContainer />
             </Layout>
         </>
     );

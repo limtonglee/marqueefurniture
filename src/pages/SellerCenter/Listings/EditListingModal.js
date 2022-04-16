@@ -16,6 +16,7 @@ import * as SellerCenterAPI from "../../../services/SellerCenter";
 const EditListingModal = ({
     children,
     refreshData,
+    notifyUpdate,
 }) => {
 
     const style = {
@@ -88,9 +89,9 @@ const EditListingModal = ({
         });
     };
 
-    const handleSubmit = event => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        SellerCenterAPI.editListing(
+        const response = await SellerCenterAPI.editListing(
             children.id,
             formData.name,
             children.image,
@@ -108,13 +109,14 @@ const EditListingModal = ({
             'LIVE',
             children.type,
         );
-        refreshData();
-        handleClose();
-        setTimeout(() => {
+        if (response.data === "You have successfully edited a listing!") {
+            notifyUpdate();
+            refreshData();
             setFormData({
                 reset: true
             })
-        }, 3000);
+        }
+        handleClose();
     }
     return (
         <div>
@@ -457,7 +459,6 @@ const EditListingModal = ({
                                 </Button>
                             </Box>
                         }
-
                     </form>
                 </Box>
             </Modal>

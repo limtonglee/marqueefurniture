@@ -20,6 +20,8 @@ import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 import { useStores } from "../../../stores/RootStore";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const MyListings = () => {
     const navigate = useNavigate();
@@ -98,12 +100,36 @@ export const MyListings = () => {
     const handleDelist = async (item) => {
         const status = item.status === 'DELISTED' ? 'LIVE' : 'DELISTED';
         try {
-            await SellerCenterAPI.updateListingStatus(status, item.id);
-            refreshData();
+            const response = await SellerCenterAPI.updateListingStatus(status, item.id);
+            if (response.data === "listing status updated") {
+                notifyDelist(status);
+                refreshData();
+            }
         } catch (error) {
             console.error(error);
         }
         refreshData();
+    }
+
+    const notifyUpdate = () => {
+        toast("Listing updated successfully!", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1500,
+        });
+    }
+
+    const notifyDelist = (status) => {
+        if (status === 'DELISTED') {
+            toast("Listing delisted successfully!", {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 1500,
+            });
+        } else if (status === 'LIVE') {
+            toast("Listing relisted successfully!", {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 1500,
+            });
+        }
     }
 
     return (
@@ -156,7 +182,7 @@ export const MyListings = () => {
                             Product Details
                         </Grid>
                         <Grid item xs={1}>
-                            
+
                         </Grid>
                         <Grid item xs={1}>
                             Price
@@ -192,7 +218,7 @@ export const MyListings = () => {
                                             <div>Variation: {item.variations}</div>
                                         </Grid>
                                         <Grid item xs={1}>
-                                            
+
                                         </Grid>
                                         <Grid item xs={1}>
                                             S${item.listingprice}
@@ -208,7 +234,12 @@ export const MyListings = () => {
                                             {item.sales}
                                         </Grid>
                                         <Grid item xs={3}>
-                                            <EditListingModal refreshData={refreshData}>{item}</EditListingModal>
+                                            <EditListingModal
+                                                refreshData={refreshData}
+                                                notifyUpdate={notifyUpdate}
+                                            >
+                                                {item}
+                                            </EditListingModal>
                                             {item.status === "DELISTED" ? (
                                                 <Button
                                                     variant="contained"
@@ -218,7 +249,7 @@ export const MyListings = () => {
                                                         marginTop: "12px"
                                                     }}
                                                     onClick={e => {
-                                                        handleDelist(e, item, value);
+                                                        handleDelist(item);
                                                     }}
                                                 >
                                                     Relist
@@ -245,6 +276,7 @@ export const MyListings = () => {
                         </Grid>
                     </Grid>
                 </Card>
+                <ToastContainer />
             </Layout>
         </>
     );

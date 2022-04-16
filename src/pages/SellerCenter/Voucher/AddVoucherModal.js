@@ -11,10 +11,11 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from "@mui/icons-material/Close";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
+import { useStores } from "../../../stores/RootStore";
 
 const AddVoucherModal = ({
-    userId,
     refreshData,
+    notifyCreate,
 }) => {
     const style = {
         wrapper: {
@@ -70,7 +71,7 @@ const AddVoucherModal = ({
         },
     ];
 
-
+    const { userStore } = useStores();
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -85,24 +86,25 @@ const AddVoucherModal = ({
             value: event.target.value,
         });
     };
-    const handleSubmit = event => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        SellerCenterAPI.createVoucher(
+        const response = await SellerCenterAPI.createVoucher(
             formData.voucherName,
             formData.minSpend,
             formData.discountAmount,
             '2022-07-01',
             '2022-07-01',
             formData.voucherStatus,
-            userId,
+            userStore.shop.id,
         );
-        refreshData();
-        handleClose();
-        setTimeout(() => {
+        if (response.data === "Voucher successfully added!") {
+            notifyCreate();
+            refreshData();
             setFormData({
                 reset: true
             })
-        }, 1000);
+        }
+        handleClose();
     }
 
     return (

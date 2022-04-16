@@ -15,6 +15,7 @@ import * as SellerCenterAPI from "../../../services/SellerCenter";
 const UpdateOrderModal = ({
     children,
     refreshData,
+    notifyUpdate
 }) => {
     const style = {
         wrapper: {
@@ -94,19 +95,16 @@ const UpdateOrderModal = ({
             value: event.target.value,
         });
     };
-    const handleSubmit = event => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        SellerCenterAPI.updateOrderStatus(formData.orderStatus, children.id);
+        const response = await SellerCenterAPI.updateOrderStatus(formData.orderStatus, children.id);
         SellerCenterAPI.updateTrackingNumber(formData.trackingNumber, children.id);
-        refreshData();
+        if (response.data === "order updated") {
+            notifyUpdate();
+            refreshData();
+        }
         handleClose();
-        setTimeout(() => {
-            setFormData({
-                reset: true
-            })
-        }, 1000);
     }
-
 
     return (
         <>

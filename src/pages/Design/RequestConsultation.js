@@ -224,12 +224,6 @@ const RequestConsultation = () => {
     otherComments,
   }) => {
     try {
-      console.log("requestType", requestType);
-      console.log("roomGeometry", roomGeometry);
-      console.log("floorPlan", floorPlan);
-      console.log("styleRequests", styleRequests);
-      console.log("moodboardReferences", moodboardReferences);
-      console.log("otherComments", otherComments);
       const res = await designEngagementAPI.createDesignRequirement(
         requestType,
         floorPlan[0],
@@ -239,12 +233,12 @@ const RequestConsultation = () => {
         userStore.id
       );
       const requirementId = JSON.parse(JSON.stringify(res)).data[0]["id"];
-      console.log(requirementId);
+      console.log("requirementId", requirementId);
 
       for (let room in roomGeometry) {
         await createDesignRequirementRoomAPI(
-          room.roomSize,
-          room.roomType,
+          parseInt(roomGeometry[room].roomSize),
+          roomGeometry[room].roomType,
           requirementId
         );
       }

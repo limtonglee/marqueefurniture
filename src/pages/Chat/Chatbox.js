@@ -211,7 +211,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
         setIsDesignCustomerRs(true);
         // todo: call API to check if there's engagement going on
         // todo: update below accordingly
-        setDesignOrderStatus("Designing");
+        setDesignOrderStatus("Nothing");
       } else {
         setIsDesignCustomerRs(false);
       }

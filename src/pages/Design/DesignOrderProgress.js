@@ -29,6 +29,7 @@ import LogItem from "./LogItem";
 import DesignRequirements from "./DesignRequirements";
 import { useStores } from "../../stores/RootStore";
 import AddIcon from "@mui/icons-material/Add";
+import * as designEngagementAPI from "../../services/DesignEngagement";
 
 const primary = {
   50: "#f0fcf9",
@@ -92,12 +93,12 @@ const TabsList = styled(TabsListUnstyled)`
   align-content: space-between;
 `;
 
-const DesignOrderProgress = ({ designOrderStatus }) => {
+const DesignOrderProgress = () => {
   const location = useLocation();
 
-  const design_order_status = designOrderStatus
-    ? designOrderStatus
-    : location.state.designOrderStatus;
+  const designOrderStatus = location.state
+    ? location.state.designOrderStatus
+    : null;
 
   let navigate = useNavigate();
   const { userStore } = useStores();
@@ -118,82 +119,62 @@ const DesignOrderProgress = ({ designOrderStatus }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const logs = [
+  const [logs, setLogs] = useState([
     {
       id: 1,
-      timestamp: "2022-03-19 02:58:55.425662",
+      datetime: "2022-03-19 02:58:55.425662",
       description: "Requested for consultation",
       role: "Customer",
     },
     {
       id: 2,
-      timestamp: "2022-03-19 02:58:55.425662",
+      datetime: "2022-03-19 02:58:55.425662",
       description: "Issued quotation",
       role: "Designer",
     },
     {
       id: 3,
-      timestamp: "2022-03-19 02:58:55.425662",
+      datetime: "2022-03-19 02:58:55.425662",
       description: "Edited quotation",
       role: "Designer",
     },
     {
       id: 4,
-      timestamp: "2022-03-19 02:58:55.425662",
+      datetime: "2022-03-19 02:58:55.425662",
       description: "Paid for quotation",
       role: "Customer",
     },
     {
       id: 5,
-      timestamp: "2022-03-19 02:58:55.425662",
+      datetime: "2022-03-19 02:58:55.425662",
       description: "Issued quotation for design package",
       role: "Designer",
     },
     {
       id: 6,
-      timestamp: "2022-03-19 02:58:55.425662",
+      datetime: "2022-03-19 02:58:55.425662",
       description: "Paid for quotation",
       role: "Customer",
     },
-  ];
+  ]);
 
-  // const designItems = [
-  //   {
-  //     id: 1,
-  //     timestamp: "2022-03-19 02:58:55.425662",
-  //     title: "First draft",
-  //     designImages: [
-  //       "d5905def5a6366ae4a3b3cadced8cbd2",
-  //       "dd1f03dcab86c065cc069e07a1931d98",
-  //       "c7befb8cdc6dc9623673a57ee78e6447",
-  //     ],
-  //     taggedProducts: [2, 3, 4],
-  //     isCompleted: "1",
-  //     customerReview: {
-  //       pictureComments: [
-  //         "d5905def5a6366ae4a3b3cadced8cbd2",
-  //         "dd1f03dcab86c065cc069e07a1931d98",
-  //         "c7befb8cdc6dc9623673a57ee78e6447",
-  //       ],
-  //       otherComments: "other comments hereee",
-  //     },
-  //   },
-  //   {
-  //     id: 2,
-  //     timestamp: "2022-03-19 02:58:55.425662",
-  //     title: "Second draft",
-  //     designImages: [
-  //       "c7befb8cdc6dc9623673a57ee78e6447",
-  //       "dd1f03dcab86c065cc069e07a1931d98",
-  //     ],
-  //     taggedProducts: [5, 7, 9],
-  //     isCompleted: "0",
-  //     customerReview: {
-  //       pictureComments: [],
-  //       otherComments: "",
-  //     },
-  //   },
-  // ];
+  const getDesignLogs = async (designOrderId) => {
+    try {
+      const res = await designEngagementAPI.getDesignLogs(designOrderId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log("getDesignLogs data", data);
+      setLogs(data);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("designOrderStatus", designOrderStatus);
+    console.log("designOrderStatus.id", designOrderStatus.id);
+    getDesignLogs(designOrderStatus.id);
+  }, []);
 
   return (
     <>
@@ -263,6 +244,34 @@ const DesignOrderProgress = ({ designOrderStatus }) => {
                             .map((log, i) => (
                               <LogItem log={log} completed={false} key={i} />
                             ))}
+                          {logs
+                            .reverse()
+                            .filter((log) => log.role === "Designer").length ===
+                            0 && (
+                            <Box
+                              sx={{
+                                width: "100%",
+                                height: 100,
+                                border: "1px solid #DFE3E8",
+                                borderRadius: 3,
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Typography
+                                variant="h5"
+                                gutterBottom
+                                component="div"
+                                sx={{
+                                  fontWeight: "normal",
+                                  fontStyle: "italic",
+                                }}
+                              >
+                                No logs for designer
+                              </Typography>
+                            </Box>
+                          )}
                         </Box>
                       </TabPanel>
                     </TabsUnstyled>
@@ -301,7 +310,7 @@ const DesignOrderProgress = ({ designOrderStatus }) => {
                         </Button>
                       </Link>
                     )}
-                    {design_order_status.designItems
+                    {designOrderStatus.designItems
                       .reverse()
                       .map((design, i) => (
                         <DesignItemCard

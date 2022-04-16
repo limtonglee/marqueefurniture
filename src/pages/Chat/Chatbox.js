@@ -226,8 +226,9 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
       );
 
       const initialDesignOrder = JSON.parse(JSON.stringify(res)).data[0];
+      console.log("initialDesignOrder", initialDesignOrder);
 
-      if (initialDesignOrder.status !== "Nothing") {
+      if (initialDesignOrder.design_order_status !== "Nothing") {
         const designOrderId = initialDesignOrder["id"];
 
         const allDesigns = await getDesignOrderDesigns(designOrderId);
@@ -305,12 +306,21 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
         setIsDesignCustomerRs(true);
 
         // todo: call API to check if there's engagement going on
-        getDesignOrderStatus(
-          currentChat.firstuserid === userStore.id
-            ? currentChat.seconduserid
-            : currentChat.firstuserid,
-          userStore.id
-        );
+        if (userStore.isDesigner) {
+          getDesignOrderStatus(
+            userStore.id,
+            currentChat.firstuserid === userStore.id
+              ? currentChat.seconduserid
+              : currentChat.firstuserid
+          );
+        } else {
+          getDesignOrderStatus(
+            currentChat.firstuserid === userStore.id
+              ? currentChat.seconduserid
+              : currentChat.firstuserid,
+            userStore.id
+          );
+        }
 
         // // todo: update below accordingly
         // setDesignOrderStatus({

@@ -30,7 +30,11 @@ import ControlledSwitches from "./SwitchNav";
 // 	{ text: "Ideas", link: "/ideas" },
 // ];
 
-const AdminPageLinks = [{ text: "Admin Management", link: "/admin" }];
+const AdminPageLinks = [
+  { text: "Admin Management", link: "/admin" },
+  { text: "Order Management", link: "/adminorder" },
+  { text: "Dispute Management", link: "/admindispute" },
+];
 
 const sellerSettings = [
   { text: "Profile", link: "/profile" },
@@ -120,26 +124,30 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
                     />
                   </Grid>
                   <Grid item xs={6}>
-                    {AdminPageLinks.map((page) => (
-                      <Link
-                        key={page.link}
-                        to={page.link}
-                        style={{
-                          textDecoration: "none",
-                        }}
-                      >
-                        <Button
-                          key={page.link}
-                          sx={{
-                            my: 2,
-                            color: "white",
-                            display: "block",
-                          }}
-                        >
-                          {page.text}
-                        </Button>
-                      </Link>
-                    ))}
+                    <Grid container>
+                      {AdminPageLinks.map((page) => (
+                        <Grid item>
+                          <Link
+                            key={page.link}
+                            to={page.link}
+                            style={{
+                              textDecoration: "none",
+                            }}
+                          >
+                            <Button
+                              key={page.link}
+                              sx={{
+                                my: 2,
+                                color: "white",
+                                display: "block",
+                              }}
+                            >
+                              {page.text}
+                            </Button>
+                          </Link>
+                        </Grid>
+                      ))}
+                    </Grid>
                   </Grid>
                 </Grid>
               )}

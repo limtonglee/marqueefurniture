@@ -1,12 +1,10 @@
 import { Box, Container } from "@mui/material";
+import { useEffect, useState } from "react";
+import { getAllUsers } from "../../services/Admin";
+import { applySortFilter } from "../../utils/applySortFilter";
+import { getComparator } from "../../utils/getComparator";
 import { CustomerListResults } from "./CustomerData/customer-list-result";
 import { CustomerListToolbar } from "./CustomerData/customer-list-toolbar";
-import { mfusers } from "../../data/mfusers";
-import { useEffect, useState } from "react";
-
-import { getComparator } from "../../utils/getComparator";
-import { applySortFilter } from "../../utils/applySortFilter";
-import { getAllUsers } from "../../services/Admin";
 
 const MFUsers = () => {
   const [filterName, setFilterName] = useState("");
@@ -16,22 +14,27 @@ const MFUsers = () => {
   const [fetchUsers, setFetchUsers] = useState(true);
 
   useEffect(() => {
-    const getUsers = async () => getAllUsers()
-      .then((response) => {
-        setMfusers(JSON.parse(JSON.stringify(response.data)));
-        setFetchUsers(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-      fetchUsers && getUsers();
+    const getUsers = async () =>
+      getAllUsers()
+        .then((response) => {
+          setMfusers(JSON.parse(JSON.stringify(response.data)));
+          setFetchUsers(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    fetchUsers && getUsers();
   }, [!!fetchUsers]);
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
   };
 
-  const users = applySortFilter(mfusers, getComparator(order, orderBy), filterName)
+  const users = applySortFilter(
+    mfusers,
+    getComparator(order, orderBy),
+    filterName
+  );
 
   return (
     <>

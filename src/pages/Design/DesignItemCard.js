@@ -21,7 +21,7 @@ const DesignItemCard = ({ design, hideButton }) => {
     <>
       <Link
         to="/designOrder/design"
-        onClick={(e) => hideButton && e.preventDefault()}
+        onClick={(e) => (hideButton ? e.preventDefault() : undefined)}
         disabled={hideButton}
         state={{ design: design }}
       >
@@ -33,7 +33,7 @@ const DesignItemCard = ({ design, hideButton }) => {
               cursor: hideButton ? "default" : "pointer",
             },
           }}
-          onClick={!hideButton && handleViewDesign}
+          onClick={!hideButton ? handleViewDesign : undefined}
         >
           <Grid container spacing={2}>
             <Grid item xs={2} md={2}>

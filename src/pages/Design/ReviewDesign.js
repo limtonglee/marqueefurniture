@@ -11,6 +11,11 @@ import DesignItemCard from "./DesignItemCard";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import UploadIcon from "@mui/icons-material/Upload";
+import * as socialMediaAPI from "../../services/SocialMedia";
+import * as designEngagementAPI from "../../services/DesignEngagement";
+import CircularProgress from "@mui/material/CircularProgress";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
 
 const ReviewDesign = () => {
   let navigate = useNavigate();
@@ -18,12 +23,70 @@ const ReviewDesign = () => {
   const location = useLocation();
   const design = location.state ? location.state.design : null;
 
-  console.log(design);
-
   const [otherComments, setOtherComments] = useState("");
 
   const handleChangeOtherComments = (event) => {
     setOtherComments(event.target.value);
+  };
+
+  const [files, setFiles] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fileSelected = async (event) => {
+    setIsLoading(true);
+
+    const uploadedFiles = event.target.files;
+    console.log("uploadedFiles", uploadedFiles);
+    const newFiles = [];
+
+    for (let i = 0; i < 3; i++) {
+      const file = uploadedFiles[i];
+      console.log("file", file);
+      const result = await sendPictureToDbAPI(file);
+      console.log("file result", result);
+
+      if (result.image !== undefined) {
+        newFiles.push(result.image);
+      }
+    }
+    console.log(newFiles);
+    setFiles(newFiles);
+
+    setIsLoading(false);
+  };
+
+  const sendPictureToDbAPI = async (image) => {
+    try {
+      const res = await socialMediaAPI.sendPictureToDb(image);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSubmitReview = () => {
+    console.log("handleSubmitReview");
+
+    let photoReviews = [];
+    if (files.length > 3) {
+      photoReviews = files.slice(3);
+    } else if (files.length === 3) {
+      photoReviews = files;
+    } else if (files.length == 2) {
+      photoReviews = [files, ""].flat();
+    } else if (files.length == 1) {
+      photoReviews = [files, "", ""].flat();
+    } else {
+      photoReviews = ["", "", ""];
+    }
+
+    console.log("data to submit", {
+      photoReviews: photoReviews,
+      otherComments: otherComments,
+    });
+
+    // call API to submit
   };
 
   return (
@@ -45,26 +108,112 @@ const ReviewDesign = () => {
                 Review Design
               </Typography>
               <Box sx={{ width: "100%", mt: 3 }}>
-                <DesignItemCard
-                  design={design}
-                  completed={false}
-                  hideButton={true}
-                />
+                <DesignItemCard design={design} hideButton={true} />
               </Box>
               <Stack spacing={4} sx={{ mt: 4 }}>
                 <Box>
-                  <Typography variant="h5" gutterBottom component="div">
-                    Add picture comments
+                  <Typography variant="h4" component="div">
+                    Picture comments
                   </Typography>
-                  <Button variant="outlined" sx={{ height: 60, width: 80 }}>
-                    <Box>
-                      <UploadIcon fontSize="small" sx={{ mb: -1 }} />
-                      Upload
-                    </Box>
-                  </Button>
+                  <Typography
+                    variant="subtitle1"
+                    gutterBottom
+                    sx={{
+                      fontWeight: "normal",
+                      mb: 1,
+                      color: "primary.darker",
+                    }}
+                  >
+                    Maximum of 3 photos
+                  </Typography>
+                  {files.length === 0 ? (
+                    <>
+                      {!isLoading && (
+                        <Button
+                          variant="outlined"
+                          component="label"
+                          fontSize="small"
+                          sx={{
+                            height: 60,
+                            width: 80,
+                            margin: "0 auto",
+                          }}
+                        >
+                          <Box sx={{ mb: -0.5 }}>
+                            <Box
+                              sx={{ display: "flex", justifyContent: "center" }}
+                            >
+                              <UploadIcon fontSize="small" />
+                            </Box>
+                            Upload
+                          </Box>
+                          <input
+                            onChange={fileSelected}
+                            type="file"
+                            accept="image/*"
+                            hidden
+                            multiple
+                          />
+                        </Button>
+                      )}
+                      {isLoading && (
+                        <Box sx={{ display: "flex" }}>
+                          <CircularProgress />
+                        </Box>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {!isLoading && (
+                        <>
+                          <Stack direction="row" spacing={2}>
+                            {files.map((file, i) => (
+                              <Card
+                                key={i}
+                                sx={{
+                                  width: 130,
+                                  position: "relative",
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <CardMedia
+                                  component="img"
+                                  width="100%"
+                                  objectfit="scale-down"
+                                  image={`/api/image/${file}`}
+                                  alt="post picture"
+                                />
+                              </Card>
+                            ))}
+                          </Stack>
+                          <Button
+                            variant="contained"
+                            component="label"
+                            startIcon={<UploadIcon />}
+                            size="small"
+                            sx={{ mt: 2 }}
+                          >
+                            Re-upload
+                            <input
+                              onChange={fileSelected}
+                              type="file"
+                              accept="image/*"
+                              hidden
+                            />
+                          </Button>
+                        </>
+                      )}
+                      {isLoading && (
+                        <Box sx={{ display: "flex" }}>
+                          <CircularProgress />
+                        </Box>
+                      )}
+                    </>
+                  )}
                 </Box>
                 <Box>
-                  <Typography variant="h5" gutterBottom component="div">
+                  <Typography variant="h4" gutterBottom component="div">
                     Other Comments
                   </Typography>
                   <TextField
@@ -78,7 +227,12 @@ const ReviewDesign = () => {
                   />
                 </Box>
                 <Box sx={{ pt: 2 }}>
-                  <Button variant="contained" size="large" sx={{ width: 200 }}>
+                  <Button
+                    onClick={handleSubmitReview}
+                    variant="contained"
+                    size="large"
+                    sx={{ width: 200 }}
+                  >
                     Submit
                   </Button>
                 </Box>

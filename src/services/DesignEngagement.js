@@ -18,6 +18,9 @@ import {
   URL_GET_DESIGN_REQUIREMENT_MB,
   URL_UPDATE_CONSULTATION_QUOTATION,
   URL_UPDATE_PACKAGE_QUOTATION,
+  URL_CREATE_DESIGN_PACKAGE,
+  URL_CREATE_DESIGN_LISTINGS,
+  URL_CREATE_DESIGN_REVIEW,
 } from "../services/endpoints";
 
 export const createDesignRequirement = (
@@ -183,4 +186,54 @@ export const updatePackageQuotation = (designOrderId, packageQuotation) => {
     packageQuotation: packageQuotation,
   };
   return update(URL_UPDATE_PACKAGE_QUOTATION, body);
+};
+
+export const createDesignPackage = (
+  dateTime,
+  title,
+  designImages1,
+  designImages2,
+  designImages3,
+  designerComment,
+  designOrderId
+) => {
+  console.log("dateTime", dateTime);
+  const body = {
+    dateTime: dateTime,
+    title: title,
+    designImages1: designImages1,
+    designImages2: designImages2,
+    designImages3: designImages3,
+    designerComment: designerComment,
+    isCompleted: "0",
+    designOrderId: designOrderId,
+  };
+  return postAsFormInput(URL_CREATE_DESIGN_PACKAGE, body);
+};
+
+export const createDesignListings = (packageId, listingId) => {
+  const body = {
+    packageId: packageId,
+    listingId: listingId,
+  };
+  return postAsFormInput(URL_CREATE_DESIGN_LISTINGS, body);
+};
+
+export const createDesignReview = (
+  designPackageId,
+  userPictureComment1,
+  userPictureComment2,
+  userPictureComment3,
+  userOtherComment,
+  isCompleted
+) => {
+  const body = {
+    designPackageId: designPackageId,
+    userPictureComment1: userPictureComment1,
+    userPictureComment2: userPictureComment2,
+    userPictureComment3: userPictureComment3,
+    userOtherComment: userOtherComment,
+    isCompleted: isCompleted,
+  };
+  return postAsFormInput(URL_CREATE_DESIGN_REVIEW, body);
 };

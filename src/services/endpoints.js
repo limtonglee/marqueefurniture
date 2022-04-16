@@ -182,3 +182,11 @@ export const URL_UPDATE_CONSULTATION_QUOTATION =
   "/api/design/designOrder/consultQuotation/create";
 export const URL_UPDATE_PACKAGE_QUOTATION =
   "/api/design/designOrder/packageQuotation/create";
+
+// create design package
+export const URL_CREATE_DESIGN_PACKAGE = "/api/design/designPackage/create";
+export const URL_CREATE_DESIGN_LISTINGS =
+  "/api/design/designPackage/createListing";
+
+// create review for design
+export const URL_CREATE_DESIGN_REVIEW = "/api/design/designPackageReview";

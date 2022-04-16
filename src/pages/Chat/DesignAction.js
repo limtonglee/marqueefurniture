@@ -21,6 +21,8 @@ const DesignAction = ({
     "designOrderStatus.design_order_status",
     designOrderStatus.design_order_status
   );
+  console.log("DesignAction buyerId", buyerId);
+  console.log("DesignAction sellerId", sellerId);
 
   useEffect(() => {
     "useEffect";
@@ -127,7 +129,8 @@ const DesignAction = ({
                   to="/designOrder/newDesign"
                   state={{
                     designOrderStatus: designOrderStatus, //todo: update
-                    // onlyNavigateBackOne: true,
+                    buyerId: buyerId,
+                    sellerId: sellerId,
                   }}
                 >
                   <Button

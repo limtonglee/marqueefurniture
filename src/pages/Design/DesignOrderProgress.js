@@ -101,6 +101,7 @@ const DesignOrderProgress = () => {
     : null;
 
   const buyerId = location.state ? location.state.buyerId : null;
+  const sellerId = location.state ? location.state.sellerId : null;
 
   let navigate = useNavigate();
   const { userStore } = useStores();
@@ -306,7 +307,8 @@ const DesignOrderProgress = () => {
                           to="/designOrder/newDesign"
                           state={{
                             designOrderStatus: designOrderStatus, //todo: update
-                            // onlyNavigateBackOne: true,
+                            buyerId: buyerId,
+                            sellerId: sellerId,
                           }}
                         >
                           <Button

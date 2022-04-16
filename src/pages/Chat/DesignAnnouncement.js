@@ -19,7 +19,11 @@ const DesignAnnouncement = ({
       ].length > 0 && (
         <Link
           to="/designOrderProgress"
-          state={{ designOrderStatus: designOrderStatus, buyerId: buyerId }}
+          state={{
+            designOrderStatus: designOrderStatus,
+            buyerId: buyerId,
+            sellerId: sellerId,
+          }}
         >
           <Box
             sx={{

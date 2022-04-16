@@ -10,11 +10,24 @@ import { format } from "date-fns";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 const DesignItemCard = ({ design, hideButton }) => {
+  console.log("design", design);
   let navigate = useNavigate();
 
   const handleViewDesign = () => {
     console.log("handleViewDesign");
     navigate("/designOrder/design");
+  };
+
+  const numPictures = () => {
+    if (design.designimages1) {
+      if (design.designimages2) {
+        if (design.designimages3) {
+          return 3;
+        }
+        return 2;
+      }
+      return 1;
+    }
   };
 
   return (
@@ -42,7 +55,12 @@ const DesignItemCard = ({ design, hideButton }) => {
                 // src={
                 //   "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/posters-in-cozy-apartment-interior-royalty-free-image-943910360-1534189931.jpg"
                 // }
-                src={`/api/image/${design.designImages[0]}`}
+                // src={
+                //   design.designImages[0]
+                //     ? `/api/image/${design.designImages[0]}`
+                //     : null
+                // }
+                src={`/api/image/${design.designimages1}`}
                 sx={{
                   borderRadius: "10%",
                   width: 70,
@@ -62,7 +80,7 @@ const DesignItemCard = ({ design, hideButton }) => {
                     color: "grey.600",
                   }}
                 >
-                  {design.designImages.length} pictures
+                  {numPictures()} pictures
                 </Typography>
                 <Typography
                   variant="subtitle1"
@@ -132,7 +150,7 @@ const DesignItemCard = ({ design, hideButton }) => {
                       color: "grey.600",
                     }}
                   >
-                    {format(Date.parse(design.timestamp), "dd MMM yy hh:mm a")}
+                    {format(Date.parse(design.datetime), "dd MMM yy hh:mm a")}
                   </Typography>
                 </Stack>
               </Box>

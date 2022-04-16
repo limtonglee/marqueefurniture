@@ -280,7 +280,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
     try {
       const res = await designEngagementAPI.getDesignPackageDesigns(packageId);
       const data = JSON.parse(JSON.stringify(res)).data;
-      console.log("getDesignPackageDesigns data", data);
+      // console.log("getDesignPackageDesigns data", data);
       return data;
     } catch (error) {
       console.error(error);

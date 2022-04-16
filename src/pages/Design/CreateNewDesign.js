@@ -25,11 +25,29 @@ import TagProductsModal from "../SocialMedia/Posts/TagProductsModal";
 
 const CreateNewDesign = () => {
   let navigate = useNavigate();
+  const location = useLocation();
+  console.log("location.state", location.state);
+
+  const designOrderStatus = location.state
+    ? location.state.designOrderStatus
+    : null;
+
+  console.log("designOrderStatus", designOrderStatus);
+
+  const buyerId = location.state ? location.state.buyerId : null;
+  const sellerId = location.state ? location.state.sellerId : null;
+  console.log("buyerId", buyerId);
+  console.log("sellerId", sellerId);
 
   const [otherComments, setOtherComments] = useState("");
+  const [title, setTitle] = useState("");
 
   const handleChangeOtherComments = (event) => {
     setOtherComments(event.target.value);
+  };
+
+  const handleChangeTitle = (event) => {
+    setTitle(event.target.value);
   };
 
   const [files, setFiles] = useState([]);
@@ -69,55 +87,89 @@ const CreateNewDesign = () => {
   };
 
   // todo: update
-  // const createDesignAPI = async ({
-  //   requestType,
-  //   roomGeometry,
-  //   floorPlan,
-  //   styleRequests,
-  //   moodboardReferences,
-  //   otherComments,
-  // }) => {
-  //   try {
-  //     const res = await designEngagementAPI.createDesignRequirement(
-  //       requestType,
-  //       floorPlan[0],
-  //       floorPlan[1],
-  //       floorPlan[2],
-  //       otherComments,
-  //       userStore.id
-  //     );
-  //     const requirementId = JSON.parse(JSON.stringify(res)).data[0]["id"];
-  //     console.log("requirementId", requirementId);
+  const createDesignAPI = async ({
+    title,
+    designImages,
+    taggedListings,
+    otherComments,
+  }) => {
+    console.log("98 designImages", designImages);
+    try {
+      const dateTime = new Date();
+      const res = await designEngagementAPI.createDesignPackage(
+        dateTime,
+        title,
+        designImages[0],
+        designImages[1],
+        designImages[2],
+        otherComments,
+        designOrderStatus.id
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log("data", data);
+      const packageId = JSON.parse(JSON.stringify(res)).data[0]["id"];
+      console.log("packageId", packageId);
 
-  // const listingsToSubmit = selectedProductsValues.map((item) =>
-  //   parseInt(item.id)
-  // );
-  // console.log("listings to submit", listingsToSubmit);
+      for (let listingId in taggedListings) {
+        console.log(`packageId listingId ${packageId} ${listingId}`);
+        await createDesignListingsAPI(packageId, taggedListings[listingId]);
+      }
 
-  //     for (let listingId in listingsToSubmit) {
-  //       console.log(`newPostId listingId ${newPostId} ${listingId}`);
-  //       await createDesignListingsAPI(newPostId, listingId);
-  //     }
+      //refreshData(); // function to refresh data?
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  //     //refreshData(); // function to refresh data?
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const updateDesignOrderStatusAPI = async (newStatus) => {
+    console.log("updateDesignOrderStatusAPI");
+    console.log(`buyerId sellerId ${buyerId} ${sellerId}`);
+    try {
+      const res = await designEngagementAPI.updateDesignOrderStatus(
+        buyerId,
+        sellerId,
+        newStatus
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const createDesignLogAPI = async (dateTime, description, role, orderId) => {
+    console.log("createDesignLogAPI");
+    try {
+      const res = await designEngagementAPI.createDesignLog(
+        dateTime,
+        description,
+        role,
+        orderId
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // todo: update
-  // const createDesignListingsAPI = async (postId, listingId) => {
-  //   try {
-  //     const res = await socialMediaAPI.createPostListings(postId, listingId);
-  //     const data = JSON.parse(JSON.stringify(res)).data;
-  //     return data;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const createDesignListingsAPI = async (packageId, listingId) => {
+    console.log("createDesignListingsAPI");
+    try {
+      const res = await designEngagementAPI.createDesignListings(
+        packageId,
+        listingId
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  const handleSubmitReview = () => {
-    console.log("handleSubmitReview");
+  const handleSubmitDesign = async () => {
+    console.log("handleSubmitDesign");
 
     let designImages = [];
     if (files.length > 3) {
@@ -133,10 +185,31 @@ const CreateNewDesign = () => {
     }
 
     console.log("data to submit", {
+      title: title,
       designImages: designImages,
       taggedListings: selectedProductsValues.map((item) => parseInt(item.id)),
       otherComments: otherComments,
     });
+
+    await createDesignAPI({
+      title: title,
+      designImages: designImages,
+      taggedListings: selectedProductsValues.map((item) => parseInt(item.id)),
+      otherComments: otherComments,
+    });
+
+    await updateDesignOrderStatusAPI("InReview");
+
+    const timestamp = new Date();
+    await createDesignLogAPI(
+      timestamp,
+      "Created design",
+      "Designer",
+      designOrderStatus.id
+    );
+
+    // refreshDesignOrderStatus();
+    navigate("/chat");
 
     // call API to submit
     // refer to Request for Consult + Create New Post
@@ -178,6 +251,19 @@ const CreateNewDesign = () => {
                 New design
               </Typography>
               <Stack spacing={4} sx={{ mt: 4 }}>
+                <Box>
+                  <Typography variant="h4" gutterBottom component="div">
+                    Title
+                  </Typography>
+                  <TextField
+                    id="outlined-multiline-static"
+                    rows={4}
+                    placeholder="Enter title"
+                    sx={{ width: 500 }}
+                    value={title}
+                    onChange={handleChangeTitle}
+                  />
+                </Box>
                 <Box>
                   <Typography variant="h4" component="div">
                     Design images
@@ -358,7 +444,7 @@ const CreateNewDesign = () => {
                 </Box>
                 <Box sx={{ pt: 2 }}>
                   <Button
-                    onClick={handleSubmitReview}
+                    onClick={handleSubmitDesign}
                     variant="contained"
                     size="large"
                     sx={{ width: 200 }}

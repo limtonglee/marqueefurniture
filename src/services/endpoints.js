@@ -138,3 +138,14 @@ export const URL_CREATE_DESIGN_REQUIREMENT_TAGS =
   "/api/design/requirementTagsJoinTable/create";
 export const URL_CREATE_DESIGN_REQUIREMENT_MB =
   "/api/design/moodboardRequirementJoinTable/create";
+
+// design logs
+export const URL_GET_DESIGN_LOGS = "/api/design/designLogs";
+export const URL_CREATE_DESIGN_LOG = "/api/design/designLogs/create";
+
+// update design order status
+export const URL_GET_DESIGN_ORDER_STATUS = "/api/design/designOrderStatus";
+export const URL_UPDATE_DESIGN_ORDER_STATUS =
+  "/api/design/designOrderStatus/edit";
+
+// quotations

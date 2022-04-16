@@ -54,6 +54,16 @@ export const subscribeToGetBumpChatButtonRefresh = (callback) => {
   });
 };
 
+export const subscribeToGetBumpDesignOrderStatusRefresh = (callback) => {
+  if (!socket) {
+    return;
+  }
+
+  socket.on("bumpDesignOrderStatusRefresh", (data) => {
+    callback(null, data);
+  });
+};
+
 // ! SENDING
 
 export const sendMessage = (data) => {
@@ -78,4 +88,12 @@ export const bumpChatButtonRefresh = (data) => {
   }
 
   socket.emit("bumpChatButtonRefresh", data);
+};
+
+export const bumpDesignOrderStatusRefresh = (data) => {
+  if (!socket) {
+    return;
+  }
+
+  socket.emit("bumpDesignOrderStatusRefresh", data);
 };

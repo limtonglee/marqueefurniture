@@ -24,6 +24,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 
 import Grid from "@mui/material/Grid";
 import { useStores } from "../../stores/RootStore";
+import * as socket from "../../services/socket";
 import * as socialMediaAPI from "../../services/SocialMedia";
 import * as designEngagementAPI from "../../services/DesignEngagement";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -357,6 +358,8 @@ const RequestConsultation = () => {
 
       // todo: update designorder status
       await updateDesignOrderStatusAPI("Requested");
+
+      socket.bumpDesignOrderStatusRefresh(sellerId);
 
       // todo: navigate back to chat
       navigate("/chat");

@@ -21,8 +21,11 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
+import { useStores } from "../../stores/RootStore";
+import * as socket from "../../services/socket";
 
 const ReviewDesign = () => {
+  const { userStore } = useStores();
   let navigate = useNavigate();
 
   const location = useLocation();
@@ -157,6 +160,8 @@ const ReviewDesign = () => {
         // todo: update designorder status
         await updateDesignOrderStatusAPI("Rejected");
       }
+
+      socket.bumpDesignOrderStatusRefresh(sellerId);
 
       // todo: navigate back to chat
       navigate("/chat");

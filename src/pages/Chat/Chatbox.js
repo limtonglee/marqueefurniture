@@ -43,6 +43,28 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
     setMessage(e.target.value);
   };
 
+  useEffect(() => {
+    socket.subscribeToGetBumpDesignOrderStatusRefresh((err, data) => {
+      console.log("bump", userStore.id);
+      // getUserType();
+      if (userStore.isDesigner) {
+        getDesignOrderStatus(
+          userStore.id,
+          currentChat.firstuserid === userStore.id
+            ? currentChat.seconduserid
+            : currentChat.firstuserid
+        );
+      } else {
+        getDesignOrderStatus(
+          currentChat.firstuserid === userStore.id
+            ? currentChat.seconduserid
+            : currentChat.firstuserid,
+          userStore.id
+        );
+      }
+    });
+  }, [userStore.id]);
+
   const sendMessage = async () => {
     const receiverId =
       currentChat.firstuserid === userStore.id
@@ -219,6 +241,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
   // console.log(DesignOrderDict["Completed"]);
 
   const getDesignOrderStatus = async (sellerId, buyerId) => {
+    console.log("getDesignOrderStatus");
     try {
       const res = await designEngagementAPI.getDesignOrderStatus(
         sellerId,
@@ -289,6 +312,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
   // console.log(DesignOrderDict["Completed"]);
 
   const getUserType = async () => {
+    console.log("getUserType triggered");
     try {
       console.log(currentChat);
       const res = await accountsAPI.getUserType(

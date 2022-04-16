@@ -9,6 +9,7 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import Stack from "@mui/material/Stack";
 import { useStores } from "../../stores/RootStore";
+import * as socket from "../../services/socket";
 import * as designEngagementAPI from "../../services/DesignEngagement";
 
 const QuotationModal = ({
@@ -174,6 +175,8 @@ const QuotationModal = ({
         );
       }
 
+      socket.bumpDesignOrderStatusRefresh(buyerId);
+
       prepareTextFields();
       closeQuotationModal();
       createToast("Created quotation");
@@ -209,6 +212,8 @@ const QuotationModal = ({
         );
       }
 
+      socket.bumpDesignOrderStatusRefresh(buyerId);
+
       prepareTextFields();
       closeQuotationModal();
       createToast("Updated quotation");
@@ -237,6 +242,9 @@ const QuotationModal = ({
         designOrderStatus.id
       );
     }
+
+    socket.bumpDesignOrderStatusRefresh(sellerId);
+
     prepareTextFields();
     closeQuotationModal();
     createToast("Paid quotation");

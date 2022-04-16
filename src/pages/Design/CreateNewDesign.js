@@ -22,8 +22,11 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import TagProductsModal from "../SocialMedia/Posts/TagProductsModal";
+import { useStores } from "../../stores/RootStore";
+import * as socket from "../../services/socket";
 
 const CreateNewDesign = () => {
+  const { userStore } = useStores();
   let navigate = useNavigate();
   const location = useLocation();
   console.log("location.state", location.state);
@@ -207,6 +210,8 @@ const CreateNewDesign = () => {
       "Designer",
       designOrderStatus.id
     );
+
+    socket.bumpDesignOrderStatusRefresh(buyerId);
 
     // refreshDesignOrderStatus();
     navigate("/chat");

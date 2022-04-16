@@ -156,7 +156,18 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
                 <ChatButton />
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src={`/api/image/${profilePic}`} />
+                    {profilePic !== null ? (
+                      <>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={`/api/image/${profilePic}`}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <Avatar alt="Remy Sharp" />
+                      </>
+                    )}
                   </IconButton>
                 </Tooltip>
               </Stack>

@@ -9,6 +9,7 @@ import {
 } from "../services/endpoints";
 
 export const createChat = (senderId, receiverId) => {
+  console.log(senderId + " " + receiverId)
   const body = {
     senderId: senderId,
     receiverId: receiverId,

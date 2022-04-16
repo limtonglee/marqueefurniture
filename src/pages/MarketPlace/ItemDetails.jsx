@@ -121,7 +121,7 @@ export const ItemDetails = () => {
       <Grid container spacing={2}>
         <Grid item md={6} xs={12}>
           <CardMedia width="auto" align="center">
-            {item.image !== undefined && (
+            {item.image !== null && item.image !== undefined && (
               <img
                 height="auto"
                 width="100%"
@@ -308,7 +308,7 @@ export const ItemDetails = () => {
                   >
                     Chat
                   </Button> */}
-                  <Link to="/chat" state={{ sellerId: sellerId }}>
+                  <Link to="/Chat" state={{ sellerId: sellerId }}>
                     <Button
                     variant="outlined"
                     startIcon={<ChatIcon />}

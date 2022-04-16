@@ -9,6 +9,9 @@ export const URL_UNBAN_USER = "/api/admin/unbanuser";
 export const URL_DELIST_LISTING = "/api/admin/delist";
 export const URL_GET_DISPUTE_REPORT = "/api/admin/disputes";
 export const URL_CLOSE_DISPUTE_REPORT = "/api/admin/close/dispute";
+export const URL_OPEN_DISPUTE_REPORT = "/api/admin/open/dispute";
+
+
 
 //export const URL_LOGOUT = '/logout';
 export const URL_SIGNUP = "/api/user/signup";
@@ -37,6 +40,7 @@ export const URL_PAYMENT = "/api/payment";
 //order management
 export const URL_GET_ORDERS = "/api/user/orders";
 export const URL_RATE_ORDER = "/api/user/rate";
+export const URL_RAISE_DISPUTE = "/api/user/dispute";
 
 //liked listings management
 export const URL_LISTING_LIKE = "/api/listing/like"; // user liking a post

@@ -1,27 +1,21 @@
-import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import * as chatAPI from "../../services/Chat";
+import * as socialMediaAPI from "../../services/SocialMedia";
+import * as socket from "../../services/socket";
+import { useStores } from "../../stores/RootStore";
 import Chatbox from "./Chatbox";
 import ChatMenu from "./ChatMenu";
 
-import * as chatAPI from "../../services/Chat";
-import * as socialMediaAPI from "../../services/SocialMedia";
-
-import * as socket from "../../services/socket";
-
-import { useStores } from "../../stores/RootStore";
-
-import { useLocation } from "react-router-dom";
-
 const Messenger = () => {
   const { userStore } = useStores();
-
   const location = useLocation();
   const sellerId = location.state ? location.state.sellerId : null;
-  console.log("sellerId", sellerId);
+  // console.log("sellerId", sellerId);
 
   const [isMobile, setIsMobile] = useState(false);
   const [userChats, setUserChats] = useState([]);
@@ -33,6 +27,21 @@ const Messenger = () => {
   });
   // const socket = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
+
+  useEffect(() => {
+    // TODO: check if redirected from seller side. if yes + seller chat alr exists -> set current chat to seller chat (see above todo.) else need to create new chat first
+    console.log("use effect called");
+    if (sellerId) {
+      const res = createNewChat(userStore.id, sellerId);
+      if (res === "chat already created") {
+        //do nothing LOL
+      }
+
+    } else {
+      getUserChatsWithUsername();
+    }
+
+  }, []);
 
   useEffect(() => {
     // socket.current = io("ws://localhost:8900");
@@ -99,6 +108,8 @@ const Messenger = () => {
   useEffect(() => {
     handleResize();
   }, []);
+
+
 
   // const getUserChats = async () => {
   //   try {
@@ -227,37 +238,25 @@ const Messenger = () => {
     await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
 
     Promise.all(promises).then((values) => {
-      console.log("cleaned data", values);
+      // console.log("cleaned data", values);
       setUserChats(values);
 
       return values;
     });
   };
 
-  // !
   const createNewChat = async (senderId, receiverId) => {
+    let message = "";
     try {
       const res = await chatAPI.createChat(senderId, receiverId);
       const data = JSON.parse(JSON.stringify(res)).data;
-      console.log(data);
+      message = data;
       getUserChatsWithUsername();
     } catch (error) {
       console.error(error);
     }
+    return message
   };
-  // !
-
-  useEffect(() => {
-    // TODO: check if redirected from seller side. if yes + seller chat alr exists -> set current chat to seller chat (see above todo.) else need to create new chat first
-    // if (sellerId) {
-    //   createNewChat(userStore.id, sellerId);
-    // } else {
-    //   getUserChatsWithUsername();
-    // }
-
-    getUserChatsWithUsername();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const refreshCurrentChat = async () => {
     const updatedChatMessages = await getChatMessages(currentChat.id);

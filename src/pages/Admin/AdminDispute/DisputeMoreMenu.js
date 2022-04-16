@@ -1,6 +1,7 @@
 import BlockIcon from "@mui/icons-material/Block";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import RemoveIcon from "@mui/icons-material/Remove";
+import ChatIcon from "@mui/icons-material/Chat";
 // material
 import {
   IconButton,
@@ -10,33 +11,36 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useRef, useState } from "react";
-import { banUser, unbanUser } from "../../../services/Admin";
+import { reportOpen, reportClose } from "../../../services/Admin";
+import { Link } from "react-router-dom";
+
 // ----------------------------------------------------------------------
 
-export default function UserMoreMenu({
+export default function DisputeMoreMenu({
   userId,
+  reportedId,
+  reportId,
+  setFetchDispute,
   status,
-  customers,
-  setFetchUsers,
 }) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
   // console.log(status)
 
-  const handleBan = async () => {
+  const handleOpen = async () => {
     // console.log("clicked");
-    const response = await banUser(userId);
+    const response = await reportOpen(reportId);
     if (response.status === 200) {
-      setFetchUsers(true);
+      setFetchDispute(true);
       setIsOpen(false);
     }
   };
 
-  const handleUnban = async () => {
-    const response = await unbanUser(userId);
+  const handleClose = async () => {
+    const response = await reportClose(reportId);
     if (response.status === 200) {
-      setFetchUsers(true);
+      setFetchDispute(true);
       setIsOpen(false);
     }
   };
@@ -67,32 +71,51 @@ export default function UserMoreMenu({
           />
         </MenuItem>
         {status === "1" ? (
-          <MenuItem
-            sx={{ color: "primary.main" }}
-            onClick={() => handleUnban()}
-          >
+          <MenuItem sx={{ color: "primary.main" }} onClick={() => handleOpen()}>
             <ListItemIcon>
               <BlockIcon width={24} height={24} />
             </ListItemIcon>
             <ListItemText
-              primary="Unban"
+              primary="Open"
               primaryTypographyProps={{ variant: "body2" }}
             />
           </MenuItem>
         ) : (
           <MenuItem
             sx={{ color: "text.secondary" }}
-            onClick={() => handleBan()}
+            onClick={() => handleClose()}
           >
             <ListItemIcon>
               <BlockIcon width={24} height={24} />
             </ListItemIcon>
             <ListItemText
-              primary="Ban"
+              primary="Close"
               primaryTypographyProps={{ variant: "body2" }}
             />
           </MenuItem>
         )}
+        <Link to="/Chat" state={{ sellerId: userId }}>
+          <MenuItem sx={{ color: "text.secondary" }}>
+            <ListItemIcon>
+              <ChatIcon width={24} height={24} />
+            </ListItemIcon>
+            <ListItemText
+              primary="Chat with reporter"
+              primaryTypographyProps={{ variant: "body2" }}
+            />
+          </MenuItem>
+        </Link>
+        <Link to="/Chat" state={{ sellerId: reportedId }}>
+          <MenuItem sx={{ color: "text.secondary" }}>
+            <ListItemIcon>
+              <ChatIcon width={24} height={24} />
+            </ListItemIcon>
+            <ListItemText
+              primary="Chat with Reported"
+              primaryTypographyProps={{ variant: "body2" }}
+            />
+          </MenuItem>
+        </Link>
       </Menu>
     </>
   );

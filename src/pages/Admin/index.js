@@ -11,25 +11,36 @@ import Profiles from "../Profiles";
 import Ideas from "../SocialMedia/Ideas";
 import AdminHome from "./AdminHome";
 import { Box } from "@mui/material";
+import AdminDispute from "./AdminDispute";
+import Messenger from "../Chat/Messenger";
 
-const Admin = ({checked, setChecked, handleChange}) => {
+const Admin = ({ checked, setChecked, handleChange }) => {
   return (
     <Container maxWidth="xxl">
-      <PostLoginNavBar checked={checked} setChecked = {setChecked} handleChange={handleChange}/>
+      <PostLoginNavBar
+        checked={checked}
+        setChecked={setChecked}
+        handleChange={handleChange}
+      />
       <Box sx={{ mt: 15 }}></Box>
       <Routes>
         <Route path="/" element={<Navigate to="/admin" />} />
-        <Route path="/marketplace" element={<MarketPlace setChecked = {setChecked}/>}>
+        <Route
+          path="/marketplace"
+          element={<MarketPlace setChecked={setChecked} />}
+        >
           <Route path="" element={<Listings />} />
           <Route path=":itemId" element={<ItemDetails />} />
         </Route>
         <Route path="/ideas" element={<Ideas />}></Route>
+        <Route path="/chat" element={<Messenger />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profiles />}>
           <Route path="" element={<Profile />} />
           <Route path=":moodboardId" element={<MoodboardDetails />} />
         </Route>
         <Route path="/admin" element={<AdminHome />} />
+        <Route path="/admindispute" element={<AdminDispute />} />
       </Routes>
     </Container>
   );

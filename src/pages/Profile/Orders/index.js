@@ -22,8 +22,8 @@ import { SellerData } from "../../Cart/SellerData";
 import { updateOrderStatus } from "../../../services/SellerCenter";
 import { format } from "date-fns";
 import { ReviewDialog } from "./ReviewDialog";
+import { DisputeDialog } from "./DisputeDialog";
 import { toast, ToastContainer } from "react-toastify";
-
 
 const Img = styled("img")({
   margin: "auto",
@@ -42,12 +42,19 @@ export default function Orders() {
   const [tabValue, setTabValue] = useState(0);
   const [currentData, setCurrentData] = useState(null);
   const [start, setStart] = useState(false);
+  const [disputeDialog, setDisputeDialog] = useState(false);
 
   const notifyReview = () =>
-  toast("Review added!", {
-    position: toast.POSITION.TOP_CENTER,
-    autoClose: 1500,
-  });
+    toast("Review added!", {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 1500,
+    });
+
+  const notifyDispute = () =>
+    toast("Dispute raised!", {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 1500,
+    });
 
   useEffect(() => {
     const getListingDetail = async (listingId) => {
@@ -144,15 +151,20 @@ export default function Orders() {
   };
 
   const handleRate = (item) => {
-    console.log(item);
+    // console.log(item);
     setCurrentData(item);
     setStart(true);
+  };
+
+  const handleRaiseDispute = (item) => {
+    console.log(item);
+    setCurrentData(item);
+    setDisputeDialog(true);
   };
 
   return (
     <Container>
       <ToastContainer />
-
       <Typography variant="h3" fontWeight="bold">
         My Orders
       </Typography>
@@ -271,18 +283,6 @@ export default function Orders() {
                               </Grid>
                             </>
                           )}
-                          {orderItem.order_status === "CANCELLED" && (
-                            <>
-                              <Grid item>
-                                <Button
-                                  variant="contained"
-                                  sx={{ width: "150px" }}
-                                >
-                                  Cancelled details
-                                </Button>
-                              </Grid>
-                            </>
-                          )}
                           {orderItem.order_status === "RETURN/REFUND" && (
                             <>
                               <Grid item>
@@ -296,12 +296,29 @@ export default function Orders() {
                                   Undo
                                 </Button>
                               </Grid>
+                              <Grid item>
+                                <Button
+                                  variant="outlined"
+                                  sx={{ width: "150px" }}
+                                  onClick={() => handleRaiseDispute(orderItem)}
+                                >
+                                  Raise Dispute
+                                </Button>
+                              </Grid>
                             </>
                           )}
                           <Grid item>
-                            <Button variant="outlined" sx={{ width: "150px" }}>
-                              Contact Seller
-                            </Button>
+                            <Link
+                              to="/Chat"
+                              state={{ sellerId: orderItem.sellerid }}
+                            >
+                              <Button
+                                variant="outlined"
+                                sx={{ width: "150px" }}
+                              >
+                                Contact Seller
+                              </Button>
+                            </Link>
                           </Grid>
                         </Grid>
                         <Grid container spacing={2} direction="row">
@@ -359,6 +376,12 @@ export default function Orders() {
         currentData={currentData}
         setShowReview={notifyReview}
       ></ReviewDialog>
+      <DisputeDialog
+        disputeDialog={disputeDialog}
+        setDisputeDialog={setDisputeDialog}
+        currentData={currentData}
+        setShowDialog={notifyDispute}
+      ></DisputeDialog>
     </Container>
   );
 }

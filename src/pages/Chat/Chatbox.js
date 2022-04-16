@@ -286,6 +286,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
       console.error(error);
     }
   };
+  // console.log(DesignOrderDict["Completed"]);
 
   const getUserType = async () => {
     try {

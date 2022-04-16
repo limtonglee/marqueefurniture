@@ -1,8 +1,11 @@
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import {
-  Box, Card,
+  Box,
+  Card,
   CardContent,
-  InputAdornment, OutlinedInput, Typography
+  InputAdornment,
+  OutlinedInput,
+  Typography,
 } from "@mui/material";
 
 export const CustomerListToolbar = ({ filterName, onFilterName }) => {

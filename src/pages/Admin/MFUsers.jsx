@@ -8,8 +8,8 @@ import { CustomerListToolbar } from "./CustomerData/customer-list-toolbar";
 
 const MFUsers = () => {
   const [filterName, setFilterName] = useState("");
-  const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("username");
+  const order = "asc";
+  const orderBy = "username";
   const [mfusers, setMfusers] = useState([]);
   const [fetchUsers, setFetchUsers] = useState(true);
 
@@ -24,6 +24,7 @@ const MFUsers = () => {
           console.log(error);
         });
     fetchUsers && getUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [!!fetchUsers]);
 
   const handleFilterByName = (event) => {

@@ -52,8 +52,6 @@ const DesignAction = ({ designOrderStatus, currUserType }) => {
         setQuotation(`${designOrderStatus.packageQuotation}`);
       }
       setOpenQuotationModal(true);
-    } else if (designOrderStatus.status === "Designing") {
-      console.log("todo: handle add design package");
     }
   };
 
@@ -77,7 +75,34 @@ const DesignAction = ({ designOrderStatus, currUserType }) => {
         <>
           <Box sx={{ px: 3, py: 3, backgroundColor: "grey.100" }}>
             <Stack direction="row" spacing={3}>
-              {designOrderStatus.status === "InReview" ? (
+              {designOrderStatus.status === "Designing" && (
+                <Link
+                  to="/designOrder/newDesign"
+                  state={{
+                    designOrderStatus: designOrderStatus, //todo: update
+                    // onlyNavigateBackOne: true,
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "white",
+                      color: "primary.main",
+                      "&:hover": {
+                        backgroundColor: "grey.200",
+                      },
+                    }}
+                    onClick={handleActionClick}
+                  >
+                    {
+                      DesignOrderDict[designOrderStatus.status][currUserType][
+                        "action"
+                      ]
+                    }
+                  </Button>
+                </Link>
+              )}
+              {designOrderStatus.status === "InReview" && (
                 <Link
                   to="/designOrder/design"
                   state={{
@@ -106,25 +131,27 @@ const DesignAction = ({ designOrderStatus, currUserType }) => {
                     }
                   </Button>
                 </Link>
-              ) : (
-                <Button
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "white",
-                    color: "primary.main",
-                    "&:hover": {
-                      backgroundColor: "grey.200",
-                    },
-                  }}
-                  onClick={handleActionClick}
-                >
-                  {
-                    DesignOrderDict[designOrderStatus.status][currUserType][
-                      "action"
-                    ]
-                  }
-                </Button>
               )}
+              {!designOrderStatus.status === "Designing" &&
+                !designOrderStatus.status === "InReview" && (
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "white",
+                      color: "primary.main",
+                      "&:hover": {
+                        backgroundColor: "grey.200",
+                      },
+                    }}
+                    onClick={handleActionClick}
+                  >
+                    {
+                      DesignOrderDict[designOrderStatus.status][currUserType][
+                        "action"
+                      ]
+                    }
+                  </Button>
+                )}
             </Stack>
           </Box>
           <Divider />

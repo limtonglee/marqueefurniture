@@ -36,6 +36,7 @@ import { Box } from "@mui/material";
 import SellerProfile from "./pages/SellerProfile/SellerProfile";
 import StripeContainer from "./pages/Checkout/StripeContainer";
 import ProfileOrders from "./pages/Profile/Orders";
+import CreateNewDesign from "./pages/Design/CreateNewDesign";
 
 const PostLogin = ({checked, setChecked, handleChange}) => {
   return (
@@ -54,6 +55,7 @@ const PostLogin = ({checked, setChecked, handleChange}) => {
         <Route path="/designConsultation" element={<RequestConsultation/>} />
         <Route path="/designOrderProgress" element={<DesignOrderProgress/>} />
         <Route path="/designOrder/design" element={<Design/>} />
+        <Route path="/designOrder/newDesign" element={<CreateNewDesign/>} />
         <Route path="/designOrder/design/review" element={<ReviewDesign/>} />
         <Route path="/ideas" element={<Ideas />} />
         <Route path="/new-idea" element={<CreateNewPost />} />

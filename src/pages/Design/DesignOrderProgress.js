@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { useNavigate, useNavigationType, useLocation } from "react-router-dom";
+import {
+  useNavigate,
+  useNavigationType,
+  useLocation,
+  Link,
+} from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
@@ -273,13 +278,28 @@ const DesignOrderProgress = ({ designOrderStatus }) => {
                 <>
                   <Box sx={{ mt: 3 }}>
                     {userStore.isDesigner && (
-                      <Button
-                        startIcon={<AddIcon />}
-                        variant="contained"
-                        sx={{ mb: 2 }}
+                      // <Button
+                      //   startIcon={<AddIcon />}
+                      //   variant="contained"
+                      //   sx={{ mb: 2 }}
+                      // >
+                      //   Add Design Package
+                      // </Button>
+                      <Link
+                        to="/designOrder/newDesign"
+                        state={{
+                          designOrderStatus: designOrderStatus, //todo: update
+                          // onlyNavigateBackOne: true,
+                        }}
                       >
-                        Add Design Package
-                      </Button>
+                        <Button
+                          startIcon={<AddIcon />}
+                          variant="contained"
+                          sx={{ mb: 2 }}
+                        >
+                          Add Design Package
+                        </Button>
+                      </Link>
                     )}
                     {design_order_status.designItems
                       .reverse()

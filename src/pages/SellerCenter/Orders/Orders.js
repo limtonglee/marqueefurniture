@@ -124,7 +124,7 @@ export const Orders = () => {
                         onChange={(event) => handleSearch(event.target.value)}
                     />
                 </Stack>
-                <Card style={{ overflow: 'visible', padding: '12px' }}>
+                <Card style={{ overflow: 'visible' }}>
                     <div className='page' style={{ height: '100%' }}>
                         <Box sx={{ width: '100%' }}>
                             <Tabs
@@ -161,15 +161,15 @@ export const Orders = () => {
                                             {item.username}
                                         </div>
                                         <div>
+                                            Tracking Number: {item.trackingnumber}
+                                        </div>
+                                        <div>
                                             Order ID {item.id}
                                         </div>
                                     </div>
                                     <Grid container p={2}>
                                         <Grid item xs={2}>
-                                            <img
-                                                src={`/api/image/${item.image}`}
-                                                alt='image'
-                                            />
+                                            <img src={`/api/image/${item.image}`}/>
                                             {item.name}
                                         </Grid>
                                         <Grid item xs={3}>

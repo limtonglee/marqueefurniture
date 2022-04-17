@@ -94,10 +94,7 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
               style={{ textDecoration: "none", color: "white" }}
               onClick={() => setChecked(false)}
             >
-              <Avatar
-                src={mf_fulllogo_white}
-                sx={{ width: 80, height: 80 }}
-              />
+              <Avatar src={mf_fulllogo_white} sx={{ width: 80, height: 80 }} />
             </Link>
             <Box
               sx={{
@@ -121,26 +118,30 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
                     />
                   </Grid>
                   <Grid item xs={6}>
-                    {AdminPageLinks.map((page) => (
-                      <Link
-                        key={page.link}
-                        to={page.link}
-                        style={{
-                          textDecoration: "none",
-                        }}
-                      >
-                        <Button
-                          key={page.link}
-                          sx={{
-                            my: 2,
-                            color: "white",
-                            display: "block",
-                          }}
-                        >
-                          {page.text}
-                        </Button>
-                      </Link>
-                    ))}
+                    <Grid container>
+                      {AdminPageLinks.map((page) => (
+                        <Grid item>
+                          <Link
+                            key={page.link}
+                            to={page.link}
+                            style={{
+                              textDecoration: "none",
+                            }}
+                          >
+                            <Button
+                              key={page.link}
+                              sx={{
+                                my: 2,
+                                color: "white",
+                                display: "block",
+                              }}
+                            >
+                              {page.text}
+                            </Button>
+                          </Link>
+                        </Grid>
+                      ))}
+                    </Grid>
                   </Grid>
                 </Grid>
               )}

@@ -23,6 +23,7 @@ import NotificationButton from "../pages/Notifications/NotificationButton";
 import { getCart } from "../services/Cart";
 import { useStores } from "../stores/RootStore";
 import ControlledSwitches from "./SwitchNav";
+import mf_fulllogo_white from "../assets/images/mf_fulllogo_white.svg";
 
 // const pageLinks = [
 // 	{ text: "Seller Center", link: "/sellercenter" },
@@ -30,11 +31,7 @@ import ControlledSwitches from "./SwitchNav";
 // 	{ text: "Ideas", link: "/ideas" },
 // ];
 
-const AdminPageLinks = [
-  { text: "Admin Management", link: "/admin" },
-  { text: "Order Management", link: "/adminorder" },
-  { text: "Dispute Management", link: "/admindispute" },
-];
+const AdminPageLinks = [{ text: "Admin Management", link: "/admin" }];
 
 const sellerSettings = [
   { text: "Profile", link: "/profile" },
@@ -98,7 +95,7 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
               onClick={() => setChecked(false)}
             >
               <Avatar
-                src="static/mf_fulllogo_white.svg"
+                src={mf_fulllogo_white}
                 sx={{ width: 80, height: 80 }}
               />
             </Link>
@@ -124,30 +121,26 @@ const PostLoginNavBar = ({ checked, setChecked, handleChange }) => {
                     />
                   </Grid>
                   <Grid item xs={6}>
-                    <Grid container>
-                      {AdminPageLinks.map((page) => (
-                        <Grid item>
-                          <Link
-                            key={page.link}
-                            to={page.link}
-                            style={{
-                              textDecoration: "none",
-                            }}
-                          >
-                            <Button
-                              key={page.link}
-                              sx={{
-                                my: 2,
-                                color: "white",
-                                display: "block",
-                              }}
-                            >
-                              {page.text}
-                            </Button>
-                          </Link>
-                        </Grid>
-                      ))}
-                    </Grid>
+                    {AdminPageLinks.map((page) => (
+                      <Link
+                        key={page.link}
+                        to={page.link}
+                        style={{
+                          textDecoration: "none",
+                        }}
+                      >
+                        <Button
+                          key={page.link}
+                          sx={{
+                            my: 2,
+                            color: "white",
+                            display: "block",
+                          }}
+                        >
+                          {page.text}
+                        </Button>
+                      </Link>
+                    ))}
                   </Grid>
                 </Grid>
               )}

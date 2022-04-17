@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import React from "react";
 import { Link } from "react-router-dom";
 import ControlledSwitches from "./SwitchNav";
+import mf_fulllogo_white from "../assets/images/mf_fulllogo_white.svg";
 
 
 const NavBar = ({ checked, setChecked, handleChange }) => {
@@ -23,7 +24,7 @@ const NavBar = ({ checked, setChecked, handleChange }) => {
 							onClick={() => setChecked(false)}
 						>
 							<Avatar
-								src="static/mf_fulllogo_white.svg"
+								src={mf_fulllogo_white}
 								sx={{ width: 80, height: 80 }}
 							/>
 						</Link>

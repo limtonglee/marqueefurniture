@@ -24,6 +24,7 @@ import { format } from "date-fns";
 import { ReviewDialog } from "./ReviewDialog";
 import { DisputeDialog } from "./DisputeDialog";
 import { toast, ToastContainer } from "react-toastify";
+import { createNotification } from "../../../services/Notification";
 
 const Img = styled("img")({
   margin: "auto",
@@ -117,7 +118,7 @@ export default function Orders() {
     setData(newData);
   };
 
-  const handleConfirmDelivery = async (orderId) => {
+  const handleConfirmDelivery = async (orderId, sellerId) => {
     console.log(orderId);
     const response = await updateOrderStatus("DELIVERED", orderId);
     if (response.status === 200) {
@@ -125,10 +126,17 @@ export default function Orders() {
       const orderResult = await response.data;
       setOrders(orderResult);
       setData(orderResult);
+      await createNotification(
+        "has confirmed the order",
+        "1",
+        "/sellercenter",
+        userStore.id,
+        sellerId
+      );
     }
   };
 
-  const handleRefund = async (orderId) => {
+  const handleRefund = async (orderId, sellerId) => {
     console.log(orderId);
     const response = await updateOrderStatus("RETURN/REFUND", orderId);
     if (response.status === 200) {
@@ -136,10 +144,17 @@ export default function Orders() {
       const orderResult = await response.data;
       setOrders(orderResult);
       setData(orderResult);
+      await createNotification(
+        "has requested for cancellation/refund",
+        "1",
+        "/sellercenter",
+        userStore.id,
+        sellerId
+      );
     }
   };
 
-  const handleCancelRefund = async (orderId) => {
+  const handleCancelRefund = async (orderId, sellerId) => {
     console.log(orderId);
     const response = await updateOrderStatus("PAID", orderId);
     if (response.status === 200) {
@@ -147,6 +162,13 @@ export default function Orders() {
       const orderResult = await response.data;
       setOrders(orderResult);
       setData(orderResult);
+      await createNotification(
+        "has cancelled request for cancellation/refund",
+        "1",
+        "/sellercenter",
+        userStore.id,
+        sellerId
+      );
     }
   };
 
@@ -253,7 +275,7 @@ export default function Orders() {
                                   variant="contained"
                                   sx={{ width: "150px" }}
                                   onClick={() =>
-                                    handleConfirmDelivery(orderItem.id)
+                                    handleConfirmDelivery(orderItem.id, orderItem.sellerid)
                                   }
                                 >
                                   Confirm Delivery
@@ -263,7 +285,7 @@ export default function Orders() {
                                 <Button
                                   variant="outlined"
                                   sx={{ width: "150px" }}
-                                  onClick={() => handleRefund(orderItem.id)}
+                                  onClick={() => handleRefund(orderItem.id, orderItem.sellerid)}
                                 >
                                   Refund
                                 </Button>
@@ -290,7 +312,7 @@ export default function Orders() {
                                   variant="outlined"
                                   sx={{ width: "150px" }}
                                   onClick={() =>
-                                    handleCancelRefund(orderItem.id)
+                                    handleCancelRefund(orderItem.id, orderItem.sellerid)
                                   }
                                 >
                                   Undo

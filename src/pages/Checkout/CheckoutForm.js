@@ -32,6 +32,7 @@ import { inSelectedIndex } from "../../utils/inSelectedIndex";
 import { getVoucherId, isVoucherPresent } from "../../utils/isVoucherPresent";
 import { SellerData } from "../Cart/SellerData";
 import { CARD_OPTIONS } from "./CardOptions";
+import { createNotification } from "../../services/Notification";
 
 const notifyCheckout = () =>
   toast("SUCCESS! Redirecting to orders...", {
@@ -138,6 +139,15 @@ export default function Checkout({
     if (response.status === 200) {
       const deleteItem = await deleteCartItems(userStore.id, item.id);
       console.log(deleteItem);
+
+       await createNotification(
+        "has created an order",
+        "1",
+        "`/sellercenter`",
+        userStore.id,
+        sellerId,
+        
+      );
     }
   };
 

@@ -13,6 +13,7 @@ import Grid from "@mui/material/Grid";
 import Rating from "@mui/material/Rating";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
+import { createNotification } from "../../../services/Notification";
 import { raiseDispute } from "../../../services/Orders";
 import { useStores } from "../../../stores/RootStore";
 
@@ -42,6 +43,13 @@ export const DisputeDialog = ({
     if (response.status === 200) {
       console.log(response);
       setShowDialog();
+      await createNotification(
+        "has raised a dispute",
+        "1",
+        "/sellercenter",
+        userStore.id,
+        currentData.id
+      );
     }
 
     handleStop();

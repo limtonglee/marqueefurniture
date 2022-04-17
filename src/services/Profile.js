@@ -2,8 +2,8 @@
 
 //for signup services
 
-import { URL_EDIT_PFP } from "../services/endpoints";
-import { postAsImage } from "./api";
+import { URL_EDIT_PFP , URL_CREATE_SHOP } from "../services/endpoints";
+import { postAsImage, postAsJson } from "./api";
 
 const editProfile = (formData, headers) => {
   console.log(formData.get("image"));
@@ -14,6 +14,16 @@ const editProfile = (formData, headers) => {
     },
     headers
   );
+};
+
+export const createShop = (userId, shopName, website, description) => {
+  const body = {
+    userId: userId,
+    shopName: shopName,
+    website: website,
+    description: description,
+  };
+  return postAsJson(URL_CREATE_SHOP, body);
 };
 
 export default editProfile;

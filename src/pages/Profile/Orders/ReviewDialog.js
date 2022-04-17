@@ -15,6 +15,7 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { rateOrder } from "../../../services/Orders";
 import { useStores } from "../../../stores/RootStore";
+import { createNotification } from "../../../services/Notification";
 
 
 export const ReviewDialog = ({ start, setStart, currentData, setShowReview }) => {
@@ -38,6 +39,13 @@ export const ReviewDialog = ({ start, setStart, currentData, setShowReview }) =>
     if(response.status === 200) {
       console.log(response);
       setShowReview();
+      await createNotification(
+        "has rated the order",
+        "1",
+        "/sellercenter",
+        userStore.id,
+        currentData.id
+      );
     }
 
     handleStop();

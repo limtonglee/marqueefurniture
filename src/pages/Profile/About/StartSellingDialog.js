@@ -15,14 +15,14 @@ import DialogContent from "@mui/material/DialogContent";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { useStores } from "../../../stores/RootStore";
+import { createShop } from "../../../services/Profile";
 
-
-export const StartSellingDialog = ({ start, setStart ,setShopName }) => {
+export const StartSellingDialog = ({ start, setStart, setShopName }) => {
   //this part is for the start selling form
 
   const { userStore } = useStores();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
@@ -31,6 +31,20 @@ export const StartSellingDialog = ({ start, setStart ,setShopName }) => {
     // userStore.setShop(data.get("shopname"));
     // userStore.setIsSeller();
     // userStore.setUserWebLink(data.get("website"));
+
+    const response = await createShop(
+      userStore.id,
+      data.get("shopname"),
+      data.get("web"),
+      data.get("description")
+    );
+    console.log(response)
+    if (response.status === 200) {
+      userStore.setShop(data.get("shopname"));
+      setShopName(data.get("shopname"))
+      userStore.setIsSeller();
+    }
+
     handleStop();
   };
 

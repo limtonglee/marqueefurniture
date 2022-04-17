@@ -16,6 +16,7 @@ import * as SellerCenterAPI from "../../../services/SellerCenter";
 const EditListingModal = ({
     children,
     refreshData,
+    notifyUpdate,
 }) => {
 
     const style = {
@@ -88,9 +89,23 @@ const EditListingModal = ({
         });
     };
 
-    const handleSubmit = event => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        SellerCenterAPI.editListing(
+
+        formData.name = !formData.name ? children.name : formData.name;
+        formData.description = !formData.description ? children.description : formData.description;
+        formData.category = !formData.category ? children.category : formData.category;
+        formData.brand = !formData.brand ? children.brand : formData.brand;
+        formData.warrantyInfo = !formData.warrantyInfo ? children.warrantyinfo : formData.warrantyInfo;
+        formData.shippingProvider = !formData.shippingProvider ? children.shippingprovider : formData.shippingProvider;
+        formData.parcelSize = !formData.parcelSize ? children.parcelsize : formData.parcelSize;
+        formData.weight = !formData.weight ? children.weight : formData.weight;
+        formData.stockAvailable = !formData.stockAvailable ? children.stockavailable : formData.stockAvailable;
+        formData.listingPrice = !formData.listingPrice ? children.listingprice : formData.listingPrice;
+        formData.variations = !formData.variations ? children.variations : formData.variations;
+        formData.dimensions = !formData.dimensions ? children.dimensions : formData.dimensions;
+
+        const response = await SellerCenterAPI.editListing(
             children.id,
             formData.name,
             children.image,
@@ -108,13 +123,14 @@ const EditListingModal = ({
             'LIVE',
             children.type,
         );
-        refreshData();
-        handleClose();
-        setTimeout(() => {
+        if (response.data === "You have successfully edited a listing!") {
+            notifyUpdate();
+            refreshData();
             setFormData({
                 reset: true
             })
-        }, 3000);
+        }
+        handleClose();
     }
     return (
         <div>
@@ -457,7 +473,6 @@ const EditListingModal = ({
                                 </Button>
                             </Box>
                         }
-
                     </form>
                 </Box>
             </Modal>

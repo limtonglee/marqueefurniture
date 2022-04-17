@@ -10,6 +10,8 @@ import {
 import WithdrawBalanceModal from "./WithdrawBalanceModal";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 import { useStores } from "../../../stores/RootStore";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Income = () => {
     const [data, setData] = useState([]);
@@ -46,6 +48,13 @@ export const Income = () => {
         getBalance();
     };
 
+    const notifyWithdraw = () => {
+        toast("Balance withdrawed successfully!", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1500,
+        });
+    }
+
     return (
         <Layout>
             <Card sx={{ padding: "12px" }}>
@@ -69,6 +78,7 @@ export const Income = () => {
                                     refreshData={refreshData}
                                     shopId={userStore.shop.id}
                                     balance={balance.balance}
+                                    notifyWithdraw={notifyWithdraw}
                                 />
                             </Stack>
                         </Card>
@@ -115,6 +125,7 @@ export const Income = () => {
                     </Grid>
                 </Grid>
             </Card>
+            <ToastContainer />
         </Layout>
     );
 }

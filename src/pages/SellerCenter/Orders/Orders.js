@@ -11,12 +11,14 @@ import {
     TextField,
     MenuItem,
     Grid,
-    Button,
+    Avatar,
 } from '@mui/material';
-import { Link } from "react-router-dom";
 import UpdateOrderModal from './UpdateOrderModal';
+import OrderDetailsModal from './OrderDetailsModal';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 import { useStores } from "../../../stores/RootStore";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Orders = () => {
     const [value, setValue] = useState(0);
@@ -98,6 +100,14 @@ export const Orders = () => {
             setData(filteredListing);
         }
     };
+
+    const notifyUpdate = () => {
+        toast("Order status updated successfully!", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1500,
+        });
+    }
+
     return (
         <>
             <Layout>
@@ -139,59 +149,90 @@ export const Orders = () => {
                                 <Tab label="Cancelled" />
                                 <Tab label="Return/Refund" />
                             </Tabs>
-                            {data.map((item) => (
-                                <Card key={item.id}
-                                    sx={{
-                                        flexDirection: 'row',
-                                        margin: '12px',
-                                        border: 1,
-                                        borderColor: '#C4CDD5',
-                                        padding: '5px',
-                                    }}>
+                            <Grid container p={2}>
+                                <Grid item xs={4}>
+                                    Product Details
+                                </Grid>
+                                <Grid item xs={1}>
 
-                                    <div className='header' style={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        borderBottom: '1px solid',
-                                        borderColor: '#C4CDD5',
-                                        padding: '10px',
-                                    }}>
-                                        <div>
-                                            {item.username}
-                                        </div>
-                                        <div>
-                                            Tracking Number: {item.trackingnumber}
-                                        </div>
-                                        <div>
-                                            Order ID {item.id}
-                                        </div>
-                                    </div>
-                                    <Grid container p={2}>
-                                        <Grid item xs={2}>
-                                            <img src={`/api/image/${item.image}`}/>
-                                            {item.name}
-                                        </Grid>
-                                        <Grid item xs={3}>
-                                            Variation: {item.variations}
-                                        </Grid>
-                                        <Grid item xs={2}>
-                                            ${item.price}
-                                        </Grid>
-                                        <Grid item xs={3}>
-                                            {item.order_status}
-                                        </Grid>
-                                        <Grid item xs={2}>
-                                            {/* <Link to={`/sellercenter/orders/${item.id}`}>
-                                                <Button>
-                                                    View Order Details
-                                                </Button>
-                                            </Link> */}
-                                            <UpdateOrderModal refreshData={refreshData}>{item}</UpdateOrderModal>
-                                        </Grid>
-                                    </Grid>
-                                </Card>
-                            ))}
+                                </Grid>
+                                <Grid item xs={2}>
+                                    Price
+                                </Grid>
+                                <Grid item xs={3}>
+                                    Status
+                                </Grid>
+                                <Grid item xs={2}>
+                                    Actions
+                                </Grid>
+                                <Grid item xs={12}>
+                                    {data.map((item) => (
+                                        <Card key={item.id}
+                                            sx={{
+                                                flexDirection: 'row',
+                                                marginTop: '12px',
+                                                marginBottom: '12px',
+                                                border: 1,
+                                                borderColor: '#C4CDD5',
+                                                padding: '5px',
+                                            }}>
+
+                                            <div className='header' style={{
+                                                display: 'flex',
+                                                flexDirection: 'row',
+                                                justifyContent: 'space-between',
+                                                borderBottom: '1px solid',
+                                                borderColor: '#C4CDD5',
+                                                padding: '10px',
+                                            }}>
+                                                <div style={{
+                                                    display: 'flex',
+                                                    flexDirection: 'row',
+                                                }}>
+                                                    <Avatar
+                                                        alt="avatar"
+                                                        src={`/api/image/${item.profilepic}`}
+                                                        sx={{ width: 30, height: 30 }}
+                                                    />
+                                                    <div>
+                                                        &nbsp; &nbsp;{item.username}
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    Order ID: {item.id}
+                                                </div>
+                                            </div>
+                                            <Grid container p={2}>
+                                                <Grid item xs={4}>
+                                                    <img src={`/api/image/${item.image}`} />
+                                                    <div>{item.name}</div>
+                                                    <div>Variation: {item.variations}</div>
+                                                </Grid>
+                                                <Grid item xs={1}>
+
+                                                </Grid>
+                                                <Grid item xs={2}>
+                                                    ${item.price}
+                                                </Grid>
+                                                <Grid item xs={3}>
+                                                    {item.order_status}
+                                                </Grid>
+                                                <Grid item xs={2}>
+                                                    <UpdateOrderModal
+                                                        refreshData={refreshData}
+                                                        notifyUpdate={notifyUpdate}
+                                                    >
+                                                        {item}
+                                                    </UpdateOrderModal>
+                                                    
+                                                    <OrderDetailsModal>{item}</OrderDetailsModal>
+                                                </Grid>
+                                            </Grid>
+                                        </Card>
+                                    ))}
+                                </Grid>
+                                <ToastContainer />
+                            </Grid>
                         </Box>
                     </div>
                 </Card>

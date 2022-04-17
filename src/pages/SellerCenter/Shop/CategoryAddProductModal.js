@@ -34,6 +34,7 @@ const CategoryAddProductModal = ({
             flexDirection: "column",
             marginTop: "12px",
             marginBottom: "12px",
+            padding: '8px',
         },
         buttons: {
             display: "flex",
@@ -152,8 +153,11 @@ const CategoryAddProductModal = ({
                                     <Checkbox {...label} defaultChecked />
                                 )} */}
                                 </Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs={3}>
                                     Product Details
+                                </Grid>
+                                <Grid item xs={1}>
+
                                 </Grid>
                                 <Grid item xs={3}>
                                     Price
@@ -171,13 +175,16 @@ const CategoryAddProductModal = ({
                                                 <Grid item xs={1}>
                                                     <Checkbox {...label} defaultChecked />
                                                 </Grid>
-                                                <Grid item xs={4}>
+                                                <Grid item xs={3}>
                                                     <img
                                                         src={`/api/image/${item.image}`}
                                                         alt={item.title}
                                                     />
                                                     <div>{item.name}</div>
                                                     <div>Variation: {item.variations}</div>
+                                                </Grid>
+                                                <Grid item xs={1}>
+
                                                 </Grid>
                                                 <Grid item xs={3}>
                                                     ${item.listingprice}

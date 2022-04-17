@@ -13,6 +13,7 @@ import * as SellerCenterAPI from "../../../services/SellerCenter";
 const ReplyReviewModal = ({
     reviewId,
     refreshData,
+    notifyReply,
 }) => {
     const style = {
         wrapper: {
@@ -65,16 +66,17 @@ const ReplyReviewModal = ({
             value: event.target.value,
         });
     };
-    const handleSubmit = event => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        SellerCenterAPI.replyReview(reviewId, formData.reply);
-        refreshData();
-        handleClose();
-        setTimeout(() => {
+        const response = await SellerCenterAPI.replyReview(reviewId, formData.reply);
+        if (response.data === "Merchant successfully replied!") {
+            notifyReply();
+            refreshData();
             setFormData({
                 reset: true
             })
-        }, 1000);
+        }
+        handleClose();
     }
 
     return (

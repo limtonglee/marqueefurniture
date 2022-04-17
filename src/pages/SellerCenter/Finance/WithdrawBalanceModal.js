@@ -15,6 +15,7 @@ const WithdrawBalanceModal = ({
     balance,
     shopId,
     refreshData,
+    notifyWithdraw,
 }) => {
     const style = {
         wrapper: {
@@ -70,16 +71,17 @@ const WithdrawBalanceModal = ({
             value: event.target.value,
         });
     };
-    const handleSubmit = event => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        SellerCenterAPI.withdrawBalance(formData.withdrawAmount, shopId);
-        handleClose();
-        refreshData();
-        setTimeout(() => {
+        const response = await SellerCenterAPI.withdrawBalance(formData.withdrawAmount, shopId);
+        if (response.data === "Withdrawal Amount has been updated!") {
+            notifyWithdraw();
+            refreshData();
             setFormData({
                 reset: true
             })
-        }, 1000);
+        }
+        handleClose();
     }
 
     return (

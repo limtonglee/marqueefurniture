@@ -25,7 +25,7 @@ const OrderDetailsModal = ({
             bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
-            width: 1050,
+            width: 850,
             borderRadius: 2,
 
         },
@@ -80,11 +80,11 @@ const OrderDetailsModal = ({
                         </IconButton>
                     </Box>
                     <Grid container spacing={2}>
-                        <Grid item md={5} xs={12} sx={{ px: 2 }}>
+                        <Grid item md={7} xs={12} sx={{ px: 2 }}>
                             <Card sx={{ mt: 3 }}>
                                 <CardMedia
                                     component="img"
-                                    height="340"
+                                    height="230"
                                     image={`/api/image/${children.image}`}
                                     alt={`/api/image/journeyeast.jpeg`}
                                 />
@@ -101,7 +101,7 @@ const OrderDetailsModal = ({
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item md={7} xs={12} sx={{ px: 2 }}>
+                        <Grid item md={5} xs={12} sx={{ px: 2 }}>
                             <Card sx={{ mt: 3, padding: '8px' }}>
                                 <Typography gutterBottom variant="h5" component="div">
                                     Buyer information
@@ -135,6 +135,14 @@ const OrderDetailsModal = ({
                                 </Typography>
                                 <Typography variant="body2" color="text.primary">
                                     Shipping provider: {children.shippingprovider}
+                                </Typography>
+                            </Card>
+                            <Card sx={{ mt: 3, padding: '8px' }}>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    Order status
+                                </Typography>
+                                <Typography variant="body2" color="text.primary">
+                                    {children.order_status}
                                 </Typography>
                             </Card>
                         </Grid>

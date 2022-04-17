@@ -69,7 +69,7 @@ export const MyListings = () => {
     };
     const searchType = [
         {
-            value: 'productName',
+            value: 'name',
             label: 'Product Name',
         },
         {
@@ -77,7 +77,7 @@ export const MyListings = () => {
             label: 'SKU code',
         },
     ];
-    let [type, setType] = React.useState('productName');
+    let [type, setType] = React.useState('name');
     let handleSearchDropdown = (event) => {
         setType(event.target.value);
     };

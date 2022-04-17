@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import CloseIcon from "@mui/icons-material/Close";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
+import { createNotification } from '../../../services/Notification';
 
 const UpdateOrderModal = ({
     children,
@@ -98,10 +99,21 @@ const UpdateOrderModal = ({
     const handleSubmit = async (event) => {
         event.preventDefault();
         const response = await SellerCenterAPI.updateOrderStatus(formData.orderStatus, children.id);
+        // console.log(children.id)
+        // console.log(children)
+
         SellerCenterAPI.updateTrackingNumber(formData.trackingNumber, children.id);
         if (response.data === "order updated") {
             notifyUpdate();
             refreshData();
+            console.log(children.sellerid + " " + children.buyerid)
+            await createNotification(
+                "has updated order status",
+                "1",
+                "/profile/orders",
+                children.sellerid,
+                children.buyerid
+              );
         }
         handleClose();
     }

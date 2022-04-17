@@ -57,7 +57,7 @@ export default function Orders() {
       autoClose: 1500,
     });
 
-    const notifyRefund = () =>
+  const notifyRefund = () =>
     toast("Refund raised!", {
       position: toast.POSITION.TOP_CENTER,
       autoClose: 1500,
@@ -282,7 +282,10 @@ export default function Orders() {
                                   variant="contained"
                                   sx={{ width: "150px" }}
                                   onClick={() =>
-                                    handleConfirmDelivery(orderItem.id, orderItem.sellerid)
+                                    handleConfirmDelivery(
+                                      orderItem.id,
+                                      orderItem.sellerid
+                                    )
                                   }
                                 >
                                   Confirm Delivery
@@ -292,7 +295,12 @@ export default function Orders() {
                                 <Button
                                   variant="outlined"
                                   sx={{ width: "150px" }}
-                                  onClick={() => handleRefund(orderItem.id, orderItem.sellerid)}
+                                  onClick={() =>
+                                    handleRefund(
+                                      orderItem.id,
+                                      orderItem.sellerid
+                                    )
+                                  }
                                 >
                                   Refund
                                 </Button>
@@ -314,7 +322,12 @@ export default function Orders() {
                                 <Button
                                   variant="outlined"
                                   sx={{ width: "150px" }}
-                                  onClick={() => handleRefund(orderItem.id, orderItem.sellerid)}
+                                  onClick={() =>
+                                    handleRefund(
+                                      orderItem.id,
+                                      orderItem.sellerid
+                                    )
+                                  }
                                 >
                                   Refund
                                 </Button>
@@ -328,19 +341,13 @@ export default function Orders() {
                                   variant="outlined"
                                   sx={{ width: "150px" }}
                                   onClick={() =>
-                                    handleCancelRefund(orderItem.id, orderItem.sellerid)
+                                    handleCancelRefund(
+                                      orderItem.id,
+                                      orderItem.sellerid
+                                    )
                                   }
                                 >
                                   Undo
-                                </Button>
-                              </Grid>
-                              <Grid item>
-                                <Button
-                                  variant="outlined"
-                                  sx={{ width: "150px" }}
-                                  onClick={() => handleRaiseDispute(orderItem)}
-                                >
-                                  Raise Dispute
                                 </Button>
                               </Grid>
                             </>
@@ -357,6 +364,15 @@ export default function Orders() {
                                 Contact Seller
                               </Button>
                             </Link>
+                          </Grid>
+                          <Grid item>
+                            <Button
+                              variant="outlined"
+                              sx={{ width: "150px" }}
+                              onClick={() => handleRaiseDispute(orderItem)}
+                            >
+                              Raise Dispute
+                            </Button>
                           </Grid>
                         </Grid>
                         <Grid container spacing={2} direction="row">

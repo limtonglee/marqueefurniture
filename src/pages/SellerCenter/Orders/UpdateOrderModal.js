@@ -110,7 +110,7 @@ const UpdateOrderModal = ({
             await createNotification(
                 "has updated order status",
                 "1",
-                "/order",
+                "/profile/orders",
                 children.sellerid,
                 children.buyerid
               );

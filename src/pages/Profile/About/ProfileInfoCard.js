@@ -256,7 +256,6 @@ function ProfileInfoCard({
                     {userName}
                   </Typography>
                 </Box>
-   
 
                 <Typography
                   variant="h6"
@@ -312,14 +311,15 @@ function ProfileInfoCard({
                 >
                   Edit Profile
                 </Button>
-
-                <Button
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                  onClick={handleStart}
-                >
-                  Start Selling
-                </Button>
+                {!userStore.isSeller && !userStore.isDesigner && (
+                  <Button
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={handleStart}
+                  >
+                    Start Selling
+                  </Button>
+                )}
               </Box>
             </Card>
           </Box>

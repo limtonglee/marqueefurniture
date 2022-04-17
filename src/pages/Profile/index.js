@@ -26,7 +26,7 @@ function Profile() {
 
   //username in header component does not update
   const [userName, setUserName] = useState(userStore.name);
-  const [shopName, setShopName] = useState("");
+  const [shopName, setShopName] = useState(userStore.shop);
 
   const handleSetTabValue = (event, newValue) => {
     setTabValue(newValue);

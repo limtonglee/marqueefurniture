@@ -11,6 +11,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from "@mui/icons-material/Close";
 import { createShopCategory } from "../../../services/SellerCenter";
+import { useStores } from "../../../stores/RootStore";
 
 const AddCategoryModal = ({
     userId,
@@ -53,7 +54,7 @@ const AddCategoryModal = ({
         }
     }
 
-
+    const { userStore } = useStores();
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -69,7 +70,7 @@ const AddCategoryModal = ({
     };
     const handleSubmit = event => {
         event.preventDefault();
-        createShopCategory(formData.categoryName, userId);
+        createShopCategory(formData.categoryName, userStore.shop.id);
         refreshData();
         handleClose();
         setTimeout(() => {

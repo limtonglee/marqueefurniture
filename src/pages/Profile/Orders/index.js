@@ -58,7 +58,13 @@ export default function Orders() {
     });
 
   const notifyRefund = () =>
-    toast("Refund raised!", {
+    toast("Refund requested!", {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 1500,
+    });
+
+    const notifyConfirm = () =>
+    toast("Delivery confirmed!", {
       position: toast.POSITION.TOP_CENTER,
       autoClose: 1500,
     });
@@ -132,6 +138,7 @@ export default function Orders() {
       const orderResult = await response.data;
       setOrders(orderResult);
       setData(orderResult);
+      notifyConfirm();
       await createNotification(
         "has confirmed the order",
         "1",

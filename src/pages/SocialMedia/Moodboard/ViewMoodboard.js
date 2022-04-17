@@ -318,6 +318,21 @@ const ViewMoodboard = () => {
               component="div"
             >
               {currentMoodboard.description}
+              {console.log(
+                "currentMoodboard.description",
+                currentMoodboard.description
+              )}
+              {!currentMoodboard.description && (
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: "normal",
+                  }}
+                  component="div"
+                >
+                  No description yet
+                </Typography>
+              )}
             </Typography>
           </Grid>
 

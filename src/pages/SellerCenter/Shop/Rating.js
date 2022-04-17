@@ -13,6 +13,8 @@ import {
     ButtonBase,
     Avatar,
     Rating,
+    TextField,
+    MenuItem,
 } from "@mui/material";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 import { useStores } from "../../../stores/RootStore";
@@ -103,6 +105,36 @@ export const ShopRating = () => {
         });
     }
 
+    const searchType = [
+        {
+            value: 'username',
+            label: 'Buyer Name',
+        },
+        {
+            value: 'name',
+            label: 'Product Name',
+        },
+    ];
+    let [type, setType] = React.useState('username');
+    let handleSearchDropdown = (event) => {
+        setType(event.target.value);
+    };
+
+    let handleSearch = (value) => {
+        findOrder(value);
+    }
+
+    let findOrder = (criteria) => {
+        const lowercasedCriteria = criteria.toLowerCase().trim();
+        if (lowercasedCriteria === '') updateData();
+        else {
+            const filteredListing = data.filter((order) => {
+                return order[type].toString().toLowerCase().includes(lowercasedCriteria)
+            })
+            setData(filteredListing);
+        }
+    };
+
     return (
         <>
             <Layout>
@@ -113,6 +145,24 @@ export const ShopRating = () => {
                     <Typography variant="h4" gutterBottom>
                         {average}/5
                     </Typography>
+                </Stack>
+                <Stack direction="row" >
+                    <TextField
+                        id="outlined-select-search-type"
+                        select
+                        value={type}
+                        onChange={handleSearchDropdown}
+                    >
+                        {searchType.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        placeholder="Search Rating..."
+                        onChange={(event) => handleSearch(event.target.value)}
+                    />
                 </Stack>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs

@@ -12,22 +12,41 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { forgotpw } from "../../services/Signup";
+import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+const notifyUpdated = () =>
+toast("Password updated!", {
+  position: toast.POSITION.TOP_CENTER,
+  autoClose: 1500,
+});
 
 const ForgetPassword = () => {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
        console.log({
       email: data.get("email"),
-    //   password: data.get("password"),
+      password: data.get("password"),
     });
+
+    const response = await forgotpw(data.get("email"), data.get("password"))
+    if(response.status === 200 ) {
+      notifyUpdated();
+      setTimeout(() => {
+        navigate("/login" );
+      }, 3000);
+    }
 
   };
 
   return (
     <>
       <Container maxWidth="sm">
+        <ToastContainer/>
         <CssBaseline />
         <Box
           sx={{
@@ -59,13 +78,23 @@ const ForgetPassword = () => {
               autoComplete="email"
               autoFocus
             />
+             <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="password"
+              label="Password"
+              name="password"
+              type="password"
+              autoFocus
+            />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Reset Password
+              Update Password
             </Button>
           </Box>
         </Box>

@@ -2,8 +2,8 @@
 
 //for signup services
 
-import { postAsFormInput, postAsJson } from "./api";
-import { URL_SIGNUP } from "../services/endpoints";
+import { postAsFormInput, postAsJson ,update } from "./api";
+import { URL_SIGNUP ,URL_FORGOT_PASSWORD } from "../services/endpoints";
 
 const signup = (
   username,
@@ -20,5 +20,14 @@ const signup = (
     address,
   });
 };
+
+export const forgotpw = (email, password) => {
+  const body = {
+    email : email,
+    password : password
+  }
+  
+  return update(URL_FORGOT_PASSWORD, body)
+}
 
 export default signup;

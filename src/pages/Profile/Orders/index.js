@@ -303,6 +303,15 @@ export default function Orders() {
                                   Rate
                                 </Button>
                               </Grid>
+                              <Grid item>
+                                <Button
+                                  variant="outlined"
+                                  sx={{ width: "150px" }}
+                                  onClick={() => handleRefund(orderItem.id, orderItem.sellerid)}
+                                >
+                                  Refund
+                                </Button>
+                              </Grid>
                             </>
                           )}
                           {orderItem.order_status === "RETURN/REFUND" && (

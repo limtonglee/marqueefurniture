@@ -44,7 +44,7 @@ export const ReviewDialog = ({ start, setStart, currentData, setShowReview }) =>
         "1",
         "/sellercenter",
         userStore.id,
-        currentData.id
+        currentData.sellerid
       );
     }
 

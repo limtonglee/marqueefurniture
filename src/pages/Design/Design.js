@@ -129,7 +129,7 @@ const Design = () => {
   return (
     <>
       <Container>
-        {!userStore.isDesigner && (
+        {!userStore.isDesigner && design.isreviewed !== "1" && (
           <Box
             sx={{
               display: "flex",
@@ -155,7 +155,6 @@ const Design = () => {
             </Link>
           </Box>
         )}
-
         <Grid container spacing={2}>
           {/* <Box
             sx={{
@@ -210,7 +209,7 @@ const Design = () => {
                 Revised
               </Typography>
               <Box sx={{ width: "auto", bgcolor: "background" }}>
-                {userStore.isDesigner ? (
+                {/* {userStore.isDesigner ? (
                   <Tabs
                     value={tabValue}
                     onChange={handleSetTabValue}
@@ -233,7 +232,19 @@ const Design = () => {
                     <Tab label="Images" />
                     <Tab label="Products" />
                   </Tabs>
-                )}
+                )} */}
+                <Tabs
+                  value={tabValue}
+                  onChange={handleSetTabValue}
+                  centered
+                  variant="fullWidth"
+                  sx={{ background: "white" }}
+                >
+                  <Tab label="Images" />
+                  <Tab label="Products" />
+                  <Tab label="Review" />
+                </Tabs>
+
                 {/* <Tabs
                   value={tabValue}
                   onChange={handleSetTabValue}
@@ -420,7 +431,10 @@ const Design = () => {
                       </Box>
                       <Box sx={{ mt: 5 }}>
                         <Typography variant="h4" gutterBottom component="div">
-                          Do you approve this design?
+                          {/* Do you approve this design? */}
+                          {userStore.isDesigner
+                            ? "Does customer approve this design?"
+                            : "Do you approve this design?"}
                         </Typography>
                         <FormControl>
                           <RadioGroup

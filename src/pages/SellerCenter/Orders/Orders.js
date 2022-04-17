@@ -72,11 +72,11 @@ export const Orders = () => {
             label: 'Order ID',
         },
         {
-            value: 'buyerName',
+            value: 'username',
             label: 'Buyer Name',
         },
         {
-            value: 'productName',
+            value: 'name',
             label: 'Product Name',
         },
 

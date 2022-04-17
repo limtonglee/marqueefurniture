@@ -63,7 +63,7 @@ const Chatbox = ({ currentChat, refreshCurrentChat }) => {
         );
       }
     });
-  }, [userStore.id]);
+  }, [userStore.id, currentChat]);
 
   const sendMessage = async () => {
     const receiverId =

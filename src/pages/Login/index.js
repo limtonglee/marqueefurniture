@@ -15,16 +15,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../services/Login";
 import { useStores } from "../../stores/RootStore";
 import { getShopProfile } from "../../services/SellerCenter";
-import { toast, ToastContainer } from "react-toastify";
 
 const Login = () => {
   const [incorrectLogin, setIncorrectLogin] = useState(false);
-
-  const notifyBanned = () =>
-  toast("You account is banned!", {
-    position: toast.POSITION.TOP_CENTER,
-    autoClose: 5000,
-  });
+  const [isbanned, setIsBanned] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -39,8 +33,8 @@ const Login = () => {
         ) {
           const user = response.data[0];
           if (user.isbanned === "1") {
-            console.log(user);
-            notifyBanned();
+            // console.log(user);
+            setIsBanned(true);
           } else {
             setLogin(
               user.id,
@@ -70,6 +64,7 @@ const Login = () => {
 
   const handleChange = (event) => {
     setIncorrectLogin(false);
+    setIsBanned(false);
   };
 
   /*
@@ -171,7 +166,6 @@ const Login = () => {
   return (
     <>
       <Container maxWidth="sm">
-        <ToastContainer/>
         <CssBaseline />
         <Box
           sx={{
@@ -190,6 +184,12 @@ const Login = () => {
           {!!incorrectLogin && (
             <Alert severity="error">
               Your account and/or password is incorrect, please try again
+            </Alert>
+          )}
+
+          {!!isbanned && (
+            <Alert severity="error">
+              Your account is banned, please contact admin
             </Alert>
           )}
 

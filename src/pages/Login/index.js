@@ -15,9 +15,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../services/Login";
 import { useStores } from "../../stores/RootStore";
 import { getShopProfile } from "../../services/SellerCenter";
+import { toast, ToastContainer } from "react-toastify";
 
 const Login = () => {
   const [incorrectLogin, setIncorrectLogin] = useState(false);
+
+  const notifyBanned = () =>
+  toast("You account is banned!", {
+    position: toast.POSITION.TOP_CENTER,
+    autoClose: 5000,
+  });
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -31,15 +38,20 @@ const Login = () => {
           response.data.msg !== "Incorrect login info"
         ) {
           const user = response.data[0];
-          setLogin(
-            user.id,
-            user.username,
-            user.email,
-            user.type,
-            user.profilepic,
-            user.address,
-            user.bio
-          );
+          if (user.isbanned === "1") {
+            console.log(user);
+            notifyBanned();
+          } else {
+            setLogin(
+              user.id,
+              user.username,
+              user.email,
+              user.type,
+              user.profilepic,
+              user.address,
+              user.bio
+            );
+          }
         } else {
           console.log(response.data.msg);
           setIncorrectLogin(true);
@@ -159,6 +171,7 @@ const Login = () => {
   return (
     <>
       <Container maxWidth="sm">
+        <ToastContainer/>
         <CssBaseline />
         <Box
           sx={{

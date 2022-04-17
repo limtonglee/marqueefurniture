@@ -39,6 +39,12 @@ const notifyCheckout = () =>
     position: toast.POSITION.TOP_CENTER,
     autoClose: 1000,
   });
+
+const notifyFailed = () =>
+  toast("Payment failed! ", {
+    position: toast.POSITION.TOP_CENTER,
+    autoClose: 1000,
+  });
 const Img = styled("img")({
   margin: "auto",
   display: "block",
@@ -100,20 +106,29 @@ export default function Checkout({
               result = await performCheckout(item);
             });
             notifyCheckout();
+            setCheckoutSpinner(false);
+
+            console.log("Result: " + result);
+            setTimeout(() => {
+              navigate("/profile/orders", { state: { redirect: "cart" } });
+            }, 1000);
           }
-          console.log("Result: " + result);
+          if (!response.data.success) {
+            setCheckoutSpinner(false);
+
+            notifyFailed();
+          }
         } catch (error) {
           console.log("Error", error);
         }
       } else {
         console.log(error.message);
+        if (error.message === "Your card number is invalid.") {
+          setCheckoutSpinner(false);
+          notifyFailed();
+        }
       }
     }
-    setCheckoutSpinner(false);
-
-    setTimeout(() => {
-      navigate("/profile/orders", { state: { redirect: "cart" } });
-    }, 1000);
   };
 
   const performCheckout = async (item) => {
@@ -140,13 +155,12 @@ export default function Checkout({
       const deleteItem = await deleteCartItems(userStore.id, item.id);
       console.log(deleteItem);
 
-       await createNotification(
+      await createNotification(
         "has created an order",
         "1",
         "/sellercenter",
         userStore.id,
-        sellerId,
-        
+        sellerId
       );
     }
   };

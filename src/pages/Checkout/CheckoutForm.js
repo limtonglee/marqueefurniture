@@ -37,7 +37,7 @@ import { createNotification } from "../../services/Notification";
 const notifyCheckout = () =>
   toast("SUCCESS! Redirecting to orders...", {
     position: toast.POSITION.TOP_CENTER,
-    autoClose: 3000,
+    autoClose: 1000,
   });
 const Img = styled("img")({
   margin: "auto",
@@ -113,7 +113,7 @@ export default function Checkout({
 
     setTimeout(() => {
       navigate("/profile/orders", { state: { redirect: "cart" } });
-    }, 4000);
+    }, 1000);
   };
 
   const performCheckout = async (item) => {

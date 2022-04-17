@@ -143,7 +143,7 @@ export default function Checkout({
        await createNotification(
         "has created an order",
         "1",
-        "`/sellercenter`",
+        "/sellercenter",
         userStore.id,
         sellerId,
         

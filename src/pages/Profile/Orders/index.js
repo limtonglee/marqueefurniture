@@ -57,6 +57,12 @@ export default function Orders() {
       autoClose: 1500,
     });
 
+    const notifyRefund = () =>
+    toast("Refund raised!", {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 1500,
+    });
+
   useEffect(() => {
     const getListingDetail = async (listingId) => {
       const response = await getListingDetails(listingId);
@@ -144,6 +150,7 @@ export default function Orders() {
       const orderResult = await response.data;
       setOrders(orderResult);
       setData(orderResult);
+      notifyRefund();
       await createNotification(
         "has requested for cancellation/refund",
         "1",

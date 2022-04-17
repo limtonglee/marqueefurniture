@@ -160,11 +160,40 @@ export const URL_CREATE_DESIGN_REQUIREMENT_TAGS =
 export const URL_CREATE_DESIGN_REQUIREMENT_MB =
   "/api/design/moodboardRequirementJoinTable/create";
 
-// edit design requirements
-export const URL_EDIT_DESIGN_REQUIREMENT = "/api/design/requirements/edit";
-export const URL_EDIT_DESIGN_REQUIREMENT_ROOM =
-  "/api/design/requirementNumOfRooms/edit";
-export const URL_EDIT_DESIGN_REQUIREMENT_TAGS =
-  "/api/design/requirementTagsJoinTable/edit";
-export const URL_EDIT_DESIGN_REQUIREMENT_MB =
-  "/api/design/moodboardRequirementJoinTable/edit";
+// get design requirements
+export const URL_GET_DESIGN_REQUIREMENT = "/api/design/requirements";
+export const URL_GET_DESIGN_REQUIREMENT_ROOM =
+  "/api/design/requirementNumOfRooms";
+export const URL_GET_DESIGN_REQUIREMENT_TAGS = "/api/design/requirementTags";
+export const URL_GET_DESIGN_REQUIREMENT_MB = "/api/design/requirementMoodboard";
+
+// design logs
+export const URL_GET_DESIGN_LOGS = "/api/design/designLogs";
+export const URL_CREATE_DESIGN_LOG = "/api/design/designLogs/create";
+
+export const URL_CREATE_DESIGN_ORDER = "/api/design/designOrder/create";
+
+// design order status
+export const URL_GET_DESIGN_ORDER_STATUS = "/api/design/designOrderStatus";
+export const URL_GET_DESIGN_ORDER_DESIGNS = "/api/design/designPackage";
+export const URL_GET_DESIGN_ORDER_PRODUCTS =
+  "/api/design/designPackage/listings";
+export const URL_UPDATE_DESIGN_ORDER_STATUS =
+  "/api/design/designOrderStatus/edit";
+
+// quotations
+export const URL_UPDATE_CONSULTATION_QUOTATION =
+  "/api/design/designOrder/consultQuotation/create";
+export const URL_UPDATE_PACKAGE_QUOTATION =
+  "/api/design/designOrder/packageQuotation/create";
+
+// create design package
+export const URL_CREATE_DESIGN_PACKAGE = "/api/design/designPackage/create";
+export const URL_CREATE_DESIGN_LISTINGS =
+  "/api/design/designPackage/createListing";
+
+// create review for design
+export const URL_CREATE_DESIGN_REVIEW = "/api/design/designPackageReview";
+
+export const URL_GET_PRODUCT_BY_ID =
+  "/api/design/designPackage/listings/getdetails";

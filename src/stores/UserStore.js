@@ -20,6 +20,7 @@ class userStore {
   // getter no need but setter need
 
   prevTabOnProfile = 0;
+  prevTabOnDesignOrder = 0;
   prevViewOnMoodboard = true;
   currentChatPerson = null;
 
@@ -103,6 +104,10 @@ class userStore {
 
   setPrevTabOnProfile = (newTab) => {
     this.prevTabOnProfile = newTab;
+  };
+
+  setPrevTabOnDesignOrder = (newTab) => {
+    this.prevTabOnDesignOrder = newTab;
   };
 
   setPrevViewOnMoodboard = (newView) => {

@@ -3,20 +3,21 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { format } from "date-fns";
 
-const LogItem = ({ completed }) => {
+const LogItem = ({ log }) => {
   return (
     <>
       <Grid container spacing={2} sx={{ mb: 2 }}>
         <Grid item xs={3} md={2}>
           <Typography variant="h6" gutterBottom component="div">
-            6 Jan 2022
+            {format(Date.parse(log.datetime), "dd MMM yy HH:mm")}
           </Typography>
         </Grid>
         <Grid item xs={5} md={5}>
           <Box>
             <Typography variant="h6" sx={{ fontWeight: "normal" }}>
-              Issued quotation
+              {log.description}
             </Typography>
             <Typography
               variant="subtitle1"
@@ -25,11 +26,11 @@ const LogItem = ({ completed }) => {
                 color: "primary.light",
               }}
             >
-              Designer
+              {log.role}
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={4} md={5}>
+        {/* <Grid item xs={4} md={5}>
           <Box
             sx={{
               display: "flex",
@@ -46,7 +47,7 @@ const LogItem = ({ completed }) => {
               </Button>
             )}
           </Box>
-        </Grid>
+        </Grid> */}
       </Grid>
     </>
   );

@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+import {
+  useNavigate,
+  useNavigationType,
+  useLocation,
+  Link,
+} from "react-router-dom";
 import Box from "@mui/material/Box";
-import { useNavigate, useLocation } from "react-router-dom";
+import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import DesignItemCard from "./DesignItemCard";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import UploadIcon from "@mui/icons-material/Upload";
@@ -16,37 +20,37 @@ import * as designEngagementAPI from "../../services/DesignEngagement";
 import CircularProgress from "@mui/material/CircularProgress";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
-
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import TagProductsModal from "../SocialMedia/Posts/TagProductsModal";
 import { useStores } from "../../stores/RootStore";
 import * as socket from "../../services/socket";
 
-const ReviewDesign = () => {
+const CreateNewDesign = () => {
   const { userStore } = useStores();
   let navigate = useNavigate();
-
   const location = useLocation();
-  const design = location.state ? location.state.design : null;
+  console.log("location.state", location.state);
+
   const designOrderStatus = location.state
     ? location.state.designOrderStatus
     : null;
+
+  console.log("designOrderStatus", designOrderStatus);
+
   const buyerId = location.state ? location.state.buyerId : null;
   const sellerId = location.state ? location.state.sellerId : null;
-
-  console.log("design", design);
+  console.log("buyerId", buyerId);
+  console.log("sellerId", sellerId);
 
   const [otherComments, setOtherComments] = useState("");
-  const [isCompleted, setIsCompleted] = useState("");
+  const [title, setTitle] = useState("");
 
   const handleChangeOtherComments = (event) => {
     setOtherComments(event.target.value);
   };
 
-  const updateIsCompleted = (e) => {
-    setIsCompleted(e.target.value);
+  const handleChangeTitle = (event) => {
+    setTitle(event.target.value);
   };
 
   const [files, setFiles] = useState([]);
@@ -85,7 +89,59 @@ const ReviewDesign = () => {
     }
   };
 
+  // todo: update
+  const createDesignAPI = async ({
+    title,
+    designImages,
+    taggedListings,
+    otherComments,
+  }) => {
+    console.log("98 designImages", designImages);
+    try {
+      const dateTime = new Date();
+      const res = await designEngagementAPI.createDesignPackage(
+        dateTime,
+        title,
+        designImages[0],
+        designImages[1],
+        designImages[2],
+        otherComments,
+        designOrderStatus.id
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log("data", data);
+      const packageId = JSON.parse(JSON.stringify(res)).data[0]["id"];
+      console.log("packageId", packageId);
+
+      for (let listingId in taggedListings) {
+        console.log(`packageId listingId ${packageId} ${listingId}`);
+        await createDesignListingsAPI(packageId, taggedListings[listingId]);
+      }
+
+      //refreshData(); // function to refresh data?
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateDesignOrderStatusAPI = async (newStatus) => {
+    console.log("updateDesignOrderStatusAPI");
+    console.log(`buyerId sellerId ${buyerId} ${sellerId}`);
+    try {
+      const res = await designEngagementAPI.updateDesignOrderStatus(
+        buyerId,
+        sellerId,
+        newStatus
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const createDesignLogAPI = async (dateTime, description, role, orderId) => {
+    console.log("createDesignLogAPI");
     try {
       const res = await designEngagementAPI.createDesignLog(
         dateTime,
@@ -100,15 +156,13 @@ const ReviewDesign = () => {
     }
   };
 
-  const updateDesignOrderStatusAPI = async (newStatus) => {
-    console.log(
-      `updateDesignOrderStatusAPI buyerId sellerId ${buyerId} ${sellerId}`
-    );
+  // todo: update
+  const createDesignListingsAPI = async (packageId, listingId) => {
+    console.log("createDesignListingsAPI");
     try {
-      const res = await designEngagementAPI.updateDesignOrderStatus(
-        buyerId,
-        sellerId,
-        newStatus
+      const res = await designEngagementAPI.createDesignListings(
+        packageId,
+        listingId
       );
       const data = JSON.parse(JSON.stringify(res)).data;
       return data;
@@ -117,95 +171,74 @@ const ReviewDesign = () => {
     }
   };
 
-  const createDesignReviewAPI = async ({
-    designPackageId,
-    photoReviews,
-    userOtherComment,
-    isCompleted,
-  }) => {
-    console.log("line 260 createDesignRequirementAPI");
-    try {
-      const res = await designEngagementAPI.createDesignReview(
-        designPackageId,
-        photoReviews[0],
-        photoReviews[1],
-        photoReviews[2],
-        userOtherComment,
-        isCompleted
-      );
-      const data = JSON.parse(JSON.stringify(res)).data[0]["id"];
+  const handleSubmitDesign = async () => {
+    console.log("handleSubmitDesign");
 
-      const timestamp = new Date();
-
-      if (isCompleted === "1") {
-        // todo: use the designorder id to create log
-        await createDesignLogAPI(
-          timestamp,
-          "Approved design",
-          "Customer",
-          designOrderStatus.id
-        );
-
-        // todo: update designorder status
-        await updateDesignOrderStatusAPI("Completed");
-      } else {
-        // todo: use the designorder id to create log
-        await createDesignLogAPI(
-          timestamp,
-          "Rejected design",
-          "Customer",
-          designOrderStatus.id
-        );
-
-        // todo: update designorder status
-        await updateDesignOrderStatusAPI("Rejected");
-      }
-
-      socket.bumpDesignOrderStatusRefresh(sellerId);
-
-      // todo: navigate back to chat
-      navigate("/chat");
-
-      // return data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleSubmitReview = () => {
-    console.log("handleSubmitReview");
-
-    let photoReviews = [];
+    let designImages = [];
     if (files.length > 3) {
-      photoReviews = files.slice(3);
+      designImages = files.slice(3);
     } else if (files.length === 3) {
-      photoReviews = files;
+      designImages = files;
     } else if (files.length == 2) {
-      photoReviews = [files, ""].flat();
+      designImages = [files, ""].flat();
     } else if (files.length == 1) {
-      photoReviews = [files, "", ""].flat();
+      designImages = [files, "", ""].flat();
     } else {
-      photoReviews = ["", "", ""];
+      designImages = ["", "", ""];
     }
 
     console.log("data to submit", {
-      designPackageId: design.id,
-      photoReviews: photoReviews,
-      userOtherComment: otherComments,
-      isCompleted: isCompleted,
+      title: title,
+      designImages: designImages,
+      taggedListings: selectedProductsValues.map((item) => parseInt(item.id)),
+      otherComments: otherComments,
     });
 
-    createDesignReviewAPI({
-      designPackageId: design.id,
-      photoReviews: photoReviews,
-      userOtherComment: otherComments,
-      isCompleted: isCompleted,
+    await createDesignAPI({
+      title: title,
+      designImages: designImages,
+      taggedListings: selectedProductsValues.map((item) => parseInt(item.id)),
+      otherComments: otherComments,
     });
+
+    await updateDesignOrderStatusAPI("InReview");
+
+    const timestamp = new Date();
+    await createDesignLogAPI(
+      timestamp,
+      "Created design",
+      "Designer",
+      designOrderStatus.id
+    );
+
+    socket.bumpDesignOrderStatusRefresh(buyerId);
+
+    // refreshDesignOrderStatus();
+    navigate("/chat");
+
     // call API to submit
+    // refer to Request for Consult + Create New Post
+  };
+
+  const [selectedProductsValues, setSelectedProductsValues] = useState([]);
+  const [open, setOpen] = React.useState(false);
+
+  const closeProductsModal = () => {
+    setOpen(false);
+  };
+
+  const openProductsModal = (event) => {
+    setOpen(true);
   };
 
   return (
     <>
+      <TagProductsModal
+        open={open}
+        closeProductsModal={closeProductsModal}
+        selectedProductsValues={selectedProductsValues}
+        setSelectedProductsValues={setSelectedProductsValues}
+      />
       <Container>
         <Grid container spacing={2}>
           <Grid item xs={12} md={1}>
@@ -220,15 +253,25 @@ const ReviewDesign = () => {
           <Grid item xs={12} md={11}>
             <Box sx={{ pt: 3, pb: 18 }}>
               <Typography variant="h3" gutterBottom component="div">
-                Review Design
+                New design
               </Typography>
-              <Box sx={{ width: "100%", mt: 3 }}>
-                <DesignItemCard design={design} hideButton={true} />
-              </Box>
               <Stack spacing={4} sx={{ mt: 4 }}>
                 <Box>
+                  <Typography variant="h4" gutterBottom component="div">
+                    Title
+                  </Typography>
+                  <TextField
+                    id="outlined-multiline-static"
+                    rows={4}
+                    placeholder="Enter title"
+                    sx={{ width: 500 }}
+                    value={title}
+                    onChange={handleChangeTitle}
+                  />
+                </Box>
+                <Box>
                   <Typography variant="h4" component="div">
-                    Picture comments
+                    Design images
                   </Typography>
                   <Typography
                     variant="subtitle1"
@@ -327,6 +370,69 @@ const ReviewDesign = () => {
                     </>
                   )}
                 </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    width: 500,
+                  }}
+                >
+                  {selectedProductsValues.length === 0 ? (
+                    <Button
+                      size="large"
+                      variant="contained"
+                      sx={{
+                        width: "100%",
+                        backgroundColor: "primary",
+                      }}
+                      onClick={openProductsModal}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          width: "100%",
+                        }}
+                      >
+                        <span>Tag design with products</span>
+                        <ArrowForwardIosIcon fontSize="small" />
+                      </Box>
+                    </Button>
+                  ) : (
+                    <Button
+                      size="large"
+                      variant="contained"
+                      sx={{
+                        width: "100%",
+                        backgroundColor: "primary.lighter",
+                        color: "primary.darker",
+                        "&:hover": {
+                          color: "#fff",
+                        },
+                      }}
+                      onClick={openProductsModal}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          width: "100%",
+                        }}
+                      >
+                        <span>{`Tagged with ${
+                          selectedProductsValues.length
+                        } product${
+                          selectedProductsValues.length > 1 ? "s" : ""
+                        }`}</span>
+
+                        <ArrowForwardIosIcon fontSize="small" />
+                      </Box>
+                    </Button>
+                  )}
+                </Box>
                 <Box>
                   <Typography variant="h4" gutterBottom component="div">
                     Other Comments
@@ -336,38 +442,14 @@ const ReviewDesign = () => {
                     multiline
                     rows={4}
                     placeholder="Enter comment"
-                    sx={{ width: 400 }}
+                    sx={{ width: 500 }}
                     value={otherComments}
                     onChange={handleChangeOtherComments}
                   />
                 </Box>
-                <Box>
-                  <Typography variant="h4" gutterBottom component="div">
-                    Do you approve this design?
-                  </Typography>
-                  <FormControl>
-                    <RadioGroup
-                      aria-labelledby="demo-radio-buttons-group-label"
-                      name="radio-buttons-group"
-                      value={isCompleted}
-                      onChange={updateIsCompleted}
-                    >
-                      <FormControlLabel
-                        value="1"
-                        control={<Radio />}
-                        label="Yes"
-                      />
-                      <FormControlLabel
-                        value="0"
-                        control={<Radio />}
-                        label="No"
-                      />
-                    </RadioGroup>
-                  </FormControl>
-                </Box>
                 <Box sx={{ pt: 2 }}>
                   <Button
-                    onClick={handleSubmitReview}
+                    onClick={handleSubmitDesign}
                     variant="contained"
                     size="large"
                     sx={{ width: 200 }}
@@ -380,25 +462,8 @@ const ReviewDesign = () => {
           </Grid>
         </Grid>
       </Container>
-      {/* <Box
-        sx={{
-          position: "fixed",
-          bottom: 0,
-          backgroundColor: "white",
-          width: "100%",
-          boxShadow: 3,
-          borderRadius: "30px 30px 0 0",
-          px: 4,
-          py: 3.5,
-          zIndex: 99,
-        }}
-      >
-        <Button variant="contained" size="large" sx={{ width: "100%" }}>
-          Submit
-        </Button>
-      </Box> */}
     </>
   );
 };
 
-export default ReviewDesign;
+export default CreateNewDesign;

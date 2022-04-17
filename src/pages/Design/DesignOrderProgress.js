@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { useNavigate } from "react-router-dom";
+import {
+  useNavigate,
+  useNavigationType,
+  useLocation,
+  Link,
+} from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
 
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
@@ -20,6 +26,10 @@ import TabUnstyled, { tabUnstyledClasses } from "@mui/base/TabUnstyled";
 
 import DesignItemCard from "./DesignItemCard";
 import LogItem from "./LogItem";
+import DesignRequirements from "./DesignRequirements";
+import { useStores } from "../../stores/RootStore";
+import AddIcon from "@mui/icons-material/Add";
+import * as designEngagementAPI from "../../services/DesignEngagement";
 
 const primary = {
   50: "#f0fcf9",
@@ -84,12 +94,90 @@ const TabsList = styled(TabsListUnstyled)`
 `;
 
 const DesignOrderProgress = () => {
+  const location = useLocation();
+
+  const designOrderStatus = location.state
+    ? location.state.designOrderStatus
+    : null;
+
+  const buyerId = location.state ? location.state.buyerId : null;
+  const sellerId = location.state ? location.state.sellerId : null;
+
   let navigate = useNavigate();
+  const { userStore } = useStores();
 
   const [tabValue, setTabValue] = useState(0);
   const handleSetTabValue = (event, newValue) => {
     setTabValue(newValue);
+    userStore.setPrevTabOnDesignOrder(newValue);
   };
+
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    console.log("navigationType", navigationType);
+    if (navigationType === "POP") {
+      setTabValue(userStore.prevTabOnDesignOrder);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const [logs, setLogs] = useState([
+    {
+      id: 1,
+      datetime: "2022-03-19 02:58:55.425662",
+      description: "Requested for consultation",
+      role: "Customer",
+    },
+    {
+      id: 2,
+      datetime: "2022-03-19 02:58:55.425662",
+      description: "Issued quotation",
+      role: "Designer",
+    },
+    {
+      id: 3,
+      datetime: "2022-03-19 02:58:55.425662",
+      description: "Edited quotation",
+      role: "Designer",
+    },
+    {
+      id: 4,
+      datetime: "2022-03-19 02:58:55.425662",
+      description: "Paid for quotation",
+      role: "Customer",
+    },
+    {
+      id: 5,
+      datetime: "2022-03-19 02:58:55.425662",
+      description: "Issued quotation for design package",
+      role: "Designer",
+    },
+    {
+      id: 6,
+      datetime: "2022-03-19 02:58:55.425662",
+      description: "Paid for quotation",
+      role: "Customer",
+    },
+  ]);
+
+  const getDesignLogs = async (designOrderId) => {
+    try {
+      const res = await designEngagementAPI.getDesignLogs(designOrderId);
+      const data = JSON.parse(JSON.stringify(res)).data;
+      console.log("getDesignLogs data", data);
+      setLogs(data);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("designOrderStatus", designOrderStatus);
+    console.log("designOrderStatus.id", designOrderStatus.id);
+    getDesignLogs(designOrderStatus.id);
+  }, []);
 
   return (
     <>
@@ -136,37 +224,133 @@ const DesignOrderProgress = () => {
                       </Box>
                       <TabPanel value={0}>
                         <Box sx={{ pt: 1 }}>
-                          <LogItem completed={false} />
-                          <LogItem completed={true} />
+                          {logs.reverse().map((log, i) => (
+                            <LogItem log={log} completed={false} key={i} />
+                          ))}
                         </Box>
                       </TabPanel>
                       <TabPanel value={1}>
-                        <>
-                          <h3>customer</h3>
-                          do ltr after, easy to do, builds on from All tab
-                        </>
+                        <Box sx={{ pt: 1 }}>
+                          {logs
+                            .reverse()
+                            .filter((log) => log.role === "Customer")
+                            .map((log, i) => (
+                              <LogItem log={log} completed={false} key={i} />
+                            ))}
+                        </Box>
                       </TabPanel>
                       <TabPanel value={2}>
-                        <>
-                          <h3>designer</h3>
-                          do ltr after, easy to do, builds on from All tab
-                        </>
+                        <Box sx={{ pt: 1 }}>
+                          {logs
+                            .reverse()
+                            .filter((log) => log.role === "Designer")
+                            .map((log, i) => (
+                              <LogItem log={log} completed={false} key={i} />
+                            ))}
+                          {logs
+                            .reverse()
+                            .filter((log) => log.role === "Designer").length ===
+                            0 && (
+                            <Box
+                              sx={{
+                                width: "100%",
+                                height: 100,
+                                border: "1px solid #DFE3E8",
+                                borderRadius: 3,
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Typography
+                                variant="h5"
+                                gutterBottom
+                                component="div"
+                                sx={{
+                                  fontWeight: "normal",
+                                  fontStyle: "italic",
+                                }}
+                              >
+                                No logs for designer
+                              </Typography>
+                            </Box>
+                          )}
+                        </Box>
                       </TabPanel>
                     </TabsUnstyled>
                   </Box>
                 </>
               )}
-              {/* {tabValue === 1 && (
+              {tabValue === 1 && (
                 <>
-                  <h1>requirements</h1>
-                  copy from requirements section after it's done
+                  <DesignRequirements
+                    designOrderStatus={designOrderStatus}
+                    buyerId={buyerId}
+                  />
                 </>
-              )} */}
+              )}
               {tabValue === 2 && (
                 <>
-                  <Box sx={{ mt: 5 }}>
-                    <DesignItemCard completed={false} />
-                    <DesignItemCard completed={true} />
+                  <Box sx={{ mt: 3 }}>
+                    {userStore.isDesigner &&
+                      (designOrderStatus.design_order_status === "Designing" ||
+                        designOrderStatus.design_order_status ===
+                          "Rejected") && (
+                        // <Button
+                        //   startIcon={<AddIcon />}
+                        //   variant="contained"
+                        //   sx={{ mb: 2 }}
+                        // >
+                        //   Add Design Package
+                        // </Button>
+                        <Link
+                          to="/designOrder/newDesign"
+                          state={{
+                            designOrderStatus: designOrderStatus, //todo: update
+                            buyerId: buyerId,
+                            sellerId: sellerId,
+                          }}
+                        >
+                          <Button
+                            startIcon={<AddIcon />}
+                            variant="contained"
+                            sx={{ mb: 2 }}
+                          >
+                            Add Design Package
+                          </Button>
+                        </Link>
+                      )}
+                    {designOrderStatus.designItems
+                      .reverse()
+                      .map((design, i) => (
+                        <DesignItemCard
+                          design={design}
+                          completed={false}
+                          key={i}
+                        />
+                      ))}
+                    {designOrderStatus.designItems.length === 0 && (
+                      <Box
+                        sx={{
+                          width: "100%",
+                          height: 200,
+                          border: "1px solid #DFE3E8",
+                          borderRadius: 3,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Typography
+                          variant="h5"
+                          gutterBottom
+                          component="div"
+                          sx={{ fontWeight: "normal", fontStyle: "italic" }}
+                        >
+                          No designs yet
+                        </Typography>
+                      </Box>
+                    )}
                   </Box>
                 </>
               )}

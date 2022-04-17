@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
@@ -24,6 +24,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 
 import Grid from "@mui/material/Grid";
 import { useStores } from "../../stores/RootStore";
+import * as socket from "../../services/socket";
 import * as socialMediaAPI from "../../services/SocialMedia";
 import * as designEngagementAPI from "../../services/DesignEngagement";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -33,6 +34,18 @@ import CardMedia from "@mui/material/CardMedia";
 const RequestConsultation = () => {
   const { userStore } = useStores();
   let navigate = useNavigate();
+  const location = useLocation();
+
+  // const [sellerId, setSellerId] = useState(null);
+
+  const buyerId = userStore.id;
+  const sellerId = location.state ? location.state.sellerId : null;
+  // console.warn("sellerId", sellerId);
+
+  // useEffect(() => {
+  //   setSellerId(location.state ? location.state.sellerId : null);
+  //   console.warn("sellerId", sellerId);
+  // }, []);
 
   const [moodboardValues, setMoodboardValues] = useState([]);
   const [designValues, setDesignValues] = useState([]);
@@ -168,11 +181,43 @@ const RequestConsultation = () => {
   //! FILEE --------------------------------------------------
   //! FILEE --------------------------------------------------
 
+  const createDesignLogAPI = async (dateTime, description, role, orderId) => {
+    try {
+      const res = await designEngagementAPI.createDesignLog(
+        dateTime,
+        description,
+        role,
+        orderId
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateDesignOrderStatusAPI = async (newStatus) => {
+    try {
+      const res = await designEngagementAPI.updateDesignOrderStatus(
+        buyerId,
+        sellerId,
+        newStatus
+      );
+      const data = JSON.parse(JSON.stringify(res)).data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const createDesignRequirementRoomAPI = async (
     roomSize,
     roomType,
     requirementId
   ) => {
+    console.log(
+      `createDesignRequirementRoomAPI roomSize roomType requirementId ${roomSize} ${roomType} ${requirementId}`
+    );
     try {
       const res = await designEngagementAPI.createDesignRequirementRoom(
         roomSize,
@@ -190,6 +235,9 @@ const RequestConsultation = () => {
     requirementId,
     requirementTagsId
   ) => {
+    console.log(
+      `createDesignRequirementTagsAPI requirementId requirementTagsId ${requirementId} ${requirementTagsId}`
+    );
     try {
       const res = await designEngagementAPI.createDesignRequirementTags(
         requirementId,
@@ -203,6 +251,9 @@ const RequestConsultation = () => {
   };
 
   const createDesignRequirementMbAPI = async (moodBoardId, requirementId) => {
+    console.log(
+      `createDesignRequirementMbAPI moodboardId requirementId ${moodBoardId} ${requirementId}`
+    );
     try {
       const res = await designEngagementAPI.createDesignRequirementMb(
         moodBoardId,
@@ -215,6 +266,112 @@ const RequestConsultation = () => {
     }
   };
 
+  // todo: create design order -> send sellerId, buyerId, datetime -> return designOrderId
+  // todo: createDesignRequirementAPI to include designOrderId
+
+  // wip
+  const createDesignRequirementAPI = async (
+    requestType,
+    floorPlan,
+    otherComments,
+    designOrderId
+  ) => {
+    console.log("line 260 createDesignRequirementAPI");
+    try {
+      const res = await designEngagementAPI.createDesignRequirement(
+        requestType,
+        floorPlan[0],
+        floorPlan[1],
+        floorPlan[2],
+        otherComments,
+        userStore.id,
+        designOrderId
+      );
+      const data = JSON.parse(JSON.stringify(res)).data[0]["id"];
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // wip
+  const createDesignOrderAPI = async ({
+    requestType,
+    roomGeometry,
+    floorPlan,
+    styleRequests,
+    moodboardReferences,
+    otherComments,
+  }) => {
+    console.log("createDesignOrderAPI --------------");
+    try {
+      const timestamp = "2022-03-19 02:58:55.425662";
+      const res = await designEngagementAPI.createDesignOrder(
+        timestamp,
+        buyerId,
+        sellerId
+      );
+      console.log(
+        "JSON.parse(JSON.stringify(res)).data",
+        JSON.parse(JSON.stringify(res)).data
+      );
+      const designOrderId = JSON.parse(JSON.stringify(res)).data[0]["id"];
+      console.log("designOrderId", designOrderId);
+
+      const requirementId = await createDesignRequirementAPI(
+        requestType,
+        floorPlan,
+        otherComments,
+        designOrderId
+      );
+      console.log("requirementId", requirementId);
+
+      for (let room in roomGeometry) {
+        await createDesignRequirementRoomAPI(
+          parseInt(roomGeometry[room].roomSize),
+          roomGeometry[room].roomType,
+          requirementId
+        );
+      }
+
+      for (let requirementTagsId in styleRequests) {
+        await createDesignRequirementTagsAPI(
+          requirementId,
+          styleRequests[requirementTagsId]
+        );
+      }
+
+      for (let moodboardId in moodboardReferences) {
+        await createDesignRequirementMbAPI(
+          moodboardReferences[moodboardId],
+          requirementId
+        );
+      }
+
+      // todo: use the designorder id to create log
+      await createDesignLogAPI(
+        timestamp,
+        "Requested for consultation",
+        "Customer",
+        designOrderId
+      );
+
+      // todo: update designorder status
+      await updateDesignOrderStatusAPI("Requested");
+
+      socket.bumpDesignOrderStatusRefresh(sellerId);
+
+      // todo: navigate back to chat
+      navigate("/chat");
+
+      //refreshData(); // function to refresh data?
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  /*
+  // this will be changed to create design order 
   const createDesignRequirementAPI = async ({
     requestType,
     roomGeometry,
@@ -224,12 +381,6 @@ const RequestConsultation = () => {
     otherComments,
   }) => {
     try {
-      console.log("requestType", requestType);
-      console.log("roomGeometry", roomGeometry);
-      console.log("floorPlan", floorPlan);
-      console.log("styleRequests", styleRequests);
-      console.log("moodboardReferences", moodboardReferences);
-      console.log("otherComments", otherComments);
       const res = await designEngagementAPI.createDesignRequirement(
         requestType,
         floorPlan[0],
@@ -239,12 +390,12 @@ const RequestConsultation = () => {
         userStore.id
       );
       const requirementId = JSON.parse(JSON.stringify(res)).data[0]["id"];
-      console.log(requirementId);
+      console.log("requirementId", requirementId);
 
       for (let room in roomGeometry) {
         await createDesignRequirementRoomAPI(
-          room.roomSize,
-          room.roomType,
+          parseInt(roomGeometry[room].roomSize),
+          roomGeometry[room].roomType,
           requirementId
         );
       }
@@ -257,11 +408,20 @@ const RequestConsultation = () => {
         await createDesignRequirementMbAPI(moodboardId, requirementId);
       }
 
+      // todo: get designorder id from the above processes
+
+      // todo: use the designorder id to create log
+
+      // todo: update designorder status
+
+      // todo: navigate back to chat
+
       //refreshData(); // function to refresh data?
     } catch (error) {
       console.error(error);
     }
   };
+  */
 
   const handleSubmit = () => {
     const styleRequests = designValues.map((item) => item["id"]);
@@ -288,7 +448,8 @@ const RequestConsultation = () => {
       moodboardReferences: moodboardReferences,
       otherComments: otherComments,
     };
-    createDesignRequirementAPI(data);
+    // createDesignRequirementAPI(data);
+    createDesignOrderAPI(data);
     console.log("submit data", data);
   };
 

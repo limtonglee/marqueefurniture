@@ -6,14 +6,24 @@ import Divider from "@mui/material/Divider";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { DesignOrderDict } from "../../data/designOrderDict";
 
-const DesignAnnouncement = ({ designOrderStatus, currUserType }) => {
+const DesignAnnouncement = ({
+  designOrderStatus,
+  currUserType,
+  buyerId,
+  sellerId,
+}) => {
   return (
     <>
-      {DesignOrderDict[designOrderStatus][currUserType]["statusbarTitleText"]
-        .length > 0 && (
+      {DesignOrderDict[designOrderStatus.design_order_status][currUserType][
+        "statusbarTitleText"
+      ].length > 0 && (
         <Link
           to="/designOrderProgress"
-          state={{ designOrderStatus: designOrderStatus }}
+          state={{
+            designOrderStatus: designOrderStatus,
+            buyerId: buyerId,
+            sellerId: sellerId,
+          }}
         >
           <Box
             sx={{
@@ -29,9 +39,9 @@ const DesignAnnouncement = ({ designOrderStatus, currUserType }) => {
             <Box>
               <Typography variant="h6" component="div">
                 {
-                  DesignOrderDict[designOrderStatus][currUserType][
-                    "statusbarTitleText"
-                  ]
+                  DesignOrderDict[designOrderStatus.design_order_status][
+                    currUserType
+                  ]["statusbarTitleText"]
                 }
               </Typography>
               <Typography
@@ -40,9 +50,9 @@ const DesignAnnouncement = ({ designOrderStatus, currUserType }) => {
                 sx={{ fontWeight: "normal" }}
               >
                 {
-                  DesignOrderDict[designOrderStatus][currUserType][
-                    "statusbarSubText"
-                  ]
+                  DesignOrderDict[designOrderStatus.design_order_status][
+                    currUserType
+                  ]["statusbarSubText"]
                 }
               </Typography>
             </Box>

@@ -12,10 +12,13 @@ import {
     Grid,
     ButtonBase,
     Avatar,
+    Rating,
 } from "@mui/material";
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 import { useStores } from "../../../stores/RootStore";
 import ReplyReviewModal from './ReplyReviewModal';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Img = styled("img")({
     margin: "auto",
@@ -34,24 +37,25 @@ export const ShopRating = () => {
             const res = await SellerCenterAPI.getShopRatings(userStore.id);
             setData(JSON.parse(JSON.stringify(res.data)));
             setRatings(JSON.parse(JSON.stringify(res.data)));
+            if (res !== null) {
+                calculateAverage();
+            }
         } catch (error) {
             console.error(error);
         }
     };
 
-    const [average, setAverage] = useState(0);
+    let average = 3.7;
     const calculateAverage = () => {
         var sum = 0;
         for (var i = 0; i < ratings.length; i++) {
             sum += ratings[i].rating;
         }
-        setAverage((sum / ratings.length).toFixed(1));
-        console.log(average);
+        average = (sum / ratings.length).toFixed(1);
     };
 
     useEffect(() => {
         getRatings();
-        calculateAverage();
     }, []);
 
     const refreshData = () => {
@@ -62,25 +66,21 @@ export const ShopRating = () => {
     const [value1, setValue1] = useState(0);
     const [value2, setValue2] = useState(0);
 
-    const handleTab1 = (event, newValue) => {
-        setValue1(newValue);
-        updateData();
+    const handleTab1 = (event, newValue1) => {
+        setValue1(newValue1);
+        updateData(newValue1, value2);
     };
-    const handleTab2 = (event, newValue) => {
-        setValue2(newValue);
-        updateData();
+    const handleTab2 = (event, newValue2) => {
+        setValue2(newValue2);
+        updateData(value1, newValue2);
     };
-    const updateData = () => {
-        console.log('ZZZ', value1);
-        console.log('ZZZ', value2);
+    const updateData = (value1, value2) => {
         if (value1 === 1) {
-            tabData = ratings.filter((ratings) => ratings.sellerreply === '');
+            tabData = ratings.filter((ratings) => !ratings.sellerreply);
         } else if (value1 === 2) {
             tabData = ratings.filter((ratings) => ratings.sellerreply !== '');
-        } else {
-            tabData = ratings;
         }
-        console.log('ZZZ1', tabData);
+
         if (value2 === 1) {
             tabData = tabData.filter((ratings) => ratings.rating === 5);
         } else if (value2 === 2) {
@@ -92,9 +92,16 @@ export const ShopRating = () => {
         } else if (value2 === 5) {
             tabData = tabData.filter((ratings) => ratings.rating === 1);
         }
-        console.log('ZZZ2', tabData);
+
         setData(tabData);
     };
+
+    const notifyReply = () => {
+        toast("Reply posted successfully!", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1500,
+        });
+    }
 
     return (
         <>
@@ -113,21 +120,21 @@ export const ShopRating = () => {
                         onChange={handleTab1}
                     >
                         <Tab label="All" />
-                        <Tab label="To Reply" />
-                        <Tab label="Replied" />
+                        <Tab label="To Reply"/>
+                        <Tab label="Replied"/>
                     </Tabs>
                 </Box>
                 <Box sx={{ border: 1, borderColor: 'divider', margin: '10px' }}>
-                    <Tabs
+                    <Tabs 
                         value={value2}
                         onChange={handleTab2}
                     >
-                        <Tab label="All" />
-                        <Tab label="5 Star" />
-                        <Tab label="4 Star" />
-                        <Tab label="3 Star" />
-                        <Tab label="2 Star" />
-                        <Tab label="1 Star" />
+                        <Tab label="All"/>
+                        <Tab label="5 Star"/>
+                        <Tab label="4 Star"/>
+                        <Tab label="3 Star"/>
+                        <Tab label="2 Star"/>
+                        <Tab label="1 Star"/>
                     </Tabs>
                 </Box>
                 <Grid container spacing={2} >
@@ -166,7 +173,7 @@ export const ShopRating = () => {
                                                     Variation: {item.variations}
                                                 </Typography>
                                                 <Typography variant="body2" color="text.secondary">
-                                                    ID: {item.listingid}
+                                                    Listing ID: {item.listingid}
                                                 </Typography>
                                             </Grid>
                                         </Grid>
@@ -194,11 +201,12 @@ export const ShopRating = () => {
                                                     {item.username}
                                                 </Typography>
                                                 <Typography variant="body2" gutterBottom>
-                                                    {item.description}
+                                                    <Rating name="read-only" value={item.rating} readOnly />
                                                 </Typography>
                                                 <Typography variant="body2" gutterBottom>
-                                                    Rating: {item.rating}/5
+                                                    {item.description}
                                                 </Typography>
+                                                
                                             </Grid>
                                         </Grid>
                                         <Grid item>
@@ -224,10 +232,11 @@ export const ShopRating = () => {
                                                 <Typography gutterBottom variant="subtitle1" component="div">
                                                     {/* ABC Furniture Shop */}
                                                 </Typography>
-                                                {item.sellerreply === '' ? (
-                                                    <ReplyReviewModal 
+                                                {!item.sellerreply ? (
+                                                    <ReplyReviewModal
                                                         reviewId={item.id}
                                                         refreshData={refreshData}
+                                                        notifyReply={notifyReply}
                                                     />
                                                 ) : (
                                                     <Typography variant="body2" gutterBottom>
@@ -247,6 +256,7 @@ export const ShopRating = () => {
                         </Grid>
                     </Grid>
                 ))}
+                <ToastContainer />
             </Layout>
         </>
     );

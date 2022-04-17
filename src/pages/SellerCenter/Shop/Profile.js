@@ -13,6 +13,8 @@ import {
 } from '@mui/material';
 import * as SellerCenterAPI from "../../../services/SellerCenter";
 import { useStores } from "../../../stores/RootStore";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const formReducer = (state, event) => {
     if (event.reset) {
@@ -52,17 +54,29 @@ export const ShopProfile = () => {
             value: event.target.value,
         });
     };
-    const handleSubmit = event => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        SellerCenterAPI.editShopProfile(
-            formData.shopName, 
-            formData.shopWebsite, 
-            formData.shopDescription, 
-            userStore.id);
-        getShopProfile();
-        setTimeout(() => {
 
-        }, 3000);
+        formData.shopName = !formData.shopName ? shop.shopname : formData.shopName;
+        formData.shopWebsite = !formData.shopWebsite ? shop.website : formData.shopWebsite;
+        formData.shopDescription = !formData.shopDescription ? shop.description : formData.shopDescription;
+
+        const response = await SellerCenterAPI.editShopProfile(
+            formData.shopName,
+            formData.shopWebsite,
+            formData.shopDescription,
+            userStore.shop.id);
+        if (response.data === "User have successfully edited seller account!") {
+            notifyUpdate();
+            getShopProfile();
+        }
+    }
+
+    const notifyUpdate = () => {
+        toast("Seller profile updated successfully!", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1500,
+        });
     }
 
     return (
@@ -101,12 +115,12 @@ export const ShopProfile = () => {
                                     <Typography gutterBottom variant="h5" component="div">
                                         {shop.shopname}
                                     </Typography>
-                                    <Typography variant="body2" color="text.secondary">
+                                    {/* <Typography variant="body2" color="text.secondary">
                                         Products: 10
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
                                         Shop Rating: 4.5
-                                    </Typography>
+                                    </Typography> */}
                                 </CardContent>
                             </Card>
                         </Grid>
@@ -123,7 +137,7 @@ export const ShopProfile = () => {
                                         Shop Name
                                     </Typography>
                                     <TextField
-                                        
+
                                         name="shopName"
                                         onChange={handleChange}
                                         value={formData.shopName || shop.shopname}
@@ -176,6 +190,7 @@ export const ShopProfile = () => {
                     </Grid>
                 </Box>
             </Container>
+            <ToastContainer />
         </Layout >
     );
 }

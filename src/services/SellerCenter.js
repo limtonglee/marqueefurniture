@@ -114,6 +114,7 @@ export const editListing = (listingId, name, image, description, category, brand
     status: status,
     type: type,
   };
+  console.log('ZZZ', body);
   return update(URL_EDIT_SHOP_LISTING, body);
 };
 export const updateListingStatus = (status, listingId) => {

@@ -3,6 +3,8 @@ import React, { useReducer, useState } from "react";
 import { Button, Card, TextField, MenuItem, Box, Typography } from "@mui/material";
 import { useStores } from "../../../stores/RootStore";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const style = {
   cardStyle: {
@@ -105,13 +107,21 @@ export const AddNewListing = () => {
       apiFormData,
       { headers: { "Content-Type": "multipart/form-data" } }
     );
-
-    setTimeout(() => {
+    if (result.data === "You have successfully added a listing!") {
+      notify();
       setFormData({
         reset: true,
       });
-    }, 3000);
+    }
   };
+
+  const notify = () => {
+    toast("New listing created successfully!", {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 1500,
+    });
+  }
+
   return (
     <Layout>
       <Typography variant="h4" gutterBottom>
@@ -437,6 +447,7 @@ export const AddNewListing = () => {
           </Box>
         }
       </form>
+      <ToastContainer />
     </Layout>
   );
 };

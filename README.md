@@ -1,3 +1,21 @@
+Module: IS4103 Information Systems Capstone Project
+
+Description: Developed and created a full-stack web application in an industry-related group project, using React, PostgreSQL and Node.js for IS4103 Information Systems Capstone Project module.
+
+Group TH01
+
+Team Lead: Jarryl Yeo
+
+Tech Lead: Foo Yong Cheng
+
+Member: Zeng Daize
+
+Member: Ho Chinn Fang
+
+Member: Yang Jingyuan
+
+Member: Lim Tong Lee
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
